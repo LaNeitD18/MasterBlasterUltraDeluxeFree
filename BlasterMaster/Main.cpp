@@ -1,54 +1,41 @@
 /* =============================================================
-INTRODUCTION TO GAME PROGRAMMING SE102
+	INTRODUCTION TO GAME PROGRAMMING SE102
+	
+	SAMPLE 05 - SCENCE MANAGER
 
-SAMPLE 00 - INTRODUCTORY CODE
+	This sample illustrates how to:
 
-This sample illustrates how to:
-
-1/ Create a window
-2/ Initiate DirectX 9, Direct3D, DirectX Sprite
-3/ Draw a static brick sprite to the screen
-4/ Create frame rate independent movements
-
-5/ Some good C programming practices
-- Use constants whenever possible
-- 0 Warnings
-
-6/ Debug using __FILE__ __LINE__
-
-WARNING: This one file example has a hell LOT of *sinful* programming practices
+		1/ Implement a scence manager 
+		2/ Load scene from "database", add/edit/remove scene without changing code 
+		3/ Dynamically move between scenes without hardcode logic 
+		
 ================================================================ */
 
 #include <windows.h>
 #include <d3d9.h>
 #include <d3dx9.h>
 
-#include <signal.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <time.h>
-#include <stdlib.h>
-
+#include "Utils.h"
 #include "Game.h"
 #include "GameObject.h"
+#include "Textures.h"
+
+#include "Mario.h"
+#include "Brick.h"
+#include "Goomba.h"
+
+#include "PlayScence.h"
 
 #define WINDOW_CLASS_NAME L"SampleWindow"
-#define WINDOW_TITLE L"00 - Intro"
-#define WINDOW_ICON_PATH L"brick.ico" 
+#define MAIN_WINDOW_TITLE L"SAMPLE 05 - SCENCE MANAGER"
 
-#define D3DCOLOR_WHITE D3DCOLOR_XRGB(255, 255, 255)
-
-#define BACKGROUND_COLOR D3DCOLOR_XRGB(0, 0, 0)
-#define WINDOW_WIDTH 640
-#define WINDOW_HEIGHT 480
+#define BACKGROUND_COLOR D3DCOLOR_XRGB(255, 255, 200)
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 240
 
 #define MAX_FRAME_RATE 120
 
-using namespace std;
-
-Game* game;
-LPGAMEOBJECT brick;
+CGame *game;
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -63,41 +50,32 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-void LoadResources()
-{
-	brick = new GameObject(L"rose.jpg");
-	brick->SetPosition(100.0f, 100.0f);
-}
-
 /*
 	Update world status for this frame
 	dt: time period between beginning of last frame and beginning of this frame
-
-	IMPORTANT: no render-related code should be used inside this function.
 */
 void Update(DWORD dt)
 {
-	brick->Update(dt);
+	CGame::GetInstance()->GetCurrentScene()->Update(dt);
 }
 
 /*
-	Render a frame
-	IMPORTANT: world status must NOT be changed during rendering
+	Render a frame 
 */
 void Render()
 {
 	LPDIRECT3DDEVICE9 d3ddv = game->GetDirect3DDevice();
-	LPDIRECT3DSURFACE9 backBuffer = game->GetBackBuffer();
+	LPDIRECT3DSURFACE9 bb = game->GetBackBuffer();
 	LPD3DXSPRITE spriteHandler = game->GetSpriteHandler();
 
 	if (d3ddv->BeginScene())
 	{
-		// Clear the whole window with a color
-		d3ddv->ColorFill(backBuffer, NULL, BACKGROUND_COLOR);
+		// Clear back buffer with a color
+		d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR);
 
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 
-		brick->Render();
+		CGame::GetInstance()->GetCurrentScene()->Render();
 
 		spriteHandler->End();
 		d3ddv->EndScene();
@@ -115,13 +93,10 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 	wc.style = CS_HREDRAW | CS_VREDRAW;
 	wc.hInstance = hInstance;
 
-	//Try this to see how the debug function prints out file and line 
-	//wc.hInstance = (HINSTANCE)-100; 
-
 	wc.lpfnWndProc = (WNDPROC)WinProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
-	wc.hIcon = (HICON)LoadImage(hInstance, WINDOW_ICON_PATH, IMAGE_ICON, 0, 0, LR_LOADFROMFILE);;
+	wc.hIcon = NULL;
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	wc.lpszMenuName = NULL;
@@ -133,7 +108,7 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 	HWND hWnd =
 		CreateWindow(
 			WINDOW_CLASS_NAME,
-			WINDOW_TITLE,
+			MAIN_WINDOW_TITLE,
 			WS_OVERLAPPEDWINDOW, // WS_EX_TOPMOST | WS_VISIBLE | WS_POPUP,
 			CW_USEDEFAULT,
 			CW_USEDEFAULT,
@@ -144,10 +119,11 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 			hInstance,
 			NULL);
 
-	if (!hWnd)
+	if (!hWnd) 
 	{
+		OutputDebugString(L"[ERROR] CreateWindow failed");
 		DWORD ErrCode = GetLastError();
-		return 0;
+		return FALSE;
 	}
 
 	ShowWindow(hWnd, nCmdShow);
@@ -182,11 +158,14 @@ int Run()
 		if (dt >= tickPerFrame)
 		{
 			frameStart = now;
+
+			game->ProcessKeyboard();
+			
 			Update(dt);
 			Render();
 		}
 		else
-			Sleep(tickPerFrame - dt);
+			Sleep(tickPerFrame - dt);	
 	}
 
 	return 1;
@@ -194,13 +173,16 @@ int Run()
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	HWND hWnd = CreateGameWindow(hInstance, nCmdShow, WINDOW_WIDTH, WINDOW_HEIGHT);
-	if (hWnd == 0) return 0;
+	HWND hWnd = CreateGameWindow(hInstance, nCmdShow, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	game = Game::GetInstance();
+	game = CGame::GetInstance();
 	game->Init(hWnd);
-	
-	LoadResources();
+	game->InitKeyboard();
+
+	game->Load(L"mario-sample.txt");
+
+	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH*2, SCREEN_HEIGHT*2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+
 	Run();
 
 	return 0;
