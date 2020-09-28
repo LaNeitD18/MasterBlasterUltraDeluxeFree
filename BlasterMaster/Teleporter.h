@@ -1,0 +1,26 @@
+#pragma once
+#include "GameObject.h"
+
+#define TELEPORTER_WALKING_SPEED 0.00f;
+
+#define TELEPORTER_BBOX_WIDTH 16
+#define TELEPORTER_BBOX_HEIGHT 26
+#define TELEPORTER_BBOX_HEIGHT_DIE 16
+
+#define TELEPORTER_STATE_WALKING 100
+#define TELEPORTER_STATE_DIE 200
+
+#define TELEPORTER_ANI_TELEPORT 0
+#define TELEPORTER_ANI_DIE 2
+
+class Teleporter : public CGameObject
+{
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void Render();
+
+public:
+	Teleporter();
+	virtual void SetState(int state);
+};
+

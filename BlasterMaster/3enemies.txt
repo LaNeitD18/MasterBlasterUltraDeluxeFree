@@ -1,0 +1,77 @@
+# id	file_path	transparent_color_r	g	b
+[TEXTURES]
+0	sprites\worm_l76.png		255	255	255
+20	sprites\worm_r76.png		255	255	255
+1	sprites\jumper2_l72_108.png	255	255	255
+2	sprites\jumper2_r72_108.png	255	255	255
+3	sprites\teleporter_104_136.png	255	255	255
+
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+# WORM
+# walk right
+10001	0	0	76	44	20
+10002	76	0	152	44	20		
+# walk left
+10011	0	0	76	44	0
+10012	76	0	152	44	0
+
+#JUMPER2
+# walk left
+10003	0	0	72	108	1
+10004	72	0	144	108	1
+10005	144	0	216	108	1
+10006	216	0	288	108	1
+# walk right
+10007	0	0	72	108	2
+10008	72	0	144	108	2
+10009	144	0	216	108	2
+10010	216	0	288	108	2
+
+#TELEPORTER
+# tele
+10013	0	0	104	136	3
+10014	104	0	208	136	3
+10015	208	0	312	136	3
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+# ==== WORM=========
+#walk left 
+500	10011	100	10012	100
+#walk right 
+501	10001	100	10002	100
+
+# ==== JUMPER2=========
+#walk left 
+502	10003	100	10004	100	10005	100	10006	100
+#walk right 
+503	10007	100	10008	100	10009	100	10010	100
+
+# ==== TELEPORTER=========
+# tele 
+504	10013	100	10014	100	10015	100
+
+# id	ani1	ani2	ani3
+#
+[ANIMATION_SETS]
+# WORM
+1	500	501
+# JUMPER2
+2	502	503
+# TELEPORTER
+3	504
+
+[OBJECTS]
+# type	x	y	ani_set_id	extra_settings per object type
+
+# WORM
+4	18	18	1
+
+#JUMPER2
+5	18	88	2
+
+# TELEPORTER
+6	18	228	3
+
+

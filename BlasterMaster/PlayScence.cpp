@@ -7,6 +7,10 @@
 #include "Sprites.h"
 #include "Portal.h"
 
+#include "Worm.h"
+#include "Jumper.h"
+#include "Teleporter.h"
+
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
@@ -33,6 +37,10 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_KOOPAS	3
 
 #define OBJECT_TYPE_PORTAL	50
+
+#define OBJECT_TYPE_WORM    4
+#define OBJECT_TYPE_JUMPER  5
+#define OBJECT_TYPE_TELEPORTER  6
 
 #define MAX_SCENE_LINE 1024
 
@@ -142,31 +150,34 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	case OBJECT_TYPE_MARIO:
-		if (player!=NULL) 
-		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
-			return;
-		}
-		obj = new CMario(x,y); 
-		player = (CMario*)obj;  
+		/*case OBJECT_TYPE_MARIO:
+			if (player!=NULL) 
+			{
+				DebugOut(L"[ERROR] MARIO object was created before!\n");
+				return;
+			}
+			obj = new CMario(x,y); 
+			player = (CMario*)obj;  
 
-		DebugOut(L"[INFO] Player object created!\n");
-		break;
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
-	case OBJECT_TYPE_PORTAL:
-		{	
-			float r = atof(tokens[4].c_str());
-			float b = atof(tokens[5].c_str());
-			int scene_id = atoi(tokens[6].c_str());
-			obj = new CPortal(x, y, r, b, scene_id);
-		}
-		break;
-	default:
-		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
-		return;
+			DebugOut(L"[INFO] Player object created!\n");
+			break;
+		case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
+		case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
+		case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
+		case OBJECT_TYPE_PORTAL:
+			{	
+				float r = atof(tokens[4].c_str());
+				float b = atof(tokens[5].c_str());
+				int scene_id = atoi(tokens[6].c_str());
+				obj = new CPortal(x, y, r, b, scene_id);
+			}
+			break;*/
+		case OBJECT_TYPE_WORM: obj = new Worm(); break;
+		case OBJECT_TYPE_JUMPER: obj = new Jumper(); break;
+		case OBJECT_TYPE_TELEPORTER: obj = new Teleporter(); break;
+		default:
+			DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
+			return;
 	}
 
 	// General object setup
@@ -295,14 +306,14 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	CGame *game = CGame::GetInstance();
-	CMario *mario = ((CPlayScene*)scence)->GetPlayer();
+	//CMario *mario = ((CPlayScene*)scence)->GetPlayer();
 
-	// disable control key when Mario die 
-	if (mario->GetState() == MARIO_STATE_DIE) return;
-	if (game->IsKeyDown(DIK_RIGHT))
-		mario->SetState(MARIO_STATE_WALKING_RIGHT);
-	else if (game->IsKeyDown(DIK_LEFT))
-		mario->SetState(MARIO_STATE_WALKING_LEFT);
-	else
-		mario->SetState(MARIO_STATE_IDLE);
+	//// disable control key when Mario die 
+	//if (mario->GetState() == MARIO_STATE_DIE) return;
+	//if (game->IsKeyDown(DIK_RIGHT))
+	//	mario->SetState(MARIO_STATE_WALKING_RIGHT);
+	//else if (game->IsKeyDown(DIK_LEFT))
+	//	mario->SetState(MARIO_STATE_WALKING_LEFT);
+	//else
+	//	mario->SetState(MARIO_STATE_IDLE);
 }
