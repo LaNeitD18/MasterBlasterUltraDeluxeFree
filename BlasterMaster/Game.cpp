@@ -7,7 +7,7 @@
 
 #include "PlayScence.h"
 
-CGame * CGame::__instance = NULL;
+Game * Game::__instance = NULL;
 
 /*
 	Initialize DirectX, create a Direct3D device for rendering within the window, initial Sprite library for 
@@ -15,7 +15,7 @@ CGame * CGame::__instance = NULL;
 	- hInst: Application instance handle
 	- hWnd: Application window handle
 */
-void CGame::Init(HWND hWnd)
+RESULT Game::Init(HWND hWnd)
 {
 	LPDIRECT3D9 d3d = Direct3DCreate9(D3D_SDK_VERSION);
 
@@ -50,7 +50,7 @@ void CGame::Init(HWND hWnd)
 	if (d3ddv == NULL)
 	{
 		OutputDebugString(L"[ERROR] CreateDevice failed\n");
-		return;
+		return 1;
 	}
 
 	d3ddv->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &backBuffer);
@@ -59,157 +59,59 @@ void CGame::Init(HWND hWnd)
 	D3DXCreateSprite(d3ddv, &spriteHandler);
 
 	OutputDebugString(L"[INFO] InitGame done;\n");
+
+	BLOCKALLOC(Input, input);
+	input->Initialize();
+	return 0;
 }
 
 /*
 	Utility function to wrap LPD3DXSPRITE::Draw 
 */
-void CGame::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha)
+void Game::Draw(Point pos, LPDIRECT3DTEXTURE9 texture, RECT rect, int alpha)
 {
-	D3DXVECTOR3 p(x - cam_x, y - cam_y, 0);
-	RECT r; 
-	r.left = left;
-	r.top = top;
-	r.right = right;
-	r.bottom = bottom;
-	spriteHandler->Draw(texture, &r, NULL, &p, D3DCOLOR_ARGB(alpha, 255, 255, 255));
+	Point drawPos = pos - cameraPosition;
+	D3DXVECTOR3 p(drawPos.x, drawPos.y, 0);
+	spriteHandler->Draw(texture, &rect, NULL, &p, D3DCOLOR_ARGB(alpha, 255, 255, 255));
 }
 
-int CGame::IsKeyDown(int KeyCode)
+Game::~Game()
 {
-	return (keyStates[KeyCode] & 0x80) > 0;
+	DESTROY(spriteHandler);
+	DESTROY(backBuffer);
+	DESTROY(d3ddv);
+	DESTROY(d3d);
+	DESTROY(input);
 }
 
-void CGame::InitKeyboard()
+void Game::Render()
 {
-	HRESULT
-		hr = DirectInput8Create
-		(
-			(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
-			DIRECTINPUT_VERSION,
-			IID_IDirectInput8, (VOID**)&di, NULL
-		);
+	LPDIRECT3DDEVICE9 d3ddv = GetDirect3DDevice();
+	LPDIRECT3DSURFACE9 bb = GetBackBuffer();
+	LPD3DXSPRITE spriteHandler = GetSpriteHandler();
 
-	if (hr != DI_OK)
+	if (d3ddv->BeginScene())
 	{
-		DebugOut(L"[ERROR] DirectInput8Create failed!\n");
-		return;
+		// Clear back buffer with a color
+		d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR);
+
+		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
+
+		GetCurrentScene()->Render();
+
+		spriteHandler->End();
+		d3ddv->EndScene();
 	}
 
-	hr = di->CreateDevice(GUID_SysKeyboard, &didv, NULL);
-
-	// TO-DO: put in exception handling
-	if (hr != DI_OK) 
-	{
-		DebugOut(L"[ERROR] CreateDevice failed!\n");
-		return;
-	}
-
-	// Set the data format to "keyboard format" - a predefined data format 
-	//
-	// A data format specifies which controls on a device we
-	// are interested in, and how they should be reported.
-	//
-	// This tells DirectInput that we will be passing an array
-	// of 256 bytes to IDirectInputDevice::GetDeviceState.
-
-	hr = didv->SetDataFormat(&c_dfDIKeyboard);
-
-	hr = didv->SetCooperativeLevel(hWnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
-
-
-	// IMPORTANT STEP TO USE BUFFERED DEVICE DATA!
-	//
-	// DirectInput uses unbuffered I/O (buffer size = 0) by default.
-	// If you want to read buffered data, you need to set a nonzero
-	// buffer size.
-	//
-	// Set the buffer size to DINPUT_BUFFERSIZE (defined above) elements.
-	//
-	// The buffer size is a DWORD property associated with the device.
-	DIPROPDWORD dipdw;
-
-	dipdw.diph.dwSize = sizeof(DIPROPDWORD);
-	dipdw.diph.dwHeaderSize = sizeof(DIPROPHEADER);
-	dipdw.diph.dwObj = 0;
-	dipdw.diph.dwHow = DIPH_DEVICE;
-	dipdw.dwData = KEYBOARD_BUFFER_SIZE; // Arbitary buffer size
-
-	hr = didv->SetProperty(DIPROP_BUFFERSIZE, &dipdw.diph);
-
-	hr = didv->Acquire();
-	if (hr != DI_OK)
-	{
-		DebugOut(L"[ERROR] DINPUT8::Acquire failed!\n");
-		return;
-	}
-
-	DebugOut(L"[INFO] Keyboard has been initialized successfully\n");
-}
-
-void CGame::ProcessKeyboard()
-{
-	HRESULT hr; 
-
-	// Collect all key states first
-	hr = didv->GetDeviceState(sizeof(keyStates), keyStates);
-	if (FAILED(hr))
-	{
-		// If the keyboard lost focus or was not acquired then try to get control back.
-		if ((hr == DIERR_INPUTLOST) || (hr == DIERR_NOTACQUIRED))
-		{
-			HRESULT h = didv->Acquire();
-			if (h==DI_OK)
-			{ 
-				DebugOut(L"[INFO] Keyboard re-acquired!\n");
-			}
-			else return;
-		}
-		else
-		{
-			//DebugOut(L"[ERROR] DINPUT::GetDeviceState failed. Error: %d\n", hr);
-			return;
-		}
-	}
-
-	keyHandler->KeyState((BYTE *)&keyStates);
-
-
-
-	// Collect all buffered events
-	DWORD dwElements = KEYBOARD_BUFFER_SIZE;
-	hr = didv->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), keyEvents, &dwElements, 0);
-	if (FAILED(hr))
-	{
-		//DebugOut(L"[ERROR] DINPUT::GetDeviceData failed. Error: %d\n", hr);
-		return;
-	}
-
-	// Scan through all buffered events, check if the key is pressed or released
-	for (DWORD i = 0; i < dwElements; i++)
-	{
-		int KeyCode = keyEvents[i].dwOfs;
-		int KeyState = keyEvents[i].dwData;
-		if ((KeyState & 0x80) > 0)
-			keyHandler->OnKeyDown(KeyCode);
-		else
-			keyHandler->OnKeyUp(KeyCode);
-	}
-}
-
-CGame::~CGame()
-{
-	if (spriteHandler != NULL) spriteHandler->Release();
-	if (backBuffer != NULL) backBuffer->Release();
-	if (d3ddv != NULL) d3ddv->Release();
-	if (d3d != NULL) d3d->Release();
+	// Display back buffer content to the screen
+	d3ddv->Present(NULL, NULL, NULL, NULL);
 }
 
 /*
 	Standard sweptAABB implementation
 	Source: GameDev.net
 */
-void CGame::SweptAABB(
+void Game::SweptAABB(
 	float ml, float mt,	float mr, float mb,			
 	float dx, float dy,			
 	float sl, float st, float sr, float sb,
@@ -307,9 +209,9 @@ void CGame::SweptAABB(
 
 }
 
-CGame *CGame::GetInstance()
+Game *Game::GetInstance()
 {
-	if (__instance == NULL) __instance = new CGame();
+	if (__instance == NULL) __instance = new Game();
 	return __instance;
 }
 
@@ -320,7 +222,7 @@ CGame *CGame::GetInstance()
 #define GAME_FILE_SECTION_SETTINGS 1
 #define GAME_FILE_SECTION_SCENES 2
 
-void CGame::_ParseSection_SETTINGS(string line)
+void Game::_ParseSection_SETTINGS(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -331,7 +233,7 @@ void CGame::_ParseSection_SETTINGS(string line)
 		DebugOut(L"[ERROR] Unknown game setting %s\n", ToWSTR(tokens[0]).c_str());
 }
 
-void CGame::_ParseSection_SCENES(string line)
+void Game::_ParseSection_SCENES(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -339,14 +241,14 @@ void CGame::_ParseSection_SCENES(string line)
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);
 
-	LPSCENE scene = new CPlayScene(id, path);
+	GameScene* scene = new CPlayScene(id, path, this);
 	scenes[id] = scene;
 }
 
 /*
 	Load game campaign file and load/initiate first scene
 */
-void CGame::Load(LPCWSTR gameFile)
+void Game::Load(LPCWSTR gameFile)
 {
 	DebugOut(L"[INFO] Start loading game file : %s\n", gameFile);
 
@@ -382,19 +284,14 @@ void CGame::Load(LPCWSTR gameFile)
 	SwitchScene(current_scene);
 }
 
-void CGame::SwitchScene(int scene_id)
+void Game::SwitchScene(int scene_id)
 {
 	DebugOut(L"[INFO] Switching to scene %d\n", scene_id);
 	DebugOut(L"[INFO] Ala %d\n", scenes[current_scene]);
 
-	scenes[current_scene]->Unload();;
-
-	CTextures::GetInstance()->Clear();
-	CSprites::GetInstance()->Clear();
-	CAnimations::GetInstance()->Clear();
+	scenes[current_scene]->Unload();
 
 	current_scene = scene_id;
-	LPSCENE s = scenes[scene_id];
-	CGame::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
+	GameScene* s = scenes[scene_id];
 	s->Load();	
 }

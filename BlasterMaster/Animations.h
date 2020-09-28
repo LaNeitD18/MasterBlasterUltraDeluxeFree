@@ -3,6 +3,7 @@
 #include <d3dx9.h>
 #include <unordered_map>
 
+#include "useful_stuff.h"
 #include "Sprites.h"
 
 /*
@@ -10,49 +11,43 @@ Sprite animation
 */
 class CAnimationFrame
 {
-	LPSPRITE sprite;
+	Sprite* sprite;
 	DWORD time;
 
 public:
-	CAnimationFrame(LPSPRITE sprite, int time) { this->sprite = sprite; this->time = time; }
+	CAnimationFrame(Sprite* sprite, int time) { this->sprite = sprite; this->time = time; }
 	DWORD GetTime() { return time; }
-	LPSPRITE GetSprite() { return sprite; }
+	Sprite* GetSprite() { return sprite; }
 };
-
-typedef CAnimationFrame *LPANIMATION_FRAME;
 
 class CAnimation
 {
 	DWORD lastFrameTime;
 	int currentFrame;
 	int defaultTime;
-	vector<LPANIMATION_FRAME> frames;
+	vector<CAnimationFrame*> frames;
 public:
 	CAnimation(int defaultTime = 100) { this->defaultTime = defaultTime; lastFrameTime = -1; currentFrame = -1; }
 	void Add(int spriteId, DWORD time = 0);
 
-	void Render(float x, float y, int alpha = 255);
+	void Render(Point pos, int alpha = 255);
 };
-
-typedef CAnimation *LPANIMATION;
 
 class CAnimations
 {
 	static CAnimations * __instance;
 
-	unordered_map<int, LPANIMATION> animations;
+	unordered_map<int, CAnimation*> animations;
 
 public:
-	void Add(int id, LPANIMATION ani);
-	LPANIMATION Get(int id);
+	void Add(int id, CAnimation* ani);
+	CAnimation* Get(int id);
 	void Clear();
 
 	static CAnimations * GetInstance();
 };
 
-typedef vector<LPANIMATION> CAnimationSet;
-
-typedef CAnimationSet* LPANIMATION_SET;
+typedef vector<CAnimation*> CAnimationSet;
 
 /*
 	Manage animation set database
@@ -61,12 +56,12 @@ class CAnimationSets
 {
 	static CAnimationSets * __instance;
 
-	unordered_map<int, LPANIMATION_SET> animation_sets;
+	unordered_map<int, CAnimationSet*> animation_sets;
 
 public:
 	CAnimationSets();
-	void Add(int id, LPANIMATION_SET ani);
-	LPANIMATION_SET Get(unsigned int id);
+	void Add(int id, CAnimationSet* ani);
+	CAnimationSet* Get(unsigned int id);
 
 
 	static CAnimationSets * GetInstance();

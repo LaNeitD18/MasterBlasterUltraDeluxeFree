@@ -4,35 +4,34 @@ Worm::Worm() {
 	SetState(WORM_STATE_WALKING);
 }
 
-void Worm::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+Worm::Worm(float x, float y)
 {
-	left = x;
-	top = y;
-	right = x + WORM_BBOX_WIDTH;
-
-	if (state == WORM_STATE_DIE)
-		bottom = y + WORM_BBOX_HEIGHT_DIE;
-	else
-		bottom = y + WORM_BBOX_HEIGHT;
+	SetState(WORM_STATE_WALKING);
+	pos = Point(x, y);
 }
 
-void Worm::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void Worm::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	CGameObject::Update(dt, coObjects);
+	left = pos.x;
+	top = pos.y;
+	right = pos.x + WORM_BBOX_WIDTH;
 
-	//
-	// TO-DO: make sure Koopas can interact with the world and to each of them too!
-	// 
+	if (state == WORM_STATE_DIE)
+		bottom = pos.y + WORM_BBOX_HEIGHT_DIE;
+	else
+		bottom = pos.y + WORM_BBOX_HEIGHT;
+}
 
-	x += dx;
-	y += dy;
+void Worm::Update()
+{
+	pos += dx();
 
-	if (vx < 0 && x < 0) {
-		x = 0; vx = -vx;
+	if (v.x < 0 && pos.x < 0) {
+		pos.x = 0; v.x = -v.x;
 	}
 
-	if (vx > 0 && x > 290) {
-		x = 290; vx = -vx;
+	if (v.x > 0 && pos.x > 290) {
+		pos.x = 290; v.x = -v.x;
 	}
 }
 
@@ -42,26 +41,26 @@ void Worm::Render()
 	if (state == WORM_STATE_DIE) {
 		ani = WORM_ANI_DIE;
 	}
-	else if (vx > 0) ani = WORM_ANI_WALKING_RIGHT;
-	else if (vx <= 0) ani = WORM_ANI_WALKING_LEFT;
+	else if (v.x > 0) ani = WORM_ANI_WALKING_RIGHT;
+	else if (v.x <= 0) ani = WORM_ANI_WALKING_LEFT;
 
-	animation_set->at(ani)->Render(x, y);
+	animation_set->at(ani)->Render(pos);
 
 	//RenderBoundingBox();
 }
 
 void Worm::SetState(int state)
 {
-	CGameObject::SetState(state);
+	GameObject::SetState(state);
 	switch (state)
 	{
 	case WORM_STATE_DIE:
-		y += WORM_BBOX_HEIGHT - WORM_BBOX_HEIGHT_DIE + 1;
-		vx = 0;
-		vy = 0;
+		pos.y += WORM_BBOX_HEIGHT - WORM_BBOX_HEIGHT_DIE + 1;
+		v.x = 0;
+		v.y = 0;
 		break;
 	case WORM_STATE_WALKING:
-		vx = WORM_WALKING_SPEED;
+		v.x = WORM_WALKING_SPEED;
 	}
 
 }

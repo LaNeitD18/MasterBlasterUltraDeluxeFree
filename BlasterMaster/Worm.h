@@ -14,14 +14,15 @@
 #define WORM_ANI_WALKING_RIGHT 1
 #define WORM_ANI_DIE 2
 
-class Worm : public CGameObject
+class Worm : public GameObject
 {
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void Update();
 	virtual void Render();
 
 public:
 	Worm();
+	Worm(float x, float y);
 	virtual void SetState(int state);
 };
 

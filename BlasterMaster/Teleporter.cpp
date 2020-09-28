@@ -4,35 +4,33 @@ Teleporter::Teleporter() {
 	SetState(TELEPORTER_STATE_WALKING);
 }
 
-void Teleporter::GetBoundingBox(float& left, float& top, float& right, float& bottom)
-{
-	left = x;
-	top = y;
-	right = x + TELEPORTER_BBOX_WIDTH;
-
-	if (state == TELEPORTER_STATE_DIE)
-		bottom = y + TELEPORTER_BBOX_HEIGHT_DIE;
-	else
-		bottom = y + TELEPORTER_BBOX_HEIGHT;
+Teleporter::Teleporter(float x, float y) {
+	SetState(TELEPORTER_STATE_WALKING);
+	pos = Point(x, y);
 }
 
-void Teleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void Teleporter::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	CGameObject::Update(dt, coObjects);
+	left = pos.x;
+	top = pos.y;
+	right = pos.x + TELEPORTER_BBOX_WIDTH;
 
-	//
-	// TO-DO: make sure Koopas can interact with the world and to each of them too!
-	// 
+	if (state == TELEPORTER_STATE_DIE)
+		bottom = pos.y + TELEPORTER_BBOX_HEIGHT_DIE;
+	else
+		bottom = pos.y + TELEPORTER_BBOX_HEIGHT;
+}
 
-	x += dx;
-	y += dy;
+void Teleporter::Update()
+{
+	pos += dx();
 
-	if (vx < 0 && x < 0) {
-		x = 0; vx = -vx;
+	if (v.x < 0 && pos.x < 0) {
+		pos.x = 0; v.x = -v.x;
 	}
 
-	if (vx > 0 && x > 290) {
-		x = 290; vx = -vx;
+	if (v.x > 0 && pos.x > 290) {
+		pos.x = 290; v.x = -v.x;
 	}
 }
 
@@ -43,23 +41,23 @@ void Teleporter::Render()
 		ani = TELEPORTER_ANI_DIE;
 	}*/
 
-	animation_set->at(ani)->Render(x, y);
+	animation_set->at(ani)->Render(pos);
 
 	//RenderBoundingBox();
 }
 
 void Teleporter::SetState(int state)
 {
-	CGameObject::SetState(state);
+	GameObject::SetState(state);
 	switch (state)
 	{
 	case TELEPORTER_STATE_DIE:
-		y += TELEPORTER_BBOX_HEIGHT - TELEPORTER_BBOX_HEIGHT_DIE + 1;
-		vx = 0;
-		vy = 0;
+		pos.y += TELEPORTER_BBOX_HEIGHT - TELEPORTER_BBOX_HEIGHT_DIE + 1;
+		v.x = 0;
+		v.y = 0;
 		break;
 	case TELEPORTER_STATE_WALKING:
-		vx = TELEPORTER_WALKING_SPEED;
+		v.x = TELEPORTER_WALKING_SPEED;
 	}
 
 }

@@ -20,28 +20,35 @@
 #include "GameObject.h"
 #include "Textures.h"
 
-#include "Mario.h"
 #include "Brick.h"
-#include "Goomba.h"
 
 #include "PlayScence.h"
+#include "Input.h"
 
 #define WINDOW_CLASS_NAME L"SampleWindow"
 #define MAIN_WINDOW_TITLE L"SAMPLE 05 - SCENCE MANAGER"
 
-#define BACKGROUND_COLOR D3DCOLOR_XRGB(255, 255, 200)
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
 
 #define MAX_FRAME_RATE 120
 
-CGame *game;
+Game *game;
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message) {
 	case WM_DESTROY:
 		PostQuitMessage(0);
+		break;
+	case WM_KEYDOWN:
+		game->GetInput()->keydown(wParam, lParam);
+		break;
+	case WM_KEYUP:
+		game->GetInput()->keyup(wParam, lParam);
+		break;
+	case WM_MOUSEMOVE:
+		game->GetInput()->mousechange(wParam, lParam);
 		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
@@ -51,39 +58,8 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 }
 
 /*
-	Update world status for this frame
-	dt: time period between beginning of last frame and beginning of this frame
-*/
-void Update(DWORD dt)
-{
-	CGame::GetInstance()->GetCurrentScene()->Update(dt);
-}
-
-/*
 	Render a frame 
 */
-void Render()
-{
-	LPDIRECT3DDEVICE9 d3ddv = game->GetDirect3DDevice();
-	LPDIRECT3DSURFACE9 bb = game->GetBackBuffer();
-	LPD3DXSPRITE spriteHandler = game->GetSpriteHandler();
-
-	if (d3ddv->BeginScene())
-	{
-		// Clear back buffer with a color
-		d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR);
-
-		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
-
-		CGame::GetInstance()->GetCurrentScene()->Render();
-
-		spriteHandler->End();
-		d3ddv->EndScene();
-	}
-
-	// Display back buffer content to the screen
-	d3ddv->Present(NULL, NULL, NULL, NULL);
-}
 
 HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int ScreenHeight)
 {
@@ -160,11 +136,9 @@ int Run()
 		if (dt >= tickPerFrame)
 		{
 			frameStart = now;
-
-			game->ProcessKeyboard();
 			
-			Update(dt);
-			Render();
+			game->GetCurrentScene()->Update();
+			game->Render();
 		}
 		else
 			Sleep(tickPerFrame - dt);	
@@ -178,9 +152,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	HWND hWnd = CreateGameWindow(hInstance, nCmdShow, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 
-	game = CGame::GetInstance();
+	game = Game::GetInstance();
 	game->Init(hWnd);
-	game->InitKeyboard();
 
 	game->Load(L"sample.txt");
 

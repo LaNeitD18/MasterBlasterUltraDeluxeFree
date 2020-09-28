@@ -7,17 +7,9 @@
 #include "Game.h"
 #include "textures.h"
 
-CTextures * CTextures::__instance = NULL;
-
-CTextures::CTextures()
+CTextures::CTextures(Game* game)
 {
-
-}
-
-CTextures *CTextures::GetInstance()
-{
-	if (__instance == NULL) __instance = new CTextures();
-	return __instance;
+	d3ddv = game->GetDirect3DDevice();
 }
 
 void CTextures::Add(int id, LPCWSTR filePath, D3DCOLOR transparentColor)
@@ -30,7 +22,6 @@ void CTextures::Add(int id, LPCWSTR filePath, D3DCOLOR transparentColor)
 		return;
 	}
 
-	LPDIRECT3DDEVICE9 d3ddv = CGame::GetInstance()->GetDirect3DDevice();
 	LPDIRECT3DTEXTURE9 texture;
 
 	result = D3DXCreateTextureFromFileEx(

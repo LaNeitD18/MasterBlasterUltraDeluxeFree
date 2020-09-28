@@ -13,14 +13,15 @@
 #define TELEPORTER_ANI_TELEPORT 0
 #define TELEPORTER_ANI_DIE 2
 
-class Teleporter : public CGameObject
+class Teleporter : public GameObject
 {
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void Update();
 	virtual void Render();
 
 public:
 	Teleporter();
+	Teleporter(float x, float y);
 	virtual void SetState(int state);
 };
 

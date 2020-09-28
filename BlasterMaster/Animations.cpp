@@ -8,19 +8,19 @@ void CAnimation::Add(int spriteId, DWORD time)
 	int t = time;
 	if (time == 0) t = this->defaultTime;
 
-	LPSPRITE sprite = CSprites::GetInstance()->Get(spriteId);
+	Sprite* sprite = SpriteLibrary::GetInstance()->Get(spriteId);
 
 	if (sprite == NULL)
 	{
 		DebugOut(L"[ERROR] Sprite ID %d cannot be found!\n", spriteId);
 	}
 
-	LPANIMATION_FRAME frame = new CAnimationFrame(sprite, t);
+	CAnimationFrame* frame = new CAnimationFrame(sprite, t);
 	frames.push_back(frame);
 }
 
 // NOTE: sometimes Animation object is NULL ??? HOW ??? 
-void CAnimation::Render(float x, float y, int alpha)
+void CAnimation::Render(Point pos, int alpha)
 {
 	DWORD now = GetTickCount();
 	if (currentFrame == -1)
@@ -39,7 +39,7 @@ void CAnimation::Render(float x, float y, int alpha)
 		}
 	}
 
-	frames[currentFrame]->GetSprite()->Draw(x, y, alpha);
+	frames[currentFrame]->GetSprite()->Draw(pos, alpha);
 }
 
 CAnimations * CAnimations::__instance = NULL;
@@ -50,14 +50,14 @@ CAnimations * CAnimations::GetInstance()
 	return __instance;
 }
 
-void CAnimations::Add(int id, LPANIMATION ani)
+void CAnimations::Add(int id, CAnimation* ani)
 {
 	animations[id] = ani;
 }
 
-LPANIMATION CAnimations::Get(int id)
+CAnimation* CAnimations::Get(int id)
 {
-	LPANIMATION ani = animations[id];
+	CAnimation* ani = animations[id];
 	if (ani == NULL)
 		DebugOut(L"[ERROR] Failed to find animation id: %d\n", id);
 	return ani;
@@ -67,7 +67,7 @@ void CAnimations::Clear()
 {
 	for (auto x : animations)
 	{
-		LPANIMATION ani = x.second;
+		CAnimation* ani = x.second;
 		delete ani;
 	}
 
@@ -85,16 +85,16 @@ CAnimationSets *CAnimationSets::GetInstance()
 	return __instance;
 }
 
-LPANIMATION_SET CAnimationSets::Get(unsigned int id)
+CAnimationSet* CAnimationSets::Get(unsigned int id)
 {
-	LPANIMATION_SET ani_set = animation_sets[id];
+	CAnimationSet* ani_set = animation_sets[id];
 	if (ani_set == NULL)
 		DebugOut(L"[ERROR] Failed to find animation set id: %d\n",id);
 	 
 	return ani_set;
 }
 
-void CAnimationSets::Add(int id, LPANIMATION_SET ani_set)
+void CAnimationSets::Add(int id, CAnimationSet* ani_set)
 {
 	animation_sets[id] = ani_set;
 }

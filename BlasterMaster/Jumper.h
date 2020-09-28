@@ -14,14 +14,15 @@
 #define JUMPER_ANI_WALKING_RIGHT 1
 #define JUMPER_ANI_DIE 2
 
-class Jumper : public CGameObject
+class Jumper : public GameObject
 {
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void Update();
 	virtual void Render();
 
 public:
 	Jumper();
+	Jumper(float x, float y);
 	virtual void SetState(int state);
 };
 

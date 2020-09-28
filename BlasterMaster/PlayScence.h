@@ -4,17 +4,16 @@
 #include "Scence.h"
 #include "GameObject.h"
 #include "Brick.h"
-#include "Mario.h"
-#include "Goomba.h"
-#include "Koopas.h"
 
 
-class CPlayScene: public CScene
+class CPlayScene: public GameScene
 {
 protected: 
-	CMario *player;					// A play scene has to have player, right? 
+	//CMario *player;					// A play scene has to have player, right? 
 
-	vector<LPGAMEOBJECT> objects;
+	vector<GameObject*> objects;
+	CTextures* textures;
+	Game* game;
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
@@ -24,24 +23,10 @@ protected:
 
 	
 public: 
-	CPlayScene(int id, LPCWSTR filePath);
+	CPlayScene(int id, LPCWSTR filePath, Game* game);
 
 	virtual void Load();
-	virtual void Update(DWORD dt);
+	virtual void Update();
 	virtual void Render();
 	virtual void Unload();
-
-	CMario * GetPlayer() { return player; } 
-
-	//friend class CPlayScenceKeyHandler;
 };
-
-class CPlayScenceKeyHandler : public CScenceKeyHandler
-{
-public: 
-	virtual void KeyState(BYTE *states);
-	virtual void OnKeyDown(int KeyCode);
-	virtual void OnKeyUp(int KeyCode) {};
-	CPlayScenceKeyHandler(CScene *s) :CScenceKeyHandler(s) {};
-};
-

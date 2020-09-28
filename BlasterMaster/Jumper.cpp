@@ -4,35 +4,33 @@ Jumper::Jumper() {
 	SetState(JUMPER_STATE_WALKING);
 }
 
-void Jumper::GetBoundingBox(float& left, float& top, float& right, float& bottom)
-{
-	left = x;
-	top = y;
-	right = x + JUMPER_BBOX_WIDTH;
-
-	if (state == JUMPER_STATE_DIE)
-		bottom = y + JUMPER_BBOX_HEIGHT_DIE;
-	else
-		bottom = y + JUMPER_BBOX_HEIGHT;
+Jumper::Jumper(float x, float y) {
+	SetState(JUMPER_STATE_WALKING);
+	pos = Point(x, y);
 }
 
-void Jumper::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void Jumper::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	CGameObject::Update(dt, coObjects);
+	left = pos.x;
+	top = pos.y;
+	right = pos.x + JUMPER_BBOX_WIDTH;
 
-	//
-	// TO-DO: make sure Koopas can interact with the world and to each of them too!
-	// 
+	if (state == JUMPER_STATE_DIE)
+		bottom = pos.y + JUMPER_BBOX_HEIGHT_DIE;
+	else
+		bottom = pos.y + JUMPER_BBOX_HEIGHT;
+}
 
-	x += dx;
-	y += dy;
+void Jumper::Update()
+{
+	pos += dx();
 
-	if (vx < 0 && x < 0) {
-		x = 0; vx = -vx;
+	if (v.x < 0 && pos.x < 0) {
+		pos.x = 0; v.x = -v.x;
 	}
 
-	if (vx > 0 && x > 290) {
-		x = 290; vx = -vx;
+	if (v.x > 0 && pos.x > 290) {
+		pos.x = 290; v.x = -v.x;
 	}
 }
 
@@ -42,26 +40,26 @@ void Jumper::Render()
 	if (state == JUMPER_STATE_DIE) {
 		ani = JUMPER_ANI_DIE;
 	}
-	else if (vx > 0) ani = JUMPER_ANI_WALKING_RIGHT;
-	else if (vx <= 0) ani = JUMPER_ANI_WALKING_LEFT;
+	else if (v.x > 0) ani = JUMPER_ANI_WALKING_RIGHT;
+	else if (v.x <= 0) ani = JUMPER_ANI_WALKING_LEFT;
 
-	animation_set->at(ani)->Render(x, y);
+	animation_set->at(ani)->Render(pos);
 
 	//RenderBoundingBox();
 }
 
 void Jumper::SetState(int state)
 {
-	CGameObject::SetState(state);
+	GameObject::SetState(state);
 	switch (state)
 	{
 	case JUMPER_STATE_DIE:
-		y += JUMPER_BBOX_HEIGHT - JUMPER_BBOX_HEIGHT_DIE + 1;
-		vx = 0;
-		vy = 0;
+		pos.y += JUMPER_BBOX_HEIGHT - JUMPER_BBOX_HEIGHT_DIE + 1;
+		v.x = 0;
+		v.y = 0;
 		break;
 	case JUMPER_STATE_WALKING:
-		vx = JUMPER_WALKING_SPEED;
+		v.x = JUMPER_WALKING_SPEED;
 	}
 
 }
