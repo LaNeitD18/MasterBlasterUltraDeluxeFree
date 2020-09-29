@@ -60,7 +60,7 @@ RESULT Input::keydown(WPARAM wparam, LPARAM)
         keyboard[wparam] = KEY_STATE_ON_DOWN;
     else
         cerr << "Key not captured " << wparam << '\n';
-
+	/*
     switch (wparam)
     {
     case VK_ESCAPE:
@@ -70,7 +70,7 @@ RESULT Input::keydown(WPARAM wparam, LPARAM)
     default:
         break;
     }
-
+	//*/
     // DEBUG(cerr << char(wparam));
     return 0;
 }

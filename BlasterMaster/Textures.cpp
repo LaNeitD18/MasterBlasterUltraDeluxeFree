@@ -7,12 +7,12 @@
 #include "Game.h"
 #include "textures.h"
 
-CTextures::CTextures(Game* game)
+TextureLibrary::TextureLibrary(Game* game)
 {
 	d3ddv = game->GetDirect3DDevice();
 }
 
-void CTextures::Add(int id, LPCWSTR filePath, D3DCOLOR transparentColor)
+void TextureLibrary::Add(int id, LPCWSTR filePath, D3DCOLOR transparentColor)
 {
 	D3DXIMAGE_INFO info;
 	HRESULT result = D3DXGetImageInfoFromFile(filePath, &info);
@@ -46,28 +46,28 @@ void CTextures::Add(int id, LPCWSTR filePath, D3DCOLOR transparentColor)
 		return;
 	}
 
-	textures[id] = texture;
+	textureLib[id] = texture;
 
 	DebugOut(L"[INFO] Texture loaded Ok: id=%d, %s\n", id, filePath);
 }
 
-LPDIRECT3DTEXTURE9 CTextures::Get(unsigned int id) 
+LPDIRECT3DTEXTURE9 TextureLibrary::Get(unsigned int id) 
 {
-	return textures[id];
+	return textureLib[id];
 }
 
 /*
 	Clear all loaded textures
 */
-void CTextures::Clear()
+void TextureLibrary::Clear()
 {
-	for (auto x : textures)
+	for (auto x : textureLib)
 	{
 		LPDIRECT3DTEXTURE9 tex = x.second; 
 		if (tex!=NULL) tex->Release();
 	}
 	
-	textures.clear();
+	textureLib.clear();
 }
 
 

@@ -42,13 +42,18 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage(0);
 		break;
 	case WM_KEYDOWN:
-		game->GetInput()->keydown(wParam, lParam);
-		break;
+		return game->GetInput()->keydown(wParam, lParam);
 	case WM_KEYUP:
-		game->GetInput()->keyup(wParam, lParam);
-		break;
+		return game->GetInput()->keyup(wParam, lParam);
+
 	case WM_MOUSEMOVE:
-		game->GetInput()->mousechange(wParam, lParam);
+	case WM_LBUTTONUP:
+	case WM_LBUTTONDOWN:
+	case WM_MBUTTONUP:
+	case WM_MBUTTONDOWN:
+	case WM_RBUTTONUP:
+	case WM_RBUTTONDOWN:
+		return game->GetInput()->mousechange(wParam, lParam);
 		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
@@ -149,10 +154,11 @@ int Run()
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+	game = Game::GetInstance();
 	HWND hWnd = CreateGameWindow(hInstance, nCmdShow, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 
-	game = Game::GetInstance();
+
 	game->Init(hWnd);
 
 	game->Load(L"sample.txt");

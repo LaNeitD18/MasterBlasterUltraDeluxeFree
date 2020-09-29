@@ -1,4 +1,3 @@
-#pragma comment(lib, "dinput8")
 #include <iostream>
 #include <fstream>
 
@@ -60,8 +59,6 @@ RESULT Game::Init(HWND hWnd)
 
 	OutputDebugString(L"[INFO] InitGame done;\n");
 
-	BLOCKALLOC(Input, input);
-	input->Initialize();
 	return 0;
 }
 
@@ -89,6 +86,12 @@ Game::~Game()
 	DESTROY(d3ddv);
 	DESTROY(d3d);
 	DESTROY(input);
+}
+
+Game::Game()
+{
+	input = new Input();
+	input->Initialize();
 }
 
 void Game::Render()
@@ -248,7 +251,7 @@ void Game::_ParseSection_SCENES(string line)
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);
 
-	GameScene* scene = new CPlayScene(id, path, this);
+	GameScene* scene = new SceneArea2SideView(id, path, this);
 	scenes[id] = scene;
 }
 

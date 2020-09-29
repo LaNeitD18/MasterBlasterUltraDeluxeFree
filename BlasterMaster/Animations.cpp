@@ -1,27 +1,26 @@
 #include "Animations.h"
 #include "Utils.h"
 
-CAnimationSets * CAnimationSets::__instance = NULL;
-
-void CAnimation::Add(int spriteId, DWORD time)
+void Animation::Add(int spriteId, SpriteLibrary* spriteLib, DWORD time)
 {
 	int t = time;
 	if (time == 0) t = this->defaultTime;
 
-	Sprite* sprite = SpriteLibrary::GetInstance()->Get(spriteId);
+	Sprite* sprite = spriteLib->Get(spriteId);
 
 	if (sprite == NULL)
 	{
 		DebugOut(L"[ERROR] Sprite ID %d cannot be found!\n", spriteId);
 	}
 
-	CAnimationFrame* frame = new CAnimationFrame(sprite, t);
+	loopDuration += t;
+	CAnimationFrame* frame = new CAnimationFrame(sprite, loopDuration);
 	frames.push_back(frame);
 }
 
-// NOTE: sometimes Animation object is NULL ??? HOW ??? 
-void CAnimation::Render(Point pos, int alpha)
+void Animation::Render(Point pos, int& time, int& previousFrame, int alpha)
 {
+	/*
 	DWORD now = GetTickCount();
 	if (currentFrame == -1)
 	{
@@ -38,63 +37,51 @@ void CAnimation::Render(Point pos, int alpha)
 			if (currentFrame == frames.size()) currentFrame = 0;
 		}
 	}
-
-	frames[currentFrame]->GetSprite()->Draw(pos, alpha);
+	//*/
+	if (frames[previousFrame]->GetEndTime() < time)
+		previousFrame++;
+	frames[previousFrame]->GetSprite()->Draw(pos, alpha);
 }
 
-CAnimations * CAnimations::__instance = NULL;
-
-CAnimations * CAnimations::GetInstance()
-{
-	if (__instance == NULL) __instance = new CAnimations();
-	return __instance;
-}
-
-void CAnimations::Add(int id, CAnimation* ani)
+void AnimationLibrary::Add(int id, Animation* ani)
 {
 	animations[id] = ani;
 }
 
-CAnimation* CAnimations::Get(int id)
+Animation* AnimationLibrary::Get(int id)
 {
-	CAnimation* ani = animations[id];
+	Animation* ani = animations[id];
 	if (ani == NULL)
 		DebugOut(L"[ERROR] Failed to find animation id: %d\n", id);
 	return ani;
 }
 
-void CAnimations::Clear()
+void AnimationLibrary::Clear()
 {
 	for (auto x : animations)
 	{
-		CAnimation* ani = x.second;
+		Animation* ani = x.second;
 		delete ani;
 	}
 
 	animations.clear();
 }
 
-CAnimationSets::CAnimationSets()
+AnimationSets::AnimationSets()
 {
 
 }
 
-CAnimationSets *CAnimationSets::GetInstance()
+AnimationSet* AnimationSets::Get(unsigned int id)
 {
-	if (__instance == NULL) __instance = new CAnimationSets();
-	return __instance;
-}
-
-CAnimationSet* CAnimationSets::Get(unsigned int id)
-{
-	CAnimationSet* ani_set = animation_sets[id];
+	AnimationSet* ani_set = animation_sets[id];
 	if (ani_set == NULL)
 		DebugOut(L"[ERROR] Failed to find animation set id: %d\n",id);
 	 
 	return ani_set;
 }
 
-void CAnimationSets::Add(int id, CAnimationSet* ani_set)
+void AnimationSets::Add(int id, AnimationSet* ani_set)
 {
 	animation_sets[id] = ani_set;
 }

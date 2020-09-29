@@ -13,12 +13,26 @@
 
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath, Game* game):
+SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game* game):
 	GameScene(id, filePath)
 {
 	this->input = game->GetInput();
-	textures = new CTextures(game);
+	textureLib = new TextureLibrary(game);
+	spriteLib = new SpriteLibrary();
+	animationLib = new AnimationLibrary();
+	animationSetLib = new AnimationSets();
 	this->game = game;
+}
+
+SceneArea2SideView::~SceneArea2SideView()
+{
+	textureLib->Clear();
+	delete textureLib;
+	spriteLib->Clear();
+	delete spriteLib;
+	animationLib->Clear();
+	delete animationLib;
+	delete animationSetLib;
 }
 
 /*
@@ -47,7 +61,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, Game* game):
 #define MAX_SCENE_LINE 1024
 
 
-void CPlayScene::_ParseSection_TEXTURES(string line)
+void SceneArea2SideView::_ParseSection_TEXTURES(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -59,10 +73,10 @@ void CPlayScene::_ParseSection_TEXTURES(string line)
 	int G = atoi(tokens[3].c_str());
 	int B = atoi(tokens[4].c_str());
 
-	textures->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
+	textureLib->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
 }
 
-void CPlayScene::_ParseSection_SPRITES(string line)
+void SceneArea2SideView::_ParseSection_SPRITES(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -75,17 +89,17 @@ void CPlayScene::_ParseSection_SPRITES(string line)
 	int b = atoi(tokens[4].c_str());
 	int texID = atoi(tokens[5].c_str());
 
-	LPDIRECT3DTEXTURE9 tex = textures->Get(texID);
+	LPDIRECT3DTEXTURE9 tex = textureLib->Get(texID);
 	if (tex == NULL)
 	{
 		DebugOut(L"[ERROR] Texture ID %d not found!\n", texID);
 		return; 
 	}
 
-	SpriteLibrary::GetInstance()->Add(ID, l, t, r, b, tex);
+	spriteLib->Add(ID, l, t, r, b, tex);
 }
 
-void CPlayScene::_ParseSection_ANIMATIONS(string line)
+void SceneArea2SideView::_ParseSection_ANIMATIONS(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -93,20 +107,20 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 
 	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
 
-	CAnimation*ani = new CAnimation();
+	Animation*ani = new Animation();
 
 	int ani_id = atoi(tokens[0].c_str());
 	for (int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
 	{
 		int sprite_id = atoi(tokens[i].c_str());
 		int frame_time = atoi(tokens[i+1].c_str());
-		ani->Add(sprite_id, frame_time);
+		ani->Add(sprite_id, spriteLib, frame_time);
 	}
 
-	CAnimations::GetInstance()->Add(ani_id, ani);
+	animationLib->Add(ani_id, ani);
 }
 
-void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
+void SceneArea2SideView::_ParseSection_ANIMATION_SETS(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -114,26 +128,23 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 
 	int ani_set_id = atoi(tokens[0].c_str());
 
-	CAnimationSet* s = new CAnimationSet();
-
-	CAnimations *animations = CAnimations::GetInstance();
+	AnimationSet* s = new AnimationSet();
 
 	for (int i = 1; i < tokens.size(); i++)
 	{
 		int ani_id = atoi(tokens[i].c_str());
 		
-		CAnimation*
-			ani = animations->Get(ani_id);
+		Animation* ani = animationLib->Get(ani_id);
 		s->push_back(ani);
 	}
 
-	CAnimationSets::GetInstance()->Add(ani_set_id, s);
+	animationSetLib->Add(ani_set_id, s);
 }
 
 /*
 	Parse a line in section [OBJECTS] 
 */
-void CPlayScene::_ParseSection_OBJECTS(string line)
+void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -146,8 +157,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	float y = atof(tokens[2].c_str());
 
 	int ani_set_id = atoi(tokens[3].c_str());
-
-	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
 	GameObject *obj = NULL;
 
@@ -183,13 +192,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			return;
 	}
 
-	CAnimationSet* ani_set = animation_sets->Get(ani_set_id);
+	AnimationSet* ani_set = animationSetLib->Get(ani_set_id);
 
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
 }
 
-void CPlayScene::Load()
+void SceneArea2SideView::Load()
 {
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
 
@@ -232,12 +241,12 @@ void CPlayScene::Load()
 
 	f.close();
 
-	textures->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+	textureLib->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }
 
-void CPlayScene::Update()
+void SceneArea2SideView::Update()
 {
 	input->Update();
 
@@ -255,7 +264,7 @@ void CPlayScene::Update()
 	game->SetCamPos(pos);
 }
 
-void CPlayScene::Render()
+void SceneArea2SideView::Render()
 {
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
@@ -264,15 +273,15 @@ void CPlayScene::Render()
 /*
 	Unload current scene
 */
-void CPlayScene::Unload()
+void SceneArea2SideView::Unload()
 {
 	for (int i = 0; i < objects.size(); i++)
 		delete objects[i];
 
 	objects.clear();
-	textures->Clear();
-	SpriteLibrary::GetInstance()->Clear();
-	CAnimations::GetInstance()->Clear();
+	textureLib->Clear();
+	spriteLib->Clear();
+	animationLib->Clear();
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
