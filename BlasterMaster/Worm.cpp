@@ -37,14 +37,13 @@ void Worm::Update()
 
 void Worm::Render()
 {
-	int ani = WORM_ANI_WALKING_LEFT;
 	if (state == WORM_STATE_DIE) {
-		ani = WORM_ANI_DIE;
+		SetAnimationType(WORM_ANI_DIE);
 	}
-	else if (v.x > 0) ani = WORM_ANI_WALKING_RIGHT;
-	else if (v.x <= 0) ani = WORM_ANI_WALKING_LEFT;
+	else if (v.x > 0) SetAnimationType(WORM_ANI_WALKING_RIGHT);
+	else if (v.x <= 0) SetAnimationType(WORM_ANI_WALKING_LEFT);
 
-	animation_set->at(ani)->Render(pos);
+	AnimatedGameObject::Render();
 
 	//RenderBoundingBox();
 }

@@ -78,6 +78,7 @@ public:
 	static Game * GetInstance();
 
 	~Game();
+	Game();
 
 	void Render();
 };

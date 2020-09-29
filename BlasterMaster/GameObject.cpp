@@ -15,9 +15,9 @@ GameObject::GameObject()
 	nx = 1;	
 }
 
-RESULT GameObject::Init(CTextures * textures)
+RESULT GameObject::Init(TextureLibrary * textureLib)
 {
-	bbox = textures->Get(ID_TEX_BBOX);
+	bbox = textureLib->Get(ID_TEX_BBOX);
 	return 0;
 }
 

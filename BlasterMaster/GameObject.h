@@ -31,7 +31,7 @@ public:
 
 	DWORD dt = 33; 
 
-	CAnimationSet* animation_set;
+	AnimationSet* animationSet;
 	LPDIRECT3DTEXTURE9 bbox;
 public: 
 	void SetPosition(Point pos) { this->pos = pos; }
@@ -43,9 +43,9 @@ public:
 
 	void RenderBoundingBox();
 
-	void SetAnimationSet(CAnimationSet* ani_set) { animation_set = ani_set; }
+	void SetAnimationSet(AnimationSet* ani_set) { animationSet = ani_set; }
 	
-	virtual RESULT Init(CTextures* textures);
+	virtual RESULT Init(TextureLibrary* textureLib);
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
 	virtual void Update() = 0;
@@ -56,3 +56,34 @@ public:
 	~GameObject();
 };
 
+class AnimatedGameObject : public GameObject
+{
+protected:
+	int previousFrame;
+	int currentTime;
+	Animation* currentAnimation;
+	bool moving = true;
+public:
+	virtual void Render()
+	{
+		currentAnimation->Render(pos, currentTime, previousFrame);
+		if (!moving)
+			return;
+		currentTime++;
+		if (currentTime >= currentAnimation->GetLoopDuration())
+		{
+			currentTime %= currentAnimation->GetLoopDuration();
+			previousFrame = 0;
+		}
+	}
+	virtual void SetAnimationType(int ANI) 
+	{ 
+		Animation* trg = animationSet->at(ANI);
+		if (currentAnimation != trg)
+		{
+			currentAnimation = trg;
+			previousFrame = 0;
+			currentTime = 0;
+		}
+	}
+};

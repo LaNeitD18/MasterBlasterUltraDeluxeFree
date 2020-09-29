@@ -36,12 +36,12 @@ void Teleporter::Update()
 
 void Teleporter::Render()
 {
-	int ani = TELEPORTER_ANI_TELEPORT;
+	SetAnimationType(TELEPORTER_ANI_TELEPORT);
 	/*if (state == TELEPORTER_STATE_DIE) {
 		ani = TELEPORTER_ANI_DIE;
 	}*/
 
-	animation_set->at(ani)->Render(pos);
+	AnimatedGameObject::Render();
 
 	//RenderBoundingBox();
 }
