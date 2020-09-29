@@ -12,57 +12,55 @@ Sprite animation
 class CAnimationFrame
 {
 	Sprite* sprite;
-	DWORD time;
+	DWORD endTime;
 
 public:
-	CAnimationFrame(Sprite* sprite, int time) { this->sprite = sprite; this->time = time; }
-	DWORD GetTime() { return time; }
+	CAnimationFrame(Sprite* sprite, int endTime) { this->sprite = sprite; this->endTime = endTime; }
+	DWORD GetEndTime() { return endTime; }
 	Sprite* GetSprite() { return sprite; }
 };
 
-class CAnimation
+class Animation
 {
 	DWORD lastFrameTime;
 	int currentFrame;
 	int defaultTime;
+	int loopDuration = 0;
+	// Time measued in frames
 	vector<CAnimationFrame*> frames;
 public:
-	CAnimation(int defaultTime = 100) { this->defaultTime = defaultTime; lastFrameTime = -1; currentFrame = -1; }
-	void Add(int spriteId, DWORD time = 0);
+	Animation(int defaultTime = 1) { this->defaultTime = defaultTime; lastFrameTime = -1; currentFrame = -1; }
+	void Add(int spriteId, SpriteLibrary* spriteLib, DWORD time = 0);
 
-	void Render(Point pos, int alpha = 255);
+	void Render(Point pos, int& time, int& previousFrame, int alpha = 255);
+	int GetLoopDuration() {
+		return loopDuration;
+	}
 };
 
-class CAnimations
+class AnimationLibrary
 {
-	static CAnimations * __instance;
-
-	unordered_map<int, CAnimation*> animations;
+	unordered_map<int, Animation*> animations;
 
 public:
-	void Add(int id, CAnimation* ani);
-	CAnimation* Get(int id);
+	void Add(int id, Animation* ani);
+	Animation* Get(int id);
 	void Clear();
-
-	static CAnimations * GetInstance();
 };
 
-typedef vector<CAnimation*> CAnimationSet;
+typedef vector<Animation*> AnimationSet;
 
 /*
 	Manage animation set database
 */
-class CAnimationSets
+class AnimationSets
 {
-	static CAnimationSets * __instance;
+	static AnimationSets * __instance;
 
-	unordered_map<int, CAnimationSet*> animation_sets;
+	unordered_map<int, AnimationSet*> animation_sets;
 
 public:
-	CAnimationSets();
-	void Add(int id, CAnimationSet* ani);
-	CAnimationSet* Get(unsigned int id);
-
-
-	static CAnimationSets * GetInstance();
+	AnimationSets();
+	void Add(int id, AnimationSet* ani);
+	AnimationSet* Get(unsigned int id);
 };

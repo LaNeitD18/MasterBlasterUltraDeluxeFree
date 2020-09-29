@@ -36,14 +36,13 @@ void Jumper::Update()
 
 void Jumper::Render()
 {
-	int ani = JUMPER_ANI_WALKING_LEFT;
 	if (state == JUMPER_STATE_DIE) {
-		ani = JUMPER_ANI_DIE;
+		SetAnimationType(JUMPER_ANI_DIE);
 	}
-	else if (v.x > 0) ani = JUMPER_ANI_WALKING_RIGHT;
-	else if (v.x <= 0) ani = JUMPER_ANI_WALKING_LEFT;
+	else if (v.x > 0) SetAnimationType(JUMPER_ANI_WALKING_RIGHT);
+	else if (v.x <= 0) SetAnimationType(JUMPER_ANI_WALKING_LEFT);
 
-	animation_set->at(ani)->Render(pos);
+	AnimatedGameObject::Render();
 
 	//RenderBoundingBox();
 }

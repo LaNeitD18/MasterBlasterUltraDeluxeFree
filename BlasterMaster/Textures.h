@@ -8,16 +8,16 @@ using std::unordered_map;
 /*
 	Manage texture database
 */
-class CTextures
+class TextureLibrary
 {
-	static CTextures * __instance;
+	static TextureLibrary * __instance;
 
-	unordered_map<int, LPDIRECT3DTEXTURE9> textures;
+	unordered_map<int, LPDIRECT3DTEXTURE9> textureLib;
 
 	LPDIRECT3DDEVICE9 d3ddv;
 
 public: 
-	CTextures(Game* game);
+	TextureLibrary(Game* game);
 	void Add(int id, LPCWSTR filePath, D3DCOLOR transparentColor);
 	LPDIRECT3DTEXTURE9 Get(unsigned int i);
 

@@ -6,13 +6,17 @@
 #include "Brick.h"
 
 
-class CPlayScene: public GameScene
+class SceneArea2SideView: public GameScene
 {
 protected: 
 	//CMario *player;					// A play scene has to have player, right? 
 
 	vector<GameObject*> objects;
-	CTextures* textures;
+	TextureLibrary* textureLib;
+	SpriteLibrary* spriteLib;
+	AnimationLibrary* animationLib;
+	AnimationSets* animationSetLib;
+private:
 	Game* game;
 
 	void _ParseSection_TEXTURES(string line);
@@ -23,7 +27,8 @@ protected:
 
 	
 public: 
-	CPlayScene(int id, LPCWSTR filePath, Game* game);
+	SceneArea2SideView(int id, LPCWSTR filePath, Game* game);
+	virtual ~SceneArea2SideView();
 
 	virtual void Load();
 	virtual void Update();
