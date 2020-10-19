@@ -1,0 +1,9 @@
+# ani_id	sprite1_id	frames1	sprite2_id	frames2	...
+# idle 
+504	10019	12	10020	12
+#
+# id	ani1	ani2	ani3
+#
+[ANIMATION_SETS]
+# DOME
+5	504

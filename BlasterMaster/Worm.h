@@ -10,8 +10,8 @@
 #define WORM_STATE_WALKING 100
 #define WORM_STATE_DIE 200
 
-#define WORM_ANI_WALKING_LEFT 0
-#define WORM_ANI_WALKING_RIGHT 1
+#define WORM_ANI_WALKING_LEFT 1
+#define WORM_ANI_WALKING_RIGHT 0
 #define WORM_ANI_DIE 2
 
 class Worm : public Enemy

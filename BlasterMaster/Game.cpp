@@ -70,7 +70,7 @@ void Game::Draw(Point pos, LPDIRECT3DTEXTURE9 texture, RECT rect, int alpha)
 	Point drawPos = pos - cameraPosition;
 	D3DXVECTOR3 pCenter(abs(rect.left - rect.right) / 2, abs(rect.bottom - rect.top) / 2, 0);
 	D3DXMATRIX flipMatrix;
-	D3DXMatrixScaling(&flipMatrix, -1, 1, 1);
+	D3DXMatrixScaling(&flipMatrix, 1, 1, 1);
 	D3DXMATRIX transposeMatrix;
 	D3DXMatrixTranslation(&transposeMatrix, drawPos.x, drawPos.y, 0);
 	D3DXMATRIX worldMatrix;

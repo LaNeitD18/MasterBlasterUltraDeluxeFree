@@ -23,15 +23,23 @@
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="CameraClass.h" />
+    <ClInclude Include="Cannon.h" />
+    <ClInclude Include="Dome.h" />
+    <ClInclude Include="Eye.h" />
+    <ClInclude Include="Floater.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Insect.h" />
     <ClInclude Include="Interactable.h" />
     <ClInclude Include="Jumper.h" />
     <ClInclude Include="KeyEventHandler.h" />
+    <ClInclude Include="Laser.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="MapSegment.h" />
+    <ClInclude Include="Mine.h" />
+    <ClInclude Include="Orb.h" />
     <ClInclude Include="PlayScence.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Scene.h" />
@@ -40,20 +48,30 @@
     <ClInclude Include="Textures.h" />
     <ClInclude Include="useful_stuff.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="Walker.h" />
     <ClInclude Include="Worm.h" />
+    <ClInclude Include="WormPod.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="CameraClass.cpp" />
+    <ClCompile Include="Cannon.cpp" />
+    <ClCompile Include="Dome.cpp" />
+    <ClCompile Include="Eye.cpp" />
+    <ClCompile Include="Floater.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Insect.cpp" />
     <ClCompile Include="Interactable.cpp" />
     <ClCompile Include="Jumper.cpp" />
+    <ClCompile Include="Laser.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapSegment.cpp" />
+    <ClCompile Include="Mine.cpp" />
+    <ClCompile Include="Orb.cpp" />
     <ClCompile Include="PlayScence.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Scence.cpp" />
@@ -62,7 +80,9 @@
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="useful_stuff.cpp" />
     <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="Walker.cpp" />
     <ClCompile Include="Worm.cpp" />
+    <ClCompile Include="WormPod.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

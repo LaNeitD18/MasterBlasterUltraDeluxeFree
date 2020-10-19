@@ -1,0 +1,4 @@
+# id	left	top	right	bottom	texture_id
+# idle
+10019	0	0	76	72	5
+10020	76	0	152	72	5

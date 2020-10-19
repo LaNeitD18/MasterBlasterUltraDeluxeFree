@@ -41,7 +41,7 @@ void Jumper::Render()
 		SetAnimationType(JUMPER_ANI_DIE);
 	}
 	else if (v.x > 0) SetAnimationType(JUMPER_ANI_WALKING_RIGHT);
-	else if (v.x <= 0) SetAnimationType(JUMPER_ANI_WALKING_LEFT);
+	//else if (v.x <= 0) SetAnimationType(JUMPER_ANI_WALKING_LEFT);
 
 	AnimatedGameObject::Render();
 

@@ -10,8 +10,8 @@
 #define JUMPER_STATE_WALKING 100
 #define JUMPER_STATE_DIE 200
 
-#define JUMPER_ANI_WALKING_LEFT 0
-#define JUMPER_ANI_WALKING_RIGHT 1
+#define JUMPER_ANI_WALKING_LEFT 1
+#define JUMPER_ANI_WALKING_RIGHT 0
 #define JUMPER_ANI_DIE 2
 
 class Jumper : public Enemy
@@ -19,7 +19,7 @@ class Jumper : public Enemy
 	virtual void GetBoundingBox(BoundingBox&);
 	virtual void Update();
 	virtual void Render();
-
+	
 public:
 	Jumper();
 	Jumper(float x, float y);

@@ -1,0 +1,4 @@
+# id	left	top	right	bottom	texture_id
+# fly
+10033	0	0	78	78	9
+10034	78	0	156	78	9
