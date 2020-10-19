@@ -13,7 +13,7 @@
 
 using namespace std;
 
-SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game* game):
+SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game* game, Point screenSize):
 	GameScene(id, filePath)
 {
 	this->input = game->GetInput();
@@ -22,10 +22,14 @@ SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game* game):
 	animationLib = new AnimationLibrary();
 	animationSetLib = new AnimationSets();
 	this->game = game;
+	this->screenSize = screenSize;
 }
 
 SceneArea2SideView::~SceneArea2SideView()
 {
+	for (int i = 0; i < objects.size(); i++)
+		delete objects[i];
+	objects.clear();
 	textureLib->Clear();
 	delete textureLib;
 	spriteLib->Clear();
@@ -46,6 +50,7 @@ SceneArea2SideView::~SceneArea2SideView()
 #define SCENE_SECTION_ANIMATIONS 4
 #define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS	6
+#define SCENE_SECTION_MAP 7
 /*
 #define OBJECT_TYPE_MARIO	0
 #define OBJECT_TYPE_BRICK	1
@@ -83,10 +88,12 @@ void SceneArea2SideView::_ParseSection_SPRITES(string line)
 	if (tokens.size() < 6) return; // skip invalid lines
 
 	int ID = atoi(tokens[0].c_str());
-	int l = atoi(tokens[1].c_str());
-	int t = atoi(tokens[2].c_str());
-	int r = atoi(tokens[3].c_str());
-	int b = atoi(tokens[4].c_str());
+
+	RECT bbox;
+	bbox.left = atoi(tokens[1].c_str());
+	bbox.top = atoi(tokens[2].c_str());
+	bbox.right = atoi(tokens[3].c_str());
+	bbox.bottom = atoi(tokens[4].c_str());
 	int texID = atoi(tokens[5].c_str());
 
 	LPDIRECT3DTEXTURE9 tex = textureLib->Get(texID);
@@ -96,7 +103,7 @@ void SceneArea2SideView::_ParseSection_SPRITES(string line)
 		return; 
 	}
 
-	spriteLib->Add(ID, l, t, r, b, tex);
+	spriteLib->Add(ID, bbox, tex);
 }
 
 void SceneArea2SideView::_ParseSection_ANIMATIONS(string line)
@@ -198,8 +205,50 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	objects.push_back(obj);
 }
 
-void SceneArea2SideView::Load()
+void SceneArea2SideView::_ParseSection_MAP(string line, vector < tuple<int, int, int, int, int> > &mapNav)
 {
+	unordered_map<int, MapSegment*> tempMap;
+	vector<string> tokens = split(line);
+
+	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
+
+	if (tokens.size() < 12) return; // skip invalid lines - an object set must have at least id, x, y
+
+	int id = atoi(tokens[1].c_str());
+
+	RECT boundingBox;
+	boundingBox.top = atoi(tokens[1].c_str());
+	boundingBox.left = atoi(tokens[2].c_str());
+	boundingBox.bottom = atoi(tokens[3].c_str());
+	boundingBox.right = atoi(tokens[4].c_str());
+
+	int spriteID = atoi(tokens[11].c_str());
+	const char* spriteFile = tokens[5].c_str();
+	const char* environmentFile = tokens[6].c_str();
+
+	MapSegment *mapSeg = new MapSegment(textureLib, spriteID, 
+		spriteFile, environmentFile, boundingBox);
+
+	int top = atoi(tokens[7].c_str());
+	int left = atoi(tokens[8].c_str());
+	int bottom = atoi(tokens[9].c_str());
+	int right = atoi(tokens[10].c_str());
+	
+	mapNav.push_back(tuple<int, int, int, int, int> {
+		id, 
+		top, 
+		left, 
+		bottom, 
+		right
+	});
+
+	while (map.size() < id + 1) map.push_back(NULL);
+	map[id] = mapSeg;
+}
+
+void SceneArea2SideView::Init()
+{
+	vector<tuple<int, int, int, int, int> >mapNav;
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
 
 	ifstream f;
@@ -224,6 +273,8 @@ void SceneArea2SideView::Load()
 			section = SCENE_SECTION_ANIMATION_SETS; continue; }
 		if (line == "[OBJECTS]") { 
 			section = SCENE_SECTION_OBJECTS; continue; }
+		if (line == "[MAP]") {
+			section = SCENE_SECTION_MAP; continue; }
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
 
 		//
@@ -236,12 +287,25 @@ void SceneArea2SideView::Load()
 			case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
 			case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
 			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+			case SCENE_SECTION_MAP: _ParseSection_MAP(line, mapNav); break;
 		}
 	}
 
 	f.close();
 
 	textureLib->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+
+	// NAK son
+	// NAK tien
+	for (auto item : mapNav) {
+		int id = item._Myfirst._Val;
+		int top = item._Get_rest()._Myfirst._Val;
+		int left = item._Get_rest()._Get_rest()._Myfirst._Val;
+		int bottom = item._Get_rest()._Get_rest()._Get_rest()._Myfirst._Val;
+		int right = item._Get_rest()._Get_rest()._Get_rest()._Get_rest()._Myfirst._Val;
+		
+		map[id]->PartialInit(map[top], map[left], map[bottom], map[right]);
+	}
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }
@@ -273,12 +337,18 @@ void SceneArea2SideView::Render()
 /*
 	Unload current scene
 */
-void SceneArea2SideView::Unload()
+void SceneArea2SideView::Release()
 {
 	for (int i = 0; i < objects.size(); i++)
 		delete objects[i];
 
 	objects.clear();
+
+	for (int i = 0; i < map.size(); i++)
+		delete map[i];
+
+	map.clear();
+
 	textureLib->Clear();
 	spriteLib->Clear();
 	animationLib->Clear();

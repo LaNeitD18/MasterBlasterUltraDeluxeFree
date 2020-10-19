@@ -13,9 +13,9 @@
 #define TELEPORTER_ANI_TELEPORT 0
 #define TELEPORTER_ANI_DIE 2
 
-class Teleporter : public AnimatedGameObject
+class Teleporter : public Enemy
 {
-	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	virtual void GetBoundingBox(BoundingBox& box);
 	virtual void Update();
 	virtual void Render();
 

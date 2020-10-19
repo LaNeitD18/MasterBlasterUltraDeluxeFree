@@ -251,14 +251,14 @@ void Game::_ParseSection_SCENES(string line)
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);
 
-	GameScene* scene = new SceneArea2SideView(id, path, this);
+	GameScene* scene = new SceneArea2SideView(id, path, this, Point(screen_width, screen_height));
 	scenes[id] = scene;
 }
 
 /*
 	Load game campaign file and load/initiate first scene
 */
-void Game::Load(LPCWSTR gameFile)
+void Game::Init(LPCWSTR gameFile)
 {
 	DebugOut(L"[INFO] Start loading game file : %s\n", gameFile);
 
@@ -299,9 +299,9 @@ void Game::SwitchScene(int scene_id)
 	DebugOut(L"[INFO] Switching to scene %d\n", scene_id);
 	DebugOut(L"[INFO] Ala %d\n", scenes[current_scene]);
 
-	scenes[current_scene]->Unload();
+	scenes[current_scene]->Release();
 
 	current_scene = scene_id;
 	GameScene* s = scenes[scene_id];
-	s->Load();	
+	s->Init();	
 }

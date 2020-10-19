@@ -74,4 +74,21 @@
 # TELEPORTER
 6	18	228	3
 
-
+[MAP]
+# id	 top	left	bottom	right	sprite_file	logic_file	top_map	left_map	bottom_map	right_map	texture_id
+0	0	0	512	512	map\MapSideview\tile000.png	map\MapSideview\map11.txt	12	4	5	1	3000
+1	0	512	512	1024	map\MapSideview\tile001.png	map\MapSideview\map12.txt	13	1	6	2	3001
+2	0	1024	512	1536	map\MapSideview\tile002.png	map\MapSideview\map13.txt				3	3002
+3	0	1536	512	2048	map\MapSideview\tile003.png	map\MapSideview\map14.txt				0	3003
+4	512	0	1024	512	map\MapSideview\tile004.png	map\MapSideview\map21.txt					3004
+5	512	512	1024	1024	map\MapSideview\tile005.png	map\MapSideview\map22.txt					3005
+6	512	1024	1024	1536	map\MapSideview\tile006.png	map\MapSideview\map23.txt					3006
+7	512	1536	1024	2048	map\MapSideview\tile007.png	map\MapSideview\map24.txt					3007
+8	1024	0	1536	512	map\MapSideview\tile008.png	map\MapSideview\map31.txt					3008
+9	1024	512	1536	1024	map\MapSideview\tile009.png	map\MapSideview\map32.txt	5	8	13	10	3009
+10	1024	1024	1536	1536	map\MapSideview\tile010.png	map\MapSideview\map33.txt	6	9	14	11	3010
+11	1024	1536	1536	2048	map\MapSideview\tile011.png	map\MapSideview\map34.txt	7	10	15	8	3011
+12	1536	0	2048	512	map\MapSideview\tile012.png	map\MapSideview\map41.txt					3012
+13	1536	512	2048	1024	map\MapSideview\tile013.png	map\MapSideview\map42.txt					3013
+14	1536	1024	2048	1536	map\MapSideview\tile014.png	map\MapSideview\map43.txt					3014
+15	1536	1536	2048	2048	map\MapSideview\tile015.png	map\MapSideview\map44.txt					3015

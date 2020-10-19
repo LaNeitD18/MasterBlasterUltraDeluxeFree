@@ -10,14 +10,13 @@ class Sprite
 {
 	int id;				// Sprite ID in the sprite database
 
-	int left; 
-	int top;
-	int right;
-	int bottom;
+	// NAK son
+	// NAK tien
+	RECT boundingBox;
 
 	LPDIRECT3DTEXTURE9 texture;
 public: 
-	Sprite(int id, int left, int top, int right, int bottom, LPDIRECT3DTEXTURE9 tex);
+	Sprite(int id, RECT boundingBox, LPDIRECT3DTEXTURE9 tex);
 	
 	void Draw(Point pos, int alpha = 255);
 };
@@ -27,16 +26,12 @@ public:
 */
 class SpriteLibrary
 {
-	static SpriteLibrary * __instance;
-
 	unordered_map<int, Sprite*> sprites;
 
 public:
-	void Add(int id, int left, int top, int right, int bottom, LPDIRECT3DTEXTURE9 tex);
+	void Add(int id, RECT boundingBox, LPDIRECT3DTEXTURE9 tex);
 	Sprite* Get(int id);
 	void Clear();
-
-	static SpriteLibrary * GetInstance();
 };
 
 

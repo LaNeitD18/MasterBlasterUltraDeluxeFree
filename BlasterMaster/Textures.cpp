@@ -53,6 +53,8 @@ void TextureLibrary::Add(int id, LPCWSTR filePath, D3DCOLOR transparentColor)
 
 LPDIRECT3DTEXTURE9 TextureLibrary::Get(unsigned int id) 
 {
+	if (textureLib.find(id) == textureLib.end())
+		return NULL;
 	return textureLib[id];
 }
 
