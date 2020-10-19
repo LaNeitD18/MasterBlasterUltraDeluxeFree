@@ -32,7 +32,6 @@
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="MapSegment.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScence.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Scene.h" />
@@ -55,7 +54,6 @@
     <ClCompile Include="Jumper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapSegment.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScence.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Scence.cpp" />

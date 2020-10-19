@@ -1,4 +1,4 @@
-#include "Scence.h"
+#include "Scene.h"
 
 GameScene::GameScene(int id, LPCWSTR filePath)
 {
