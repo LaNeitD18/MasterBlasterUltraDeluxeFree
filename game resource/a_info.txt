@@ -1,0 +1,5 @@
+0 Brick
+1 Wall
+2 Spike
+3 Gate
+4 Glass
