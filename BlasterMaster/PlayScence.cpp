@@ -10,10 +10,20 @@
 #include "Worm.h"
 #include "Jumper.h"
 #include "Teleporter.h"
+#include "Cannon.h"
+#include "Dome.h"
+#include "Eye.h"
+#include "Laser.h"
+#include "Mine.h"
+#include "Floater.h"
+#include "WormPod.h"
+#include "Insect.h"
+#include "Orb.h"
+#include "Walker.h"
 
 using namespace std;
 
-SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game* game):
+PlayScene::PlayScene(int id, LPCWSTR filePath, Game* game):
 	GameScene(id, filePath)
 {
 	this->input = game->GetInput();
@@ -24,7 +34,7 @@ SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game* game):
 	this->game = game;
 }
 
-SceneArea2SideView::~SceneArea2SideView()
+PlayScene::~PlayScene()
 {
 	textureLib->Clear();
 	delete textureLib;
@@ -46,22 +56,25 @@ SceneArea2SideView::~SceneArea2SideView()
 #define SCENE_SECTION_ANIMATIONS 4
 #define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS	6
-/*
-#define OBJECT_TYPE_MARIO	0
-#define OBJECT_TYPE_BRICK	1
-#define OBJECT_TYPE_GOOMBA	2
-#define OBJECT_TYPE_KOOPAS	3
-//*/
+
 #define OBJECT_TYPE_PORTAL	50
 
-#define OBJECT_TYPE_WORM    4
-#define OBJECT_TYPE_JUMPER  5
-#define OBJECT_TYPE_TELEPORTER  6
+#define OBJECT_TYPE_WORM        1
+#define OBJECT_TYPE_JUMPER		2
+#define OBJECT_TYPE_TELEPORTER  3
+#define OBJECT_TYPE_CANNON		4
+#define OBJECT_TYPE_DOME		5
+#define OBJECT_TYPE_EYE			6
+#define OBJECT_TYPE_MINE		7
+#define OBJECT_TYPE_FLOATER		8
+#define OBJECT_TYPE_INSECT		9
+#define OBJECT_TYPE_ORB			10
+#define OBJECT_TYPE_WALKER		11
 
 #define MAX_SCENE_LINE 1024
 
 
-void SceneArea2SideView::_ParseSection_TEXTURES(string line)
+void PlayScene::_ParseSection_TEXTURES(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -76,51 +89,86 @@ void SceneArea2SideView::_ParseSection_TEXTURES(string line)
 	textureLib->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
 }
 
-void SceneArea2SideView::_ParseSection_SPRITES(string line)
+void PlayScene::_ParseSection_SPRITES(string spritePath)
 {
-	vector<string> tokens = split(line);
+	ifstream f;
+	f.open(spritePath);
 
-	if (tokens.size() < 6) return; // skip invalid lines
+	char str[MAX_SCENE_LINE];
+	while (f.getline(str, MAX_SCENE_LINE)) {
+		string line(str);
 
-	int ID = atoi(tokens[0].c_str());
-	int l = atoi(tokens[1].c_str());
-	int t = atoi(tokens[2].c_str());
-	int r = atoi(tokens[3].c_str());
-	int b = atoi(tokens[4].c_str());
-	int texID = atoi(tokens[5].c_str());
+		if(line[0] == '#' || line == "") continue;
+		else {
+			vector<string> tokens = split(line);
 
-	LPDIRECT3DTEXTURE9 tex = textureLib->Get(texID);
-	if (tex == NULL)
-	{
-		DebugOut(L"[ERROR] Texture ID %d not found!\n", texID);
-		return; 
+			if (tokens.size() < 6) return; // skip invalid lines
+
+			int ID = atoi(tokens[0].c_str());
+			int l = atoi(tokens[1].c_str());
+			int t = atoi(tokens[2].c_str());
+			int r = atoi(tokens[3].c_str());
+			int b = atoi(tokens[4].c_str());
+			int texID = atoi(tokens[5].c_str());
+
+			LPDIRECT3DTEXTURE9 tex = textureLib->Get(texID);
+			if (tex == NULL)
+			{
+				DebugOut(L"[ERROR] Texture ID %d not found!\n", texID);
+				return;
+			}
+
+			spriteLib->Add(ID, l, t, r, b, tex);
+		}
 	}
 
-	spriteLib->Add(ID, l, t, r, b, tex);
+	f.close();
 }
 
-void SceneArea2SideView::_ParseSection_ANIMATIONS(string line)
+void PlayScene::_ParseSection_ANIMATIONS(string animationPath)
 {
-	vector<string> tokens = split(line);
+	ifstream f;
+	f.open(animationPath);
 
-	if (tokens.size() < 3) return; // skip invalid lines - an animation must at least has 1 frame and 1 frame time
+	bool addedAnimations = false; // check if complete adding all animations
+	char str[MAX_SCENE_LINE];
+	while (f.getline(str, MAX_SCENE_LINE)) {
+		string line(str);
 
-	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
+		if (line[0] == '#' || line == "")	continue;
 
-	Animation*ani = new Animation();
+		if (line == "[ANIMATION_SETS]") {
+			addedAnimations = true;
+			continue;
+		}
 
-	int ani_id = atoi(tokens[0].c_str());
-	for (int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
-	{
-		int sprite_id = atoi(tokens[i].c_str());
-		int frame_time = atoi(tokens[i+1].c_str());
-		ani->Add(sprite_id, spriteLib, frame_time);
+		if (!addedAnimations) {
+			vector<string> tokens = split(line);
+
+			if (tokens.size() < 3) return; // skip invalid lines - an animation must at least has 1 frame and 1 frame time
+
+			//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
+
+			Animation* ani = new Animation();
+
+			int ani_id = atoi(tokens[0].c_str());
+			for (int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
+			{
+				int sprite_id = atoi(tokens[i].c_str());
+				int frame_time = atoi(tokens[i + 1].c_str());
+				ani->Add(sprite_id, spriteLib, frame_time);
+			}
+
+			animationLib->Add(ani_id, ani);
+		} else {
+			_ParseSection_ANIMATION_SETS(line);
+		}
 	}
 
-	animationLib->Add(ani_id, ani);
+	f.close();
 }
 
-void SceneArea2SideView::_ParseSection_ANIMATION_SETS(string line)
+void PlayScene::_ParseSection_ANIMATION_SETS(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -144,7 +192,7 @@ void SceneArea2SideView::_ParseSection_ANIMATION_SETS(string line)
 /*
 	Parse a line in section [OBJECTS] 
 */
-void SceneArea2SideView::_ParseSection_OBJECTS(string line)
+void PlayScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -187,6 +235,14 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_WORM: obj = new Worm(x, y); break;
 	case OBJECT_TYPE_JUMPER: obj = new Jumper(x, y); break;
 	case OBJECT_TYPE_TELEPORTER: obj = new Teleporter(x, y); break;
+	case OBJECT_TYPE_CANNON: obj = new Cannon(x, y); break;
+	case OBJECT_TYPE_DOME: obj = new Dome(x, y); break;
+	case OBJECT_TYPE_EYE: obj = new Eye(x, y); break;
+	case OBJECT_TYPE_MINE: obj = new Mine(x, y); break;
+	case OBJECT_TYPE_FLOATER: obj = new Floater(x, y); break;
+	case OBJECT_TYPE_INSECT: obj = new Insect(x, y); break;
+	case OBJECT_TYPE_ORB: obj = new Orb(x, y); break;
+	case OBJECT_TYPE_WALKER: obj = new Walker(x, y); break;
 		default:
 			DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 			return;
@@ -198,7 +254,7 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	objects.push_back(obj);
 }
 
-void SceneArea2SideView::Load()
+void PlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
 
@@ -246,7 +302,7 @@ void SceneArea2SideView::Load()
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }
 
-void SceneArea2SideView::Update()
+void PlayScene::Update()
 {
 	input->Update();
 
@@ -264,7 +320,7 @@ void SceneArea2SideView::Update()
 	game->SetCamPos(pos);
 }
 
-void SceneArea2SideView::Render()
+void PlayScene::Render()
 {
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
@@ -273,7 +329,7 @@ void SceneArea2SideView::Render()
 /*
 	Unload current scene
 */
-void SceneArea2SideView::Unload()
+void PlayScene::Unload()
 {
 	for (int i = 0; i < objects.size(); i++)
 		delete objects[i];

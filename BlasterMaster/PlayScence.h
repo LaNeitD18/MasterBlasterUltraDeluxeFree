@@ -6,7 +6,7 @@
 #include "Brick.h"
 
 
-class SceneArea2SideView: public GameScene
+class PlayScene: public GameScene
 {
 protected: 
 	//CMario *player;					// A play scene has to have player, right? 
@@ -27,8 +27,8 @@ private:
 
 	
 public: 
-	SceneArea2SideView(int id, LPCWSTR filePath, Game* game);
-	virtual ~SceneArea2SideView();
+	PlayScene(int id, LPCWSTR filePath, Game* game);
+	virtual ~PlayScene();
 
 	virtual void Load();
 	virtual void Update();

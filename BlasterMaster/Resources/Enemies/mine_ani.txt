@@ -1,0 +1,8 @@
+# ani_id	sprite1_id	frames1	sprite2_id	frames2	...
+# idle 
+506	10029	15	10030	15
+# id	ani1	ani2	ani3
+#
+[ANIMATION_SETS]
+# MINE
+7	506

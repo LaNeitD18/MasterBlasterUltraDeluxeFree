@@ -10,16 +10,21 @@
 #define JUMPER_STATE_WALKING 100
 #define JUMPER_STATE_DIE 200
 
-#define JUMPER_ANI_WALKING_LEFT 0
-#define JUMPER_ANI_WALKING_RIGHT 1
+#define JUMPER_ANI_WALKING_LEFT 1
+#define JUMPER_ANI_WALKING_RIGHT 0
 #define JUMPER_ANI_DIE 2
+
+//class JumperInfo {
+//
+//};
 
 class Jumper : public AnimatedGameObject
 {
+	//static bool loaded = false;
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update();
 	virtual void Render();
-
+	
 public:
 	Jumper();
 	Jumper(float x, float y);

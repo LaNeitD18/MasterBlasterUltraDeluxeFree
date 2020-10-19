@@ -41,7 +41,7 @@ void Worm::Render()
 		SetAnimationType(WORM_ANI_DIE);
 	}
 	else if (v.x > 0) SetAnimationType(WORM_ANI_WALKING_RIGHT);
-	else if (v.x <= 0) SetAnimationType(WORM_ANI_WALKING_LEFT);
+	//else if (v.x <= 0) SetAnimationType(WORM_ANI_WALKING_LEFT);
 
 	AnimatedGameObject::Render();
 
