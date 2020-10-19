@@ -11,7 +11,7 @@
 #define DIRECTINPUT_VERSION 0x0800
 
 #include "useful_stuff.h"
-#include "Scence.h"
+#include "Scene.h"
 #include "Input.h"
 
 using namespace std;
@@ -31,8 +31,6 @@ class Game
 
 	Point cameraPosition;
 
-	int screen_width;
-	int screen_height; 
 
 	unordered_map<int, GameScene*> scenes;
 	int current_scene; 
@@ -47,12 +45,12 @@ public:
 
 	Input* GetInput() { return input; }
 
-	void Load(LPCWSTR gameFile);
+	void Init(LPCWSTR gameFile);
 	GameScene* GetCurrentScene() { return scenes[current_scene]; }
 	void SwitchScene(int scene_id);
 
-	int GetScreenWidth() { return screen_width; }
-	int GetScreenHeight() { return screen_height; }
+	int screen_width;
+	int screen_height;
 
 	static void SweptAABB(
 		float ml,			// move left 

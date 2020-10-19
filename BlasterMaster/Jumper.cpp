@@ -9,16 +9,17 @@ Jumper::Jumper(float x, float y) {
 	pos = Point(x, y);
 }
 
-void Jumper::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void Jumper::GetBoundingBox(BoundingBox& box)
 {
-	left = pos.x;
-	top = pos.y;
-	right = pos.x + JUMPER_BBOX_WIDTH;
-
+	float left = pos.x;
+	float top = pos.y;
+	float right = pos.x + JUMPER_BBOX_WIDTH;
+	float bottom;
 	if (state == JUMPER_STATE_DIE)
 		bottom = pos.y + JUMPER_BBOX_HEIGHT_DIE;
 	else
 		bottom = pos.y + JUMPER_BBOX_HEIGHT;
+	box = BoundingBox(left, top, right, bottom);
 }
 
 void Jumper::Update()

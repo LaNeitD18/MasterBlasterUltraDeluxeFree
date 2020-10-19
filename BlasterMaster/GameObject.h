@@ -8,7 +8,7 @@
 #include "Sprites.h"
 #include "Animations.h"
 #include "Textures.h"
-
+#include "BoundingBox.h"
 
 using namespace std;
 
@@ -47,7 +47,7 @@ public:
 	
 	virtual RESULT Init(TextureLibrary* textureLib);
 
-	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
+	virtual void GetBoundingBox(BoundingBox&) = 0;
 	virtual void Update() = 0;
 	virtual void Render() = 0;
 	virtual void SetState(int state) { this->state = state; }
@@ -86,4 +86,8 @@ public:
 			currentTime = 0;
 		}
 	}
+};
+
+class Enemy : public AnimatedGameObject 
+{
 };
