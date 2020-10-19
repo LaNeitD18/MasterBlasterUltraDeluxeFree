@@ -26,13 +26,13 @@ void GameObject::RenderBoundingBox()
 	D3DXVECTOR3 p(pos.x, pos.y, 0);
 	RECT rect;
 
-	float l,t,r,b; 
+	BoundingBox box;
 
-	GetBoundingBox(l, t, r, b);
+	GetBoundingBox(box);
 	rect.left = 0;
 	rect.top = 0;
-	rect.right = (int)r - (int)l;
-	rect.bottom = (int)b - (int)t;
+	rect.right = (int)box.r - (int)box.l;
+	rect.bottom = (int)box.b - (int)box.t;
 
 	Game::GetInstance()->Draw(pos, bbox, rect, 32);
 }

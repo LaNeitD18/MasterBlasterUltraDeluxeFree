@@ -14,9 +14,9 @@
 #define JUMPER_ANI_WALKING_RIGHT 1
 #define JUMPER_ANI_DIE 2
 
-class Jumper : public AnimatedGameObject
+class Jumper : public Enemy
 {
-	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	virtual void GetBoundingBox(BoundingBox&);
 	virtual void Update();
 	virtual void Render();
 

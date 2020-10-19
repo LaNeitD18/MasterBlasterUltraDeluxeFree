@@ -14,8 +14,8 @@ public:
 	GameScene(int id, LPCWSTR filePath);
 
 	Input* GetInput() { return input; }
-	virtual void Load() = 0;
-	virtual void Unload() = 0;
+	virtual void Init() = 0;
+	virtual void Release() = 0;
 	virtual void Update() = 0;
 	virtual void Render() = 0; 
 };

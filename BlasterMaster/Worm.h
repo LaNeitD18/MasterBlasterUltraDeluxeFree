@@ -14,9 +14,9 @@
 #define WORM_ANI_WALKING_RIGHT 1
 #define WORM_ANI_DIE 2
 
-class Worm : public AnimatedGameObject
+class Worm : public Enemy
 {
-	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	virtual void GetBoundingBox(BoundingBox& box);
 	virtual void Update();
 	virtual void Render();
 

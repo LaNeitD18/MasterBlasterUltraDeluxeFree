@@ -1,10 +1,10 @@
 #pragma once
 #include "Game.h"
 #include "Textures.h"
-#include "Scence.h"
+#include "Scene.h"
 #include "GameObject.h"
 #include "Brick.h"
-
+#include "MapSegment.h"
 
 class SceneArea2SideView: public GameScene
 {
@@ -12,6 +12,8 @@ protected:
 	//CMario *player;					// A play scene has to have player, right? 
 
 	vector<GameObject*> objects;
+	vector<MapSegment*> map;
+
 	TextureLibrary* textureLib;
 	SpriteLibrary* spriteLib;
 	AnimationLibrary* animationLib;
@@ -24,14 +26,15 @@ private:
 	void _ParseSection_ANIMATIONS(string line);
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
+	void _ParseSection_MAP(string line, vector<tuple<int, int, int, int, int> > &mapNav);
 
-	
+	Point screenSize;
 public: 
-	SceneArea2SideView(int id, LPCWSTR filePath, Game* game);
+	SceneArea2SideView(int id, LPCWSTR filePath, Game* game, Point screenSize);
 	virtual ~SceneArea2SideView();
 
-	virtual void Load();
+	virtual void Init();
 	virtual void Update();
 	virtual void Render();
-	virtual void Unload();
+	virtual void Release();
 };

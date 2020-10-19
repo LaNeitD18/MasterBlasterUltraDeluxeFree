@@ -2,41 +2,27 @@
 #include "Game.h"
 #include "Utils.h"
 
-Sprite::Sprite(int id, int left, int top, int right, int bottom, LPDIRECT3DTEXTURE9 tex)
+Sprite::Sprite(int id, RECT boundingBox, LPDIRECT3DTEXTURE9 tex)
 {
 	this->id = id;
-	this->left = left;
-	this->top = top;
-	this->right = right;
-	this->bottom = bottom;
+	this->boundingBox = boundingBox;
 	this->texture = tex;
-}
-
-SpriteLibrary * SpriteLibrary::__instance = NULL;
-
-SpriteLibrary *SpriteLibrary::GetInstance()
-{
-	if (__instance == NULL) __instance = new SpriteLibrary();
-	return __instance;
 }
 
 void Sprite::Draw(Point pos, int alpha)
 {
 	Game * game = Game::GetInstance();
-	RECT rect;
-	rect.left = left;
-	rect.right = right;
-	rect.top = top;
-	rect.bottom = bottom;
-	game->Draw(pos, texture, rect, alpha);
+	game->Draw(pos, texture, boundingBox, alpha);
 }
 
-void SpriteLibrary::Add(int id, int left, int top, int right, int bottom, LPDIRECT3DTEXTURE9 tex)
+void SpriteLibrary::Add(int id, RECT boundingBox, LPDIRECT3DTEXTURE9 tex)
 {
-	Sprite* s = new Sprite(id, left, top, right, bottom, tex);
+	Sprite* s = new Sprite(id, boundingBox, tex);
 	sprites[id] = s;
 
-	DebugOut(L"[INFO] sprite added: %d, %d, %d, %d, %d \n", id, left, top, right, bottom);
+	DebugOut(L"[INFO] sprite added: %d, %d, %d, %d, %d \n", id, 
+		boundingBox.left, boundingBox.top, 
+		boundingBox.right, boundingBox.bottom);
 }
 
 Sprite* SpriteLibrary::Get(int id)

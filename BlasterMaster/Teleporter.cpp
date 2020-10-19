@@ -9,16 +9,17 @@ Teleporter::Teleporter(float x, float y) {
 	pos = Point(x, y);
 }
 
-void Teleporter::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void Teleporter::GetBoundingBox(BoundingBox& box)
 {
-	left = pos.x;
-	top = pos.y;
-	right = pos.x + TELEPORTER_BBOX_WIDTH;
-
+	float left = pos.x;
+	float top = pos.y;
+	float right = pos.x + TELEPORTER_BBOX_WIDTH;
+	float bottom;
 	if (state == TELEPORTER_STATE_DIE)
 		bottom = pos.y + TELEPORTER_BBOX_HEIGHT_DIE;
 	else
 		bottom = pos.y + TELEPORTER_BBOX_HEIGHT;
+	box = BoundingBox(left, top, right, bottom);
 }
 
 void Teleporter::Update()
