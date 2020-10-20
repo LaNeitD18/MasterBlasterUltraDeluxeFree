@@ -32,7 +32,7 @@ class Game
 	Point cameraPosition;
 
 
-	unordered_map<int, GameScene*> scenes;
+	unordered_map<int, Scene*> scenes;
 	int current_scene; 
 
 	void _ParseSection_SETTINGS(string line);
@@ -46,7 +46,7 @@ public:
 	Input* GetInput() { return input; }
 
 	void Init(LPCWSTR gameFile);
-	GameScene* GetCurrentScene() { return scenes[current_scene]; }
+	Scene* GetCurrentScene() { return scenes[current_scene]; }
 	void SwitchScene(int scene_id);
 
 	int screen_width;

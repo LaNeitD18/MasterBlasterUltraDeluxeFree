@@ -61,3 +61,48 @@ LPCWSTR ToLPCWSTR(string st)
 	// delete wcstring   // << can I ? 
 	return w->c_str();
 }
+
+int displayMessage(std::string s)
+{
+	std::wstring stemp = std::wstring(s.begin(), s.end());
+	LPCWSTR sw = stemp.c_str();
+
+	int msgboxID = MessageBox(
+		NULL,
+		(LPCWSTR)sw,
+		(LPCWSTR)L"Show infos",
+		MB_ICONWARNING
+	);
+
+	switch (msgboxID)
+	{
+	case IDCANCEL:
+		// TODO: add code
+		break;
+
+		return msgboxID;
+	}
+}
+
+int displayMessage(int number)
+{
+	int i = number;
+	wchar_t istr[32];
+	_itow_s(i, istr, 10);
+
+	int msgboxID = MessageBox(
+		NULL,
+		(LPCWSTR)istr,
+		(LPCWSTR)L"Show info",
+		MB_ICONWARNING
+	);
+
+	switch (msgboxID)
+	{
+	case IDCANCEL:
+		// TODO: add code
+		break;
+
+		return msgboxID;
+	}
+}
