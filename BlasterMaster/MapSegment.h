@@ -25,7 +25,7 @@ public:
 	// Note: Lazy init
 	void PartialInit(MapSegment* top, MapSegment* left, MapSegment* bottom, MapSegment* right);
 	void FullInit();
-	void Render();
+	//void Render();
 	void Release();
 
 	MapSegment* left;

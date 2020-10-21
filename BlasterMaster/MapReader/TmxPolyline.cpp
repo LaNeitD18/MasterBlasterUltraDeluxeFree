@@ -25,6 +25,7 @@
 //
 // Author: Tamir Atias
 //-----------------------------------------------------------------------------
+#pragma warning (disable : 4996)
 #include "tinyxml2.h"
 #include <cstdlib> 
 
@@ -45,7 +46,7 @@ namespace Tmx
         while (token)
         {
             Point point;
-            sscanf(token, "%f,%f", &point.x, &point.y);
+            sscanf_s(token, "%f,%f", &point.x, &point.y);
 
             points.push_back(point);
 

@@ -18,12 +18,13 @@ class Input final : private NonCopyable
         RESULT Update();
         RESULT Release();
 
+		// set virtual because each scene has different key handle (open scene, game over scene, play scene gun hit of overhead and sideview)
 		/** call this to report key down*/
-        RESULT keydown(WPARAM, LPARAM);
+        virtual RESULT keydown(WPARAM, LPARAM);
 		/** call this to report key up*/
-        RESULT keyup(WPARAM, LPARAM);
+        virtual RESULT keyup(WPARAM, LPARAM);
 		/** call this to report mouse changed location*/
-        RESULT mousechange(WPARAM, LPARAM);
+        virtual RESULT mousechange(WPARAM, LPARAM);
 		/** Get keycode for character x
 			Keycode definition at bottom of file
 		*/

@@ -10,7 +10,7 @@ using std::unordered_map;
 */
 class TextureLibrary
 {
-	static TextureLibrary * __instance;
+	//static TextureLibrary * __instance;
 
 	unordered_map<int, LPDIRECT3DTEXTURE9> textureLib;
 

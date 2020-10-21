@@ -21,6 +21,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //-----------------------------------------------------------------------------
+#pragma warning (disable : 4996)
 #include "tinyxml2.h"
 #include <algorithm>
 #
@@ -151,7 +152,7 @@ namespace Tmx
             const char* gidText = tileElem->Attribute("gid");
 
             // Convert to an unsigned.
-            sscanf(gidText, "%u", &gid);
+            sscanf_s(gidText, "%u", &gid);
 
             // Find the tileset index.
             const int tilesetIndex = map->FindTilesetIndex(gid);
@@ -248,7 +249,7 @@ namespace Tmx
         while (pch) 
         {
             unsigned gid;
-            sscanf(pch, "%u", &gid);
+            sscanf_s(pch, "%u", &gid);
 
             // Find the tileset index.
             const int tilesetIndex = map->FindTilesetIndex(gid);

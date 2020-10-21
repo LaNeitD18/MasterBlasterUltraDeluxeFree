@@ -55,12 +55,12 @@ distribution.
 	}
 
 	#define TIXML_VSCPRINTF	_vscprintf
-	#define TIXML_SSCANF	sscanf_s
+	#define TIXML_sscanf_s	sscanf_s
 #elif defined _MSC_VER
 	// Microsoft Visual Studio 2003 and earlier or WinCE
 	#define TIXML_SNPRINTF	_snprintf
 	#define TIXML_VSNPRINTF _vsnprintf
-	#define TIXML_SSCANF	sscanf
+	#define TIXML_sscanf_s	sscanf_s
 	#if (_MSC_VER < 1400 ) && (!defined WINCE)
 		// Microsoft Visual Studio 2003 and not WinCE.
 		#define TIXML_VSCPRINTF   _vscprintf // VS2003's C runtime has this, but VC6 C runtime or WinCE SDK doesn't have.
@@ -92,7 +92,7 @@ distribution.
 		int len = vsnprintf( 0, 0, format, va );
 		return len;
 	}
-	#define TIXML_SSCANF   sscanf
+	#define TIXML_sscanf_s   sscanf_s
 #endif
 
 
@@ -551,7 +551,7 @@ void XMLUtil::ToStr( double v, char* buffer, int bufferSize )
 
 bool XMLUtil::ToInt( const char* str, int* value )
 {
-    if ( TIXML_SSCANF( str, "%d", value ) == 1 ) {
+    if ( TIXML_sscanf_s( str, "%d", value ) == 1 ) {
         return true;
     }
     return false;
@@ -559,7 +559,7 @@ bool XMLUtil::ToInt( const char* str, int* value )
 
 bool XMLUtil::ToUnsigned( const char* str, unsigned *value )
 {
-    if ( TIXML_SSCANF( str, "%u", value ) == 1 ) {
+    if ( TIXML_sscanf_s( str, "%u", value ) == 1 ) {
         return true;
     }
     return false;
@@ -586,7 +586,7 @@ bool XMLUtil::ToBool( const char* str, bool* value )
 
 bool XMLUtil::ToFloat( const char* str, float* value )
 {
-    if ( TIXML_SSCANF( str, "%f", value ) == 1 ) {
+    if ( TIXML_sscanf_s( str, "%f", value ) == 1 ) {
         return true;
     }
     return false;
@@ -594,7 +594,7 @@ bool XMLUtil::ToFloat( const char* str, float* value )
 
 bool XMLUtil::ToDouble( const char* str, double* value )
 {
-    if ( TIXML_SSCANF( str, "%lf", value ) == 1 ) {
+    if ( TIXML_sscanf_s( str, "%lf", value ) == 1 ) {
         return true;
     }
     return false;

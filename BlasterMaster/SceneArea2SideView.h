@@ -4,7 +4,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "Brick.h"
-#include "MapSegment.h"
+#include "GameMap.h"
 
 class SceneArea2SideView: public Scene
 {
@@ -12,12 +12,17 @@ protected:
 	//CMario *player;					// A play scene has to have player, right? 
 
 	vector<GameObject*> objects;
-	vector<MapSegment*> map;
 
 	TextureLibrary* textureLib;
 	SpriteLibrary* spriteLib;
 	AnimationLibrary* animationLib;
 	AnimationSets* animationSetLib;
+	GameMap* mMap;
+
+	void LoadContent();
+
+	// camera
+	Camera *mCamera;
 private:
 	Game* game;
 
@@ -26,7 +31,7 @@ private:
 	void _ParseSection_ANIMATIONS(string line);
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
-	void _ParseSection_MAP(string line, vector<tuple<int, int, int, int, int> > &mapNav);
+	//void _ParseSection_MAP(string line, vector<tuple<int, int, int, int, int> > &mapNav);
 
 	Point screenSize;
 public: 

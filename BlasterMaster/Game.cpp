@@ -5,6 +5,7 @@
 
 #include "Game.h"
 #include "Utils.h"
+#include "useful_stuff.h"
 
 #include "SceneArea2SideView.h"
 
@@ -47,6 +48,7 @@ RESULT Game::Init(HWND hWnd)
 		D3DCREATE_SOFTWARE_VERTEXPROCESSING,
 		&d3dpp,
 		&d3ddv);
+	GameGlobal::SetCurrentDevice(d3ddv);
 
 	if (d3ddv == NULL)
 	{
@@ -58,6 +60,7 @@ RESULT Game::Init(HWND hWnd)
 
 	// Initialize sprite helper from Direct3DX helper library
 	D3DXCreateSprite(d3ddv, &spriteHandler);
+	GameGlobal::SetCurrentSpriteHandler(spriteHandler);
 
 	OutputDebugString(L"[INFO] InitGame done;\n");
 
@@ -301,7 +304,8 @@ void Game::SwitchScene(int scene_id)
 	DebugOut(L"[INFO] Switching to scene %d\n", scene_id);
 	DebugOut(L"[INFO] Ala %d\n", scenes[current_scene]);
 
-	scenes[current_scene]->Release();
+	// map release sucks
+	//scenes[current_scene]->Release();
 
 	current_scene = scene_id;
 	Scene* s = scenes[scene_id];

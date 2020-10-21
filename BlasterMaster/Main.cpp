@@ -23,6 +23,7 @@
 #include "Brick.h"
 
 #include "SceneArea2SideView.h"
+
 #include "Input.h"
 
 #define WINDOW_CLASS_NAME L"SampleWindow"
@@ -95,8 +96,8 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 			WS_OVERLAPPEDWINDOW, // WS_EX_TOPMOST | WS_VISIBLE | WS_POPUP,
 			CW_USEDEFAULT,
 			CW_USEDEFAULT,
-			ScreenWidth,
-			ScreenHeight,
+			GameGlobal::GetWidth(),
+			GameGlobal::GetHeight(),
 			NULL,
 			NULL,
 			hInstance,
@@ -108,6 +109,10 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 		DWORD ErrCode = GetLastError();
 		return FALSE;
 	}
+
+
+	GameGlobal::SetCurrentHINSTACE(hInstance);
+	GameGlobal::SetCurrentHWND(hWnd);
 
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
