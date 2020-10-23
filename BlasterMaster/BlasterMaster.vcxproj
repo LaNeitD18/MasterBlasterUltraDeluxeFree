@@ -43,6 +43,7 @@
     <ClInclude Include="PlayScence.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Sophia.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Teleporter.h" />
     <ClInclude Include="Textures.h" />
@@ -75,6 +76,7 @@
     <ClCompile Include="PlayScence.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Scence.cpp" />
+    <ClCompile Include="Sophia.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Teleporter.cpp" />
     <ClCompile Include="Textures.cpp" />

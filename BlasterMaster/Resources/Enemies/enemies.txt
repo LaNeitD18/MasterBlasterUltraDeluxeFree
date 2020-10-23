@@ -11,8 +11,13 @@
 9	Resources\sprites\insect_78_78.png		255	255	255
 10	Resources\sprites\orb_76_76.png			255	255	255
 11	Resources\sprites\orb2_72_72.png		255	255	255
+12	Resources\sprites\Jason_SideView.png		255	255	255
+13	Resources\sprites\Jason_Overhead.png		255	255	255
+14	Resources\sprites\Sophia.png			255	255	255
+# next sprite: 10155
 
 [SPRITES]
+# id format: 5XX
 #1 WORM
 Resources\Enemies\worm_sprites.txt
 
@@ -44,6 +49,7 @@ Resources\Enemies\insect_sprites.txt
 Resources\Enemies\orb_sprites.txt
 
 [ANIMATIONS]
+# id format: 5XX
 #1 ==== WORM =========
 Resources\Enemies\worm_ani.txt
 

@@ -89,5 +89,7 @@ public:
 };
 
 class Enemy : public AnimatedGameObject 
-{
-};
+{};
+
+class Player : public AnimatedGameObject
+{};

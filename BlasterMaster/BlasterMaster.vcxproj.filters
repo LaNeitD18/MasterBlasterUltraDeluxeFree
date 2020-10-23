@@ -31,6 +31,7 @@
     <ClCompile Include="Walker.cpp" />
     <ClCompile Include="Worm.cpp" />
     <ClCompile Include="WormPod.cpp" />
+    <ClCompile Include="Sophia.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
@@ -65,5 +66,6 @@
     <ClInclude Include="Walker.h" />
     <ClInclude Include="Worm.h" />
     <ClInclude Include="WormPod.h" />
+    <ClInclude Include="Sophia.h" />
   </ItemGroup>
 </Project>
