@@ -1,10 +1,13 @@
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <sstream>
 
 #include "Game.h"
 #include "Utils.h"
+#include "useful_stuff.h"
 
-#include "PlayScence.h"
+#include "SceneArea2SideView.h"
 
 Game * Game::__instance = NULL;
 
@@ -45,6 +48,7 @@ RESULT Game::Init(HWND hWnd)
 		D3DCREATE_SOFTWARE_VERTEXPROCESSING,
 		&d3dpp,
 		&d3ddv);
+	GameGlobal::SetCurrentDevice(d3ddv);
 
 	if (d3ddv == NULL)
 	{
@@ -56,6 +60,7 @@ RESULT Game::Init(HWND hWnd)
 
 	// Initialize sprite helper from Direct3DX helper library
 	D3DXCreateSprite(d3ddv, &spriteHandler);
+	GameGlobal::SetCurrentSpriteHandler(spriteHandler);
 
 	OutputDebugString(L"[INFO] InitGame done;\n");
 
@@ -251,7 +256,7 @@ void Game::_ParseSection_SCENES(string line)
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);
 
-	GameScene* scene = new SceneArea2SideView(id, path, this, Point(screen_width, screen_height));
+	Scene* scene = new SceneArea2SideView(id, path, this, Point(screen_width, screen_height));
 	scenes[id] = scene;
 }
 
@@ -299,9 +304,11 @@ void Game::SwitchScene(int scene_id)
 	DebugOut(L"[INFO] Switching to scene %d\n", scene_id);
 	DebugOut(L"[INFO] Ala %d\n", scenes[current_scene]);
 
-	scenes[current_scene]->Release();
+	// map release sucks
+	//scenes[current_scene]->Release();
 
 	current_scene = scene_id;
-	GameScene* s = scenes[scene_id];
+	Scene* s = scenes[scene_id];
 	s->Init();	
 }
+

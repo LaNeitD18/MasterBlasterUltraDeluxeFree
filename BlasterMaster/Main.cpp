@@ -1,11 +1,11 @@
 /* =============================================================
 	INTRODUCTION TO GAME PROGRAMMING SE102
 	
-	SAMPLE 05 - SCENCE MANAGER
+	SAMPLE 05 - SCENE MANAGER
 
 	This sample illustrates how to:
 
-		1/ Implement a scence manager 
+		1/ Implement a scene manager 
 		2/ Load scene from "database", add/edit/remove scene without changing code 
 		3/ Dynamically move between scenes without hardcode logic 
 		
@@ -22,11 +22,12 @@
 
 #include "Brick.h"
 
-#include "PlayScence.h"
+#include "SceneArea2SideView.h"
+
 #include "Input.h"
 
 #define WINDOW_CLASS_NAME L"SampleWindow"
-#define MAIN_WINDOW_TITLE L"SAMPLE 05 - SCENCE MANAGER"
+#define MAIN_WINDOW_TITLE L"Master Blaster Ultra Deluxe Team STL"
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
@@ -95,8 +96,8 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 			WS_OVERLAPPEDWINDOW, // WS_EX_TOPMOST | WS_VISIBLE | WS_POPUP,
 			CW_USEDEFAULT,
 			CW_USEDEFAULT,
-			ScreenWidth,
-			ScreenHeight,
+			GameGlobal::GetWidth(),
+			GameGlobal::GetHeight(),
 			NULL,
 			NULL,
 			hInstance,
@@ -108,6 +109,10 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 		DWORD ErrCode = GetLastError();
 		return FALSE;
 	}
+
+
+	GameGlobal::SetCurrentHINSTACE(hInstance);
+	GameGlobal::SetCurrentHWND(hWnd);
 
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);

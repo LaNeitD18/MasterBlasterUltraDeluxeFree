@@ -21,3 +21,5 @@ wstring ToWSTR(string st);
 
 LPCWSTR ToLPCWSTR(string st);
 
+int displayMessage(std::string s); // LeSon
+int displayMessage(int n);

@@ -40,7 +40,7 @@ void Animation::Render(Point pos, int& time, int& previousFrame, int alpha)
 	//*/
 	if (frames[previousFrame]->GetEndTime() < time)
 		previousFrame++;
-	frames[previousFrame]->GetSprite()->Draw(pos, alpha);
+	frames[previousFrame]->GetSprite()->Draw(pos, RECT(), D3DCOLOR_ARGB(alpha, 255, 255, 255));
 }
 
 void AnimationLibrary::Add(int id, Animation* ani)

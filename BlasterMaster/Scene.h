@@ -3,7 +3,7 @@
 #include <d3dx9.h>
 #include "Input.h"
 
-class GameScene
+class Scene
 {
 protected:
 	Input* input;
@@ -11,7 +11,7 @@ protected:
 	LPCWSTR sceneFilePath;
 
 public: 
-	GameScene(int id, LPCWSTR filePath);
+	Scene(int id, LPCWSTR filePath);
 
 	Input* GetInput() { return input; }
 	virtual void Init() = 0;

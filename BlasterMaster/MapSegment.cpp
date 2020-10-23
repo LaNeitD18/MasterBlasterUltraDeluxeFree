@@ -53,11 +53,11 @@ void MapSegment::FullInit()
 		environment.push_back(row);
 	}
 }
-
-void MapSegment::Render()
-{
-	sprite->Draw(Point());
-}
+//
+//void MapSegment::Render()
+//{
+//	sprite->Draw(Point());
+//}
 
 void MapSegment::Release()
 {
