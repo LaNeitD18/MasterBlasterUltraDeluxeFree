@@ -64,28 +64,8 @@ protected:
 	Animation* currentAnimation;
 	bool moving = true;
 public:
-	virtual void Render()
-	{
-		currentAnimation->Render(pos, currentTime, previousFrame);
-		if (!moving)
-			return;
-		currentTime++;
-		if (currentTime >= currentAnimation->GetLoopDuration())
-		{
-			currentTime %= currentAnimation->GetLoopDuration();
-			previousFrame = 0;
-		}
-	}
-	virtual void SetAnimationType(int ANI) 
-	{ 
-		Animation* trg = animationSet->at(ANI);
-		if (currentAnimation != trg)
-		{
-			currentAnimation = trg;
-			previousFrame = 0;
-			currentTime = 0;
-		}
-	}
+	virtual void Render();
+	virtual void SetAnimationType(int ANI);
 };
 
 class Enemy : public AnimatedGameObject 

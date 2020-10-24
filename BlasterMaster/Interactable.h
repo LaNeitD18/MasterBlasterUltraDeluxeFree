@@ -73,10 +73,10 @@ public:
 	void Interact(mem1 *, mem2 *);													\
 	inline void Interact(mem2 * one, mem1 * other)									\
 		{ Interact(other, one); }
-	INTERACTABLE_MIRROR_DEF(Player, Enemy);
-	INTERACTABLE_MIRROR_DEF(Enemy, Env_Wall);
-	INTERACTABLE_MIRROR_DEF(Bullet, Enemy);
-	INTERACTABLE_MIRROR_DEF(Player, Environment);
+	//INTERACTABLE_MIRROR_DEF(Player, Enemy);
+	//INTERACTABLE_MIRROR_DEF(Enemy, Env_Wall);
+	//INTERACTABLE_MIRROR_DEF(Bullet, Enemy);
+	//INTERACTABLE_MIRROR_DEF(Player, Environment);
 #undef INTERACTABLE_MIRROR_DEF
 };
 

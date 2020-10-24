@@ -147,6 +147,8 @@ int Run()
 		{
 			frameStart = now;
 			
+			// Update Input before everything
+			game->GetInput()->Update();
 			game->GetCurrentScene()->Update();
 			game->Render();
 		}

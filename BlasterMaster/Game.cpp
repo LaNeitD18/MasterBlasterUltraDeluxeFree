@@ -97,6 +97,7 @@ Game::Game()
 {
 	input = new Input();
 	input->Initialize();
+	GameGlobal::SetInput(input);
 }
 
 void Game::Render()

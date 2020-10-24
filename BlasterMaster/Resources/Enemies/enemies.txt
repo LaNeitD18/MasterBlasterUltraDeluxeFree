@@ -48,6 +48,9 @@ Resources\Enemies\insect_sprites.txt
 #10+11 ORB
 Resources\Enemies\orb_sprites.txt
 
+#12 SOPHIA
+Resources\Enemies\sophia_sprites.txt
+
 [ANIMATIONS]
 # id format: 5XX
 #1 ==== WORM =========
@@ -80,6 +83,8 @@ Resources\Enemies\insect_ani.txt
 #10+11 ==== ORB =========
 Resources\Enemies\orb_ani.txt
 
+#12 ==== SOPHIA =========
+Resources\Enemies\sophia_ani.txt
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 
@@ -113,3 +118,6 @@ Resources\Enemies\orb_ani.txt
 # ORB
 10	700	300	10
 10	500	300	11
+
+# SOPHIA
+12	500	500	12
