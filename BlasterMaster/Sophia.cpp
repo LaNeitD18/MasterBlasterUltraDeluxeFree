@@ -8,6 +8,7 @@ void Sophia::GetBoundingBox(BoundingBox & bbox)
 
 void Sophia::Update()
 {
+	int prevState = state;
 	if (state == SOPHIA_STATE_LEFT_VEHICLE)
 		return;
 	Input& input = *GameGlobal::GetInput();
@@ -36,9 +37,7 @@ void Sophia::Update()
 	// Looking up can interrupt jumping and moving
 	if ((input[VK_UP] & KEY_STATE_DOWN) && !lookedUp)
 	{
-		if (stateAvailable)
-			SetState(SOPHIA_STATE_LOOKING_UP);
-		stateAvailable = false;
+		flags |= SOPHIA_STATE_LOOKING_UP;
 	}
 
 	// Jumping can interrupt jump boost
@@ -94,6 +93,13 @@ void Sophia::Update()
 		pos.y = 500; v.y = 0;
 	}
 
+	if (pos.y > 495 && v.y > 0)
+	{
+		if (stateAvailable)
+			SetState(SOPHIA_STATE_LANDING | flags);
+		stateAvailable = false;
+	}
+
 	if (v.length() == 0)
 	{
 		if (stateAvailable)
@@ -106,9 +112,9 @@ void Sophia::Update()
 			SetState(SOPHIA_STATE_WALKING | flags);
 		stateAvailable = false;
 	}
-
-
-	SetAniByState(state);
+	
+	if (prevState != state)
+		SetAniByState(state);
 }
 
 void Sophia::Render()
@@ -119,20 +125,27 @@ void Sophia::Render()
 	currentTime++;
 	if (currentTime >= currentAnimation->GetLoopDuration())
 	{
-		switch (state & 0x200f)
+		switch (state & 0x000f)
 		{
+			// After landing return to idle
 		case SOPHIA_STATE_LANDING:
-			SetState(SOPHIA_STATE_IDLE);
+			SetState(state & (~0x000f));
+			SetAniByState(this->state);
 			break;
+			// after jumping go to jump boost
 		case SOPHIA_STATE_JUMPING:
-			SetState(SOPHIA_STATE_JUMP_BOOST);
-			break;
-		case SOPHIA_STATE_LOOKING_UP:
-			SetState(SOPHIA_STATE_LOOKED_UP);
+			SetState(SOPHIA_STATE_JUMP_BOOST | (state & (~0x000f)));
+			SetAniByState(this->state);
 			break;
 		default:
 			break;
 		} 
+		// after looking up go to looked up
+		if (state & 0x2000)
+		{
+			SetState(SOPHIA_STATE_LOOKED_UP | (state & (~SOPHIA_STATE_LOOKING_UP)));
+			SetAniByState(this->state);
+		}
 		currentTime %= currentAnimation->GetLoopDuration();
 		previousFrame = 0;
 	}
@@ -151,12 +164,12 @@ void Sophia::SetAnimationType(int ANI)
 
 Sophia::Sophia()
 {
-	SetState(SOPHIA_STATE_IDLE);
+	SetState(-1);
 }
 
 Sophia::Sophia(float x, float y)
 {
-	SetState(SOPHIA_STATE_IDLE);
+	SetState(-1);
 	pos = Point(x, y);
 }
 

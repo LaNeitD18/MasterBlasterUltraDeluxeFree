@@ -30,7 +30,7 @@ enum SophiaAni {
 	SOPHIA_ANI_IDLE					= 1,
 	SOPHIA_ANI_WALKING				= 2,
 	SOPHIA_ANI_JUMPING				= 3,
-	SOPHIA_ANI_JUMP_BOOST				= 4, //Note turning override airborne
+	SOPHIA_ANI_JUMP_BOOST			= 4, //Note turning override airborne
 	SOPHIA_ANI_LANDING				= 5,
 	SOPHIA_ANI_TURNING				= 6,
 	SOPHIA_ANI_LOOKING_UP			= 7,
