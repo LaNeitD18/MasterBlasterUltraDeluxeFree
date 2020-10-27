@@ -78,7 +78,7 @@ int GameMap::GetTileHeight()
 void GameMap::Draw()
 {
 	//LeSon
-	Point trans = Point(GameGlobal::GetWidth() / 2 - mCamera->GetPosition().x,
+	Point trans = Point(GameGlobal::GetWidth() /2 - mCamera->GetPosition().x,
 		GameGlobal::GetHeight() / 2 - mCamera->GetPosition().y);
 
 	for (size_t i = 0; i < mMap->GetNumTileLayers(); i++)
@@ -142,7 +142,7 @@ void GameMap::Draw()
 					sprite->SetWidth(tileWidth);
 					sprite->SetHeight(tileHeight);
 
-					sprite->Draw(position, sourceRECT);
+					sprite->Draw(position, sourceRECT, D3DXCOLOR(255,255,255,255), D3DXVECTOR2(), trans);
 				}
 			}
 		}
