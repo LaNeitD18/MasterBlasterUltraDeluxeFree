@@ -31,8 +31,9 @@ void Worm::Update()
 		pos.x = 0; v.x = -v.x;
 	}
 
-	if (v.x > 0 && pos.x > 290) {
-		pos.x = 290; v.x = -v.x;
+	if (v.x > 0 && pos.x > 800) {
+		pos.x = 800; v.x = -v.x;
+		
 	}
 }
 

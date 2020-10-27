@@ -42,8 +42,8 @@ void SceneArea2SideView::LoadContent()
 
 	// camera setup
 	mCamera = new Camera(Point(GameGlobal::GetWidth(), GameGlobal::GetHeight()));
-	mCamera->SetPosition(GameGlobal::GetWidth() / 2,
-		GameGlobal::GetHeight() / 2);
+	mCamera->SetPosition(mMap->GetWidth() / 2 + GameGlobal::GetWidth() / 2,
+		mMap->GetHeight() / 2 + GameGlobal::GetHeight() / 2 + 16);
 	mMap->SetCamera(mCamera);
 }
 
@@ -495,10 +495,10 @@ void SceneArea2SideView::Update()
 
 void SceneArea2SideView::Render()
 {
-	/*for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();*/
 	// LeSon
 	mMap->Draw();
+	for (int i = 0; i < objects.size(); i++)
+		objects[i]->Render();
 }
 
 /*

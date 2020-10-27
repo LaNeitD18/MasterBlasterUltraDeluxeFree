@@ -116,7 +116,7 @@ int Sprite::GetHeight()
 }
 
 void Sprite::Draw(Point position, RECT sourceRect, D3DXCOLOR colorKey, D3DXVECTOR2 scale, Point translate, float angle,
-	D3DXVECTOR2 rotationCenter)
+	D3DXVECTOR2 rotationCenter, bool isFlipHorizontal)
 {
 	D3DXVECTOR3 inPosition = mPosition;
 	RECT inSourceRect = mSpriteRect;
@@ -125,6 +125,9 @@ void Sprite::Draw(Point position, RECT sourceRect, D3DXCOLOR colorKey, D3DXVECTO
 	D3DXVECTOR2 inTranslation = mTranslation;
 	D3DXVECTOR2 inRotationCenter = mRotationCenter;
 	D3DXVECTOR2 scalingScenter = D3DXVECTOR2(inPosition.x, inPosition.y);
+
+	// lat mat
+	FlipHorizontal(isFlipHorizontal);
 
 	if (position.length() != 0)
 	{
