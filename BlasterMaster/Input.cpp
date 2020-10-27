@@ -21,9 +21,9 @@ RESULT Input::Initialize()
 RESULT Input::Update()
 {
 	for (int i = 0; i < 256; i++)
-		keyboard[i] &= 0xfffd; // (...1)1101
-	for (int i = 0; i < 256; i++)
 		vkeyboard[i] = keyboard[i];
+	for (int i = 0; i < 256; i++)
+		keyboard[i] &= 0xfffd; // (...1)1101
 	mouseFlag &= 0x00ff;
     return exitCode;
 }
@@ -36,7 +36,7 @@ RESULT Input::Release()
 
 int Input::operator [](char x)
 {
-    return keyboard[x];
+    return vkeyboard[x];
 }
 
 Point Input::MouseToScreen()
