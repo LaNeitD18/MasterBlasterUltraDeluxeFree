@@ -98,6 +98,7 @@ Game::Game()
 {
 	input = new Input();
 	input->Initialize();
+	GameGlobal::SetInput(input);
 }
 
 void Game::Render()
@@ -257,7 +258,7 @@ void Game::_ParseSection_SCENES(string line)
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);
 
-	Scene* scene = new SceneArea2Overhead(id, path, this, Point(screen_width, screen_height));
+	Scene* scene = new SceneArea2SideView(id, path, this, Point(screen_width, screen_height));
 	scenes[id] = scene;
 }
 

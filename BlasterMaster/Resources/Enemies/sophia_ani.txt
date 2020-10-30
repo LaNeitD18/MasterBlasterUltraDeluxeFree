@@ -1,0 +1,52 @@
+# ani_id	sprite1_id	frames1	sprite2_id	frames2	...
+
+# sophia left vehicle
+511	10154	1000
+
+# sophia idle 1
+512	10098	2
+
+# sophia walking 1
+513	10098	4	10102	4
+
+# sophia jumping 1
+514	10098	1	10102	1	10098	1	10118	1
+
+# sophia airborne 1
+515	10118	2
+
+# sophia landing 1
+516	10118	2	10098	2	10102	2	10106	2	10102	2	10098	2
+
+# sophia turning 1 * normal - 1 frame - 1 frame flip - normal
+517	10122	2	10110	2	10114	2	10110	2	10112	2	10112	2
+
+# sophia looking up 1
+518	10134	2	10130	2	10126	2
+
+# sophia looked up idle 1
+519	10138	2
+
+# sophia looked up walking
+520	10138	4	10142	4
+
+# sophia jumping looked up 1
+521	10138	2	10142	2	10146	2	10142	2	10138	2	10150	2
+
+# sophia airborne looked up 1
+522	10150	2
+
+# sophia landing looked up 1
+523	10150	2	10138	2	10142	2	10146	2	10142	2	10138	2
+
+# id	ani1	ani2	ani3
+#
+[ANIMATION_SETS]
+# SOPHIA 1
+12	511	512	513	514	515	516	517	518	519	520	521	522	523
+# SOPHIA 2
+13	511	512	513	514	515	516	517	518	519	520	521	522	523
+# SOPHIA 3
+14	511	512	513	514	515	516	517	518	519	520	521	522	523
+# SOPHIA 4
+15	511	512	513	514	515	516	517	518	519	520	521	522	523

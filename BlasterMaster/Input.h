@@ -19,6 +19,11 @@ class Input final : private NonCopyable
         RESULT Release();
 
 		// set virtual because each scene has different key handle (open scene, game over scene, play scene gun hit of overhead and sideview)
+		// Denied. Anyone who needs different key handle handles it in its own file
+		// DO NOT UPDATE PROGRAM STATE BY MESSAGE EVENTS, WHICH MAY BE ACTIVATED AT ANY MOMENT. VERY BUGGY.
+		// Explicitely decide when to check for key states. This class is a buffer between window's messages and the game state.
+		// NAK son
+
 		/** call this to report key down*/
         virtual RESULT keydown(WPARAM, LPARAM);
 		/** call this to report key up*/
@@ -27,8 +32,12 @@ class Input final : private NonCopyable
         virtual RESULT mousechange(WPARAM, LPARAM);
 		/** Get keycode for character x
 			Keycode definition at bottom of file
+			For normal key characters, use uppercase. Ex.  (*input)['A']
+			For other keys use VK_<insert VK key name here>
 		*/
         int operator [](char x);
+		// Call this, son
+		// NAK son
 
 		/** Get mouse location compared to screen. For UI elements.
 			Screen coord is (-1,-1) to (1,1) top left to bottom right.*/

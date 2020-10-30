@@ -10,6 +10,7 @@ int GameGlobal::mScreenHeight = 570;
 LPDIRECT3DDEVICE9 GameGlobal::mDevice = nullptr;
 bool GameGlobal::isGameRunning = true;
 IDirect3DSurface9* GameGlobal::backSurface = nullptr;
+Input* GameGlobal::input = NULL;
 
 GameGlobal::GameGlobal()
 {
@@ -60,6 +61,16 @@ void GameGlobal::SetCurrentSpriteHandler(LPD3DXSPRITE spriteHandler)
 LPD3DXSPRITE GameGlobal::GetCurrentSpriteHandler()
 {
 	return mSpriteHandler;
+}
+
+void GameGlobal::SetInput(Input * input)
+{
+	GameGlobal::input = input;
+}
+
+Input * GameGlobal::GetInput()
+{
+	return GameGlobal::input;
 }
 
 void GameGlobal::SetWidth(int width)

@@ -20,6 +20,7 @@
 #include "Insect.h"
 #include "Orb.h"
 #include "Walker.h"
+#include "Sophia.h"
 
 using namespace std;
 
@@ -91,6 +92,7 @@ SceneArea2SideView::~SceneArea2SideView()
 #define OBJECT_TYPE_INSECT 9
 #define OBJECT_TYPE_ORB 10
 #define OBJECT_TYPE_WALKER 11
+#define OBJECT_TYPE_SOPHIA 12
 
 #define MAX_SCENE_LINE 1024
 
@@ -299,6 +301,9 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_WALKER:
 		obj = new Walker(x, y);
+		break;
+	case OBJECT_TYPE_SOPHIA:
+		obj = new Sophia(x, y);
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);

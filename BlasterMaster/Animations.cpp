@@ -15,6 +15,7 @@ void Animation::Add(int spriteId, SpriteLibrary* spriteLib, DWORD time)
 
 	loopDuration += t;
 	CAnimationFrame* frame = new CAnimationFrame(sprite, loopDuration);
+
 	frames.push_back(frame);
 }
 
@@ -41,6 +42,17 @@ void Animation::Render(Point pos, int& time, int& previousFrame, int alpha)
 	if (frames[previousFrame]->GetEndTime() < time)
 		previousFrame++;
 	frames[previousFrame]->GetSprite()->Draw(pos, RECT(), D3DCOLOR_ARGB(alpha, 255, 255, 255), D3DXVECTOR2(0.25,0.25));
+}
+
+int Animation::RewindFrameTime(int & previousFrame) {
+	if (previousFrame == 0) return 0;
+	if (frames.size() <= previousFrame)
+	{
+		previousFrame = 0;
+		return 0;
+	}
+	previousFrame--;
+	return frames[previousFrame]->GetEndTime();
 }
 
 void AnimationLibrary::Add(int id, Animation* ani)

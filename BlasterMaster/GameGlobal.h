@@ -4,6 +4,7 @@
 #include <d3dx9.h>
 #include <d3d9.h>
 #include <Windows.h>
+#include "Input.h"
 
 class GameGlobal
 {
@@ -19,6 +20,9 @@ public:
 
 	static void SetCurrentSpriteHandler(LPD3DXSPRITE spriteHandler);
 	static LPD3DXSPRITE GetCurrentSpriteHandler();
+
+	static void SetInput(Input* input);
+	static Input* GetInput();
 
 	static void SetCurrentDevice(LPDIRECT3DDEVICE9 device);
 	static LPDIRECT3DDEVICE9 GetCurrentDevice();
@@ -44,6 +48,7 @@ private:
 	static int mWidth, mHeight; //size window standard
 	static int mScreenWidth, mScreenHeight; //size screen
 	static LPDIRECT3DDEVICE9 mDevice; //device directX hiện tại
+	static Input* input;
 };
 
 #endif
