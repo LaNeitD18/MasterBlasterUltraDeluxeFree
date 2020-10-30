@@ -26,6 +26,10 @@ public:
 	static void SetWidth(int width);
 	static int GetWidth();
 
+	int GetScreenWidth();
+
+	int GetScreenHeight();
+
 	static void SetHeight(int height);
 	static int GetHeight();
 
@@ -37,7 +41,8 @@ private:
 	static HINSTANCE mHInstance; //hInstance của windows hiện tại
 	static HWND mHwnd; // hwnd hiện tại
 	static LPD3DXSPRITE mSpriteHandler; //spriteHanlder hiện tại
-	static int mWidth, mHeight; //size của cửa sổ
+	static int mWidth, mHeight; //size window standard
+	static int mScreenWidth, mScreenHeight; //size screen
 	static LPDIRECT3DDEVICE9 mDevice; //device directX hiện tại
 };
 

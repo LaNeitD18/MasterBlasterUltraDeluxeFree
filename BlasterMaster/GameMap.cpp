@@ -143,6 +143,7 @@ void GameMap::Draw()
 					sprite->SetHeight(tileHeight);
 
 					sprite->Draw(position, sourceRECT, D3DXCOLOR(255,255,255,255), D3DXVECTOR2(), trans);
+					
 				}
 			}
 		}
@@ -158,4 +159,34 @@ void GameMap::Release()
 void GameMap::SetCamera(Camera * camera)
 {
 	this->mCamera = camera;
+}
+
+bool GameMap::IsBoundLeft()
+{
+	return (mCamera->GetBound().left == 0);
+}
+
+bool GameMap::IsBoundRight()
+{
+	return (mCamera->GetBound().right == this->GetWidth());
+}
+
+bool GameMap::IsBoundTop()
+{
+	return (mCamera->GetBound().top == 0);
+}
+
+bool GameMap::IsBoundBottom()
+{
+	return (mCamera->GetBound().bottom == this->GetHeight());
+}
+
+RECT GameMap::GetWorldMapBound()
+{
+	RECT bound;
+	bound.left = bound.top = 0;
+	bound.right = mMap->GetWidth() * mMap->GetTileWidth();
+	bound.bottom = mMap->GetHeight() * mMap->GetTileHeight();
+
+	return bound;
 }
