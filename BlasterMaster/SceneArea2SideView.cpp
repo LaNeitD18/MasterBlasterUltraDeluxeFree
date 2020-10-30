@@ -43,7 +43,7 @@ void SceneArea2SideView::LoadContent()
 	// camera setup
 	mCamera = new Camera(Point(GameGlobal::GetWidth(), GameGlobal::GetHeight()));
 	mCamera->SetPosition(mMap->GetWidth() / 2 + GameGlobal::GetWidth() / 2,
-		mMap->GetHeight() / 2 + GameGlobal::GetHeight() / 2 + 8);
+		mMap->GetHeight() / 2 + GameGlobal::GetHeight() / 2 + 16);
 	
 	mMap->SetCamera(mCamera);
 	//mMap->Draw();

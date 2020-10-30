@@ -43,7 +43,7 @@ void SceneArea2Overhead::LoadContent()
 	// camera setup
 	mCamera = new Camera(Point(GameGlobal::GetWidth(), GameGlobal::GetHeight()));
 	mCamera->SetPosition(GameGlobal::GetWidth() / 2,
-		mMap->GetHeight() - GameGlobal::GetHeight() / 2 + 32);
+		mMap->GetHeight() - GameGlobal::GetHeight() / 2 + 36);
 
 	mMap->SetCamera(mCamera);
 	//mMap->Draw();
