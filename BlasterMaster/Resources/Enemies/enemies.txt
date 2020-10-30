@@ -1,6 +1,6 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
-1	Resources\sprites\worm_r76.png			255	255	255
+1	Resources\sprites\worm_76_44.png		255	255	255
 2	Resources\sprites\jumper_68_104.png		255	255	255
 3	Resources\sprites\teleporter_104_136.png	255	255	255
 4	Resources\sprites\cannon_109_108.png		255	255	255

@@ -26,9 +26,9 @@ public:
 	static void SetWidth(int width);
 	static int GetWidth();
 
-	int GetScreenWidth();
+	static int GetScreenWidth();
 
-	int GetScreenHeight();
+	static int GetScreenHeight();
 
 	static void SetHeight(int height);
 	static int GetHeight();

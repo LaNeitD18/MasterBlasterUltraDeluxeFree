@@ -80,6 +80,7 @@ void GameMap::Draw()
 	//LeSon
 	Point trans = Point(GameGlobal::GetWidth() /2 - mCamera->GetPosition().x,
 		GameGlobal::GetHeight() / 2 - mCamera->GetPosition().y);
+	//Point trans = Point(-1024,-1024);
 
 	for (size_t i = 0; i < mMap->GetNumTileLayers(); i++)
 	{
