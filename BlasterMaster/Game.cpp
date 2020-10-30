@@ -8,6 +8,7 @@
 #include "useful_stuff.h"
 
 #include "SceneArea2SideView.h"
+#include "SceneArea2Overhead.h"
 
 Game * Game::__instance = NULL;
 
@@ -256,7 +257,7 @@ void Game::_ParseSection_SCENES(string line)
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);
 
-	Scene* scene = new SceneArea2SideView(id, path, this, Point(screen_width, screen_height));
+	Scene* scene = new SceneArea2Overhead(id, path, this, Point(screen_width, screen_height));
 	scenes[id] = scene;
 }
 

@@ -65,6 +65,7 @@
     <ClInclude Include="MapSegment.h" />
     <ClInclude Include="Mine.h" />
     <ClInclude Include="Orb.h" />
+    <ClInclude Include="SceneArea2Overhead.h" />
     <ClInclude Include="SceneArea2SideView.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Scene.h" />
@@ -119,6 +120,7 @@
     <ClCompile Include="MapSegment.cpp" />
     <ClCompile Include="Mine.cpp" />
     <ClCompile Include="Orb.cpp" />
+    <ClCompile Include="SceneArea2Overhead.cpp" />
     <ClCompile Include="SceneArea2SideView.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Scene.cpp" />
