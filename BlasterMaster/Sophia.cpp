@@ -83,7 +83,7 @@ void Sophia::Update()
 	pos += dx();
 
 	// psuedo gravity
-	if (pos.y < 500)
+	if (pos.y < 800)
 		if (v.y >= SOPHIA_EPSILON_THRESHOLD)
 			v.y *= 1.1;
 		else if (v.y <= -SOPHIA_EPSILON_THRESHOLD)

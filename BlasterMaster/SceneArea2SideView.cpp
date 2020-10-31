@@ -39,12 +39,15 @@ SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Poi
 
 void SceneArea2SideView::LoadContent()
 {
-	mMap = new GameMap("Map/General/level2-side-tiless.tmx", textureLib, spriteLib);
+	mMap = new GameMap("Map/General/level2-side-maporder.tmx", textureLib, spriteLib);
 
 	// camera setup
 	mCamera = new Camera(Point(GameGlobal::GetWidth(), GameGlobal::GetHeight()));
-	mCamera->SetPosition(mMap->GetWidth() / 2 + GameGlobal::GetWidth() / 2,
-		mMap->GetHeight() / 2 + GameGlobal::GetHeight() / 2 + 16);
+	/*mCamera->SetPosition(mMap->GetWidth() / 2 + GameGlobal::GetWidth() / 2,
+		mMap->GetHeight() / 2 + GameGlobal::GetHeight() / 2 + 16);*/
+
+	mCamera->SetPosition(GameGlobal::GetWidth() / 2,
+		mMap->GetHeight() - GameGlobal::GetHeight() / 2 + 32);
 	
 	mMap->SetCamera(mCamera);
 	//mMap->Draw();
@@ -193,6 +196,7 @@ void SceneArea2SideView::_ParseSection_ANIMATIONS(string animationPath)
 			}
 
 			animationLib->Add(ani_id, ani);
+			//displayMessage(animationLib->Get(ani_id)->GetLoopDuration());
 		}
 		else
 		{
@@ -441,7 +445,7 @@ void SceneArea2SideView::Init()
 
 	f.close();
 
-	textureLib->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+	textureLib->Add(ID_TEX_BBOX, L"Resources\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	//// NAK son
 	//// NAK tien
@@ -457,6 +461,7 @@ void SceneArea2SideView::Init()
 	//}
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
+	//displayMessage("yeah");
 }
 
 void SceneArea2SideView::Update()
@@ -464,27 +469,31 @@ void SceneArea2SideView::Update()
 	input->Update();
 	if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
 	{
-		if (mCamera->GetPosition().x - mCamera->GetWidth() / 2 <= 0) return; // LeSon
+		if (mCamera->GetPosition().x - mCamera->GetWidth() / 2 <= 0) {
+			return;
+		} // LeSon
 		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-		mCamera->SetPosition(mCamera->GetPosition() + Point(-16, 0));
+		mCamera->SetPosition(mCamera->GetPosition() + Point(-8, 0));
 	}
 	if ((*input)[VK_RIGHT] & KEY_STATE_DOWN)
 	{
-		if (mCamera->GetPosition().x + mCamera->GetWidth() / 2 >= mMap->GetWidth() + 8) return; // LeSon
+		if (mCamera->GetPosition().x + mCamera->GetWidth() / 2 >= mMap->GetWidth() + 8) {
+			return;
+		}// LeSon
 		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-		mCamera->SetPosition(mCamera->GetPosition() + Point(16, 0));
+		mCamera->SetPosition(mCamera->GetPosition() + Point(8, 0));
 	}
 	if ((*input)[VK_UP] & KEY_STATE_DOWN)
 	{
 		if (mCamera->GetPosition().y - mCamera->GetHeight() / 2 <= 0) return; // LeSon
 		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-		mCamera->SetPosition(mCamera->GetPosition() + Point(0, -16));
+		mCamera->SetPosition(mCamera->GetPosition() + Point(0, -8));
 	}
 	if ((*input)[VK_DOWN] & KEY_STATE_DOWN)
 	{
-		if (mCamera->GetPosition().y + mCamera->GetHeight() / 2 >= mMap->GetHeight() +32) return; // LeSon
+		if (mCamera->GetPosition().y + mCamera->GetHeight() / 2 >= mMap->GetHeight() + 32) return; // LeSon
 		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-		mCamera->SetPosition(mCamera->GetPosition() + Point(0, 16));
+		mCamera->SetPosition(mCamera->GetPosition() + Point(0, 8));
 	}
 
 	for (size_t i = 0; i < objects.size(); i++)
@@ -519,11 +528,13 @@ void SceneArea2SideView::Release()
 
 	objects.clear();
 
-	mMap->Release();
+	// map release sucks hihi
+	//mMap->Release();
 
-	textureLib->Clear();
+	// LeSon: maybe cannot do this, have to clear in SwitchScene for Game.cpp, discuss again hihi 
+	/*textureLib->Clear();
 	spriteLib->Clear();
-	animationLib->Clear();
+	animationLib->Clear();*/
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

@@ -30,6 +30,7 @@ void GameMap::LoadMap(const char* filePath, TextureLibrary* texLib, SpriteLibrar
 		std::string tileSetPathStr = tileset->GetImage()->GetSource();
 		std::wstring tileSetPathWstr = std::wstring(tileSetPathStr.begin(), tileSetPathStr.end());
 
+		// map sideview 
 		texLib->Add(SIDEVIEW_TILE_SET_ID, tileSetPathWstr.c_str(), NULL);
 		spriteLib->Add(SIDEVIEW_TILE_SET_ID, r, texLib->Get(SIDEVIEW_TILE_SET_ID));
 

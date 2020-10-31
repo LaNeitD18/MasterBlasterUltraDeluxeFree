@@ -436,7 +436,7 @@ void SceneArea2Overhead::Init()
 
 	f.close();
 
-	textureLib->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+	textureLib->Add(ID_TEX_BBOX, L"Resources\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	//// NAK son
 	//// NAK tien
@@ -514,11 +514,11 @@ void SceneArea2Overhead::Release()
 
 	objects.clear();
 
-	mMap->Release();
+	//mMap->Release();
 
-	textureLib->Clear();
+	/*textureLib->Clear();
 	spriteLib->Clear();
-	animationLib->Clear();
+	animationLib->Clear();*/
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
