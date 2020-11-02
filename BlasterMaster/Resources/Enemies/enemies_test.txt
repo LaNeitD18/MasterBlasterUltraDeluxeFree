@@ -14,7 +14,6 @@
 12	Resources\sprites\Jason_SideView.png		255	255	255
 13	Resources\sprites\Jason_Overhead.png		255	255	255
 14	Resources\sprites\Sophia.png			255	255	255
--1	Resources\sprites\level2-side-maporder		255	255	255
 # next sprite: 10155
 
 [SPRITES]
@@ -91,34 +90,3 @@ Resources\Enemies\sophia_ani.txt
 
 # WORM
 1	18	18	1
-
-# JUMPER
-2	18	88	2
-
-# TELEPORTER
-3	700	500	3
-
-# CANNON
-4	700	100	4
-
-# DOME
-5	700	200	5
-
-# EYE
-6	520	450	6
-
-# MINE
-7	600	200	7
-
-# FLOATER
-8	600	300	8
-
-# INSECT
-9	300	300	9
-
-# ORB
-10	700	300	10
-10	500	300	11
-
-# SOPHIA
-12	500	500	12

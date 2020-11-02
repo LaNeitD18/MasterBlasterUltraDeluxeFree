@@ -3,3 +3,4 @@ start	1
 #scene list
 [SCENES]
 1	Resources\Enemies\enemies.txt
+2	Resources\Enemies\enemies_test.txt
