@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "SceneArea2SideView.h"
+#include "SceneArea2Overhead.h"
 #include "Utils.h"
 #include "Textures.h"
 #include "Sprites.h"
@@ -20,11 +20,10 @@
 #include "Insect.h"
 #include "Orb.h"
 #include "Walker.h"
-#include "Sophia.h"
 
 using namespace std;
 
-SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath)
+SceneArea2Overhead::SceneArea2Overhead(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath)
 {
 	this->input = game->GetInput();
 	textureLib = new TextureLibrary(game);
@@ -37,24 +36,21 @@ SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Poi
 	this->screenSize = screenSize;
 }
 
-void SceneArea2SideView::LoadContent()
+void SceneArea2Overhead::LoadContent()
 {
-	mMap = new GameMap("Map/General/level2-side-maporder.tmx", textureLib, spriteLib);
+	mMap = new GameMap("Map/General/level2-over-tiless.tmx", textureLib, spriteLib);
 
 	// camera setup
 	mCamera = new Camera(Point(GameGlobal::GetWidth(), GameGlobal::GetHeight()));
-	/*mCamera->SetPosition(mMap->GetWidth() / 2 + GameGlobal::GetWidth() / 2,
-		mMap->GetHeight() / 2 + GameGlobal::GetHeight() / 2 + 16);*/
-
 	mCamera->SetPosition(GameGlobal::GetWidth() / 2,
-		mMap->GetHeight() - GameGlobal::GetHeight() / 2 + 32);
-	
+		mMap->GetHeight() - GameGlobal::GetHeight() / 2 + 36);
+
 	mMap->SetCamera(mCamera);
 	//mMap->Draw();
-	
+
 }
 
-SceneArea2SideView::~SceneArea2SideView()
+SceneArea2Overhead::~SceneArea2Overhead()
 {
 	for (int i = 0; i < objects.size(); i++)
 		delete objects[i];
@@ -95,11 +91,10 @@ SceneArea2SideView::~SceneArea2SideView()
 #define OBJECT_TYPE_INSECT 9
 #define OBJECT_TYPE_ORB 10
 #define OBJECT_TYPE_WALKER 11
-#define OBJECT_TYPE_SOPHIA 12
 
 #define MAX_SCENE_LINE 1024
 
-void SceneArea2SideView::_ParseSection_TEXTURES(string line)
+void SceneArea2Overhead::_ParseSection_TEXTURES(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -115,7 +110,7 @@ void SceneArea2SideView::_ParseSection_TEXTURES(string line)
 	textureLib->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
 }
 
-void SceneArea2SideView::_ParseSection_SPRITES(string spritePath)
+void SceneArea2Overhead::_ParseSection_SPRITES(string spritePath)
 {
 	ifstream f;
 	f.open(spritePath);
@@ -156,7 +151,7 @@ void SceneArea2SideView::_ParseSection_SPRITES(string spritePath)
 	f.close();
 }
 
-void SceneArea2SideView::_ParseSection_ANIMATIONS(string animationPath)
+void SceneArea2Overhead::_ParseSection_ANIMATIONS(string animationPath)
 {
 	ifstream f;
 	f.open(animationPath);
@@ -196,7 +191,6 @@ void SceneArea2SideView::_ParseSection_ANIMATIONS(string animationPath)
 			}
 
 			animationLib->Add(ani_id, ani);
-			//displayMessage(animationLib->Get(ani_id)->GetLoopDuration());
 		}
 		else
 		{
@@ -207,7 +201,7 @@ void SceneArea2SideView::_ParseSection_ANIMATIONS(string animationPath)
 	f.close();
 }
 
-void SceneArea2SideView::_ParseSection_ANIMATION_SETS(string line)
+void SceneArea2Overhead::_ParseSection_ANIMATION_SETS(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -230,9 +224,9 @@ void SceneArea2SideView::_ParseSection_ANIMATION_SETS(string line)
 }
 
 /*
-	Parse a line in section [OBJECTS] 
+	Parse a line in section [OBJECTS]
 */
-void SceneArea2SideView::_ParseSection_OBJECTS(string line)
+void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -252,13 +246,13 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 		/*case OBJECT_TYPE_MARIO:
-			if (player!=NULL) 
+			if (player!=NULL)
 			{
 				DebugOut(L"[ERROR] MARIO object was created before!\n");
 				return;
 			}
-			obj = new CMario(x,y); 
-			player = (CMario*)obj;  
+			obj = new CMario(x,y);
+			player = (CMario*)obj;
 
 			DebugOut(L"[INFO] Player object created!\n");
 			break;
@@ -266,7 +260,7 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 		case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
 		case OBJECT_TYPE_PORTAL:
-			{	
+			{
 				float r = atof(tokens[4].c_str());
 				float b = atof(tokens[5].c_str());
 				int scene_id = atoi(tokens[6].c_str());
@@ -306,9 +300,6 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_WALKER:
 		obj = new Walker(x, y);
 		break;
-	case OBJECT_TYPE_SOPHIA:
-		obj = new Sophia(x, y);
-		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -320,7 +311,7 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	objects.push_back(obj);
 }
 //
-//void SceneArea2SideView::_ParseSection_MAP(string line, vector<tuple<int, int, int, int, int>> &mapNav)
+//void SceneArea2Overhead::_ParseSection_MAP(string line, vector<tuple<int, int, int, int, int>> &mapNav)
 //{
 //	unordered_map<int, MapSegment *> tempMap;
 //	vector<string> tokens = split(line);
@@ -362,7 +353,7 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 //	map[id] = mapSeg;
 //}
 
-void SceneArea2SideView::Init()
+void SceneArea2Overhead::Init()
 {
 	//vector<tuple<int, int, int, int, int>> mapNav;
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
@@ -461,40 +452,35 @@ void SceneArea2SideView::Init()
 	//}
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
-	//displayMessage("yeah");
 }
 
-void SceneArea2SideView::Update()
+void SceneArea2Overhead::Update()
 {
 	input->Update();
-	//if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
-	//{
-	//	if (mCamera->GetPosition().x - mCamera->GetWidth() / 2 <= 0) {
-	//		return;
-	//	} // LeSon
-	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-	//	mCamera->SetPosition(mCamera->GetPosition() + Point(-8, 0));
-	//}
-	//if ((*input)[VK_RIGHT] & KEY_STATE_DOWN)
-	//{
-	//	if (mCamera->GetPosition().x + mCamera->GetWidth() / 2 >= mMap->GetWidth() + 8) {
-	//		return;
-	//	}// LeSon
-	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-	//	mCamera->SetPosition(mCamera->GetPosition() + Point(8, 0));
-	//}
-	//if ((*input)[VK_UP] & KEY_STATE_DOWN)
-	//{
-	//	if (mCamera->GetPosition().y - mCamera->GetHeight() / 2 <= 0) return; // LeSon
-	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-	//	mCamera->SetPosition(mCamera->GetPosition() + Point(0, -8));
-	//}
-	//if ((*input)[VK_DOWN] & KEY_STATE_DOWN)
-	//{
-	//	if (mCamera->GetPosition().y + mCamera->GetHeight() / 2 >= mMap->GetHeight() + 32) return; // LeSon
-	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-	//	mCamera->SetPosition(mCamera->GetPosition() + Point(0, 8));
-	//}
+	if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
+	{
+		if (mCamera->GetPosition().x - mCamera->GetWidth() / 2 <= 0) return; // LeSon
+		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
+		mCamera->SetPosition(mCamera->GetPosition() + Point(-16, 0));
+	}
+	if ((*input)[VK_RIGHT] & KEY_STATE_DOWN)
+	{
+		if (mCamera->GetPosition().x + mCamera->GetWidth() / 2 >= mMap->GetWidth() + 8) return; // LeSon
+		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
+		mCamera->SetPosition(mCamera->GetPosition() + Point(16, 0));
+	}
+	if ((*input)[VK_UP] & KEY_STATE_DOWN)
+	{
+		if (mCamera->GetPosition().y - mCamera->GetHeight() / 2 <= 0) return; // LeSon
+		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
+		mCamera->SetPosition(mCamera->GetPosition() + Point(0, -16));
+	}
+	if ((*input)[VK_DOWN] & KEY_STATE_DOWN)
+	{
+		if (mCamera->GetPosition().y + mCamera->GetHeight() / 2 >= mMap->GetHeight() + 32) return; // LeSon
+		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
+		mCamera->SetPosition(mCamera->GetPosition() + Point(0, 16));
+	}
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -510,7 +496,7 @@ void SceneArea2SideView::Update()
 	game->SetCamPos(pos);
 }
 
-void SceneArea2SideView::Render()
+void SceneArea2Overhead::Render()
 {
 	// LeSon
 	mMap->Draw();
@@ -521,20 +507,18 @@ void SceneArea2SideView::Render()
 /*
 	Unload current scene
 */
-void SceneArea2SideView::Release()
+void SceneArea2Overhead::Release()
 {
 	for (int i = 0; i < objects.size(); i++)
 		delete objects[i];
 
 	objects.clear();
 
-	// map release sucks hihi
-	mMap->Release();
+	//mMap->Release();
 
-	// LeSon: maybe cannot do this, have to clear in SwitchScene for Game.cpp, discuss again hihi 
-	textureLib->Clear();
+	/*textureLib->Clear();
 	spriteLib->Clear();
-	animationLib->Clear();
+	animationLib->Clear();*/
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

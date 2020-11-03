@@ -3,8 +3,10 @@
 HINSTANCE GameGlobal::mHInstance = NULL;
 HWND GameGlobal::mHwnd = NULL;
 LPD3DXSPRITE GameGlobal::mSpriteHandler = NULL;
-int GameGlobal::mWidth = 1200;
-int GameGlobal::mHeight = 960;
+int GameGlobal::mWidth = 270;
+int GameGlobal::mHeight = 280;
+int GameGlobal::mScreenWidth = 950;
+int GameGlobal::mScreenHeight = 570;
 LPDIRECT3DDEVICE9 GameGlobal::mDevice = nullptr;
 bool GameGlobal::isGameRunning = true;
 IDirect3DSurface9* GameGlobal::backSurface = nullptr;
@@ -79,6 +81,16 @@ void GameGlobal::SetWidth(int width)
 int GameGlobal::GetWidth()
 {
 	return mWidth;
+}
+
+int GameGlobal::GetScreenWidth()
+{
+	return mScreenWidth;
+}
+
+int GameGlobal::GetScreenHeight()
+{
+	return mScreenHeight;
 }
 
 void GameGlobal::SetHeight(int height)

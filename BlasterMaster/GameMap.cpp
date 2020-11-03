@@ -30,6 +30,7 @@ void GameMap::LoadMap(const char* filePath, TextureLibrary* texLib, SpriteLibrar
 		std::string tileSetPathStr = tileset->GetImage()->GetSource();
 		std::wstring tileSetPathWstr = std::wstring(tileSetPathStr.begin(), tileSetPathStr.end());
 
+		// map sideview 
 		texLib->Add(SIDEVIEW_TILE_SET_ID, tileSetPathWstr.c_str(), NULL);
 		spriteLib->Add(SIDEVIEW_TILE_SET_ID, r, texLib->Get(SIDEVIEW_TILE_SET_ID));
 
@@ -78,8 +79,9 @@ int GameMap::GetTileHeight()
 void GameMap::Draw()
 {
 	//LeSon
-	Point trans = Point(GameGlobal::GetWidth() / 2 - mCamera->GetPosition().x,
+	Point trans = Point(GameGlobal::GetWidth() /2 - mCamera->GetPosition().x,
 		GameGlobal::GetHeight() / 2 - mCamera->GetPosition().y);
+	//Point trans = Point(-1024,-1024);
 
 	for (size_t i = 0; i < mMap->GetNumTileLayers(); i++)
 	{
@@ -95,9 +97,14 @@ void GameMap::Draw()
 		int tileWidth = mMap->GetTileWidth();
 		int tileHeight = mMap->GetTileHeight();
 
-		for (size_t m = 0; m < layer->GetHeight(); m++)
+		int centertileX = mCamera->GetPosition().x / tileWidth;
+		int centertileY = mCamera->GetPosition().y / tileHeight;
+		
+		for (size_t m = max(0,centertileY-10); m < min(centertileY+10,layer->GetHeight()); m++)
+		//for (size_t m = 0; m < layer->GetHeight(); m++)
 		{
-			for (size_t n = 0; n < layer->GetWidth(); n++)
+			for (size_t n = max(0, centertileX - 10); n < min(centertileX + 10, layer->GetHeight()); n++)
+			//for (size_t n = 0; n < layer->GetWidth(); n++)
 			{
 				int tilesetIndex = layer->GetTileTilesetIndex(n, m);
 
@@ -142,7 +149,8 @@ void GameMap::Draw()
 					sprite->SetWidth(tileWidth);
 					sprite->SetHeight(tileHeight);
 
-					sprite->Draw(position, sourceRECT);
+					sprite->Draw(position, sourceRECT, D3DXCOLOR(255,255,255,255), D3DXVECTOR2(), trans);
+					
 				}
 			}
 		}
@@ -158,4 +166,34 @@ void GameMap::Release()
 void GameMap::SetCamera(Camera * camera)
 {
 	this->mCamera = camera;
+}
+
+bool GameMap::IsBoundLeft()
+{
+	return (mCamera->GetBound().left == 0);
+}
+
+bool GameMap::IsBoundRight()
+{
+	return (mCamera->GetBound().right == this->GetWidth());
+}
+
+bool GameMap::IsBoundTop()
+{
+	return (mCamera->GetBound().top == 0);
+}
+
+bool GameMap::IsBoundBottom()
+{
+	return (mCamera->GetBound().bottom == this->GetHeight());
+}
+
+RECT GameMap::GetWorldMapBound()
+{
+	RECT bound;
+	bound.left = bound.top = 0;
+	bound.right = mMap->GetWidth() * mMap->GetTileWidth();
+	bound.bottom = mMap->GetHeight() * mMap->GetTileHeight();
+
+	return bound;
 }

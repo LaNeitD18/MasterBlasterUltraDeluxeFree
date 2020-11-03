@@ -22,10 +22,18 @@ public:
 	int GetTileWidth();
 	int GetTileHeight();
 
+	// co can ham update trong map khong
+
 	void Draw();
 	void Release();
 
 	void SetCamera(Camera *camera);
+
+	bool IsBoundLeft(); //kiem tra luc nay Camera o vi bien ben trai so voi WorldMap
+	bool IsBoundRight(); // tuong tu
+	bool IsBoundTop(); // tuong tu
+	bool IsBoundBottom(); // tuong tu
+	RECT GetWorldMapBound(); // lay bien game
 
 	~GameMap();
 

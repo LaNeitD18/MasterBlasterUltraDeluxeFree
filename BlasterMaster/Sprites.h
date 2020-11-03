@@ -15,8 +15,8 @@ public:
 	
 	//void Draw(Point pos, int alpha = 255);
 	void Draw(Point position = Point(), RECT sourceRect = RECT(), D3DXCOLOR colorKey = D3DCOLOR_ARGB(255, 255, 255, 255), 
-		D3DXVECTOR2 scale = D3DXVECTOR2(), D3DXVECTOR2 transform = D3DXVECTOR2(), float angle = 0, 
-		D3DXVECTOR2 rotationCenter = D3DXVECTOR2());
+		D3DXVECTOR2 scale = D3DXVECTOR2(), Point translate = Point(), float angle = 0, 
+		D3DXVECTOR2 rotationCenter = D3DXVECTOR2(), bool isFlipHorizontal = false);
 
 	LPDIRECT3DTEXTURE9 GetTexture();
 

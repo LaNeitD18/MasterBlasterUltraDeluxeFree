@@ -32,7 +32,7 @@
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
 
-#define MAX_FRAME_RATE 120
+#define MAX_FRAME_RATE 240
 
 Game *game;
 
@@ -141,19 +141,19 @@ int Run()
 
 		// dt: the time between (beginning of last frame) and now
 		// this frame: the frame we are about to render
-		DWORD dt = now - frameStart;
+		//DWORD dt = now - frameStart;
 
-		if (dt >= tickPerFrame)
-		{
+		//if (dt >= tickPerFrame -2)
+		//{
 			frameStart = now;
-			
+
 			// Update Input before everything
 			game->GetInput()->Update();
 			game->GetCurrentScene()->Update();
 			game->Render();
-		}
-		else
-			Sleep(tickPerFrame - dt);	
+		//}
+		//else
+			//Sleep(tickPerFrame - dt);	
 	}
 
 	return 1;

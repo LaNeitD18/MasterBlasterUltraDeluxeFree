@@ -65,7 +65,7 @@ protected:
 	bool moving = true;
 public:
 	virtual void Render();
-	virtual void SetAnimationType(int ANI);
+	void SetAnimationType(int ANI);
 };
 
 class Enemy : public AnimatedGameObject 
