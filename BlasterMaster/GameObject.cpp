@@ -44,14 +44,14 @@ GameObject::~GameObject()
 
 void AnimatedGameObject::Render()
 {
-	currentAnimation->Render(pos, currentTime, previousFrame);
+	currentAnimation->Render(pos, currentTime, currentFrame);
 	if (!moving)
 		return;
 	currentTime++;
 	if (currentTime >= currentAnimation->GetLoopDuration())
 	{
 		currentTime %= currentAnimation->GetLoopDuration();
-		previousFrame = 0;
+		currentFrame = 0;
 	}
 }
 
@@ -61,7 +61,7 @@ void AnimatedGameObject::SetAnimationType(int ANI)
 	if (currentAnimation != trg)
 	{
 		currentAnimation = trg;
-		previousFrame = 0;
+		currentFrame = 0;
 		currentTime = 0;
 	}
 }

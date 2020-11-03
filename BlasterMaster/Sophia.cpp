@@ -8,14 +8,15 @@ void Sophia::GetBoundingBox(BoundingBox & bbox)
 
 void Sophia::Update()
 {
+	/*
 	int prevState = state;
 	if (state == SOPHIA_STATE_LEFT_VEHICLE)
 		return;
 	Input& input = *GameGlobal::GetInput();
 	bool stateAvailable = true;
 
-	int flags = 0;
-	
+	int flags = SOPHIA_STATE_LOOKING_LEFT & state;
+
 	bool lookedUp;
 	if (state & SOPHIA_STATE_LOOKED_UP)
 		lookedUp = input[VK_UP] & KEY_STATE_DOWN;
@@ -26,18 +27,33 @@ void Sophia::Update()
 	if (pos.y < 500)
 		flags |= SOPHIA_STATE_AIRBORNE;
 
-	// Landing cannot be interrupted by moving, jumping, and looking up
-	// It must finish its animation
-	if ((state & 0x000f) == SOPHIA_STATE_LANDING) {
-		if (stateAvailable)
-			SetState(SOPHIA_STATE_LANDING | flags);
-		stateAvailable = false;
+	// If sophia is looking left but key press right not left
+	if ((state & SOPHIA_STATE_TURNING) ||
+		((state & SOPHIA_STATE_LOOKING_LEFT)
+		&& (input[VK_RIGHT] & KEY_STATE_DOWN)
+		&& (!(input[VK_LEFT] & KEY_STATE_DOWN))) ||
+		// If sophia is looking right but key press left not right
+		(!(state & SOPHIA_STATE_LOOKING_LEFT)
+		&& (input[VK_LEFT] & KEY_STATE_DOWN)
+		&& (!(input[VK_RIGHT] & KEY_STATE_DOWN))))
+	{
+		flags |= SOPHIA_STATE_TURNING;
 	}
 
 	// Looking up can interrupt jumping and moving
 	if ((input[VK_UP] & KEY_STATE_DOWN) && !lookedUp)
 	{
 		flags |= SOPHIA_STATE_LOOKING_UP;
+	}
+
+	flags |= SOPHIA_STATE_LOOKING_LEFT & state;
+
+	// Landing cannot be interrupted by moving, jumping, and looking up
+	// It must finish its animation
+	if ((state & 0x000f) == SOPHIA_STATE_LANDING) {
+		if (stateAvailable)
+			SetState(SOPHIA_STATE_LANDING | flags);
+		stateAvailable = false;
 	}
 
 	// Jumping can interrupt jump boost
@@ -55,7 +71,7 @@ void Sophia::Update()
 			{
 				SetState(SOPHIA_STATE_JUMP_BOOST | flags);
 				jumpBoostRemaining *= 0.9;
-				v.y = -SOPHIA_JUMP_BOOST_AMOUNT;
+				v.y = -SOPHIA_JUMP_POWER;
 			}
 			else
 				SetState(SOPHIA_STATE_IDLE | flags);
@@ -72,8 +88,9 @@ void Sophia::Update()
 			jumpBoostRemaining = SOPHIA_JUMP_BOOST_AMOUNT;
 			stateAvailable = false;
 		}
-	
-	if (input[VK_LEFT] & KEY_STATE_DOWN)
+	if ((input[VK_LEFT] & KEY_STATE_DOWN) && (input[VK_RIGHT] & KEY_STATE_DOWN))
+		v.x = 0;
+	else if (input[VK_LEFT] & KEY_STATE_DOWN)
 		v.x = -SOPHIA_WALKING_SPEED;
 	else if (input[VK_RIGHT] & KEY_STATE_DOWN)
 		v.x = SOPHIA_WALKING_SPEED;
@@ -100,28 +117,39 @@ void Sophia::Update()
 		stateAvailable = false;
 	}
 
-	if (v.length() == 0)
-	{
-		if (stateAvailable)
-			SetState(SOPHIA_STATE_IDLE | flags);
-		stateAvailable = false;
-	}
-	else if (pos.y == 500 && v.y == 0)
+	if (pos.y == 500 && v.y == 0 && v.x != 0)
 	{
 		if (stateAvailable)
 			SetState(SOPHIA_STATE_WALKING | flags);
 		stateAvailable = false;
 	}
+
+	if (stateAvailable)
+		SetState(SOPHIA_STATE_IDLE | flags);
+	stateAvailable = false;
 	
 	if (prevState != state)
 		SetAniByState(state);
+	//*/
+	
 }
 
 void Sophia::Render()
 {
-	currentAnimation->Render(pos, currentTime, previousFrame);
+	/*
+	int previousFrame = currentFrame;
+	currentAnimation->Render(pos, currentTime, currentFrame);
 	if (!moving)
 		return;
+	if (currentAnimation == animationSet->at(SOPHIA_ANI_TURNING) &&
+		previousFrame != currentFrame) {
+		// DEPEND ON SPRITE 
+		SetState(state ^ SOPHIA_STATE_LOOKING_LEFT);
+		SetState(state & (~SOPHIA_STATE_TURNING));
+		// TODO: Flip the sprite
+		currentTime -= 2;
+		currentFrame--;
+	}
 	currentTime++;
 	if (currentTime >= currentAnimation->GetLoopDuration())
 	{
@@ -147,8 +175,9 @@ void Sophia::Render()
 			SetAniByState(this->state);
 		}
 		currentTime %= currentAnimation->GetLoopDuration();
-		previousFrame = 0;
+		currentFrame = 0;
 	}
+	//*/
 }
 
 void Sophia::SetAnimationType(int ANI)
@@ -156,9 +185,13 @@ void Sophia::SetAnimationType(int ANI)
 	Animation* trg = animationSet->at(ANI);
 	if (currentAnimation != trg)
 	{
-		currentAnimation = trg;
+		int previousFrame = currentFrame;
+		
 		// this is definitely spaghetti code
-		currentTime = currentAnimation->RewindFrameTime(previousFrame);
+		if (ANI != SOPHIA_ANI_TURNING)
+			currentTime = trg->RewindFrameTime(currentFrame, currentAnimation, previousFrame);
+
+		currentAnimation = trg;
 	}
 }
 
