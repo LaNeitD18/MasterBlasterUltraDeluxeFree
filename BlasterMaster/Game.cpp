@@ -307,7 +307,7 @@ void Game::SwitchScene(int scene_id)
 	DebugOut(L"[INFO] Ala %d\n", scenes[current_scene]);
 	
 	// map release sucks, must be fixed to switch properly hihi
-	scenes[current_scene]->Release();
+	//scenes[current_scene]->Release();
 	
 	current_scene = scene_id;
 	Scene* s = scenes[scene_id];

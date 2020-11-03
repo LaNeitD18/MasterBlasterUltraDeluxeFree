@@ -97,9 +97,14 @@ void GameMap::Draw()
 		int tileWidth = mMap->GetTileWidth();
 		int tileHeight = mMap->GetTileHeight();
 
-		for (size_t m = 0; m < layer->GetHeight(); m++)
+		int centertileX = mCamera->GetPosition().x / tileWidth;
+		int centertileY = mCamera->GetPosition().y / tileHeight;
+		
+		for (size_t m = max(0,centertileY-10); m < min(centertileY+10,layer->GetHeight()); m++)
+		//for (size_t m = 0; m < layer->GetHeight(); m++)
 		{
-			for (size_t n = 0; n < layer->GetWidth(); n++)
+			for (size_t n = max(0, centertileX - 10); n < min(centertileX + 10, layer->GetHeight()); n++)
+			//for (size_t n = 0; n < layer->GetWidth(); n++)
 			{
 				int tilesetIndex = layer->GetTileTilesetIndex(n, m);
 

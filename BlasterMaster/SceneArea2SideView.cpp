@@ -467,34 +467,34 @@ void SceneArea2SideView::Init()
 void SceneArea2SideView::Update()
 {
 	input->Update();
-	if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
-	{
-		if (mCamera->GetPosition().x - mCamera->GetWidth() / 2 <= 0) {
-			return;
-		} // LeSon
-		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-		mCamera->SetPosition(mCamera->GetPosition() + Point(-8, 0));
-	}
-	if ((*input)[VK_RIGHT] & KEY_STATE_DOWN)
-	{
-		if (mCamera->GetPosition().x + mCamera->GetWidth() / 2 >= mMap->GetWidth() + 8) {
-			return;
-		}// LeSon
-		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-		mCamera->SetPosition(mCamera->GetPosition() + Point(8, 0));
-	}
-	if ((*input)[VK_UP] & KEY_STATE_DOWN)
-	{
-		if (mCamera->GetPosition().y - mCamera->GetHeight() / 2 <= 0) return; // LeSon
-		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-		mCamera->SetPosition(mCamera->GetPosition() + Point(0, -8));
-	}
-	if ((*input)[VK_DOWN] & KEY_STATE_DOWN)
-	{
-		if (mCamera->GetPosition().y + mCamera->GetHeight() / 2 >= mMap->GetHeight() + 32) return; // LeSon
-		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-		mCamera->SetPosition(mCamera->GetPosition() + Point(0, 8));
-	}
+	//if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
+	//{
+	//	if (mCamera->GetPosition().x - mCamera->GetWidth() / 2 <= 0) {
+	//		return;
+	//	} // LeSon
+	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
+	//	mCamera->SetPosition(mCamera->GetPosition() + Point(-8, 0));
+	//}
+	//if ((*input)[VK_RIGHT] & KEY_STATE_DOWN)
+	//{
+	//	if (mCamera->GetPosition().x + mCamera->GetWidth() / 2 >= mMap->GetWidth() + 8) {
+	//		return;
+	//	}// LeSon
+	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
+	//	mCamera->SetPosition(mCamera->GetPosition() + Point(8, 0));
+	//}
+	//if ((*input)[VK_UP] & KEY_STATE_DOWN)
+	//{
+	//	if (mCamera->GetPosition().y - mCamera->GetHeight() / 2 <= 0) return; // LeSon
+	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
+	//	mCamera->SetPosition(mCamera->GetPosition() + Point(0, -8));
+	//}
+	//if ((*input)[VK_DOWN] & KEY_STATE_DOWN)
+	//{
+	//	if (mCamera->GetPosition().y + mCamera->GetHeight() / 2 >= mMap->GetHeight() + 32) return; // LeSon
+	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
+	//	mCamera->SetPosition(mCamera->GetPosition() + Point(0, 8));
+	//}
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -529,12 +529,12 @@ void SceneArea2SideView::Release()
 	objects.clear();
 
 	// map release sucks hihi
-	//mMap->Release();
+	mMap->Release();
 
 	// LeSon: maybe cannot do this, have to clear in SwitchScene for Game.cpp, discuss again hihi 
-	/*textureLib->Clear();
+	textureLib->Clear();
 	spriteLib->Clear();
-	animationLib->Clear();*/
+	animationLib->Clear();
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

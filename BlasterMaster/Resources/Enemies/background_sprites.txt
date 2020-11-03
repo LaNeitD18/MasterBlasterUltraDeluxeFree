@@ -1,0 +1,2 @@
+# id	left	top	right	bottom	texture_id
+-1	0	0	2304	2304	-1
