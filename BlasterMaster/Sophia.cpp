@@ -91,7 +91,10 @@ void Sophia::Update()
 			v.y = -SOPHIA_JUMP_POWER;
 		}
 		else
+		{
 			newState &= ~SOPHIA_STATE_JUMP_BOOST;
+			jumpBoostRemaining = 0;
+		}
 	}
 	//*/
 
@@ -146,10 +149,14 @@ void Sophia::Update()
 	//*/
 	//newState |= flags;
 	
-	if (prevState != newState) {
+	if (prevState != newState)
+	{
 		SetState(newState);
 		SetAniByState(newState);
 	}
+	else
+		SetAniByState(newState &
+		(SOPHIA_STATE_LOOKED_UP | SOPHIA_STATE_WALKING));
 	//*/
 	
 }
@@ -172,11 +179,13 @@ void Sophia::Render()
 				->at(i)->GetLoopDuration())
 			{
 				EndAnimationType(i);
+				/*
 				if (i == SOPHIA_ANI_WALKING ||
 					i == SOPHIA_ANI_LOOKED_UP_WALKING ||
 					i == SOPHIA_ANI_IDLE ||
 					i == SOPHIA_ANI_LOOKED_UP_IDLE)
 					aniToReloop.push_back(i);
+				//*/
 
 				if (i == SOPHIA_ANI_JUMPING || i == SOPHIA_ANI_LOOKED_UP_JUMPING) {
 					stateToChange.push_back(
