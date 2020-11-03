@@ -43,7 +43,7 @@ public:
 
 	void RenderBoundingBox();
 
-	void SetAnimationSet(AnimationSet* ani_set) { animationSet = ani_set; }
+	virtual void SetAnimationSet(AnimationSet* ani_set) { animationSet = ani_set; }
 	
 	virtual RESULT Init(TextureLibrary* textureLib);
 

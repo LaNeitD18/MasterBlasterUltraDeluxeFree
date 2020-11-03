@@ -1,14 +1,16 @@
 #pragma once
+#include <Windows.h>
 #include "Interactable.h"
 #include "GameObject.h"
 #include "GameGlobal.h"
 
 #define SOPHIA_WALKING_SPEED 0.03f
+#define SOPHIA_ACCELERATION 0.0005f
 #define SOPHIA_JUMP_BOOST_AMOUNT 0.2f
 #define SOPHIA_JUMP_POWER 0.057f
 #define SOPHIA_EPSILON_THRESHOLD 0.01f
 
-#define SOPHIA_ACTION_AMOUNT 20
+#define SOPHIA_ACTION_AMOUNT 13
 /*
 Actions:
 	Walking
@@ -56,10 +58,11 @@ class Sophia :
 {
 	double jumpBoostRemaining;
 
-	AnimationSet* animations[4];
+	vector<AnimationSet*> animations;
 	int currentTime[SOPHIA_ACTION_AMOUNT];
 	int currentFrame[SOPHIA_ACTION_AMOUNT];
-	int currentAni[SOPHIA_ACTION_AMOUNT];
+	bool currentAni[SOPHIA_ACTION_AMOUNT];
+	int currentSet;
 	int targetTime;
 	int targetFrame;
 	int targetAni;
@@ -70,11 +73,17 @@ public:
 	virtual void GetBoundingBox(BoundingBox& box);
 	virtual void Update();
 	virtual void Render();
-	virtual void SetAnimationType(int ANI);
+	virtual void StartAnimationType(int ANI);
+	virtual void EndAnimationType(int ANI);
+
+	void GoLeft();
+	void GoRight();
+	void GoHalt();
 
 	Sophia();
 	Sophia(float x, float y);
 	virtual void SetState(int state);
 	void SetAniByState(int state);
+	virtual void SetAnimationSet(AnimationSet* set);
 };
 

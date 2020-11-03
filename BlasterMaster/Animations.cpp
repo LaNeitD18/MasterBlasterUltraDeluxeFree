@@ -41,7 +41,7 @@ void Animation::Render(Point pos, int& time, int& previousFrame, int alpha)
 	//*/
 	if (frames[previousFrame]->GetEndTime() <= time)
 		previousFrame++;
-	frames[previousFrame]->GetSprite()->Draw(pos, RECT(), D3DCOLOR_ARGB(alpha, 255, 255, 255), D3DXVECTOR2(0.25,0.25));
+	frames[previousFrame]->GetSprite()->Draw(pos, RECT(), D3DCOLOR_ARGB(alpha, 255, 255, 255), D3DXVECTOR2(1, 1));
 }
 
 int Animation::RewindFrameTime(int& currentFrame, Animation* previousAnimation, int previousFrame) 
@@ -51,7 +51,7 @@ int Animation::RewindFrameTime(int& currentFrame, Animation* previousAnimation, 
 	if (currentFrame == 0) return 0;
 	if (frames.size() <= currentFrame)
 		currentFrame = frames.size() - 1;
-	/*
+	//*
 	while (frames[currentFrame]->GetSprite() != 
 		previousAnimation->frames[previousFrame]->GetSprite() && 
 		currentFrame > 0)
