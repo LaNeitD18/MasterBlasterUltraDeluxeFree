@@ -9,6 +9,7 @@
 #include "Animations.h"
 #include "Textures.h"
 #include "BoundingBox.h"
+#include "DrawArguments.h"
 
 using namespace std;
 
@@ -31,12 +32,19 @@ public:
 
 	DWORD dt = 33; 
 
+	float scaleIndex = 0.3;
+
 	AnimationSet* animationSet;
 	LPDIRECT3DTEXTURE9 bbox;
+
+	DrawArguments drawArguments;
+
 public: 
-	void SetPosition(Point pos) { this->pos = pos; }
+	void SetPosition(Point pos) { this->drawArguments.SetPosition(pos); }
 	void SetSpeed(Point v) { this->v = v; }
-	Point GetPosition(Point& pos) { return pos = this->pos; }
+	//Point GetPosition(Point& pos) { return pos = this->pos; }
+	Point GetPosition() { return this->drawArguments.GetPosition(); }
+
 	Point GetSpeed(Point& v) { return v = this->v; }
 
 	int GetState() { return this->state; }
@@ -63,10 +71,14 @@ protected:
 	int currentTime;
 	Animation* currentAnimation;
 	bool moving = true;
+	bool isFlipHorizontal = false;
 public:
 	virtual void Render()
 	{
-		currentAnimation->Render(pos, currentTime, previousFrame);
+		drawArguments.SetPosition(pos);
+		drawArguments.FlipVertical(isFlipHorizontal);
+
+		currentAnimation->Render(currentTime, previousFrame, drawArguments);
 		if (!moving)
 			return;
 		currentTime++;

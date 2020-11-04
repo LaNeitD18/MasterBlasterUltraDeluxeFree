@@ -142,8 +142,13 @@ void GameMap::Draw()
 
 					sprite->SetWidth(tileWidth);
 					sprite->SetHeight(tileHeight);
+					sprite->SetSourceRect(sourceRECT);
 
-					sprite->Draw(position, sourceRECT, D3DXCOLOR(255,255,255,255), D3DXVECTOR2(), trans);
+					DrawArguments drawArguments;
+					drawArguments.SetPosition(position);
+					drawArguments.SetTranslation(trans);
+					
+					sprite->Draw(drawArguments);
 				}
 			}
 		}

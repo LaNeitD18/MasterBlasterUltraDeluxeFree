@@ -7,6 +7,7 @@ Teleporter::Teleporter() {
 Teleporter::Teleporter(float x, float y) {
 	SetState(TELEPORTER_STATE_WALKING);
 	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
 }
 
 void Teleporter::GetBoundingBox(BoundingBox& box)

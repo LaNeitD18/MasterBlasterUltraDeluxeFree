@@ -1,4 +1,5 @@
 #include "Worm.h"
+#include "Utils.h"
 
 Worm::Worm() {
 	SetState(WORM_STATE_WALKING);
@@ -8,6 +9,7 @@ Worm::Worm(float x, float y)
 {
 	SetState(WORM_STATE_WALKING);
 	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
 }
 
 void Worm::GetBoundingBox(BoundingBox& box)
@@ -29,12 +31,25 @@ void Worm::Update()
 
 	if (v.x < 0 && pos.x < 0) {
 		pos.x = 0; v.x = -v.x;
+		DebugOut(L"sZZZ\n");
+
+
+		//displayMessage(isFlipHorizontal);
 	}
 
-	if (v.x > 0 && pos.x > 800) {
-		pos.x = 800; v.x = -v.x;
+	if (v.x > 0 && pos.x > 80) {
+		pos.x = 80; v.x = -v.x;
+		DebugOut(L"sZZZ\n");
+
 		
+		//displayMessage(isFlipHorizontal);
 	}
+	/*else {
+		isFlipHorizontal = false;
+		displayMessage(isFlipHorizontal);
+
+	}*/
+
 }
 
 void Worm::Render()
@@ -42,8 +57,11 @@ void Worm::Render()
 	if (state == WORM_STATE_DIE) {
 		SetAnimationType(WORM_ANI_DIE);
 	}
-	else if (v.x > 0) SetAnimationType(WORM_ANI_WALKING_RIGHT);
-	//else if (v.x <= 0) SetAnimationType(WORM_ANI_WALKING_LEFT);
+	else if (v.x > 0) {
+		SetAnimationType(WORM_ANI_WALKING_RIGHT);
+		isFlipHorizontal = false;
+	}
+	else if (v.x <= 0) isFlipHorizontal = true;
 
 	AnimatedGameObject::Render();
 

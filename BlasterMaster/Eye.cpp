@@ -7,6 +7,7 @@ Eye::Eye() {
 Eye::Eye(float x, float y) {
 	SetState(EYE_STATE_WALKING);
 	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
 }
 
 void Eye::GetBoundingBox(BoundingBox& box)

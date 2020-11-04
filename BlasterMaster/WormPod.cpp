@@ -7,6 +7,7 @@ WormPod::WormPod() {
 WormPod::WormPod(float x, float y) {
 	SetState(WORMPOD_STATE_WALKING);
 	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
 }
 
 void WormPod::GetBoundingBox(float& left, float& top, float& right, float& bottom)

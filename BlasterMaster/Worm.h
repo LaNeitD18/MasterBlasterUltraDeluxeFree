@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-#define WORM_WALKING_SPEED 0.03f;
+#define WORM_WALKING_SPEED 0.01f;
 
 #define WORM_BBOX_WIDTH 16
 #define WORM_BBOX_HEIGHT 26

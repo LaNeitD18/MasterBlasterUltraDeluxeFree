@@ -7,6 +7,7 @@ Laser::Laser() {
 Laser::Laser(float x, float y) {
 	SetState(LASER_STATE_WALKING);
 	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
 }
 
 void Laser::GetBoundingBox(float& left, float& top, float& right, float& bottom)

@@ -5,6 +5,7 @@
 
 #include "useful_stuff.h"
 #include "Sprites.h"
+#include "DrawArguments.h"
 
 /*
 Sprite animation
@@ -32,7 +33,7 @@ public:
 	Animation(int defaultTime = 1) { this->defaultTime = defaultTime; lastFrameTime = -1; currentFrame = -1; }
 	void Add(int spriteId, SpriteLibrary* spriteLib, DWORD time = 0);
 
-	void Render(Point pos, int& time, int& previousFrame, int alpha = 255);
+	void Render(int& time, int& previousFrame, DrawArguments drawArguments, int alpha = 255);
 	int GetLoopDuration() {
 		return loopDuration;
 	}

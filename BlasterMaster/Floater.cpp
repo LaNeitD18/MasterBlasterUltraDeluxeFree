@@ -7,6 +7,7 @@ Floater::Floater() {
 Floater::Floater(float x, float y) {
 	SetState(FLOATER_STATE_WALKING);
 	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
 }
 
 void Floater::GetBoundingBox(BoundingBox& box)

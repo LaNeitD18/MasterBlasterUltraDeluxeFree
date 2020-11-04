@@ -10,7 +10,7 @@
 
 GameObject::GameObject()
 {
-	pos = Point();
+	drawArguments.Init();
 	v = Point();
 	nx = 1;	
 }
@@ -23,6 +23,7 @@ RESULT GameObject::Init(TextureLibrary * textureLib)
 
 void GameObject::RenderBoundingBox()
 {
+	Point pos = drawArguments.GetPosition();
 	D3DXVECTOR3 p(pos.x, pos.y, 0);
 	RECT rect;
 

@@ -143,15 +143,15 @@ int Run()
 		// this frame: the frame we are about to render
 		DWORD dt = now - frameStart;
 
-		if (dt >= tickPerFrame)
-		{
+		/*if (dt >= tickPerFrame)
+		{*/
 			frameStart = now;
 			
 			game->GetCurrentScene()->Update();
 			game->Render();
-		}
+		/*}
 		else
-			Sleep(tickPerFrame - dt);	
+			Sleep(tickPerFrame - dt);	*/
 	}
 
 	return 1;

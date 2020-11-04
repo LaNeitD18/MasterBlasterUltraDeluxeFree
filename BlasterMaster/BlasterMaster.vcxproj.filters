@@ -16,9 +16,6 @@
     <ClCompile Include="useful_stuff.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="SceneArea2SideView.cpp" />
-    <ClCompile Include="Cannon.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="Dome.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
@@ -119,6 +116,10 @@
       <Filter>MapReader</Filter>
     </ClCompile>
     <ClCompile Include="GameGlobal.cpp" />
+    <ClCompile Include="DrawArguments.cpp" />
+    <ClCompile Include="Cannon.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
@@ -250,6 +251,7 @@
       <Filter>MapReader</Filter>
     </ClInclude>
     <ClInclude Include="GameGlobal.h" />
+    <ClInclude Include="DrawArguments.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Enemies">

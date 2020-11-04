@@ -7,6 +7,7 @@ Walker::Walker() {
 Walker::Walker(float x, float y) {
 	SetState(WALKER_STATE_WALKING);
 	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
 }
 
 void Walker::GetBoundingBox(BoundingBox& box)
