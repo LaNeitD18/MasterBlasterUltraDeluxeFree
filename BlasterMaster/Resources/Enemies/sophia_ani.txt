@@ -28,7 +28,7 @@
 519	10138	2
 
 # sophia looked up walking
-520	10138	4	10142	4
+520	10138	8	10142	8
 
 # sophia jumping looked up 1
 521	10142	4	10138	4	10150	4

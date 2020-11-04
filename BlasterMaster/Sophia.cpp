@@ -163,64 +163,6 @@ void Sophia::Update()
 
 void Sophia::Render()
 {
-	vector<pair<int, bool> > stateToChange;
-	vector<int> aniToReloop;
-	for (int i = 0; i < SOPHIA_ACTION_AMOUNT; i++)
-		if (currentAni[i])
-		{
-			currentTime[i]++;
-
-			/*
-			animations[currentSet]->at(i)->
-				Render(pos, currentTime[i], currentFrame[i]);
-			//*/
-
-			if (currentTime[i] >= animations[currentSet]
-				->at(i)->GetLoopDuration())
-			{
-				EndAnimationType(i);
-				/*
-				if (i == SOPHIA_ANI_WALKING ||
-					i == SOPHIA_ANI_LOOKED_UP_WALKING ||
-					i == SOPHIA_ANI_IDLE ||
-					i == SOPHIA_ANI_LOOKED_UP_IDLE)
-					aniToReloop.push_back(i);
-				//*/
-
-				if (i == SOPHIA_ANI_JUMPING || i == SOPHIA_ANI_LOOKED_UP_JUMPING) {
-					stateToChange.push_back(
-						make_pair(SOPHIA_STATE_JUMP_BOOST, true));
-					stateToChange.push_back(
-						make_pair(SOPHIA_STATE_JUMPING, false));
-				}
-				if (i == SOPHIA_ANI_LANDING || i == SOPHIA_ANI_LOOKED_UP_LANDING)
-					stateToChange.push_back(
-						make_pair(SOPHIA_STATE_LANDING, false));
-				if (i == SOPHIA_ANI_LOOKING_UP) {
-					stateToChange.push_back(
-						make_pair(SOPHIA_STATE_LOOKING_UP, false));
-					stateToChange.push_back(
-						make_pair(SOPHIA_STATE_LOOKED_UP, true));
-				}
-			}
-			if (i == SOPHIA_ANI_TURNING && 
-				currentTime[i] % 100 == 8)
-				;// TODO: flip
-			if (i == SOPHIA_ANI_TURNING && 
-				currentTime[i] % 100 == 16)
-			{
-				EndAnimationType(i);
-				stateToChange.push_back(
-					make_pair(SOPHIA_STATE_LOOKING_LEFT, 
-						!(state & SOPHIA_STATE_LOOKING_LEFT)));
-				stateToChange.push_back(
-					make_pair(SOPHIA_STATE_TURNING, false));
-			}
-		}
-
-	for (auto ani : aniToReloop)
-		StartAnimationType(ani);
-
 	targetAni = SOPHIA_ANI_IDLE;
 	if (currentAni[SOPHIA_ANI_WALKING])
 		targetAni = SOPHIA_ANI_WALKING;
@@ -258,6 +200,61 @@ void Sophia::Render()
 
 	animations[currentSet]->at(targetAni)->
 		Render(pos, targetTime, *targetFrame);
+
+	vector<pair<int, bool> > stateToChange;
+	for (int i = 0; i < SOPHIA_ACTION_AMOUNT; i++)
+		if (currentAni[i])
+		{
+			currentTime[i]++;
+
+			/*
+			animations[currentSet]->at(i)->
+				Render(pos, currentTime[i], currentFrame[i]);
+			//*/
+
+			if (currentTime[i] >= animations[currentSet]
+				->at(i)->GetLoopDuration())
+			{
+				EndAnimationType(i);
+				/*
+				if (i == SOPHIA_ANI_WALKING ||
+					i == SOPHIA_ANI_LOOKED_UP_WALKING ||
+					i == SOPHIA_ANI_IDLE ||
+					i == SOPHIA_ANI_LOOKED_UP_IDLE)
+					StartAnimationType(i);
+				//*/
+
+				if (i == SOPHIA_ANI_JUMPING || i == SOPHIA_ANI_LOOKED_UP_JUMPING) {
+					stateToChange.push_back(
+						make_pair(SOPHIA_STATE_JUMP_BOOST, true));
+					stateToChange.push_back(
+						make_pair(SOPHIA_STATE_JUMPING, false));
+				}
+				if (i == SOPHIA_ANI_LANDING || i == SOPHIA_ANI_LOOKED_UP_LANDING)
+					stateToChange.push_back(
+						make_pair(SOPHIA_STATE_LANDING, false));
+				if (i == SOPHIA_ANI_LOOKING_UP) {
+					stateToChange.push_back(
+						make_pair(SOPHIA_STATE_LOOKING_UP, false));
+					stateToChange.push_back(
+						make_pair(SOPHIA_STATE_LOOKED_UP, true));
+				}
+			}
+			if (i == SOPHIA_ANI_TURNING && 
+				currentTime[i] % 100 == 8)
+				;// TODO: flip
+			if (i == SOPHIA_ANI_TURNING && 
+				currentTime[i] % 100 == 16)
+			{
+				EndAnimationType(i);
+				stateToChange.push_back(
+					make_pair(SOPHIA_STATE_LOOKING_LEFT, 
+						!(state & SOPHIA_STATE_LOOKING_LEFT)));
+				stateToChange.push_back(
+					make_pair(SOPHIA_STATE_TURNING, false));
+			}
+		}
+
 
 	this->targetFrame = *targetFrame;
 
@@ -318,6 +315,8 @@ void Sophia::Render()
 
 void Sophia::StartAnimationType(int ANI)
 {
+	if (currentAni[ANI])
+		return;
 	currentAni[ANI] = true;
 	switch (ANI)
 	{
@@ -341,6 +340,8 @@ void Sophia::EndAnimationType(int ANI)
 	currentTime[ANI] = 0;
 	currentFrame[ANI] = 0;
 	currentAni[ANI] = false;
+	if (ANI == 2)
+		int i = 0;
 }
 
 void Sophia::GoLeft()
