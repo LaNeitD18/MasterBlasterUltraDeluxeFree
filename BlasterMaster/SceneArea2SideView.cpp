@@ -39,7 +39,7 @@ SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Poi
 
 void SceneArea2SideView::LoadContent()
 {
-	mMap = new GameMap("Map/General/level2-side-maporder.tmx", textureLib, spriteLib);
+	mMap = new GameMap("Map/General/level2-side-tiless.tmx", textureLib, spriteLib);
 
 	// camera setup
 	mCamera = new Camera(Point(GameGlobal::GetWidth(), GameGlobal::GetHeight()));
@@ -467,6 +467,16 @@ void SceneArea2SideView::Init()
 void SceneArea2SideView::Update()
 {
 	input->Update();
+	for (auto x : objects) {
+		Player* current_player = dynamic_cast<Player*>(x);
+		if (current_player != NULL) {
+			mCamera->SetTarget(current_player);
+			target = current_player;
+		}
+	}
+	mCamera->FollowTarget();
+	mCamera->SnapToBoundary();
+
 	//if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
 	//{
 	//	if (mCamera->GetPosition().x - mCamera->GetWidth() / 2 <= 0) {

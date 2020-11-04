@@ -7,6 +7,10 @@ Camera::Camera(Point size) {
 	mWidth = size.x;
 	mHeight = size.y;
 	mPosition = Point(0, 0);
+	boundary.left = 0;
+	boundary.right = 2048;
+	boundary.top = 0;
+	boundary.bottom = 2048;
 }
 
 Camera::~Camera() {}
@@ -52,6 +56,55 @@ RECT Camera::GetBound()
 	return bound;
 }
 
+void Camera::SnapToBoundary()
+{
+	RECT cameraRECT = GetBound();
+
+	if (cameraRECT.left < boundary.left)
+	{
+		mPosition.x += boundary.left - cameraRECT.left;
+	}
+
+	if (cameraRECT.right > boundary.right)
+	{
+		mPosition.x -= cameraRECT.right - boundary.right;
+	}
+
+	if (cameraRECT.top < boundary.top)
+	{
+		mPosition.y += boundary.top - cameraRECT.top;
+	}
+
+	if (cameraRECT.bottom > boundary.bottom)
+	{
+		mPosition.y -= cameraRECT.bottom - boundary.bottom;
+	}
+}
+
+void Camera::FollowTarget()
+{
+	if (target == NULL) return;
+	SetPosition(target->GetPosition().x, target->GetPosition().y);
+}
+
+void Camera::SetTarget(Player * target)
+{
+	this->target = target;
+}
+
+void Camera::SetCameraBoundary(RECT boundary)
+{
+	this->boundary = boundary;
+}
+
+void Camera::SetCameraBoundary(int left, int top, int right, int bot)
+{
+	boundary.left = left;
+	boundary.right - right;
+	boundary.top = top;
+	boundary.bottom = bot;
+}
+
 int Camera::GetWidth()
 {
 	return mWidth;
@@ -61,3 +114,5 @@ int Camera::GetHeight()
 {
 	return mHeight;
 }
+
+

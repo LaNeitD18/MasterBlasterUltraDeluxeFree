@@ -23,6 +23,8 @@ protected:
 
 	// camera
 	Camera *mCamera;
+	//LeSon
+	Player* target;
 private:
 	Game* game;
 

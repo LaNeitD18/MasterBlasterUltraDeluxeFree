@@ -36,8 +36,8 @@ public:
 public: 
 	void SetPosition(Point pos) { this->pos = pos; }
 	void SetSpeed(Point v) { this->v = v; }
-	Point GetPosition(Point& pos) { return pos = this->pos; }
-	Point GetSpeed(Point& v) { return v = this->v; }
+	Point GetPosition() { return this->pos; }
+	Point GetSpeed() { return this->v; }
 
 	int GetState() { return this->state; }
 

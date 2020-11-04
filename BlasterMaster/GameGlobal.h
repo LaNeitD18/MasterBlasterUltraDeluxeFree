@@ -46,7 +46,7 @@ private:
 	static HWND mHwnd; // hwnd hiện tại
 	static LPD3DXSPRITE mSpriteHandler; //spriteHanlder hiện tại
 	static int mWidth, mHeight; //size window standard
-	static int mScreenWidth, mScreenHeight; //size screen
+	//static int mScreenWidth, mScreenHeight; //size screen
 	static LPDIRECT3DDEVICE9 mDevice; //device directX hiện tại
 	static Input* input;
 };
