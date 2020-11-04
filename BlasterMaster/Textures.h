@@ -19,7 +19,7 @@ class TextureLibrary
 public: 
 	TextureLibrary(Game* game);
 	void Add(int id, LPCWSTR filePath, D3DCOLOR transparentColor);
-	LPDIRECT3DTEXTURE9 Get(unsigned int i);
+	LPDIRECT3DTEXTURE9 Get(int i);
 
 	void Clear();
 };

@@ -1,23 +1,34 @@
 #pragma once
+#include <Windows.h>
 #include "Interactable.h"
 #include "GameObject.h"
 #include "GameGlobal.h"
 
 #define SOPHIA_WALKING_SPEED 0.03f
-#define SOPHIA_JUMP_BOOST_AMOUNT 0.05f
+#define SOPHIA_ACCELERATION 0.0005f
+#define SOPHIA_JUMP_BOOST_AMOUNT 0.2f
+#define SOPHIA_JUMP_POWER 0.057f
 #define SOPHIA_EPSILON_THRESHOLD 0.01f
+
+#define SOPHIA_ACTION_AMOUNT 13
+/*
+Actions:
+	Walking
+	Jumping
+*/
 enum SophiaState
 {
-	SOPHIA_STATE_IDLE					= 0x0000,		// 
-	SOPHIA_STATE_WALKING				= 0x0001,		// moving and touching ground
-	SOPHIA_STATE_JUMPING				= 0x0002,		// touching ground & ON_DOWN 'X'
-	SOPHIA_STATE_JUMP_BOOST				= 0x0003,		// previous jumping / jump boost & down'X'
-	SOPHIA_STATE_LANDING				= 0x0004,
+	SOPHIA_STATE_IDLE					= 0x0000,	// 
+	SOPHIA_STATE_WALKING				= 0x0001,	// moving and touching ground
+	SOPHIA_STATE_JUMPING				= 0x0002,	// touching ground & ON_DOWN 'X'
+	SOPHIA_STATE_JUMP_BOOST				= 0x0004,	// previous jumping / jump boost & down'X'
+	SOPHIA_STATE_LANDING				= 0x0008,	// about to touch ground
 
 	SOPHIA_STATE_LEFT_VEHICLE			= 0x8000,
 	SOPHIA_STATE_LOOKED_UP				= 0x4000, 
+	SOPHIA_STATE_LOOKING_LEFT			= 0x0400,
 
-	SOPHIA_STATE_LOOKING_UP				= 0x2000,
+	SOPHIA_STATE_LOOKING_UP				= 0x2000,	// this animation overrides normal ones
 	SOPHIA_STATE_TURNING				= 0x1000,
 
 	SOPHIA_STATE_AIRBORNE				= 0x0800,
@@ -46,6 +57,15 @@ class Sophia :
 	public Player, public Interactable
 {
 	double jumpBoostRemaining;
+
+	vector<AnimationSet*> animations;
+	int currentTime[SOPHIA_ACTION_AMOUNT];
+	int currentFrame[SOPHIA_ACTION_AMOUNT];
+	bool currentAni[SOPHIA_ACTION_AMOUNT];
+	int currentSet;
+	int targetTime;
+	int targetFrame;
+	int targetAni;
 public:
 	virtual void Interact(Interactable* other) { other->Interact(this); }
 	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
@@ -53,11 +73,17 @@ public:
 	virtual void GetBoundingBox(BoundingBox& box);
 	virtual void Update();
 	virtual void Render();
-	virtual void SetAnimationType(int ANI);
+	virtual void StartAnimationType(int ANI);
+	virtual void EndAnimationType(int ANI);
+
+	void GoLeft();
+	void GoRight();
+	void GoHalt();
 
 	Sophia();
 	Sophia(float x, float y);
 	virtual void SetState(int state);
 	void SetAniByState(int state);
+	virtual void SetAnimationSet(AnimationSet* set);
 };
 

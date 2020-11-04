@@ -14,7 +14,6 @@
 12	Resources\sprites\Jason_SideView.png		255	255	255
 13	Resources\sprites\Jason_Overhead.png		255	255	255
 14	Resources\sprites\Sophia.png			255	255	255
--1	Resources\sprites\level2-side-maporder		255	255	255
 # next sprite: 10155
 
 [SPRITES]
@@ -121,4 +120,4 @@ Resources\Enemies\sophia_ani.txt
 10	500	300	11
 
 # SOPHIA
-12	500	500	12
+12	150	150	12

@@ -43,7 +43,7 @@ public:
 
 	void RenderBoundingBox();
 
-	void SetAnimationSet(AnimationSet* ani_set) { animationSet = ani_set; }
+	virtual void SetAnimationSet(AnimationSet* ani_set) { animationSet = ani_set; }
 	
 	virtual RESULT Init(TextureLibrary* textureLib);
 
@@ -59,7 +59,7 @@ public:
 class AnimatedGameObject : public GameObject
 {
 protected:
-	int previousFrame;
+	int currentFrame;
 	int currentTime;
 	Animation* currentAnimation;
 	bool moving = true;
@@ -71,5 +71,5 @@ public:
 class Enemy : public AnimatedGameObject 
 {};
 
-class Player : public AnimatedGameObject
+class Player : public GameObject
 {};

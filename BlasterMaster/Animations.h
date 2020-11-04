@@ -23,10 +23,11 @@ public:
 class Animation
 {
 	int defaultTime;
-	int loopDuration = 0;
 	// Time measued in frames
 	vector<CAnimationFrame*> frames;
 public:
+	int loopDuration = 0;
+
 	Animation(int defaultTime = 1) { this->defaultTime = defaultTime; }
 	void Add(int spriteId, SpriteLibrary* spriteLib, DWORD time = 0);
 
@@ -34,7 +35,7 @@ public:
 	inline int GetLoopDuration() {
 		return loopDuration;
 	}
-	int RewindFrameTime(int& previousFrame);
+	int RewindFrameTime(int& currentFrame, Animation* previousAnimation, int previousFrame);
 };
 
 class AnimationLibrary

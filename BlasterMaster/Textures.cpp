@@ -49,12 +49,18 @@ void TextureLibrary::Add(int id, LPCWSTR filePath, D3DCOLOR transparentColor)
 	textureLib[id] = texture;
 
 	DebugOut(L"[INFO] Texture loaded Ok: id=%d, %s\n", id, filePath);
+	if (textureLib.size() > 20)
+		int i = 0;
 }
 
-LPDIRECT3DTEXTURE9 TextureLibrary::Get(unsigned int id) 
+LPDIRECT3DTEXTURE9 TextureLibrary::Get(int id) 
 {
+	if (textureLib.size() > 20)
+		int i = 0;
 	if (textureLib.find(id) == textureLib.end())
 		return NULL;
+	if (textureLib.size() > 20)
+		int i = 0;
 	return textureLib[id];
 }
 

@@ -367,6 +367,9 @@ void SceneArea2SideView::Init()
 	//vector<tuple<int, int, int, int, int>> mapNav;
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
 
+	// move bbox init
+	textureLib->Add(ID_TEX_BBOX, L"Resources\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+
 	ifstream f;
 	f.open(sceneFilePath);
 
@@ -444,8 +447,6 @@ void SceneArea2SideView::Init()
 	}
 
 	f.close();
-
-	textureLib->Add(ID_TEX_BBOX, L"Resources\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	//// NAK son
 	//// NAK tien
