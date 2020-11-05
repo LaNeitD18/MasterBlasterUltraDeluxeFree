@@ -7,6 +7,7 @@ Mine::Mine() {
 Mine::Mine(float x, float y) {
 	SetState(MINE_STATE_WALKING);
 	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
 }
 
 void Mine::GetBoundingBox(BoundingBox& box)

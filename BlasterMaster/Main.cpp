@@ -143,8 +143,8 @@ int Run()
 		// this frame: the frame we are about to render
 		//DWORD dt = now - frameStart;
 
-		//if (dt >= tickPerFrame -2)
-		//{
+		/*if (dt >= tickPerFrame)
+		{*/
 			frameStart = now;
 
 			// Update Input before everything

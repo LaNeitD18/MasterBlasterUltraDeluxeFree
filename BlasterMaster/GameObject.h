@@ -9,6 +9,7 @@
 #include "Animations.h"
 #include "Textures.h"
 #include "BoundingBox.h"
+#include "DrawArguments.h"
 
 using namespace std;
 
@@ -31,13 +32,21 @@ public:
 
 	DWORD dt = 33; 
 
+	float scaleIndex = 0.3;
+
 	AnimationSet* animationSet;
 	LPDIRECT3DTEXTURE9 bbox;
+
+	DrawArguments drawArguments;
+
 public: 
-	void SetPosition(Point pos) { this->pos = pos; }
+	void SetPosition(Point pos) { this->drawArguments.SetPosition(pos); }
 	void SetSpeed(Point v) { this->v = v; }
-	Point GetPosition() { return this->pos; }
-	Point GetSpeed() { return this->v; }
+
+	//Point GetPosition(Point& pos) { return pos = this->pos; }
+	Point GetPosition() { return this->drawArguments.GetPosition(); }
+
+	Point GetSpeed(Point& v) { return v = this->v; }
 
 	int GetState() { return this->state; }
 
@@ -59,13 +68,39 @@ public:
 class AnimatedGameObject : public GameObject
 {
 protected:
-	int currentFrame;
+	//Long
+	//int currentFrame;
+	int previousFrame;
 	int currentTime;
 	Animation* currentAnimation;
 	bool moving = true;
+	bool isFlipHorizontal = false;
 public:
-	virtual void Render();
-	void SetAnimationType(int ANI);
+	virtual void Render()
+	{
+		drawArguments.SetPosition(pos);
+		drawArguments.FlipVertical(isFlipHorizontal);
+
+		currentAnimation->Render(currentTime, previousFrame, drawArguments);
+		if (!moving)
+			return;
+		currentTime++;
+		if (currentTime >= currentAnimation->GetLoopDuration())
+		{
+			currentTime %= currentAnimation->GetLoopDuration();
+			previousFrame = 0;
+		}
+	}
+	virtual void SetAnimationType(int ANI) 
+	{ 
+		Animation* trg = animationSet->at(ANI);
+		if (currentAnimation != trg)
+		{
+			currentAnimation = trg;
+			previousFrame = 0;
+			currentTime = 0;
+		}
+	}
 };
 
 class Enemy : public AnimatedGameObject 

@@ -163,6 +163,7 @@ void Sophia::Update()
 
 void Sophia::Render()
 {
+	drawArguments.SetPosition(pos);
 	targetAni = SOPHIA_ANI_IDLE;
 	if (currentAni[SOPHIA_ANI_WALKING])
 		targetAni = SOPHIA_ANI_WALKING;
@@ -199,7 +200,7 @@ void Sophia::Render()
 	}
 
 	animations[currentSet]->at(targetAni)->
-		Render(pos, targetTime, *targetFrame);
+		Render(targetTime, *targetFrame, drawArguments);
 
 	vector<pair<int, bool> > stateToChange;
 	for (int i = 0; i < SOPHIA_ACTION_AMOUNT; i++)
@@ -242,7 +243,7 @@ void Sophia::Render()
 			}
 			if (i == SOPHIA_ANI_TURNING && 
 				currentTime[i] % 100 == 8)
-				;// TODO: flip
+				drawArguments.FlipVertical(state & SOPHIA_STATE_LOOKING_LEFT);
 			if (i == SOPHIA_ANI_TURNING && 
 				currentTime[i] % 100 == 16)
 			{
@@ -381,6 +382,8 @@ Sophia::Sophia()
 	}
 	currentAni[1] = true;
 	currentSet = 0;
+	// set looking right
+	drawArguments.FlipVertical(true);
 }
 
 Sophia::Sophia(float x, float y)
@@ -395,6 +398,8 @@ Sophia::Sophia(float x, float y)
 	}
 	currentAni[1] = true;
 	currentSet = 0;
+	// set looking right
+	drawArguments.FlipVertical(true);
 }
 
 void Sophia::SetState(int state)

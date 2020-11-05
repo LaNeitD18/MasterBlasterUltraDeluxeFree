@@ -25,6 +25,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cannon.h" />
     <ClInclude Include="Dome.h" />
+    <ClInclude Include="DrawArguments.h" />
     <ClInclude Include="Eye.h" />
     <ClInclude Include="Floater.h" />
     <ClInclude Include="Game.h" />
@@ -86,6 +87,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cannon.cpp" />
     <ClCompile Include="Dome.cpp" />
+    <ClCompile Include="DrawArguments.cpp" />
     <ClCompile Include="Eye.cpp" />
     <ClCompile Include="Floater.cpp" />
     <ClCompile Include="Game.cpp" />

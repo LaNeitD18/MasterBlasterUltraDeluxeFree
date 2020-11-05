@@ -10,7 +10,7 @@
 
 GameObject::GameObject()
 {
-	pos = Point();
+	drawArguments.Init();
 	v = Point();
 	nx = 1;	
 }
@@ -23,6 +23,7 @@ RESULT GameObject::Init(TextureLibrary * textureLib)
 
 void GameObject::RenderBoundingBox()
 {
+	Point pos = drawArguments.GetPosition();
 	D3DXVECTOR3 p(pos.x, pos.y, 0);
 	RECT rect;
 
@@ -42,26 +43,28 @@ GameObject::~GameObject()
 
 }
 
-void AnimatedGameObject::Render()
-{
-	currentAnimation->Render(pos, currentTime, currentFrame);
-	if (!moving)
-		return;
-	currentTime++;
-	if (currentTime >= currentAnimation->GetLoopDuration())
-	{
-		currentTime %= currentAnimation->GetLoopDuration();
-		currentFrame = 0;
-	}
-}
+//void AnimatedGameObject::Render()
+//{
+//	currentAnimation->Render(pos, currentTime, currentFrame);
+//	if (!moving)
+//		return;
+//	currentTime++;
+//	if (currentTime >= currentAnimation->GetLoopDuration())
+//	{
+//		currentTime %= currentAnimation->GetLoopDuration();
+//		currentFrame = 0;
+//	}
+//}
 
-void AnimatedGameObject::SetAnimationType(int ANI)
-{
-	Animation* trg = animationSet->at(ANI);
-	if (currentAnimation != trg)
-	{
-		currentAnimation = trg;
-		currentFrame = 0;
-		currentTime = 0;
-	}
-}
+//void AnimatedGameObject::SetAnimationType(int ANI)
+//{
+//	Animation* trg = animationSet->at(ANI);
+//	if (currentAnimation != trg)
+//	{
+//		currentAnimation = trg;
+//		//Long
+//		//currentFrame = 0;
+//		previousFrame = 0;
+//		currentTime = 0;
+//	}
+//}

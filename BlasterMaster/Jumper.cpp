@@ -7,6 +7,7 @@ Jumper::Jumper() {
 Jumper::Jumper(float x, float y) {
 	SetState(JUMPER_STATE_WALKING);
 	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
 }
 
 void Jumper::GetBoundingBox(BoundingBox& box)

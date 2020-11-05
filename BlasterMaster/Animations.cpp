@@ -1,5 +1,6 @@
 #include "Animations.h"
 #include "Utils.h"
+#include "DrawArguments.h"
 
 void Animation::Add(int spriteId, SpriteLibrary* spriteLib, DWORD time)
 {
@@ -19,7 +20,7 @@ void Animation::Add(int spriteId, SpriteLibrary* spriteLib, DWORD time)
 	frames.push_back(frame);
 }
 
-void Animation::Render(Point pos, int& time, int& previousFrame, int alpha)
+void Animation::Render(int& time, int& previousFrame, DrawArguments drawArguments, int alpha)
 {
 	/*
 	DWORD now = GetTickCount();
@@ -41,7 +42,7 @@ void Animation::Render(Point pos, int& time, int& previousFrame, int alpha)
 	//*/
 	if (frames[previousFrame]->GetEndTime() <= time)
 		previousFrame++;
-	frames[previousFrame]->GetSprite()->Draw(pos, RECT(), D3DCOLOR_ARGB(alpha, 255, 255, 255), D3DXVECTOR2(1, 1));
+	frames[previousFrame]->GetSprite()->Draw(drawArguments);
 }
 
 int Animation::RewindFrameTime(int& currentFrame, Animation* previousAnimation, int previousFrame) 

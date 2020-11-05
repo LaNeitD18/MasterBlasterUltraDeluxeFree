@@ -4,21 +4,16 @@
 #include <unordered_map>
 #include "useful_stuff.h"
 #include "GameGlobal.h"
+#include "DrawArguments.h"
 
 using namespace std;
 
 class Sprite
 {
 	int id;				// Sprite ID in the sprite database
+	
 public: 
 	Sprite(int id, RECT boundingBox, LPDIRECT3DTEXTURE9 tex);
-	
-	//void Draw(Point pos, int alpha = 255);
-	void Draw(Point position = Point(), RECT sourceRect = RECT(), D3DXCOLOR colorKey = D3DCOLOR_ARGB(255, 255, 255, 255), 
-		D3DXVECTOR2 scale = D3DXVECTOR2(), Point translate = Point(), float angle = 0, 
-		D3DXVECTOR2 rotationCenter = D3DXVECTOR2(), bool isFlipHorizontal = false);
-
-	LPDIRECT3DTEXTURE9 GetTexture();
 
 	void SetWidth(int width);
 	int GetWidth();
@@ -26,56 +21,30 @@ public:
 	void SetHeight(int height);
 	int GetHeight();
 
-	D3DXIMAGE_INFO GetImageInfo(); // lay thong tin thuc cua hinh anh duoc lay
-
-	D3DXVECTOR3 GetPosition();
-	void SetPosition(D3DXVECTOR3 pos);
-	void SetPosition(float x, float y);
-	void SetPosition(D3DXVECTOR2 pos);
-
-	D3DXVECTOR2 GetScale();
-	void SetScale(D3DXVECTOR2 scale);
-
-	D3DXVECTOR2 GetTranslation(); // phep tinh tien tu world position -> view position
-	void SetTranslation(D3DXVECTOR2 translation); // phep tinh tien: tu the world position -> view position
-
-	D3DXVECTOR2 GetRotationCenter();
-	void SetRotationCenter(D3DXVECTOR2 rotationCenter);
-
-	float GetRotation();
-	void SetRotation(float rotation); // by radian
-
 	void SetSourceRect(RECT rect);
 
-	void FlipHorizontal(bool flag); // true: lat hinh theo chieu doc, false: binh thuong
-	bool IsFlipHorizontal();
-
-	void FlipVertical(bool flag); // true: lat hinh theo chieu ngang, false: binh thuong
-	bool IsFlipVertical();
+	
+	//void Draw(Point pos, int alpha = 255);
+	void Draw(DrawArguments drawArguments);
 
 protected:
-	//su dung cho ke thua
-	void Init();
-
-	bool isRect(RECT rect);
-
-	D3DXVECTOR3             mPosition; // vi tri cua Sprite, co goc la chinh giua hinh anh Texture
 	LPDIRECT3DTEXTURE9      mTexture; // load hinh anh vao day
 	LPD3DXSPRITE            mSpriteHandler; //SpriteHandler ho tro ve hinh
 	D3DXIMAGE_INFO          mImageInfo; // thong tin thuc cua hinh anh duoc lay
 	RECT                    mSpriteRect; // hinh chu nhat cat tu anh cua texture
-
 	int                     mWidth, mHeight; // kich thuoc cua texture
-
-	bool                    mIsFlipVertical, // lat theo chieu doc
-		mIsFlipHorizontal; // lat theo chieu ngang
-
-	float                   mRotation; // goc quay cua Sprite tinh theo radian
-
-	D3DXVECTOR2             mScale; // Vector tuy chinh do phong to / thu nho cua texture
-	D3DXVECTOR2             mTranslation; //Doi hinh anh vi tri thuc cua Sprite + mTranslate
 	D3DXMATRIX              mMatrix; // ma tran cua Spite ho tro trong cac phep hinh hoc
-	D3DXVECTOR2             mRotationCenter; // diem trung tam trong phep xoay hinh (origin vector)
+
+	//su dung cho ke thua
+	void Init();
+
+	LPDIRECT3DTEXTURE9 GetTexture();
+	D3DXIMAGE_INFO GetImageInfo(); // lay thong tin thuc cua hinh anh duoc lay
+	
+
+	bool isRect(RECT rect);
+
+	
 };
 
 /*
@@ -90,6 +59,3 @@ public:
 	Sprite* Get(int id);
 	void Clear();
 };
-
-
-
