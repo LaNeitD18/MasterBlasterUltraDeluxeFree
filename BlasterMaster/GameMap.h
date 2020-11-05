@@ -33,14 +33,14 @@ public:
 	bool IsBoundRight(); // tuong tu
 	bool IsBoundTop(); // tuong tu
 	bool IsBoundBottom(); // tuong tu
-	RECT GetWorldMapBound(); // lay bien game
+	BoundingBox GetWorldMapBound(); // lay bien game
 
 	~GameMap();
 
 private:
 	void LoadMap(const char* filePath, TextureLibrary* texLib, SpriteLibrary* spriteLib);
 
-	bool isContain(RECT rect1, RECT rect2); // change to bounding box handle if possible
+	bool isContain(BoundingBox rect1, BoundingBox rect2); // change to bounding box handle if possible
 
 	Tmx::Map                        *mMap;
 	std::map<int, Sprite*>          mListTileset;

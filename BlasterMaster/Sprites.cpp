@@ -3,10 +3,10 @@
 #include "Utils.h"
 #include "DrawArguments.h"
 
-Sprite::Sprite(int id, RECT boundingBox, LPDIRECT3DTEXTURE9 tex)
+Sprite::Sprite(int id, BoundingBox boundingBox, LPDIRECT3DTEXTURE9 tex)
 {
 	this->id = id;
-	this->mSpriteRect = boundingBox;
+	this->mSpriteRect = boundingBox.toRect();
 	this->mTexture = tex;
 	this->Init();
 }
@@ -38,14 +38,14 @@ void Sprite::SetHeight(int height)
 	mHeight = height;
 }
 
-void SpriteLibrary::Add(int id, RECT boundingBox, LPDIRECT3DTEXTURE9 tex)
+void SpriteLibrary::Add(int id, BoundingBox boundingBox, LPDIRECT3DTEXTURE9 tex)
 {
 	Sprite* s = new Sprite(id, boundingBox, tex);
 	sprites[id] = s;
 
 	DebugOut(L"[INFO] sprite added: %d, %d, %d, %d, %d \n", id, 
-		boundingBox.left, boundingBox.top, 
-		boundingBox.right, boundingBox.bottom);
+		boundingBox.l, boundingBox.t, 
+		boundingBox.r, boundingBox.b);
 }
 
 Sprite* SpriteLibrary::Get(int id)
@@ -173,9 +173,9 @@ void Sprite::Draw(DrawArguments drawArguments)
 	mSpriteHandler->SetTransform(&oldMatrix); // set lai matrix cu~ de Sprite chi ap dung transfrom voi class nay
 }
 
-void Sprite::SetSourceRect(RECT rect)
+void Sprite::SetSourceRect(BoundingBox boundingbox)
 {
-	mSpriteRect = rect;
+	mSpriteRect = boundingbox.toRect();
 }
 
 LPDIRECT3DTEXTURE9 Sprite::GetTexture()

@@ -1,7 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include "Interactable.h"
-#include "GameObject.h"
+#include "AnimatedGameObject.h"
 #include "GameGlobal.h"
 
 #define SOPHIA_WALKING_SPEED 0.03f

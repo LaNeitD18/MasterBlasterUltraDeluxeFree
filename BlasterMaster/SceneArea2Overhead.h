@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "Textures.h"
 #include "Scene.h"
-#include "GameObject.h"
+#include "AnimatedGameObject.h"
 #include "Brick.h"
 #include "GameMap.h"
 

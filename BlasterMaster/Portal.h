@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject.h"
+#include "AnimatedGameObject.h"
 
 /*
 	Object that triggers scene switching

@@ -43,6 +43,7 @@ void SceneArea2SideView::LoadContent()
 
 	// camera setup
 	mCamera = new Camera(Point(GameGlobal::GetWidth(), GameGlobal::GetHeight()));
+	Camera::setCameraInstance(mCamera);
 	/*mCamera->SetPosition(mMap->GetWidth() / 2 + GameGlobal::GetWidth() / 2,
 		mMap->GetHeight() / 2 + GameGlobal::GetHeight() / 2 + 16);*/
 
@@ -136,11 +137,11 @@ void SceneArea2SideView::_ParseSection_SPRITES(string spritePath)
 
 			int ID = atoi(tokens[0].c_str());
 
-			RECT bbox;
-			bbox.left = atoi(tokens[1].c_str());
-			bbox.top = atoi(tokens[2].c_str());
-			bbox.right = atoi(tokens[3].c_str());
-			bbox.bottom = atoi(tokens[4].c_str());
+			BoundingBox bbox;
+			bbox.l = atoi(tokens[1].c_str());
+			bbox.t = atoi(tokens[2].c_str());
+			bbox.r = atoi(tokens[3].c_str());
+			bbox.b = atoi(tokens[4].c_str());
 			int texID = atoi(tokens[5].c_str());
 
 			LPDIRECT3DTEXTURE9 tex = textureLib->Get(texID);
@@ -467,6 +468,7 @@ void SceneArea2SideView::Init()
 
 void SceneArea2SideView::Update()
 {
+	Camera::setCameraInstance(mCamera);
 	input->Update();
 	for (auto x : objects) {
 		Player* current_player = dynamic_cast<Player*>(x);
