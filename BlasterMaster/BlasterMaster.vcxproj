@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimatedGameObject.h" />
     <ClInclude Include="Animations.h" />
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Brick.h" />
@@ -81,6 +82,7 @@
     <ClInclude Include="WormPod.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimatedGameObject.cpp" />
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Brick.cpp" />

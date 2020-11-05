@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "AnimatedGameObject.h"
 
 #define JUMPER_WALKING_SPEED 0.03f;
 

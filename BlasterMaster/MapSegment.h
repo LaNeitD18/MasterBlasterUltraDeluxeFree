@@ -9,17 +9,12 @@
 // ADDED
 // NAK tien
 // NAK son
-class Environment {
-	
-};
-
-class EmptyEnvironment : public Environment {};
 
 class MapSegment : public Interactable, public GameObject
 {
 public:
 	MapSegment(TextureLibrary* registerInfo, int sprite_id, const char* sprite_file,
-		const char* environmentInfo, RECT& boundingBox);
+		const char* environmentInfo, BoundingBox& boundingBox);
 	virtual ~MapSegment();
 
 	// Note: Lazy init
@@ -41,14 +36,14 @@ private:
 	int sprite_id;
 	const char* environmentInfo;
 	const char* sprite_file;
-	RECT boundingBox;
+	BoundingBox boundingBox;
 	Sprite* sprite;
 
 	// Inherited via GameObject
 	virtual void GetBoundingBox(BoundingBox& box) override
 	{
-		box = BoundingBox(boundingBox.left, boundingBox.top,
-			boundingBox.right, boundingBox.bottom);
+		box = BoundingBox(boundingBox.l, boundingBox.r,
+			boundingBox.r, boundingBox.b);
 	};
 	virtual void Update() override {};
 };

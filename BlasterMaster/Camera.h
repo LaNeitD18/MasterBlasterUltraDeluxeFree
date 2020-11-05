@@ -3,11 +3,11 @@
 
 #include "useful_stuff.h"
 #include "BoundingBox.h"
-#include "GameObject.h"
 #include <D3DX10math.h>
 
 // NAK son
 // NAK tien
+class Player;
 
 class Camera
 {
@@ -35,14 +35,25 @@ public:
 	int GetWidth();
 	int GetHeight();
 	Point GetPosition();
-	RECT GetBound(); // change to BoundingBox later if you can
+	BoundingBox GetBound(); // change to BoundingBox later if you can
 
 	//LeSon
 	void SnapToBoundary();
 	void FollowTarget();
 	void SetTarget(Player* target);
-	void SetCameraBoundary(RECT boundary);
+	void SetCameraBoundary(BoundingBox boundary);
 	void SetCameraBoundary(int left, int top, int right, int bot);
+
+	//singleton
+	static Camera* GetInstance()
+	{
+		if (__instance == NULL)
+		{
+			__instance = new Camera(Point(0,0));
+		}
+		return __instance;
+	}
+	static void setCameraInstance(Camera* camera);
 
 private:
 	int	mWidth,mHeight; // substitute for screen_width and screen_height (use private and get set please)
@@ -50,9 +61,9 @@ private:
 	Point mPosition;
 
 	//LeSon
-	//static Camera* __instance;
+	static Camera* __instance;
 	Player* target;
-	RECT boundary;
+	BoundingBox boundary;
 };
 
 #endif // CAMERACLASS_H

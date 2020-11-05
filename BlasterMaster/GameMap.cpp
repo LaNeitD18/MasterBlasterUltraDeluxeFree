@@ -16,11 +16,11 @@ void GameMap::LoadMap(const char* filePath, TextureLibrary* texLib, SpriteLibrar
 	mMap = new Tmx::Map();
 	mMap->ParseFile(filePath);
 
-	RECT r;
-	r.left = 0;
-	r.top = 0;
-	r.right = this->GetWidth();
-	r.bottom = this->GetHeight();
+	BoundingBox r;
+	r.l = 0;
+	r.t = 0;
+	r.r = this->GetWidth();
+	r.b = this->GetHeight();
 
 	for (size_t i = 0; i < mMap->GetNumTilesets(); i++)
 	{
@@ -41,9 +41,9 @@ void GameMap::LoadMap(const char* filePath, TextureLibrary* texLib, SpriteLibrar
 	}
 }
 
-bool GameMap::isContain(RECT rect1, RECT rect2)
+bool GameMap::isContain(BoundingBox rect1, BoundingBox rect2)
 {
-	if (rect1.left > rect2.right || rect1.right < rect2.left || rect1.top > rect2.bottom || rect1.bottom < rect2.top)
+	if (rect1.l > rect2.r || rect1.r < rect2.l || rect1.t > rect2.b || rect1.b < rect2.t)
 	{
 		return false;
 	}
@@ -92,7 +92,7 @@ void GameMap::Draw()
 			continue;
 		}
 
-		RECT sourceRECT;
+		BoundingBox sourceRECT;
 
 		int tileWidth = mMap->GetTileWidth();
 		int tileHeight = mMap->GetTileHeight();
@@ -123,10 +123,10 @@ void GameMap::Draw()
 					int y = tileID / tileSetWidth;
 					int x = tileID - y * tileSetWidth;
 
-					sourceRECT.top = y * tileHeight;
-					sourceRECT.bottom = sourceRECT.top + tileHeight;
-					sourceRECT.left = x * tileWidth;
-					sourceRECT.right = sourceRECT.left + tileWidth;
+					sourceRECT.t = y * tileHeight;
+					sourceRECT.b = sourceRECT.t + tileHeight;
+					sourceRECT.l = x * tileWidth;
+					sourceRECT.r = sourceRECT.l + tileWidth;
 
 					//tru tilewidth/2 va tileheight/2 vi Sprite ve o vi tri giua hinh anh cho nen doi hinh de cho
 					//dung toa do (0,0) cua the gioi thuc la (0,0) neu khong thi se la (-tilewidth/2, -tileheigth/2);
@@ -135,11 +135,11 @@ void GameMap::Draw()
 					// camera handling
 					if (mCamera != NULL)
 					{
-						RECT objRECT;
-						objRECT.left = position.x - tileWidth / 2;
-						objRECT.top = position.y - tileHeight / 2;
-						objRECT.right = objRECT.left + tileWidth;
-						objRECT.bottom = objRECT.top + tileHeight;
+						BoundingBox objRECT;
+						objRECT.l = position.x - tileWidth / 2;
+						objRECT.t = position.y - tileHeight / 2;
+						objRECT.r = objRECT.l + tileWidth;
+						objRECT.b = objRECT.t + tileHeight;
 
 						//neu nam ngoai camera thi khong Draw
 						if (isContain(objRECT, mCamera->GetBound()) == false)
@@ -174,30 +174,30 @@ void GameMap::SetCamera(Camera * camera)
 
 bool GameMap::IsBoundLeft()
 {
-	return (mCamera->GetBound().left == 0);
+	return (mCamera->GetBound().l == 0);
 }
 
 bool GameMap::IsBoundRight()
 {
-	return (mCamera->GetBound().right == this->GetWidth());
+	return (mCamera->GetBound().r == this->GetWidth());
 }
 
 bool GameMap::IsBoundTop()
 {
-	return (mCamera->GetBound().top == 0);
+	return (mCamera->GetBound().t == 0);
 }
 
 bool GameMap::IsBoundBottom()
 {
-	return (mCamera->GetBound().bottom == this->GetHeight());
+	return (mCamera->GetBound().b == this->GetHeight());
 }
 
-RECT GameMap::GetWorldMapBound()
+BoundingBox GameMap::GetWorldMapBound()
 {
-	RECT bound;
-	bound.left = bound.top = 0;
-	bound.right = mMap->GetWidth() * mMap->GetTileWidth();
-	bound.bottom = mMap->GetHeight() * mMap->GetTileHeight();
+	BoundingBox bound;
+	bound.l = bound.t = 0;
+	bound.r = mMap->GetWidth() * mMap->GetTileWidth();
+	bound.b = mMap->GetHeight() * mMap->GetTileHeight();
 
 	return bound;
 }

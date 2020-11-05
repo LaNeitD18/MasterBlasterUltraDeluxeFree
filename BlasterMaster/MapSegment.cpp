@@ -2,13 +2,13 @@
 #include <iostream>
 #include <fstream>
 
-MapSegment::MapSegment(TextureLibrary * registerInfo, int sprite_id, const char* sprite_file, const char * environmentInfo, RECT & boundingBox)
+MapSegment::MapSegment(TextureLibrary * registerInfo, int sprite_id, const char* sprite_file, const char * environmentInfo, BoundingBox & boundingBox)
 {
 	textureLib = registerInfo;
 	this->sprite_id = sprite_id;
 	this->sprite_file = sprite_file;
 	this->environmentInfo = environmentInfo;
-	this->boundingBox = RECT(boundingBox);
+	this->boundingBox = BoundingBox(boundingBox);
 }
 
 MapSegment::~MapSegment()
@@ -45,7 +45,6 @@ void MapSegment::FullInit()
 			switch (element)
 			{
 			default:
-				env = new EmptyEnvironment();
 				break;
 			}
 			row.push_back(env);

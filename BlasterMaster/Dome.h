@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "AnimatedGameObject.h"
 
 #define DOME_WALKING_SPEED 0.00f;
 

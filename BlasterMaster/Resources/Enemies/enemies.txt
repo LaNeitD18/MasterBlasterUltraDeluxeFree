@@ -116,13 +116,8 @@ Resources\Enemies\sophia_ani.txt
 #9	300	300	9
 
 # ORB
-<<<<<<< HEAD
 10	700	300	10
 10	500	300	11
 
 # SOPHIA
 12	150	150	12
-=======
-#10	700	300	10
-#10	500	300	11
->>>>>>> e43179a68ebd1508bd17d0fde0d1a98e8c0ecf64

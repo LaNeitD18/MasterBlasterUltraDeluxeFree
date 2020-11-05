@@ -1,16 +1,24 @@
 #include "Camera.h"
+#include "GameObject.h"
+
+Camera* Camera::__instance = NULL;
 
 Camera::Camera(Point size) {
 	/*screen_height = size.y;
 	screen_width = size.x;*/
+	target = NULL;
 
 	mWidth = size.x;
 	mHeight = size.y;
 	mPosition = Point(0, 0);
-	boundary.left = 0;
-	boundary.right = 2048;
-	boundary.top = 0;
-	boundary.bottom = 2048;
+	boundary.l = 0;
+	boundary.r = 2048;
+	boundary.t = 0;
+	boundary.b = 2048;
+	if (__instance == NULL)
+		__instance = this;
+	else
+		;//throw 1;
 }
 
 Camera::~Camera() {}
@@ -46,38 +54,38 @@ Point Camera::GetPosition()
 	return mPosition;
 }
 
-RECT Camera::GetBound()
+BoundingBox Camera::GetBound()
 {
-	RECT bound;
-	bound.left = mPosition.x - mWidth / 2;
-	bound.right = bound.left + mWidth;;
-	bound.top = mPosition.y - mHeight / 2;
-	bound.bottom = bound.top + mHeight;
+	BoundingBox bound;
+	bound.l = mPosition.x - mWidth / 2.0;
+	bound.r = bound.l + mWidth;
+	bound.t = mPosition.y - mHeight / 2.0;
+	bound.b = bound.t + mHeight;
 	return bound;
 }
 
 void Camera::SnapToBoundary()
 {
-	RECT cameraRECT = GetBound();
+	BoundingBox cameraRECT = GetBound();
 
-	if (cameraRECT.left < boundary.left)
+	if (cameraRECT.l < boundary.l)
 	{
-		mPosition.x += boundary.left - cameraRECT.left;
+		mPosition.x += boundary.l - cameraRECT.l;
 	}
 
-	if (cameraRECT.right > boundary.right)
+	if (cameraRECT.r > boundary.r)
 	{
-		mPosition.x -= cameraRECT.right - boundary.right;
+		mPosition.x -= cameraRECT.r - boundary.r;
 	}
 
-	if (cameraRECT.top < boundary.top)
+	if (cameraRECT.t < boundary.t)
 	{
-		mPosition.y += boundary.top - cameraRECT.top;
+		mPosition.y += boundary.t - cameraRECT.t;
 	}
 
-	if (cameraRECT.bottom > boundary.bottom)
+	if (cameraRECT.b > boundary.b)
 	{
-		mPosition.y -= cameraRECT.bottom - boundary.bottom;
+		mPosition.y -= cameraRECT.b - boundary.b;
 	}
 }
 
@@ -92,17 +100,23 @@ void Camera::SetTarget(Player * target)
 	this->target = target;
 }
 
-void Camera::SetCameraBoundary(RECT boundary)
+void Camera::SetCameraBoundary(BoundingBox boundary)
 {
 	this->boundary = boundary;
 }
 
 void Camera::SetCameraBoundary(int left, int top, int right, int bot)
 {
-	boundary.left = left;
-	boundary.right - right;
-	boundary.top = top;
-	boundary.bottom = bot;
+	boundary.l = left;
+	boundary.r - right;
+	boundary.t = top;
+	boundary.b = bot;
+}
+
+void Camera::setCameraInstance(Camera * camera)
+{
+	//if (__instance == NULL)
+		__instance = camera;
 }
 
 int Camera::GetWidth()

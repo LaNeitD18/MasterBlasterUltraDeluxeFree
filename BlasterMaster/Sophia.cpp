@@ -1,4 +1,5 @@
 #include "Sophia.h"
+#include "Camera.h"
 
 void Sophia::GetBoundingBox(BoundingBox & bbox)
 {
@@ -32,7 +33,7 @@ void Sophia::Update()
 
 	flags |= (lookedUp ? SOPHIA_STATE_LOOKED_UP : 0);
 
-	if (pos.y < 140) {
+	if (pos.y < 150) {
 		flags |= SOPHIA_STATE_AIRBORNE;
 		newState |= SOPHIA_STATE_AIRBORNE;
 	}
@@ -125,16 +126,16 @@ void Sophia::Update()
 		else if (v.y <= -SOPHIA_EPSILON_THRESHOLD)
 			v.y *= 0.9;
 		else v.y = SOPHIA_EPSILON_THRESHOLD;
-	if (pos.y >= 140 && v.y > 0) {
-		pos.y = 140; v.y = 0;
+	if (pos.y >= 150 && v.y > 0) {
+		pos.y = 150; v.y = 0;
 	}
 
-	if (pos.y > 135 && v.y > 0 && (newState & SOPHIA_STATE_AIRBORNE))
+	if (pos.y > 145 && v.y > 0 && (newState & SOPHIA_STATE_AIRBORNE))
 	{
 		newState |= SOPHIA_STATE_LANDING;
 	}
 
-	if (pos.y == 140 && v.y == 0 && v.x != 0)
+	if (pos.y == 150 && v.y == 0 && v.x != 0)
 	{
 		newState |= SOPHIA_STATE_WALKING;
 	}
@@ -163,7 +164,10 @@ void Sophia::Update()
 
 void Sophia::Render()
 {
-	drawArguments.SetPosition(pos);
+	Point cameraOffset = Camera::GetInstance()->GetPosition();
+	cameraOffset.x -= Camera::GetInstance()->GetWidth() / 2;
+	cameraOffset.y -= Camera::GetInstance()->GetHeight() / 2;
+	drawArguments.SetPosition(pos - cameraOffset);
 	targetAni = SOPHIA_ANI_IDLE;
 	if (currentAni[SOPHIA_ANI_WALKING])
 		targetAni = SOPHIA_ANI_WALKING;

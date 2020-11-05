@@ -131,11 +131,11 @@ void SceneArea2Overhead::_ParseSection_SPRITES(string spritePath)
 
 			int ID = atoi(tokens[0].c_str());
 
-			RECT bbox;
-			bbox.left = atoi(tokens[1].c_str());
-			bbox.top = atoi(tokens[2].c_str());
-			bbox.right = atoi(tokens[3].c_str());
-			bbox.bottom = atoi(tokens[4].c_str());
+			BoundingBox bbox;
+			bbox.l = atoi(tokens[1].c_str());
+			bbox.t = atoi(tokens[2].c_str());
+			bbox.r = atoi(tokens[3].c_str());
+			bbox.b = atoi(tokens[4].c_str());
 			int texID = atoi(tokens[5].c_str());
 
 			LPDIRECT3DTEXTURE9 tex = textureLib->Get(texID);

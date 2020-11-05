@@ -10,12 +10,11 @@
 #include "Textures.h"
 #include "BoundingBox.h"
 #include "DrawArguments.h"
+#include "Camera.h"
 
 using namespace std;
 
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
-
-class GameObject; 
 
 class GameObject
 {
@@ -40,13 +39,13 @@ public:
 	DrawArguments drawArguments;
 
 public: 
-	void SetPosition(Point pos) { this->drawArguments.SetPosition(pos); }
+	void SetPosition(Point pos) { this->pos = pos; }
 	void SetSpeed(Point v) { this->v = v; }
 
-	//Point GetPosition(Point& pos) { return pos = this->pos; }
-	Point GetPosition() { return this->drawArguments.GetPosition(); }
+	Point GetPosition() { return pos; }
+	//Point GetPosition() { return this->drawArguments.GetPosition(); }
 
-	Point GetSpeed(Point& v) { return v = this->v; }
+	Point GetSpeed() { return v; }
 
 	int GetState() { return this->state; }
 
@@ -64,47 +63,6 @@ public:
 	GameObject();
 	~GameObject();
 };
-
-class AnimatedGameObject : public GameObject
-{
-protected:
-	//Long
-	//int currentFrame;
-	int previousFrame;
-	int currentTime;
-	Animation* currentAnimation;
-	bool moving = true;
-	bool isFlipHorizontal = false;
-public:
-	virtual void Render()
-	{
-		drawArguments.SetPosition(pos);
-		drawArguments.FlipVertical(isFlipHorizontal);
-
-		currentAnimation->Render(currentTime, previousFrame, drawArguments);
-		if (!moving)
-			return;
-		currentTime++;
-		if (currentTime >= currentAnimation->GetLoopDuration())
-		{
-			currentTime %= currentAnimation->GetLoopDuration();
-			previousFrame = 0;
-		}
-	}
-	virtual void SetAnimationType(int ANI) 
-	{ 
-		Animation* trg = animationSet->at(ANI);
-		if (currentAnimation != trg)
-		{
-			currentAnimation = trg;
-			previousFrame = 0;
-			currentTime = 0;
-		}
-	}
-};
-
-class Enemy : public AnimatedGameObject 
-{};
 
 class Player : public GameObject
 {};

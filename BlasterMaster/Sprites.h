@@ -5,6 +5,7 @@
 #include "useful_stuff.h"
 #include "GameGlobal.h"
 #include "DrawArguments.h"
+#include "BoundingBox.h"
 
 using namespace std;
 
@@ -13,7 +14,7 @@ class Sprite
 	int id;				// Sprite ID in the sprite database
 	
 public: 
-	Sprite(int id, RECT boundingBox, LPDIRECT3DTEXTURE9 tex);
+	Sprite(int id, BoundingBox boundingBox, LPDIRECT3DTEXTURE9 tex);
 
 	void SetWidth(int width);
 	int GetWidth();
@@ -21,7 +22,7 @@ public:
 	void SetHeight(int height);
 	int GetHeight();
 
-	void SetSourceRect(RECT rect);
+	void SetSourceRect(BoundingBox rect);
 
 	
 	//void Draw(Point pos, int alpha = 255);
@@ -55,7 +56,7 @@ class SpriteLibrary
 	unordered_map<int, Sprite*> sprites;
 
 public:
-	void Add(int id, RECT boundingBox, LPDIRECT3DTEXTURE9 tex);
+	void Add(int id, BoundingBox boundingBox, LPDIRECT3DTEXTURE9 tex);
 	Sprite* Get(int id);
 	void Clear();
 };
