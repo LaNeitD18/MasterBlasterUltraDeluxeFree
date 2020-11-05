@@ -31,17 +31,12 @@ void Worm::Update()
 
 	if (v.x < 0 && pos.x < 0) {
 		pos.x = 0; v.x = -v.x;
-		DebugOut(L"sZZZ\n");
-
-
 		//displayMessage(isFlipHorizontal);
 	}
 
 
 	if (v.x > 0 && pos.x > 80) {
 		pos.x = 80; v.x = -v.x;
-		DebugOut(L"sZZZ\n");
-		
 		//displayMessage(isFlipHorizontal);
 	}
 	/*else {

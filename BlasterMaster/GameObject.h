@@ -40,11 +40,11 @@ public:
 	DrawArguments drawArguments;
 
 public: 
-	void SetPosition(Point pos) { this->drawArguments.SetPosition(pos); }
+	void SetPosition(Point pos) { this->pos = pos; }
 	void SetSpeed(Point v) { this->v = v; }
 
 	//Point GetPosition(Point& pos) { return pos = this->pos; }
-	Point GetPosition() { return this->drawArguments.GetPosition(); }
+	Point GetPosition() { return pos = this->pos; }
 
 	Point GetSpeed(Point& v) { return v = this->v; }
 
@@ -75,6 +75,7 @@ protected:
 	Animation* currentAnimation;
 	bool moving = true;
 	bool isFlipHorizontal = false;
+
 public:
 	virtual void Render()
 	{

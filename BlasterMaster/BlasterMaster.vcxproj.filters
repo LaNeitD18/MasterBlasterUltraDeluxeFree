@@ -7,6 +7,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cannon.cpp" />
     <ClCompile Include="Dome.cpp" />
+    <ClCompile Include="DrawArguments.cpp" />
     <ClCompile Include="Eye.cpp" />
     <ClCompile Include="Floater.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -52,117 +53,9 @@
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="useful_stuff.cpp" />
     <ClCompile Include="Utils.cpp" />
-<<<<<<< HEAD
     <ClCompile Include="Walker.cpp" />
     <ClCompile Include="Worm.cpp" />
     <ClCompile Include="WormPod.cpp" />
-=======
-    <ClCompile Include="SceneArea2SideView.cpp" />
-    <ClCompile Include="Dome.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Eye.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Floater.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Insect.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Jumper.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Laser.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Orb.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Teleporter.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Walker.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Worm.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="WormPod.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Mine.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="GameMap.cpp" />
-    <ClCompile Include="MapReader\base64.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\miniz.c">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\tinyxml2.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\TmxEllipse.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\TmxImage.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\TmxImageLayer.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\TmxLayer.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\TmxMap.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\TmxObject.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\TmxObjectGroup.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\TmxPolygon.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\TmxPolyline.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\TmxPropertySet.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\TmxTerrain.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\TmxTerrainArray.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\TmxTile.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\TmxTileLayer.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\TmxTileOffset.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\TmxTileset.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="MapReader\TmxUtil.cpp">
-      <Filter>MapReader</Filter>
-    </ClCompile>
-    <ClCompile Include="GameGlobal.cpp" />
-    <ClCompile Include="DrawArguments.cpp" />
-    <ClCompile Include="Cannon.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
->>>>>>> e43179a68ebd1508bd17d0fde0d1a98e8c0ecf64
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
@@ -171,6 +64,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cannon.h" />
     <ClInclude Include="Dome.h" />
+    <ClInclude Include="DrawArguments.h" />
     <ClInclude Include="Eye.h" />
     <ClInclude Include="Floater.h" />
     <ClInclude Include="Game.h" />
@@ -221,133 +115,9 @@
     <ClInclude Include="Textures.h" />
     <ClInclude Include="useful_stuff.h" />
     <ClInclude Include="Utils.h" />
-<<<<<<< HEAD
     <ClInclude Include="Walker.h" />
     <ClInclude Include="Worm.h" />
     <ClInclude Include="WormPod.h" />
-=======
-    <ClInclude Include="SceneArea2SideView.h" />
-    <ClInclude Include="Cannon.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Dome.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Eye.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Floater.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Insect.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Jumper.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Laser.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Orb.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Teleporter.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Walker.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Worm.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="WormPod.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Mine.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="GameMap.h" />
-    <ClInclude Include="MapReader\base64.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\tinyxml2.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxEllipse.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxImage.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxImageLayer.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxLayer.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxMap.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxMapTile.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxObject.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxObjectGroup.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxPoint.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxPolygon.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxPolyline.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxPropertySet.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxTerrain.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxTerrainArray.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxTile.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxTileLayer.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxTileOffset.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxTileset.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\TmxUtil.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\zconf.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="MapReader\zlib.h">
-      <Filter>MapReader</Filter>
-    </ClInclude>
-    <ClInclude Include="GameGlobal.h" />
-    <ClInclude Include="DrawArguments.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Enemies">
-      <UniqueIdentifier>{62286d65-d6a4-4efc-b449-0a084529daca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MapReader">
-      <UniqueIdentifier>{15538344-0952-48ce-885c-203dc4e5e25f}</UniqueIdentifier>
-    </Filter>
->>>>>>> e43179a68ebd1508bd17d0fde0d1a98e8c0ecf64
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib.lib" />
