@@ -40,6 +40,7 @@ class Interactable;
 #define APPLY_MACRO(f, ...) DUPLICATE (APPLY_MACRO1 (f, __VA_ARGS__, (), 0))
 #pragma endregion
 
+// add new item
 #define INTERACTABLE_GROUP Player, Enemy, Bullet, Env_Wall, Environment, Sophia
 
 // Interactable

@@ -3,7 +3,6 @@
 #include "Textures.h"
 #include "Scene.h"
 #include "GameObject.h"
-#include "Brick.h"
 #include "GameMap.h"
 
 class SceneArea2SideView: public Scene

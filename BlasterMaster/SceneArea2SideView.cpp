@@ -39,7 +39,7 @@ SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Poi
 
 void SceneArea2SideView::LoadContent()
 {
-	mMap = new GameMap("Map/General/level2-side-tiless.tmx", textureLib, spriteLib);
+	mMap = new GameMap("Map/General/level2-side-maporder.tmx", textureLib, spriteLib);
 
 	// camera setup
 	mCamera = new Camera(Point(GameGlobal::GetWidth(), GameGlobal::GetHeight()));
