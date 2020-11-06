@@ -20,8 +20,6 @@
 #include "GameObject.h"
 #include "Textures.h"
 
-#include "Brick.h"
-
 #include "SceneArea2SideView.h"
 
 #include "Input.h"

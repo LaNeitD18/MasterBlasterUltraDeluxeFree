@@ -33,7 +33,7 @@ void Sophia::Update()
 
 	flags |= (lookedUp ? SOPHIA_STATE_LOOKED_UP : 0);
 
-	if (pos.y < 150) {
+	if (pos.y < 2955) {
 		flags |= SOPHIA_STATE_AIRBORNE;
 		newState |= SOPHIA_STATE_AIRBORNE;
 	}
@@ -120,22 +120,22 @@ void Sophia::Update()
 	pos += dx();
 
 	// psuedo gravity
-	if (pos.y < 800)
+	if (pos.y < 2955)
 		if (v.y >= SOPHIA_EPSILON_THRESHOLD)
 			v.y *= 1.05;
 		else if (v.y <= -SOPHIA_EPSILON_THRESHOLD)
 			v.y *= 0.9;
 		else v.y = SOPHIA_EPSILON_THRESHOLD;
-	if (pos.y >= 150 && v.y > 0) {
-		pos.y = 150; v.y = 0;
+	if (pos.y >= 2955 && v.y > 0) {
+		pos.y = 2955; v.y = 0;
 	}
 
-	if (pos.y > 145 && v.y > 0 && (newState & SOPHIA_STATE_AIRBORNE))
+	if (pos.y > 2950 && v.y > 0 && (newState & SOPHIA_STATE_AIRBORNE))
 	{
 		newState |= SOPHIA_STATE_LANDING;
 	}
 
-	if (pos.y == 150 && v.y == 0 && v.x != 0)
+	if (pos.y == 2955 && v.y == 0 && v.x != 0)
 	{
 		newState |= SOPHIA_STATE_WALKING;
 	}
