@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "GameMap.h"
+#include "Environment.h"
 
 class SceneArea2SideView: public Scene
 {
@@ -11,6 +12,9 @@ protected:
 	//CMario *player;					// A play scene has to have player, right? 
 
 	vector<GameObject*> objects;
+
+	//LeSon
+	vector<Environment*> environments;
 
 	TextureLibrary* textureLib;
 	SpriteLibrary* spriteLib;
@@ -32,6 +36,7 @@ private:
 	void _ParseSection_ANIMATIONS(string line);
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
+	void _ParseSection_ENVIRONMENT(string line);
 	//void _ParseSection_MAP(string line, vector<tuple<int, int, int, int, int> > &mapNav);
 
 	Point screenSize;

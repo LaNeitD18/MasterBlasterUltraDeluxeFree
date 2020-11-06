@@ -8,9 +8,18 @@
 #define SOPHIA_ACCELERATION 0.0005f
 #define SOPHIA_JUMP_BOOST_AMOUNT 0.2f
 #define SOPHIA_JUMP_POWER 0.057f
+#define SOPHIA_JUMP_BOOST_DECAY 0.9f
 #define SOPHIA_EPSILON_THRESHOLD 0.01f
 
 #define SOPHIA_ACTION_AMOUNT 13
+
+#define SOPHIA_BBOX_OFFSET_LEFT -12
+#define SOPHIA_BBOX_OFFSET_RIGHT 12
+#define SOPHIA_BBOX_OFFSET_TOP 2
+#define SOPHIA_BBOX_OFFSET_BOTTOM 20
+
+#define SOPHIA_FALL_ACCELERATE_COEFFICIENT 1.05f
+#define SOPHIA_FALL_DECELERATE_COEFFICIENT 0.9f
 /*
 Actions:
 	Walking
@@ -54,7 +63,7 @@ enum SophiaAni {
 
 
 class Sophia :
-	public Player, public Interactable
+	public Player
 {
 	double jumpBoostRemaining;
 
@@ -67,10 +76,10 @@ class Sophia :
 	int targetFrame;
 	int targetAni;
 public:
-	virtual void Interact(Interactable* other) { other->Interact(this); }
+	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
 
-	virtual void GetBoundingBox(BoundingBox& box);
+	virtual BoundingBox GetBoundingBox();
 	virtual void Update();
 	virtual void Render();
 	virtual void StartAnimationType(int ANI);

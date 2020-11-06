@@ -10,7 +10,7 @@ Floater::Floater(float x, float y) {
 	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
 }
 
-void Floater::GetBoundingBox(BoundingBox& box)
+BoundingBox Floater::GetBoundingBox()
 {
 	float left = pos.x;
 	float top = pos.y;
@@ -21,7 +21,7 @@ void Floater::GetBoundingBox(BoundingBox& box)
 		bottom = pos.y + FLOATER_BBOX_HEIGHT_DIE;
 	else
 		bottom = pos.y + FLOATER_BBOX_HEIGHT;
-	box = BoundingBox(left, top, right, bottom);
+	return BoundingBox(left, top, right, bottom);
 }
 
 void Floater::Update()

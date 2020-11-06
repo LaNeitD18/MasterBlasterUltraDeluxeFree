@@ -9,7 +9,7 @@
 // ADDED
 // NAK tien
 // NAK son
-
+/*
 class MapSegment : public Interactable, public GameObject
 {
 public:
@@ -40,11 +40,11 @@ private:
 	Sprite* sprite;
 
 	// Inherited via GameObject
-	virtual void GetBoundingBox(BoundingBox& box) override
+	virtual BoundingBox GetBoundingBox() override
 	{
-		box = BoundingBox(boundingBox.l, boundingBox.r,
+		return BoundingBox(boundingBox.l, boundingBox.r,
 			boundingBox.r, boundingBox.b);
 	};
 	virtual void Update() override {};
 };
-
+//*/

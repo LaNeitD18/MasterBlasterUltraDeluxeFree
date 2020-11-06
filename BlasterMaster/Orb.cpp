@@ -10,7 +10,7 @@ Orb::Orb(float x, float y) {
 	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
 }
 
-void Orb::GetBoundingBox(BoundingBox& box)
+BoundingBox Orb::GetBoundingBox()
 {
 	float left = pos.x;
 	float top = pos.y;
@@ -21,7 +21,7 @@ void Orb::GetBoundingBox(BoundingBox& box)
 		bottom = pos.y + ORB_BBOX_HEIGHT_DIE;
 	else
 		bottom = pos.y + ORB_BBOX_HEIGHT;
-	box = BoundingBox(left, top, right, bottom);
+	return BoundingBox(left, top, right, bottom);
 }
 
 void Orb::Update()

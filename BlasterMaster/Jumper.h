@@ -16,7 +16,7 @@
 
 class Jumper : public Enemy
 {
-	virtual void GetBoundingBox(BoundingBox&);
+	virtual BoundingBox GetBoundingBox();
 	virtual void Update();
 	virtual void Render();
 	

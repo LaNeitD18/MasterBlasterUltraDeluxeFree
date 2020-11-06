@@ -13,7 +13,7 @@ Worm::Worm(float x, float y)
 	isFlipVertical = true;
 }
 
-void Worm::GetBoundingBox(BoundingBox& box)
+BoundingBox Worm::GetBoundingBox()
 {
 	float left = pos.x;
 	float top = pos.y;
@@ -23,7 +23,7 @@ void Worm::GetBoundingBox(BoundingBox& box)
 		bottom = pos.y + WORM_BBOX_HEIGHT_DIE;
 	else
 		bottom = pos.y + WORM_BBOX_HEIGHT;
-	box = BoundingBox(left, top, right, bottom);
+	return BoundingBox(left, top, right, bottom);
 }
 
 void Worm::Fall() 

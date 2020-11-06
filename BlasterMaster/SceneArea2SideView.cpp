@@ -83,7 +83,10 @@ SceneArea2SideView::~SceneArea2SideView()
 #define SCENE_SECTION_ANIMATION_SETS 5
 #define SCENE_SECTION_OBJECTS 6
 #define SCENE_SECTION_MAP 7
-#define OBJECT_TYPE_PORTAL 50
+//LeSon
+#define SCENE_SECTION_ENVIRONMENT 8
+
+//#define OBJECT_TYPE_PORTAL 50
 
 #define OBJECT_TYPE_WORM 1
 #define OBJECT_TYPE_JUMPER 2
@@ -97,6 +100,14 @@ SceneArea2SideView::~SceneArea2SideView()
 #define OBJECT_TYPE_ORB 10
 #define OBJECT_TYPE_WALKER 11
 #define OBJECT_TYPE_SOPHIA 12
+
+//LeSon
+#define ENVIRONMENT_TYPE_WALL 1
+#define ENVIRONMENT_TYPE_SPIKE 2
+#define ENVIRONMENT_TYPE_PORTAL 3
+#define ENVIRONMENT_TYPE_LADDER 4
+#define ENVIRONMENT_TYPE_LAVA 5
+#define ENVIRONMENT_TYPE_UNKNOWN -1
 
 #define MAX_SCENE_LINE 1024
 
@@ -320,6 +331,38 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
 }
+//LeSon
+void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
+{
+	vector<string> tokens = split(line);
+
+	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
+
+	if (tokens.size() < 5)
+		return; // skip invalid lines - environment must have id, x y, width, height
+
+	int env_type = atoi(tokens[0].c_str());
+	float x = atof(tokens[1].c_str());
+	float y = atof(tokens[2].c_str());
+
+	float width = atoi(tokens[3].c_str());
+	float height = atoi(tokens[4].c_str());
+
+	Environment *env = NULL;
+
+	switch (env_type)
+	{
+	case ENVIRONMENT_TYPE_WALL:
+		env = new Env_Wall(x, y,width,height);
+		break;
+	default:
+		DebugOut(L"[ERR] Invalid env type: %d\n", env_type);
+		return;
+	}
+
+	environments.push_back(env);
+	DebugOut(L"[INFO] An environment add type=%d, x=%f, y=%f, width=%f, height=%f\n", env_type, x, y, width, height);
+}
 //
 //void SceneArea2SideView::_ParseSection_MAP(string line, vector<tuple<int, int, int, int, int>> &mapNav)
 //{
@@ -409,7 +452,14 @@ void SceneArea2SideView::Init()
 		{
 			section = SCENE_SECTION_OBJECTS;
 			continue;
-		}/*
+		}
+		// LeSon
+		if (line == "[ENVIRONMENTS]")
+		{
+			section = SCENE_SECTION_ENVIRONMENT;
+			continue;
+		}
+		/*
 		if (line == "[MAP]")
 		{
 			section = SCENE_SECTION_MAP;
@@ -440,7 +490,12 @@ void SceneArea2SideView::Init()
 			break;
 		case SCENE_SECTION_OBJECTS:
 			_ParseSection_OBJECTS(line);
-			break;/*
+			break;
+			//LeSon
+		case SCENE_SECTION_ENVIRONMENT:
+			_ParseSection_ENVIRONMENT(line);
+			break;
+		/*
 		case SCENE_SECTION_MAP:
 			_ParseSection_MAP(line, mapNav);
 			break;*/
@@ -507,6 +562,13 @@ void SceneArea2SideView::Update()
 	//	if (mCamera->GetPosition().y + mCamera->GetHeight() / 2 >= mMap->GetHeight() + 32) return; // LeSon
 	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
 	//	mCamera->SetPosition(mCamera->GetPosition() + Point(0, 8));
+	//}
+
+	//LeSon
+	//for (auto x : objects) {
+		for (auto y : environments) {
+			target->Interact((Interactable*)y);
+		}
 	//}
 
 	for (size_t i = 0; i < objects.size(); i++)

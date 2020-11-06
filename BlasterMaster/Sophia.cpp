@@ -1,9 +1,15 @@
 #include "Sophia.h"
 #include "Camera.h"
 
-void Sophia::GetBoundingBox(BoundingBox & bbox)
+void Sophia::Interact(Interactable * other) { other->Interact(this); }
+
+BoundingBox Sophia::GetBoundingBox()
 {
-	bbox.l = bbox.r = bbox.t = bbox.b = 0;
+	return BoundingBox(
+		pos.x + SOPHIA_BBOX_OFFSET_LEFT,
+		pos.y + SOPHIA_BBOX_OFFSET_TOP,
+		pos.x + SOPHIA_BBOX_OFFSET_RIGHT,
+		pos.y + SOPHIA_BBOX_OFFSET_BOTTOM);
 	// TODO
 }
 
@@ -33,7 +39,7 @@ void Sophia::Update()
 
 	flags |= (lookedUp ? SOPHIA_STATE_LOOKED_UP : 0);
 
-	if (pos.y < 2955) {
+	if (!wallBot) {
 		flags |= SOPHIA_STATE_AIRBORNE;
 		newState |= SOPHIA_STATE_AIRBORNE;
 	}
@@ -88,7 +94,7 @@ void Sophia::Update()
 		if ((input['X'] & KEY_STATE_DOWN) && jumpBoostRemaining > SOPHIA_EPSILON_THRESHOLD)
 		{
 			// maintain state
-			jumpBoostRemaining *= 0.9;
+			jumpBoostRemaining *= SOPHIA_JUMP_BOOST_DECAY;
 			v.y = -SOPHIA_JUMP_POWER;
 		}
 		else
@@ -120,22 +126,22 @@ void Sophia::Update()
 	pos += dx();
 
 	// psuedo gravity
-	if (pos.y < 2955)
+	if (!wallBot)
 		if (v.y >= SOPHIA_EPSILON_THRESHOLD)
-			v.y *= 1.05;
+			v.y *= SOPHIA_FALL_ACCELERATE_COEFFICIENT;
 		else if (v.y <= -SOPHIA_EPSILON_THRESHOLD)
-			v.y *= 0.9;
+			v.y *= SOPHIA_FALL_DECELERATE_COEFFICIENT;
 		else v.y = SOPHIA_EPSILON_THRESHOLD;
-	if (pos.y >= 2955 && v.y > 0) {
-		pos.y = 2955; v.y = 0;
+	else {
+		v.y = 0;
 	}
 
-	if (pos.y > 2950 && v.y > 0 && (newState & SOPHIA_STATE_AIRBORNE))
+	if (wallBot && v.y > 0 && (newState & SOPHIA_STATE_AIRBORNE))
 	{
 		newState |= SOPHIA_STATE_LANDING;
 	}
 
-	if (pos.y == 2955 && v.y == 0 && v.x != 0)
+	if (wallBot && v.y == 0 && v.x != 0)
 	{
 		newState |= SOPHIA_STATE_WALKING;
 	}
@@ -160,6 +166,8 @@ void Sophia::Update()
 		(SOPHIA_STATE_LOOKED_UP | SOPHIA_STATE_WALKING));
 	//*/
 	
+	// reset wall collision
+	wallBot = wallLeft = wallRight = wallTop = false;
 }
 
 void Sophia::Render()
@@ -345,8 +353,6 @@ void Sophia::EndAnimationType(int ANI)
 	currentTime[ANI] = 0;
 	currentFrame[ANI] = 0;
 	currentAni[ANI] = false;
-	if (ANI == 2)
-		int i = 0;
 }
 
 void Sophia::GoLeft()
@@ -355,6 +361,9 @@ void Sophia::GoLeft()
 
 	if (v.x < -SOPHIA_WALKING_SPEED)
 		v.x = -SOPHIA_WALKING_SPEED;
+
+	if (wallLeft)
+		v.x = 0;
 }
 
 void Sophia::GoRight()
@@ -363,6 +372,9 @@ void Sophia::GoRight()
 
 	if (v.x > SOPHIA_WALKING_SPEED)
 		v.x = SOPHIA_WALKING_SPEED;
+
+	if (wallRight)
+		v.x = 0;
 }
 
 void Sophia::GoHalt()
@@ -373,6 +385,11 @@ void Sophia::GoHalt()
 		v.x = 0;
 	if (!positive)
 		v.x = -v.x;
+
+	if (v.x > 0 && wallRight)
+		v.x = 0;
+	if (v.x < 0 && wallRight)
+		v.x = 0;
 }
 
 Sophia::Sophia()
@@ -384,7 +401,7 @@ Sophia::Sophia()
 		currentFrame[i] = false;
 		currentTime[i] = false;
 	}
-	currentAni[1] = true;
+	currentAni[SOPHIA_ANI_IDLE] = true;
 	currentSet = 0;
 	// set looking right
 	drawArguments.FlipVertical(true);
@@ -400,7 +417,7 @@ Sophia::Sophia(float x, float y)
 		currentFrame[i] = false;
 		currentTime[i] = false;
 	}
-	currentAni[1] = true;
+	currentAni[SOPHIA_ANI_IDLE] = true;
 	currentSet = 0;
 	// set looking right
 	drawArguments.FlipVertical(true);
