@@ -39,14 +39,122 @@
 # sophia landing looked up 1
 523	10142	4	10146	4	10142	4
 
+# sophia idle 1
+524	10099	2
+
+# sophia walking 1
+525	10099	8	10103	8
+
+# sophia jumping 1
+526	10103	4	10099	4	10119	4
+
+# sophia airborne 1
+527	10119	2
+
+# sophia landing 1
+528	10103	4	10107	4	10103	4
+
+# sophia turning 1 * normal - 1 frame - 1 frame flip - normal
+529	10123	100	10111	100	10115	100
+
+# sophia looking up 1
+530	10135	2	10131	2	10127	2
+
+# sophia looked up idle 1
+531	10139	2
+
+# sophia looked up walking
+532	10139	8	10143	8
+
+# sophia jumping looked up 1
+533	10143	4	10139	4	10151	4
+
+# sophia airborne looked up 1
+534	10151	2
+
+# sophia landing looked up 1
+535	10143	4	10147	4	10143	4
+
+# sophia idle 1
+536	10100	2
+
+# sophia walking 1
+537	10100	8	10104	8
+
+# sophia jumping 1
+538	10104	4	10100	4	10120	4
+
+# sophia airborne 1
+539	10120	2
+
+# sophia landing 1
+540	10104	4	10108	4	10104	4
+
+# sophia turning 1 * normal - 1 frame - 1 frame flip - normal
+541	10124	100	10112	100	10116	100
+
+# sophia looking up 1
+542	10136	2	10132	2	10128	2
+
+# sophia looked up idle 1
+543	10140	2
+
+# sophia looked up walking
+544	10140	8	10144	8
+
+# sophia jumping looked up 1
+545	10144	4	10140	4	10152	4
+
+# sophia airborne looked up 1
+546	10152	2
+
+# sophia landing looked up 1
+547	10144	4	10148	4	10144	4
+
+# sophia idle 1
+548	10101	2
+
+# sophia walking 1
+549	10101	8	10105	8
+
+# sophia jumping 1
+550	10105	4	10101	4	10121	4
+
+# sophia airborne 1
+551	10121	2
+
+# sophia landing 1
+552	10105	4	10109	4	10105	4
+
+# sophia turning 1 * normal - 1 frame - 1 frame flip - normal
+553	10125	100	10113	100	10117	100
+
+# sophia looking up 1
+554	10137	2	10133	2	10129	2
+
+# sophia looked up idle 1
+555	10141	2
+
+# sophia looked up walking
+556	10141	8	10145	8
+
+# sophia jumping looked up 1
+557	10145	4	10141	4	10153	4
+
+# sophia airborne looked up 1
+558	10153	2
+
+# sophia landing looked up 1
+559	10145	4	10149	4	10145	4
+
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
 # SOPHIA 1
 12	511	512	513	514	515	516	517	518	519	520	521	522	523
 # SOPHIA 2
-13	511	512	513	514	515	516	517	518	519	520	521	522	523
+15	511	524	525	526	527	528	529	530	531	532	533	534	535
 # SOPHIA 3
-14	511	512	513	514	515	516	517	518	519	520	521	522	523
+14	511	536	537	538	539	540	541	542	543	544	545	546	547
 # SOPHIA 4
-15	511	512	513	514	515	516	517	518	519	520	521	522	523
+13	511	548	549	550	551	552	553	554	555	556	557	558	559

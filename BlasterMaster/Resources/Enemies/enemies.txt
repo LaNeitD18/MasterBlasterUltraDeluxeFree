@@ -86,7 +86,7 @@ Resources\Enemies\orb_ani.txt
 #12 ==== SOPHIA =========
 Resources\Enemies\sophia_ani.txt
 [OBJECTS]
-# type	x	y	ani_set_id	extra_settings per object type
+# type	x	y	ani_set_id1	ani_set_id2...
 
 # WORM
 1	18	90	1
@@ -120,7 +120,7 @@ Resources\Enemies\sophia_ani.txt
 10	500	300	11
 
 # SOPHIA
-12	56	2940	12
+12	56	2940	12	13	14	15
 
 [ENVIRONMENTS]
 # type	x	y	width	height

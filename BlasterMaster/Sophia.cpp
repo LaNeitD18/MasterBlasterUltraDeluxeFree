@@ -211,6 +211,14 @@ void Sophia::Render()
 		targetTime = *targetFrame * 100 + targetTime % 100;
 	}
 
+	if (currentAni[SOPHIA_ANI_WALKING]
+		|| currentAni[SOPHIA_ANI_LOOKED_UP_WALKING])
+	{
+		int frameTotal = animations.size() * SOPHIA_WHEEL_DURATION;
+		currentWheelTime = (currentWheelTime + 1) % frameTotal;
+		currentSet = currentWheelTime / SOPHIA_WHEEL_DURATION;
+	}
+
 	animations[currentSet]->at(targetAni)->
 		Render(targetTime, *targetFrame, drawArguments);
 

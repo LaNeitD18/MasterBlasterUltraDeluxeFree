@@ -20,6 +20,8 @@
 
 #define SOPHIA_FALL_ACCELERATE_COEFFICIENT 1.05f
 #define SOPHIA_FALL_DECELERATE_COEFFICIENT 0.9f
+
+#define SOPHIA_WHEEL_DURATION 4
 /*
 Actions:
 	Walking
@@ -72,6 +74,7 @@ class Sophia :
 	int currentFrame[SOPHIA_ACTION_AMOUNT];
 	bool currentAni[SOPHIA_ACTION_AMOUNT];
 	int currentSet;
+	int currentWheelTime;
 	int targetTime;
 	int targetFrame;
 	int targetAni;
