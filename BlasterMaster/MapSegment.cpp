@@ -1,4 +1,5 @@
 #include "MapSegment.h"
+/*
 #include <iostream>
 #include <fstream>
 
@@ -62,3 +63,4 @@ void MapSegment::Release()
 {
 	delete sprite;
 }
+//*/

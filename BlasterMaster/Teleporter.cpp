@@ -10,7 +10,7 @@ Teleporter::Teleporter(float x, float y) {
 	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
 }
 
-void Teleporter::GetBoundingBox(BoundingBox& box)
+BoundingBox Teleporter::GetBoundingBox()
 {
 	float left = pos.x;
 	float top = pos.y;
@@ -20,7 +20,7 @@ void Teleporter::GetBoundingBox(BoundingBox& box)
 		bottom = pos.y + TELEPORTER_BBOX_HEIGHT_DIE;
 	else
 		bottom = pos.y + TELEPORTER_BBOX_HEIGHT;
-	box = BoundingBox(left, top, right, bottom);
+	return BoundingBox(left, top, right, bottom);
 }
 
 void Teleporter::Update()

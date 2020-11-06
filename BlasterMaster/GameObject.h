@@ -11,6 +11,7 @@
 #include "BoundingBox.h"
 #include "DrawArguments.h"
 #include "Camera.h"
+#include "Interactable.h"
 
 using namespace std;
 
@@ -55,14 +56,20 @@ public:
 	
 	virtual RESULT Init(TextureLibrary* textureLib);
 
-	virtual void GetBoundingBox(BoundingBox&) = 0;
+	virtual BoundingBox GetBoundingBox() = 0;
 	virtual void Update() = 0;
 	virtual void Render() = 0;
 	virtual void SetState(int state) { this->state = state; }
 
 	GameObject();
 	~GameObject();
+
+	// mark if collide with wall in different pos
+	bool wallTop;
+	bool wallBot;
+	bool wallLeft;
+	bool wallRight;
 };
 
-class Player : public GameObject
+class Player : public GameObject, public Interactable
 {};

@@ -15,7 +15,7 @@
 
 class Floater : public AnimatedGameObject
 {
-	virtual void GetBoundingBox(BoundingBox& box);
+	virtual BoundingBox GetBoundingBox();
 	virtual void Update();
 	virtual void Render();
 

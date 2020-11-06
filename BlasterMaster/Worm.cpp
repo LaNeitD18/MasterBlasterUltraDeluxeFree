@@ -12,7 +12,7 @@ Worm::Worm(float x, float y)
 	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
 }
 
-void Worm::GetBoundingBox(BoundingBox& box)
+BoundingBox Worm::GetBoundingBox()
 {
 	float left = pos.x;
 	float top = pos.y;
@@ -22,7 +22,7 @@ void Worm::GetBoundingBox(BoundingBox& box)
 		bottom = pos.y + WORM_BBOX_HEIGHT_DIE;
 	else
 		bottom = pos.y + WORM_BBOX_HEIGHT;
-	box = BoundingBox(left, top, right, bottom);
+	return BoundingBox(left, top, right, bottom);
 }
 
 void Worm::Update()
@@ -31,7 +31,6 @@ void Worm::Update()
 
 	if (v.x < 0 && pos.x < 0) {
 		pos.x = 0; v.x = -v.x;
-		DebugOut(L"sZZZ\n");
 
 
 		//displayMessage(isFlipHorizontal);
@@ -40,7 +39,6 @@ void Worm::Update()
 
 	if (v.x > 0 && pos.x > 80) {
 		pos.x = 80; v.x = -v.x;
-		DebugOut(L"sZZZ\n");
 		
 		//displayMessage(isFlipHorizontal);
 	}

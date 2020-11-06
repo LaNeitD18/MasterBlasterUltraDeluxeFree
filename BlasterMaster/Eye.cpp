@@ -10,7 +10,7 @@ Eye::Eye(float x, float y) {
 	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
 }
 
-void Eye::GetBoundingBox(BoundingBox& box)
+BoundingBox Eye::GetBoundingBox()
 {
 	float left = pos.x;
 	float top = pos.y;
@@ -21,7 +21,7 @@ void Eye::GetBoundingBox(BoundingBox& box)
 		bottom = pos.y + EYE_BBOX_HEIGHT_DIE;
 	else
 		bottom = pos.y + EYE_BBOX_HEIGHT;
-	box = BoundingBox(left, top, right, bottom);
+	return BoundingBox(left, top, right, bottom);
 }
 
 void Eye::Update()

@@ -10,7 +10,7 @@ Cannon::Cannon(float x, float y) {
 	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
 }
 
-void Cannon::GetBoundingBox(BoundingBox& box)
+BoundingBox Cannon::GetBoundingBox()
 {
 	float left = pos.x;
 	float top = pos.y;
@@ -21,7 +21,7 @@ void Cannon::GetBoundingBox(BoundingBox& box)
 		bottom = pos.y + CANNON_BBOX_HEIGHT_DIE;
 	else
 		bottom = pos.y + CANNON_BBOX_HEIGHT;
-	box = BoundingBox(left, top, right, bottom);
+	return BoundingBox(left, top, right, bottom);
 }
 
 void Cannon::Update()
