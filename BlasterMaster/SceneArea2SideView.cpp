@@ -521,6 +521,21 @@ void SceneArea2SideView::Init()
 	//displayMessage("yeah");
 }
 
+void SceneArea2SideView::JumpCheckpoint()
+{
+	Input& input = *GameGlobal::GetInput();
+	// section A
+	if (input[VK_NUMPAD0]) {
+		target->SetPosition(Point(56, 2955));
+		mCamera->SetCameraLimitarea(0, 2814, 1038, 3094);
+	}
+	// section B
+	else if (input[VK_NUMPAD1]) {
+		target->SetPosition(Point(1076, 2955));
+		mCamera->SetCameraLimitarea(1024, 1792, 1550, 3094);
+	}
+}
+
 void SceneArea2SideView::Update()
 {
 	Camera::setCameraInstance(mCamera);
@@ -575,6 +590,8 @@ void SceneArea2SideView::Update()
 	{
 		objects[i]->Update();
 	}
+
+	JumpCheckpoint();
 
 	// Update camera to follow mario
 	Point pos;

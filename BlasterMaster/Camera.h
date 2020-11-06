@@ -41,8 +41,8 @@ public:
 	void SnapToBoundary();
 	void FollowTarget();
 	void SetTarget(Player* target);
-	void SetCameraBoundary(BoundingBox boundary);
-	void SetCameraBoundary(int left, int top, int right, int bot);
+	void SetCameraLimitarea(BoundingBox boundary);
+	void SetCameraLimitarea(float left, float top, float right, float bot);
 
 	//singleton
 	static Camera* GetInstance()

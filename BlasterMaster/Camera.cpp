@@ -12,9 +12,9 @@ Camera::Camera(Point size) {
 	mHeight = size.y;
 	mPosition = Point(0, 0);
 	boundary.l = 0;
-	boundary.r = 1028;
+	boundary.r = 1038;
 	boundary.t = 2814;
-	boundary.b = 3095;
+	boundary.b = 3094;
 	if (__instance == NULL)
 		__instance = this;
 	else
@@ -100,16 +100,16 @@ void Camera::SetTarget(Player * target)
 	this->target = target;
 }
 
-void Camera::SetCameraBoundary(BoundingBox boundary)
+void Camera::SetCameraLimitarea(BoundingBox boundary)
 {
 	this->boundary = boundary;
 }
 
-void Camera::SetCameraBoundary(int left, int top, int right, int bot)
+void Camera::SetCameraLimitarea(float left, float top, float right, float bot)
 {
 	boundary.l = left;
-	boundary.r - right;
 	boundary.t = top;
+	boundary.r = right;
 	boundary.b = bot;
 }
 
