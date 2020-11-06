@@ -41,7 +41,12 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage(0);
 		break;
 	case WM_KEYDOWN:
-		return game->GetInput()->keydown(wParam, lParam);
+		// Only OnKeyDown. Check this flag to see if previous
+		// phase is correct. Prevent multiple message by Window
+		// auto-repeat feature.
+		if ((lParam & 0x4000000) == 0)
+			return game->GetInput()->keydown(wParam, lParam);
+		else break;
 	case WM_KEYUP:
 		return game->GetInput()->keyup(wParam, lParam);
 
@@ -55,10 +60,10 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		return game->GetInput()->mousechange(wParam, lParam);
 		break;
 	default:
-		return DefWindowProc(hWnd, message, wParam, lParam);
+		break;
 	}
 
-	return 0;
+	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
 /*
@@ -150,6 +155,7 @@ int Run()
 		//}
 		//else
 			//Sleep(tickPerFrame - dt);	
+		//OutputDebugString(L"frame done\n");
 	}
 
 	return 1;
