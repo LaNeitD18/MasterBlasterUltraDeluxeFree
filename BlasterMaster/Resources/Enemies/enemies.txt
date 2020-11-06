@@ -89,7 +89,8 @@ Resources\Enemies\sophia_ani.txt
 # type	x	y	ani_set_id	extra_settings per object type
 
 # WORM
-1	18	90	1
+1	150	2850	1
+#1	210	2850	1
 
 # JUMPER
 #2	18	88	2
