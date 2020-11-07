@@ -28,3 +28,11 @@ public:
 	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
 	Env_Wall(float x, float y, float width, float height);
 };
+
+class Spike : public Environment
+{
+public:
+	virtual void Interact(Interactable* other);
+	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
+	Spike(float x, float y, float width, float height);
+};

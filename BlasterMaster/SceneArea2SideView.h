@@ -40,6 +40,9 @@ private:
 	//void _ParseSection_MAP(string line, vector<tuple<int, int, int, int, int> > &mapNav);
 
 	Point screenSize;
+
+	//LeSon
+	void JumpCheckpoint();
 public: 
 	SceneArea2SideView(int id, LPCWSTR filePath, Game* game, Point screenSize);
 	virtual ~SceneArea2SideView();
