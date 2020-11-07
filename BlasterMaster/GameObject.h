@@ -17,7 +17,7 @@ using namespace std;
 
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
 
-class GameObject
+class GameObject : public Interactable
 {
 public:
 	Point pos;
@@ -71,5 +71,5 @@ public:
 	bool wallRight;
 };
 
-class Player : public GameObject, public Interactable
+class Player : public GameObject
 {};

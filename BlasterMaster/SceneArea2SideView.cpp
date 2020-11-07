@@ -6,6 +6,7 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
+#include "GameObject.h"
 
 #include "Worm.h"
 #include "Jumper.h"
@@ -287,7 +288,7 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_WORM:
 		obj = new Worm(x, y);
 		break;
-	case OBJECT_TYPE_JUMPER:
+	/*case OBJECT_TYPE_JUMPER:
 		obj = new Jumper(x, y);
 		break;
 	case OBJECT_TYPE_TELEPORTER:
@@ -316,7 +317,7 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_WALKER:
 		obj = new Walker(x, y);
-		break;
+		break;*/
 	case OBJECT_TYPE_SOPHIA:
 		obj = new Sophia(x, y);
 		break;
@@ -591,11 +592,11 @@ void SceneArea2SideView::Update()
 	//}
 
 	//LeSon
-	//for (auto x : objects) {
+	for (auto x : objects) {
 		for (auto y : environments) {
-			target->Interact((Interactable*)y);
+			x->Interact((Interactable*)y);
 		}
-	//}
+	}
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{

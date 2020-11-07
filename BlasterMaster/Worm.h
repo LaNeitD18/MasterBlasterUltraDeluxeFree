@@ -6,7 +6,7 @@
 #define WORM_FALLING_SPEED_X 0.008f;
 
 #define WORM_BBOX_WIDTH 16
-#define WORM_BBOX_HEIGHT 26
+#define WORM_BBOX_HEIGHT 4
 #define WORM_BBOX_HEIGHT_DIE 16
 
 #define WORM_STATE_WALKING 100
@@ -19,9 +19,6 @@
 
 class Worm : public Enemy
 {
-	virtual BoundingBox GetBoundingBox();
-	virtual void Update();
-	virtual void Render();
 	void Fall();
 	void Walk();
 
@@ -29,5 +26,12 @@ public:
 	Worm();
 	Worm(float x, float y);
 	virtual void SetState(int state);
+
+	virtual void Interact(Interactable* other) { other->Interact(this); }
+	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
+
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
 };
 

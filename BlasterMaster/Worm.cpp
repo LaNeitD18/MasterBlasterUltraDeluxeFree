@@ -48,15 +48,15 @@ void Worm::Update()
 
 	if (state == WORM_STATE_FALLING) {
 		Fall();
-		if (pos.y > 2970) {
+		if (wallBot) {
 			SetState(WORM_STATE_WALKING);
 		}
 	}
 	else if (state == WORM_STATE_WALKING) {
 		Walk();
 	}
-	
-	
+	// reset wall collision
+	wallBot = wallLeft = wallRight = wallTop = false;
 }
 
 void Worm::Render()
