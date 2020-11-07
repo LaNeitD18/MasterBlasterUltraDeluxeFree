@@ -44,8 +44,10 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// Only OnKeyDown. Check this flag to see if previous
 		// phase is correct. Prevent multiple message by Window
 		// auto-repeat feature.
-		if ((lParam & 0x4000000) == 0)
+		if ((lParam & 0x40000000) == 0) {
+			//DebugOut(L"lParam: %x , %x\n", lParam, lParam & 0x40000000);
 			return game->GetInput()->keydown(wParam, lParam);
+		}
 		else break;
 	case WM_KEYUP:
 		return game->GetInput()->keyup(wParam, lParam);
