@@ -97,6 +97,7 @@ void GameMap::Draw()
 		int tileWidth = mMap->GetTileWidth();
 		int tileHeight = mMap->GetTileHeight();
 
+		// grid division
 		int centertileX = mCamera->GetPosition().x / tileWidth;
 		int centertileY = mCamera->GetPosition().y / tileHeight;
 		

@@ -41,6 +41,7 @@ SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Poi
 void SceneArea2SideView::LoadContent()
 {
 	mMap = new GameMap("Map/General/level2-side-maporder.tmx", textureLib, spriteLib);
+	foreMap = new GameMap("Map/General/level2-side-fores.tmx", textureLib, spriteLib);
 
 	// camera setup
 	mCamera = new Camera(Point(GameGlobal::GetWidth(), GameGlobal::GetHeight()));
@@ -52,6 +53,7 @@ void SceneArea2SideView::LoadContent()
 		mMap->GetHeight() - GameGlobal::GetHeight() / 2 + 32);
 	
 	mMap->SetCamera(mCamera);
+	foreMap->SetCamera(mCamera);
 	//mMap->Draw();
 	
 }
@@ -70,6 +72,8 @@ SceneArea2SideView::~SceneArea2SideView()
 	delete animationSetLib;
 	mMap->Release();
 	delete mMap;
+	foreMap->Release();
+	delete foreMap;
 }
 
 /*
@@ -637,6 +641,7 @@ void SceneArea2SideView::Render()
 	mMap->Draw();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+	foreMap->Draw();
 }
 
 /*
@@ -651,6 +656,7 @@ void SceneArea2SideView::Release()
 
 	// map release sucks hihi
 	mMap->Release();
+	foreMap->Release();
 
 	// LeSon: maybe cannot do this, have to clear in SwitchScene for Game.cpp, discuss again hihi 
 	textureLib->Clear();

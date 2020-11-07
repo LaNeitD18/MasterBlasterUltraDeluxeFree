@@ -21,6 +21,7 @@ protected:
 	AnimationLibrary* animationLib;
 	AnimationSets* animationSetLib;
 	GameMap* mMap;
+	GameMap* foreMap;
 
 	void LoadContent();
 
