@@ -14,6 +14,7 @@
 12	Resources\sprites\Jason_SideView.png		255	255	255
 13	Resources\sprites\Jason_Overhead.png		255	255	255
 14	Resources\sprites\Sophia.png			255	255	255
+15	Resources\sprites\enemies.png	254	255	255
 # next sprite: 10155
 
 [SPRITES]
@@ -114,7 +115,7 @@ Resources\Enemies\sophia_ani.txt
 8	500	50	8
 
 # INSECT
-9	300	300	9
+#9	100	2955	9
 
 # ORB
 10	700	300	10
