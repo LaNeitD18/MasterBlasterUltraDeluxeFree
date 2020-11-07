@@ -559,6 +559,10 @@ void SceneArea2SideView::JumpCheckpoint()
 		target->SetPosition(Point(2608, 1932));
 		mCamera->SetCameraLimitarea(2560, 1792, 3086, 2072);
 	}
+	else if (input[0x35]) {
+		target->SetPosition(Point(2000, 1164));
+		mCamera->SetCameraLimitarea(1536, 32, 2062, 1792);
+	}
 }
 
 void SceneArea2SideView::Update()

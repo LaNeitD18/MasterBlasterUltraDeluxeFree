@@ -16,6 +16,7 @@ protected:
 	Point             mTranslation; //Doi hinh anh vi tri thuc cua Sprite + mTranslate
 	D3DXVECTOR2             mRotationCenter; // diem trung tam trong phep xoay hinh (origin vector)
 
+	D3DCOLOR	mColor;
 public:
 	DrawArguments();;
 	DrawArguments(Point position, bool isFlipHorizontal, D3DXVECTOR2 scale);

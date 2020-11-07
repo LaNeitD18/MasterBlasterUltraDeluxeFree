@@ -61,7 +61,7 @@ void Interactable::Interact(Sophia * player, Spike * spike) {
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox spikeBox = spike->GetBoundingBox();
 	if (playerBox.IsOverlap(spikeBox)) {
-		player->TakeDamage(25);
+		player->TakeDamage(25); // define later
 	}
 }
 
