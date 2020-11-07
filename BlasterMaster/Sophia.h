@@ -15,11 +15,18 @@
 
 #define SOPHIA_BBOX_OFFSET_LEFT -10
 #define SOPHIA_BBOX_OFFSET_RIGHT 10
-#define SOPHIA_BBOX_OFFSET_TOP 2
+#define SOPHIA_BBOX_OFFSET_TOP 4
 #define SOPHIA_BBOX_OFFSET_BOTTOM 20
 
 #define SOPHIA_FALL_ACCELERATE_COEFFICIENT 1.05f
 #define SOPHIA_FALL_DECELERATE_COEFFICIENT 0.9f
+
+#define SOPHIA_WHEEL_DURATION 4
+
+#define SOPHIA_INPUT_JUMP 'X'
+#define SOPHIA_INPUT_LEFT VK_LEFT
+#define SOPHIA_INPUT_RIGHT VK_RIGHT
+#define SOPHIA_INPUT_UP VK_UP
 /*
 Actions:
 	Walking
@@ -72,6 +79,7 @@ class Sophia :
 	int currentFrame[SOPHIA_ACTION_AMOUNT];
 	bool currentAni[SOPHIA_ACTION_AMOUNT];
 	int currentSet;
+	int currentWheelTime;
 	int targetTime;
 	int targetFrame;
 	int targetAni;

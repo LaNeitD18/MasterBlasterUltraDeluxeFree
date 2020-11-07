@@ -27,7 +27,7 @@ void GameObject::RenderBoundingBox()
 	D3DXVECTOR3 p(pos.x, pos.y, 0);
 	RECT rect;
 
-	BoundingBox box=GetBoundingBox();
+	BoundingBox box = GetBoundingBox();
 	rect.left = 0;
 	rect.top = 0;
 	rect.right = (int)box.r - (int)box.l;

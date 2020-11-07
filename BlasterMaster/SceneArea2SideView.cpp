@@ -257,7 +257,6 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	float x = atof(tokens[1].c_str());
 	float y = atof(tokens[2].c_str());
 
-	int ani_set_id = atoi(tokens[3].c_str());
 
 	GameObject *obj = NULL;
 
@@ -326,9 +325,13 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		return;
 	}
 
-	AnimationSet *ani_set = animationSetLib->Get(ani_set_id);
+	for (int i = 3; i < tokens.size(); i++)
+	{
+		int ani_set_id = atoi(tokens[i].c_str());
+		AnimationSet *ani_set = animationSetLib->Get(ani_set_id);
 
-	obj->SetAnimationSet(ani_set);
+		obj->SetAnimationSet(ani_set);
+	}
 	objects.push_back(obj);
 }
 //LeSon
