@@ -42,8 +42,6 @@ Point Environment::GetPosition()
 	return pos;
 }
 
-void Env_Wall::Interact(Interactable * other) { other->Interact(this); }
-
 Env_Wall::Env_Wall(float x, float y, float width, float height)
 {
 	this->width = width;
@@ -53,3 +51,17 @@ Env_Wall::Env_Wall(float x, float y, float width, float height)
 	box.r = x + width;
 	box.b = y + height;
 }
+
+Spike::Spike(float x, float y, float width, float height)
+{
+	this->width = width;
+	this->height = height;
+	box.l = x;
+	box.t = y;
+	box.r = x + width;
+	box.b = y + height;
+}
+
+void Env_Wall::Interact(Interactable * other) { other->Interact(this); }
+
+void Spike::Interact(Interactable * other) { other->Interact(this); }

@@ -257,7 +257,6 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	float x = atof(tokens[1].c_str());
 	float y = atof(tokens[2].c_str());
 
-	int ani_set_id = atoi(tokens[3].c_str());
 
 	GameObject *obj = NULL;
 
@@ -326,9 +325,13 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		return;
 	}
 
-	AnimationSet *ani_set = animationSetLib->Get(ani_set_id);
+	for (int i = 3; i < tokens.size(); i++)
+	{
+		int ani_set_id = atoi(tokens[i].c_str());
+		AnimationSet *ani_set = animationSetLib->Get(ani_set_id);
 
-	obj->SetAnimationSet(ani_set);
+		obj->SetAnimationSet(ani_set);
+	}
 	objects.push_back(obj);
 }
 //LeSon
@@ -354,6 +357,9 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 	{
 	case ENVIRONMENT_TYPE_WALL:
 		env = new Env_Wall(x, y,width,height);
+		break;
+	case ENVIRONMENT_TYPE_SPIKE:
+		env = new Spike(x, y, width, height);
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid env type: %d\n", env_type);
@@ -521,6 +527,26 @@ void SceneArea2SideView::Init()
 	//displayMessage("yeah");
 }
 
+void SceneArea2SideView::JumpCheckpoint()
+{
+	Input& input = *GameGlobal::GetInput();
+	// section A
+	if (input[0x30]) {
+		target->SetPosition(Point(56, 2955));
+		mCamera->SetCameraLimitarea(0, 2814, 1038, 3094);
+	}
+	// section B
+	else if (input[0x31]) {
+		target->SetPosition(Point(1076, 2955));
+		mCamera->SetCameraLimitarea(1024, 1792, 1550, 3094);
+	}
+	//section C
+	else if (input[0x32]) {
+		target->SetPosition(Point(1584, 1932));
+		mCamera->SetCameraLimitarea(1536, 1792, 2062, 2072);
+	}
+}
+
 void SceneArea2SideView::Update()
 {
 	Camera::setCameraInstance(mCamera);
@@ -575,6 +601,8 @@ void SceneArea2SideView::Update()
 	{
 		objects[i]->Update();
 	}
+
+	JumpCheckpoint();
 
 	// Update camera to follow mario
 	Point pos;

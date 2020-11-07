@@ -27,7 +27,7 @@ void Sophia::Update()
 	bool lookedUp;
 	if (state & SOPHIA_STATE_LOOKED_UP)
 	{
-		lookedUp = input[VK_UP] & KEY_STATE_DOWN;
+		lookedUp = input[SOPHIA_INPUT_UP] & KEY_STATE_DOWN;
 		if (lookedUp)
 			newState |= SOPHIA_STATE_LOOKED_UP;
 		else {
@@ -50,12 +50,12 @@ void Sophia::Update()
 	// If sophia is looking left but key press right not left
 	if ((state & SOPHIA_STATE_TURNING) ||
 		((state & SOPHIA_STATE_LOOKING_LEFT)
-			&& (input[VK_RIGHT] & KEY_STATE_DOWN)
-			&& (!(input[VK_LEFT] & KEY_STATE_DOWN))) ||
+			&& (input[SOPHIA_INPUT_RIGHT] & KEY_STATE_DOWN)
+			&& (!(input[SOPHIA_INPUT_LEFT] & KEY_STATE_DOWN))) ||
 		// If sophia is looking right but key press left not right
 			(!(state & SOPHIA_STATE_LOOKING_LEFT)
-				&& (input[VK_LEFT] & KEY_STATE_DOWN)
-				&& (!(input[VK_RIGHT] & KEY_STATE_DOWN))))
+				&& (input[SOPHIA_INPUT_LEFT] & KEY_STATE_DOWN)
+				&& (!(input[SOPHIA_INPUT_RIGHT] & KEY_STATE_DOWN))))
 	{
 		flags |= SOPHIA_STATE_TURNING;
 		newState |= SOPHIA_STATE_TURNING;
@@ -64,7 +64,7 @@ void Sophia::Update()
 		newState &= ~SOPHIA_STATE_TURNING;
 
 	// Looking up: maintain state
-	if ((input[VK_UP] & KEY_STATE_DOWN) && !lookedUp)
+	if ((input[SOPHIA_INPUT_UP] & KEY_STATE_DOWN) && !lookedUp)
 	{
 		flags |= SOPHIA_STATE_LOOKING_UP;
 		newState |= SOPHIA_STATE_LOOKING_UP;
@@ -91,7 +91,9 @@ void Sophia::Update()
 	
 	//*
 	if (state & SOPHIA_STATE_JUMP_BOOST) {
-		if ((input['X'] & KEY_STATE_DOWN) && jumpBoostRemaining > SOPHIA_EPSILON_THRESHOLD)
+		if ((input[SOPHIA_INPUT_JUMP] & KEY_STATE_DOWN) &&
+			jumpBoostRemaining > SOPHIA_EPSILON_THRESHOLD &&
+			!wallTop)
 		{
 			// maintain state
 			jumpBoostRemaining *= SOPHIA_JUMP_BOOST_DECAY;
@@ -107,18 +109,19 @@ void Sophia::Update()
 
 	//*
 	if (!(newState & SOPHIA_STATE_AIRBORNE) && 
-		(input['X'] & KEY_STATE_ON_DOWN))
+		(input[SOPHIA_INPUT_JUMP] == KEY_STATE_ON_DOWN))
 	{
 		newState |= SOPHIA_STATE_JUMPING;
 		jumpBoostRemaining = SOPHIA_JUMP_BOOST_AMOUNT;
 	}
 	//*/
 
-	if ((input[VK_LEFT] & KEY_STATE_DOWN) && (input[VK_RIGHT] & KEY_STATE_DOWN))
+	if ((input[SOPHIA_INPUT_LEFT] & KEY_STATE_DOWN) && 
+		(input[SOPHIA_INPUT_RIGHT] & KEY_STATE_DOWN))
 		GoHalt();
-	else if (input[VK_LEFT] & KEY_STATE_DOWN)
+	else if (input[SOPHIA_INPUT_LEFT] & KEY_STATE_DOWN)
 		GoLeft();
-	else if (input[VK_RIGHT] & KEY_STATE_DOWN)
+	else if (input[SOPHIA_INPUT_RIGHT] & KEY_STATE_DOWN)
 		GoRight();
 	else
 		GoHalt();
@@ -209,6 +212,14 @@ void Sophia::Render()
 	{
 		targetFrame = &currentFrame[backAni];
 		targetTime = *targetFrame * 100 + targetTime % 100;
+	}
+
+	if (currentAni[SOPHIA_ANI_WALKING]
+		|| currentAni[SOPHIA_ANI_LOOKED_UP_WALKING])
+	{
+		int frameTotal = animations.size() * SOPHIA_WHEEL_DURATION;
+		currentWheelTime = (currentWheelTime + 1) % frameTotal;
+		currentSet = currentWheelTime / SOPHIA_WHEEL_DURATION;
 	}
 
 	animations[currentSet]->at(targetAni)->

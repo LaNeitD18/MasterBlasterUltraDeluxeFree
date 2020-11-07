@@ -55,3 +55,7 @@ void Interactable::Interact(Sophia * player, Env_Wall * wall) {
 		}
 	}
 }
+
+void Interactable::Interact(Sophia * player, Spike * spike) {
+	// implement interact with spike
+}
