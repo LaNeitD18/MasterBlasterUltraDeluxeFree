@@ -36,3 +36,11 @@ public:
 	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
 	Spike(float x, float y, float width, float height);
 };
+
+class Lava : public Environment
+{
+public:
+	virtual void Interact(Interactable* other);
+	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
+	Lava(float x, float y, float width, float height);
+};

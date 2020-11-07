@@ -58,8 +58,19 @@ void Interactable::Interact(Sophia * player, Env_Wall * wall) {
 }
 
 void Interactable::Interact(Sophia * player, Spike * spike) {
-	// implement interact with spike
+	// implement interact with spike (take damage)
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox spikeBox = spike->GetBoundingBox();
+	if (playerBox.IsOverlap(spikeBox)) {
+		player->TakeDamage(25); // define later
+	}
 }
+
+void Interactable::Interact(Sophia* player, Lava* lava) {
+	// implement interact with lava (take damage)
+
+}
+
 
 #pragma region Tien
 void Interactable::Interact(Worm* worm, Env_Wall* wall) {

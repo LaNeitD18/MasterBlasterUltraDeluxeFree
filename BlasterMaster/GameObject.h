@@ -69,7 +69,15 @@ public:
 	bool wallBot;
 	bool wallLeft;
 	bool wallRight;
+
+	// used for interact with damage
+	int HealthPoint;
+	virtual void TakeDamage(int damage);
 };
 
-class Player : public GameObject
-{};
+class Player : public GameObject, public Interactable
+{
+public:
+	int invulnerableFrame;
+	virtual void TakeDamage(int damage);
+};
