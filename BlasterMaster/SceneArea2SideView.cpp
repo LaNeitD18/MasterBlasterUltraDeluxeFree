@@ -6,6 +6,7 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
+#include "GameObject.h"
 
 #include "Worm.h"
 #include "Jumper.h"
@@ -361,6 +362,9 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 	case ENVIRONMENT_TYPE_SPIKE:
 		env = new Spike(x, y, width, height);
 		break;
+	case ENVIRONMENT_TYPE_LAVA:
+		env = new Lava(x, y, width, height);
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid env type: %d\n", env_type);
 		return;
@@ -544,6 +548,16 @@ void SceneArea2SideView::JumpCheckpoint()
 	else if (input[0x32]) {
 		target->SetPosition(Point(1584, 1932));
 		mCamera->SetCameraLimitarea(1536, 1792, 2062, 2072);
+	}
+	// section D
+	else if (input[0x33]) {
+		target->SetPosition(Point(2096, 1932));
+		mCamera->SetCameraLimitarea(2048, 1024, 2574, 2072);
+	}
+	// section E
+	else if (input[0x34]) {
+		target->SetPosition(Point(2608, 1932));
+		mCamera->SetCameraLimitarea(2560, 1792, 3086, 2072);
 	}
 }
 

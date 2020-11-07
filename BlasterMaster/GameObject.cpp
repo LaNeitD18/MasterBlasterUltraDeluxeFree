@@ -41,6 +41,11 @@ GameObject::~GameObject()
 
 }
 
+void GameObject::TakeDamage(int damage)
+{
+	HealthPoint -= damage;
+}
+
 //void AnimatedGameObject::Render()
 //{
 //	currentAnimation->Render(pos, currentTime, currentFrame);

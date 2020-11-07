@@ -62,6 +62,18 @@ Spike::Spike(float x, float y, float width, float height)
 	box.b = y + height;
 }
 
+Lava::Lava(float x, float y, float width, float height)
+{
+	this->width = width;
+	this->height = height;
+	box.l = x;
+	box.t = y;
+	box.r = x + width;
+	box.b = y + height;
+}
+
 void Env_Wall::Interact(Interactable * other) { other->Interact(this); }
 
 void Spike::Interact(Interactable * other) { other->Interact(this); }
+
+void Lava::Interact(Interactable * other) { other->Interact(this); }

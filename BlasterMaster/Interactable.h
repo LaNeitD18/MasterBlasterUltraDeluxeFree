@@ -41,7 +41,7 @@ class Interactable;
 #pragma endregion
 
 // add new item
-#define INTERACTABLE_GROUP Player, Enemy, Bullet, Env_Wall, Sophia, Spike
+#define INTERACTABLE_GROUP Player, Enemy, Bullet, Env_Wall, Sophia, Spike, Lava
 
 // Interactable
 #define ___CLASS(x) class x;
@@ -78,6 +78,7 @@ public:
 	//add to when new interaction comes out
 	INTERACTABLE_MIRROR_DEF(Sophia, Env_Wall);
 	INTERACTABLE_MIRROR_DEF(Sophia, Spike);
+	INTERACTABLE_MIRROR_DEF(Sophia, Lava);
 	//INTERACTABLE_MIRROR_DEF(Bullet, Enemy);
 #undef INTERACTABLE_MIRROR_DEF
 };
