@@ -355,6 +355,9 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 	case ENVIRONMENT_TYPE_WALL:
 		env = new Env_Wall(x, y,width,height);
 		break;
+	case ENVIRONMENT_TYPE_SPIKE:
+		env = new Spike(x, y, width, height);
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid env type: %d\n", env_type);
 		return;
@@ -525,14 +528,19 @@ void SceneArea2SideView::JumpCheckpoint()
 {
 	Input& input = *GameGlobal::GetInput();
 	// section A
-	if (input[VK_NUMPAD0]) {
+	if (input[0x30]) {
 		target->SetPosition(Point(56, 2955));
 		mCamera->SetCameraLimitarea(0, 2814, 1038, 3094);
 	}
 	// section B
-	else if (input[VK_NUMPAD1]) {
+	else if (input[0x31]) {
 		target->SetPosition(Point(1076, 2955));
 		mCamera->SetCameraLimitarea(1024, 1792, 1550, 3094);
+	}
+	//section C
+	else if (input[0x32]) {
+		target->SetPosition(Point(1584, 1932));
+		mCamera->SetCameraLimitarea(1536, 1792, 2062, 2072);
 	}
 }
 
