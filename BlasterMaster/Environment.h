@@ -29,18 +29,18 @@ public:
 	Env_Wall(float x, float y, float width, float height);
 };
 
-class Spike : public Environment
+class Env_Spike : public Environment
 {
 public:
 	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
-	Spike(float x, float y, float width, float height);
+	Env_Spike(float x, float y, float width, float height);
 };
 
-class Lava : public Environment
+class Env_Lava : public Environment
 {
 public:
 	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
-	Lava(float x, float y, float width, float height);
+	Env_Lava(float x, float y, float width, float height);
 };

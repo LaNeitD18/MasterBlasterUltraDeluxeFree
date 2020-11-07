@@ -119,6 +119,7 @@ bool Sprite::isRect(RECT rect)
 
 void Sprite::Draw(DrawArguments drawArguments)
 {
+	D3DCOLOR color = drawArguments.GetColor();
 	//FlipHorizontal(isFlipHorizontal);
 	RECT inSourceRect = mSpriteRect;
 	Point pos = drawArguments.GetPosition();
@@ -168,7 +169,7 @@ void Sprite::Draw(DrawArguments drawArguments)
 		&inSourceRect,
 		&inPosition,
 		&inPosition,
-		D3DCOLOR_ARGB(255, 255, 255, 255)); // nhung pixel nao co mau trang se duoc to mau nay len
+		color); 
 
 	mSpriteHandler->SetTransform(&oldMatrix); // set lai matrix cu~ de Sprite chi ap dung transfrom voi class nay
 }

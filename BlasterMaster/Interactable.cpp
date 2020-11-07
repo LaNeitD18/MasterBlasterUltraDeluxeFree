@@ -12,6 +12,8 @@ Interactable::~Interactable()
 {
 }
 
+#define DAMAGE_OF_SPIKE 25
+
 void Interactable::Interact(Sophia * player, Env_Wall * wall) {
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox wallBox = wall->GetBoundingBox();
@@ -57,16 +59,16 @@ void Interactable::Interact(Sophia * player, Env_Wall * wall) {
 	}
 }
 
-void Interactable::Interact(Sophia * player, Spike * spike) {
+void Interactable::Interact(Sophia * player, Env_Spike * spike) {
 	// implement interact with spike (take damage)
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox spikeBox = spike->GetBoundingBox();
 	if (playerBox.IsOverlap(spikeBox)) {
-		player->TakeDamage(25); // define later
+		player->TakeDamage(DAMAGE_OF_SPIKE); // define later
 	}
 }
 
-void Interactable::Interact(Sophia* player, Lava* lava) {
+void Interactable::Interact(Sophia* player, Env_Lava* lava) {
 	// implement interact with lava (take damage)
 
 }
@@ -118,3 +120,5 @@ void Interactable::Interact(Worm* worm, Env_Wall* wall) {
 	}
 }
 #pragma endregion
+
+#undef DAMAGE_OF_SPIKE

@@ -52,7 +52,7 @@ Env_Wall::Env_Wall(float x, float y, float width, float height)
 	box.b = y + height;
 }
 
-Spike::Spike(float x, float y, float width, float height)
+Env_Spike::Env_Spike(float x, float y, float width, float height)
 {
 	this->width = width;
 	this->height = height;
@@ -62,7 +62,7 @@ Spike::Spike(float x, float y, float width, float height)
 	box.b = y + height;
 }
 
-Lava::Lava(float x, float y, float width, float height)
+Env_Lava::Env_Lava(float x, float y, float width, float height)
 {
 	this->width = width;
 	this->height = height;
@@ -74,6 +74,6 @@ Lava::Lava(float x, float y, float width, float height)
 
 void Env_Wall::Interact(Interactable * other) { other->Interact(this); }
 
-void Spike::Interact(Interactable * other) { other->Interact(this); }
+void Env_Spike::Interact(Interactable * other) { other->Interact(this); }
 
-void Lava::Interact(Interactable * other) { other->Interact(this); }
+void Env_Lava::Interact(Interactable * other) { other->Interact(this); }

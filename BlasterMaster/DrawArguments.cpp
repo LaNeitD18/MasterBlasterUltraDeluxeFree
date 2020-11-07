@@ -20,6 +20,7 @@ void DrawArguments::Init()
 	mScale = D3DXVECTOR2(0, 1);
 	mScale.x = mScale.y = 1;
 	mIsFlipHorizontal = false;
+	mColor = D3DCOLOR_ARGB(255, 255, 255, 255);
 }
 
 //void DrawArguments::SetPosition(D3DXVECTOR3 pos)
@@ -116,4 +117,14 @@ D3DXVECTOR2 DrawArguments::GetRotationCenter()
 void DrawArguments::SetRotationCenter(D3DXVECTOR2 rotationCenter)
 {
 	mRotationCenter = rotationCenter;
+}
+
+D3DCOLOR DrawArguments::GetColor()
+{
+	return mColor;
+}
+
+void DrawArguments::SetColor(D3DCOLOR color)
+{
+	mColor = color;
 }

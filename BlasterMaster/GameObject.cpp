@@ -8,7 +8,7 @@
 #include "GameObject.h"
 #include "Sprites.h"
 
-static D3DCOLOR invulnerableColor[4] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,0,255,255),D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,255,0,255) };
+static D3DCOLOR invulnerableColor[6] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,0,255,255),D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,255,0,255),D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,255,255,0) };
 
 GameObject::GameObject()
 {
@@ -78,10 +78,16 @@ void Player::TakeDamage(int damage)
 {
 	if (invulnerableFrame <= 0) {
 		GameObject::TakeDamage(damage);
-		invulnerableFrame = 60; // define durationofinvulnerable
+		invulnerableFrame = DURATION_OF_INVULNERABILITY;
+		DebugOut(L"Current HP : %d", HealthPoint);
 	}
-	else {
+}
+
+void Player::Update()
+{
+	if (invulnerableFrame > 0)
+	{
 		invulnerableFrame--;
 	}
-
+	drawArguments.SetColor(invulnerableColor[(invulnerableFrame / SPRITE_DURATION_OF_INVULNERABILTY) % 6]);
 }

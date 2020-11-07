@@ -45,4 +45,7 @@ public:
 
 	D3DXVECTOR2 GetRotationCenter();
 	void SetRotationCenter(D3DXVECTOR2 rotationCenter);
+
+	D3DCOLOR GetColor();
+	void SetColor(D3DCOLOR color);
 };

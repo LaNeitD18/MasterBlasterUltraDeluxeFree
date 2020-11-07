@@ -360,10 +360,10 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 		env = new Env_Wall(x, y,width,height);
 		break;
 	case ENVIRONMENT_TYPE_SPIKE:
-		env = new Spike(x, y, width, height);
+		env = new Env_Spike(x, y, width, height);
 		break;
 	case ENVIRONMENT_TYPE_LAVA:
-		env = new Lava(x, y, width, height);
+		env = new Env_Lava(x, y, width, height);
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid env type: %d\n", env_type);
