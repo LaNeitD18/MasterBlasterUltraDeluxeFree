@@ -77,7 +77,7 @@ public:
 	virtual void TakeDamage(int damage);
 };
 
-class Player : public GameObject, public Interactable
+class Player : public GameObject
 {
 public:
 	int invulnerableFrame;

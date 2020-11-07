@@ -74,7 +74,9 @@ Env_Lava::Env_Lava(float x, float y, float width, float height)
 
 void Env_Wall::Interact(Interactable * other) { other->Interact(this); }
 
-void Spike::Interact(Interactable * other) { other->Interact(this); }
+void Env_Spike::Interact(Interactable * other) { other->Interact(this); }
+
+void Env_Lava::Interact(Interactable * other) { other->Interact(this); }
 #include "Sophia.h"
 #include "Environment.h"
 #include "Dome.h"
@@ -92,14 +94,11 @@ void Spike::Interact(Interactable * other) { other->Interact(this); }
 #define CURRENT_CLASS Env_Wall
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS
-#define CURRENT_CLASS Spike
+#define CURRENT_CLASS Env_Spike
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS
-/*
+//*
 #define CURRENT_CLASS Env_Lava
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS
 //*/
-void Env_Spike::Interact(Interactable * other) { other->Interact(this); }
-
-void Env_Lava::Interact(Interactable * other) { other->Interact(this); }

@@ -100,3 +100,21 @@ void Worm::SetState(int state)
 		break;
 	}
 }
+
+#include "Sophia.h"
+#include "Environment.h"
+#include "Dome.h"
+#include "Eye.h"
+#include "Floater.h"
+#include "Insect.h"
+#include "Jason.h"
+#include "Jumper.h"
+#include "Laser.h"
+#include "Mine.h"
+#include "Orb.h"
+#include "Worm.h"
+#include "Teleporter.h"
+#include "Walker.h"
+#define CURRENT_CLASS Worm
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
+#undef CURRENT_CLASS

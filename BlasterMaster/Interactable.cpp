@@ -59,7 +59,7 @@ void Interactable::Interact(Player * player, Env_Wall * wall) {
 	}
 }
 
-void Interactable::Interact(Sophia * player, Env_Spike * spike) {
+void Interactable::Interact(Player * player, Env_Spike * spike) {
 	// implement interact with spike (take damage)
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox spikeBox = spike->GetBoundingBox();
@@ -68,7 +68,7 @@ void Interactable::Interact(Sophia * player, Env_Spike * spike) {
 	}
 }
 
-void Interactable::Interact(Sophia* player, Env_Lava* lava) {
+void Interactable::Interact(Player* player, Env_Lava* lava) {
 	// implement interact with lava (take damage)
 
 }
