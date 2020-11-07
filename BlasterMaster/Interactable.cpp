@@ -11,7 +11,7 @@ Interactable::~Interactable()
 {
 }
 
-void Interactable::Interact(Sophia * player, Env_Wall * wall) {
+void Interactable::Interact(Player * player, Env_Wall * wall) {
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox wallBox = wall->GetBoundingBox();
 	if (playerBox.IsOverlap(wallBox)) {
@@ -56,6 +56,6 @@ void Interactable::Interact(Sophia * player, Env_Wall * wall) {
 	}
 }
 
-void Interactable::Interact(Sophia * player, Spike * spike) {
+void Interactable::Interact(Player * player, Spike * spike) {
 	// implement interact with spike
 }

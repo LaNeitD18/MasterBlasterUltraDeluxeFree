@@ -41,7 +41,7 @@ class Interactable;
 #pragma endregion
 
 // add new item
-#define INTERACTABLE_GROUP Player, Enemy, Bullet, Env_Wall, Sophia, Spike
+#define INTERACTABLE_GROUP Player, Env_Wall, Sophia, Spike
 
 // Interactable
 #define ___CLASS(x) class x;
@@ -58,17 +58,37 @@ public:
 
 	virtual void Interact(Interactable* other) = 0;
 
-#define INTERACTABLE_DEF(groupmember) virtual void Interact(groupmember * other) { Interactable::Interact(this, other);}
+#define INTERACTABLE_DEF_H(groupmember) virtual void Interact(groupmember *) ;
+#define INTERACTABLE_DEF_CPP(groupmember) void CURRENT_CLASS :: Interact(groupmember * other) { Interactable::Interact(this, other);}
 	/* //COPY THIS TO ALL INTERACTABLE CLASS HEADER FILES
 	virtual void Interact(Interactable* other) { other->Interact(this); }
-	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
+	//*/
+	/* //COPY THIS TO ALL INTERACTABLE CLASS CPP FILES
+	#include "Sophia.h"
+	#include "Environment.h"
+	#include "Dome.h"
+	#include "Eye.h"
+	#include "Floater.h"
+	#include "Insect.h"
+	#include "Jason.h"
+	#include "Jumper.h"
+	#include "Laser.h"
+	#include "Mine.h"
+	#include "Orb.h"
+	#include "Worm.h"
+	#include "Teleporter.h"
+	#include "Walker.h"
+	#define CURRENT_CLASS <Current class>
+	APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
+	#undef CURRENT_CLASS
 	//*/
 #define INTERACTABLE_DEF_VIRTUAL(groupmember) virtual void Interact(groupmember *) = 0;
 	APPLY_MACRO(INTERACTABLE_DEF_VIRTUAL, INTERACTABLE_GROUP);
 #undef INTERACTABLE_DEF_HERE
 	//*/
 	/** Undefined Interactions goes here*/
-	void Interact(void*, void*){}
+	void Interact(Interactable*, Interactable*){}
 
 #define INTERACTABLE_MIRROR_DEF(mem1, mem2)											\
 	void Interact(mem1 *, mem2 *);													\
@@ -76,8 +96,8 @@ public:
 		{ Interact(other, one); }
 	//INTERACTABLE_MIRROR_DEF(Player, Enemy);
 	//add to when new interaction comes out
-	INTERACTABLE_MIRROR_DEF(Sophia, Env_Wall);
-	INTERACTABLE_MIRROR_DEF(Sophia, Spike);
+	INTERACTABLE_MIRROR_DEF(Player, Env_Wall);
+	INTERACTABLE_MIRROR_DEF(Player, Spike);
 	//INTERACTABLE_MIRROR_DEF(Bullet, Enemy);
 #undef INTERACTABLE_MIRROR_DEF
 };

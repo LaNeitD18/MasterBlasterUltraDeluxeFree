@@ -25,7 +25,7 @@ class Env_Wall : public Environment
 {
 public:
 	virtual void Interact(Interactable* other);
-	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 	Env_Wall(float x, float y, float width, float height);
 };
 
@@ -33,6 +33,6 @@ class Spike : public Environment
 {
 public:
 	virtual void Interact(Interactable* other);
-	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 	Spike(float x, float y, float width, float height);
 };

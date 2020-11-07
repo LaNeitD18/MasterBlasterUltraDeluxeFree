@@ -65,3 +65,28 @@ Spike::Spike(float x, float y, float width, float height)
 void Env_Wall::Interact(Interactable * other) { other->Interact(this); }
 
 void Spike::Interact(Interactable * other) { other->Interact(this); }
+#include "Sophia.h"
+#include "Environment.h"
+#include "Dome.h"
+#include "Eye.h"
+#include "Floater.h"
+#include "Insect.h"
+#include "Jason.h"
+#include "Jumper.h"
+#include "Laser.h"
+#include "Mine.h"
+#include "Orb.h"
+#include "Worm.h"
+#include "Teleporter.h"
+#include "Walker.h"
+#define CURRENT_CLASS Env_Wall
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
+#undef CURRENT_CLASS
+#define CURRENT_CLASS Spike
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
+#undef CURRENT_CLASS
+/*
+#define CURRENT_CLASS Env_Lava
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
+#undef CURRENT_CLASS
+//*/

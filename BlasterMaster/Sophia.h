@@ -85,7 +85,7 @@ class Sophia :
 	int targetAni;
 public:
 	virtual void Interact(Interactable* other);
-	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 
 	virtual BoundingBox GetBoundingBox();
 	virtual void Update();
