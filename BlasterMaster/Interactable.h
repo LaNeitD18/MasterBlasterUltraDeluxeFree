@@ -41,7 +41,8 @@ class Interactable;
 #pragma endregion
 
 // add new item
-#define INTERACTABLE_GROUP Player, Env_Wall, Sophia, Spike
+#define INTERACTABLE_GROUP Player, Enemy, Bullet, Env_Wall, Sophia, Env_Spike, Env_Lava, \
+							Worm
 
 // Interactable
 #define ___CLASS(x) class x;
@@ -95,10 +96,17 @@ public:
 	inline void Interact(mem2 * one, mem1 * other)									\
 		{ Interact(other, one); }
 	//INTERACTABLE_MIRROR_DEF(Player, Enemy);
-	//add to when new interaction comes out
-	INTERACTABLE_MIRROR_DEF(Player, Env_Wall);
-	INTERACTABLE_MIRROR_DEF(Player, Spike);
 	//INTERACTABLE_MIRROR_DEF(Bullet, Enemy);
+
+	//add to when new interaction comes out
+	INTERACTABLE_MIRROR_DEF(Sophia, Env_Wall);
+	INTERACTABLE_MIRROR_DEF(Sophia, Env_Spike);
+    INTERACTABLE_MIRROR_DEF(Sophia, Env_Lava);
+    
+	// Enemies
+	INTERACTABLE_MIRROR_DEF(Worm, Env_Wall);
+	
+	
 #undef INTERACTABLE_MIRROR_DEF
 };
 

@@ -270,7 +270,7 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_WORM:
 		obj = new Worm(x, y);
 		break;
-	case OBJECT_TYPE_JUMPER:
+	/*case OBJECT_TYPE_JUMPER:
 		obj = new Jumper(x, y);
 		break;
 	case OBJECT_TYPE_TELEPORTER:
@@ -299,7 +299,7 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_WALKER:
 		obj = new Walker(x, y);
-		break;
+		break;*/
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;

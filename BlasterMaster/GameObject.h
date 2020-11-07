@@ -16,8 +16,10 @@
 using namespace std;
 
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
+#define DURATION_OF_INVULNERABILITY 60
+#define SPRITE_DURATION_OF_INVULNERABILTY 10
 
-class GameObject
+class GameObject : public Interactable
 {
 public:
 	Point pos;
@@ -69,7 +71,16 @@ public:
 	bool wallBot;
 	bool wallLeft;
 	bool wallRight;
+
+	// used for interact with damage
+	int HealthPoint;
+	virtual void TakeDamage(int damage);
 };
 
 class Player : public GameObject, public Interactable
-{};
+{
+public:
+	int invulnerableFrame;
+	virtual void TakeDamage(int damage);
+	virtual void Update();
+};

@@ -1,6 +1,7 @@
 #include "Interactable.h"
 #include "Sophia.h"
 #include "Environment.h"
+#include "Worm.h"
 
 Interactable::Interactable()
 {
@@ -10,6 +11,8 @@ Interactable::Interactable()
 Interactable::~Interactable()
 {
 }
+
+#define DAMAGE_OF_SPIKE 25
 
 void Interactable::Interact(Player * player, Env_Wall * wall) {
 	BoundingBox playerBox = player->GetBoundingBox();
@@ -56,6 +59,66 @@ void Interactable::Interact(Player * player, Env_Wall * wall) {
 	}
 }
 
-void Interactable::Interact(Player * player, Spike * spike) {
-	// implement interact with spike
+void Interactable::Interact(Sophia * player, Env_Spike * spike) {
+	// implement interact with spike (take damage)
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox spikeBox = spike->GetBoundingBox();
+	if (playerBox.IsOverlap(spikeBox)) {
+		player->TakeDamage(DAMAGE_OF_SPIKE); // define later
+	}
 }
+
+void Interactable::Interact(Sophia* player, Env_Lava* lava) {
+	// implement interact with lava (take damage)
+
+}
+
+
+#pragma region Tien
+void Interactable::Interact(Worm* worm, Env_Wall* wall) {
+	BoundingBox wormBox = worm->GetBoundingBox();
+	BoundingBox wallBox = wall->GetBoundingBox();
+	if (wormBox.IsOverlap(wallBox)) {
+		float overlapAreaX = min(wormBox.r, wallBox.r) - max(wormBox.l, wallBox.l);
+		float overlapAreaY = min(wormBox.b, wallBox.b) - max(wormBox.t, wallBox.t);
+		if (overlapAreaX > overlapAreaY)
+		{
+			if (wormBox.GetCenter().y > wallBox.GetCenter().y) {
+				worm->wallTop = true;
+				// Snap top (player pushed down)
+				Point pos = worm->GetPosition();
+				pos.y -= wormBox.t - wallBox.b;
+				worm->SetPosition(pos);
+			}
+			else
+			{
+				worm->wallBot = true;
+				// Snap bottom (player pushed up)
+				Point pos = worm->GetPosition();
+				pos.y += wallBox.t - wormBox.b;
+				worm->SetPosition(pos);
+			}
+		}
+		else
+		{
+			if (wormBox.GetCenter().x < wallBox.GetCenter().x) {
+				worm->wallRight = true;
+				// Snap right (player to left)
+				Point pos = worm->GetPosition();
+				pos.x -= wormBox.r - wallBox.l;
+				worm->SetPosition(pos);
+			}
+			else
+			{
+				worm->wallLeft = true;
+				// Snap left (player to right)
+				Point pos = worm->GetPosition();
+				pos.x += wallBox.r - wormBox.l;
+				worm->SetPosition(pos);
+			}
+		}
+	}
+}
+#pragma endregion
+
+#undef DAMAGE_OF_SPIKE

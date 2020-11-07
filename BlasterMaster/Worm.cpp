@@ -2,14 +2,15 @@
 #include "Utils.h"
 
 Worm::Worm() {
-	SetState(WORM_STATE_WALKING);
+	SetState(WORM_STATE_FALLING);
 }
 
 Worm::Worm(float x, float y)
 {
-	SetState(WORM_STATE_WALKING);
+	SetState(WORM_STATE_FALLING);
 	pos = Point(x, y);
 	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
+	isFlipVertical = true;
 }
 
 BoundingBox Worm::GetBoundingBox()
@@ -25,29 +26,37 @@ BoundingBox Worm::GetBoundingBox()
 	return BoundingBox(left, top, right, bottom);
 }
 
+void Worm::Fall() 
+{
+	if (pos.y > 2895)
+		v.x = -WORM_FALLING_SPEED_X;
+}
+
+void Worm::Walk()
+{
+	if (v.x < 0 && pos.x < 40) {
+		pos.x = 40; v.x = -v.x;
+	}
+	if (v.x > 0 && pos.x > 126) {
+		pos.x = 126; v.x = -v.x;
+	}
+}
+
 void Worm::Update()
 {
 	pos += dx();
 
-	if (v.x < 0 && pos.x < 0) {
-		pos.x = 0; v.x = -v.x;
-
-
-		//displayMessage(isFlipHorizontal);
+	if (state == WORM_STATE_FALLING) {
+		Fall();
+		if (wallBot) {
+			SetState(WORM_STATE_WALKING);
+		}
 	}
-
-
-	if (v.x > 0 && pos.x > 80) {
-		pos.x = 80; v.x = -v.x;
-		
-		//displayMessage(isFlipHorizontal);
+	else if (state == WORM_STATE_WALKING) {
+		Walk();
 	}
-	/*else {
-		isFlipHorizontal = false;
-		displayMessage(isFlipHorizontal);
-
-	}*/
-
+	// reset wall collision
+	wallBot = wallLeft = wallRight = wallTop = false;
 }
 
 void Worm::Render()
@@ -55,11 +64,17 @@ void Worm::Render()
 	if (state == WORM_STATE_DIE) {
 		SetAnimationType(WORM_ANI_DIE);
 	}
-	else if (v.x > 0) {
-		SetAnimationType(WORM_ANI_WALKING_RIGHT);
-		isFlipHorizontal = false;
+	else if (state == WORM_STATE_FALLING) {
+		SetAnimationType(WORM_ANI_IDLING);
 	}
-	else if (v.x <= 0) isFlipHorizontal = true;
+	else {
+		SetAnimationType(WORM_ANI_WALKING_RIGHT);
+		if (v.x > 0) {
+			
+			isFlipVertical = false;
+		}
+		else  isFlipVertical = true;
+	}
 
 	AnimatedGameObject::Render();
 
@@ -78,6 +93,10 @@ void Worm::SetState(int state)
 		break;
 	case WORM_STATE_WALKING:
 		v.x = WORM_WALKING_SPEED;
+		v.y = 0;
+		break;
+	case WORM_STATE_FALLING:
+		v.y = WORM_FALLING_SPEED_Y;
+		break;
 	}
-
 }

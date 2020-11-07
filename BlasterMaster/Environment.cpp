@@ -52,7 +52,17 @@ Env_Wall::Env_Wall(float x, float y, float width, float height)
 	box.b = y + height;
 }
 
-Spike::Spike(float x, float y, float width, float height)
+Env_Spike::Env_Spike(float x, float y, float width, float height)
+{
+	this->width = width;
+	this->height = height;
+	box.l = x;
+	box.t = y;
+	box.r = x + width;
+	box.b = y + height;
+}
+
+Env_Lava::Env_Lava(float x, float y, float width, float height)
 {
 	this->width = width;
 	this->height = height;
@@ -90,3 +100,6 @@ APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS
 //*/
+void Env_Spike::Interact(Interactable * other) { other->Interact(this); }
+
+void Env_Lava::Interact(Interactable * other) { other->Interact(this); }

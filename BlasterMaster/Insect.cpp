@@ -7,7 +7,7 @@ Insect::Insect() {
 Insect::Insect(float x, float y) {
 	SetState(INSECT_STATE_WALKING);
 	pos = Point(x, y);
-	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 }
 
 BoundingBox Insect::GetBoundingBox()

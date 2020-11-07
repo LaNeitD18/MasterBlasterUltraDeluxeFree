@@ -6,6 +6,7 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
+#include "GameObject.h"
 
 #include "Worm.h"
 #include "Jumper.h"
@@ -287,7 +288,7 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_WORM:
 		obj = new Worm(x, y);
 		break;
-	case OBJECT_TYPE_JUMPER:
+	/*case OBJECT_TYPE_JUMPER:
 		obj = new Jumper(x, y);
 		break;
 	case OBJECT_TYPE_TELEPORTER:
@@ -316,7 +317,7 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_WALKER:
 		obj = new Walker(x, y);
-		break;
+		break;*/
 	case OBJECT_TYPE_SOPHIA:
 		obj = new Sophia(x, y);
 		break;
@@ -359,7 +360,10 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 		env = new Env_Wall(x, y,width,height);
 		break;
 	case ENVIRONMENT_TYPE_SPIKE:
-		env = new Spike(x, y, width, height);
+		env = new Env_Spike(x, y, width, height);
+		break;
+	case ENVIRONMENT_TYPE_LAVA:
+		env = new Env_Lava(x, y, width, height);
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid env type: %d\n", env_type);
@@ -545,6 +549,20 @@ void SceneArea2SideView::JumpCheckpoint()
 		target->SetPosition(Point(1584, 1932));
 		mCamera->SetCameraLimitarea(1536, 1792, 2062, 2072);
 	}
+	// section D
+	else if (input[0x33]) {
+		target->SetPosition(Point(2096, 1932));
+		mCamera->SetCameraLimitarea(2048, 1024, 2574, 2072);
+	}
+	// section E
+	else if (input[0x34]) {
+		target->SetPosition(Point(2608, 1932));
+		mCamera->SetCameraLimitarea(2560, 1792, 3086, 2072);
+	}
+	else if (input[0x35]) {
+		target->SetPosition(Point(2000, 1164));
+		mCamera->SetCameraLimitarea(1536, 32, 2062, 1792);
+	}
 }
 
 void SceneArea2SideView::Update()
@@ -591,11 +609,11 @@ void SceneArea2SideView::Update()
 	//}
 
 	//LeSon
-	//for (auto x : objects) {
+	for (auto x : objects) {
 		for (auto y : environments) {
-			target->Interact((Interactable*)y);
+			x->Interact((Interactable*)y);
 		}
-	//}
+	}
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{

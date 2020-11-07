@@ -15,6 +15,7 @@ BoundingBox Sophia::GetBoundingBox()
 
 void Sophia::Update()
 {
+	Player::Update();
 	//*
 	int prevState = state;
 	int newState = state;
