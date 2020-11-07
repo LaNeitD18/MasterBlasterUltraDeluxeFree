@@ -72,11 +72,29 @@ Env_Lava::Env_Lava(float x, float y, float width, float height)
 	box.b = y + height;
 }
 
+PortalDirection Env_Portal::GetPortalDir()
+{
+	return dir;
+}
+
+Env_Portal::Env_Portal(float x, float y, float width, float height, PortalDirection direction)
+{
+	this->width = width;
+	this->height = height;
+	box.l = x;
+	box.t = y;
+	box.r = x + width;
+	box.b = y + height;
+	dir = direction;
+}
+
 void Env_Wall::Interact(Interactable * other) { other->Interact(this); }
 
 void Env_Spike::Interact(Interactable * other) { other->Interact(this); }
 
 void Env_Lava::Interact(Interactable * other) { other->Interact(this); }
+
+void Env_Portal::Interact(Interactable * other) { other->Interact(this); }
 #include "Sophia.h"
 #include "Environment.h"
 #include "Dome.h"
@@ -102,3 +120,6 @@ APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS
 //*/
+#define CURRENT_CLASS Env_Portal
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
+#undef CURRENT_CLASS

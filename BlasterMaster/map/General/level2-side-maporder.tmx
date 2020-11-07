@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="192" height="192" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="372">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="192" height="192" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="377">
  <tileset firstgid="1" name="level2-side-tiless" tilewidth="16" tileheight="16" tilecount="144" columns="144">
-  <image source="map/General/level2-side-tiless.png" width="2304" height="16"/>
+  <image source="Map/General/level2-side-tiless.png" width="2304" height="16"/>
  </tileset>
  <layer id="1" name="background" width="192" height="192">
   <data encoding="csv">
@@ -352,9 +352,6 @@
   <object id="282" x="2592" y="1952" width="448" height="32"/>
   <object id="283" x="3040" y="1840" width="32" height="144"/>
   <object id="284" x="3008" y="1920" width="32" height="16"/>
-  <object id="285" x="2608" y="1952">
-   <point/>
-  </object>
   <object id="286" x="1536" y="48" width="32" height="1744"/>
   <object id="287" x="1568" y="1760" width="448" height="32"/>
   <object id="289" x="1568" y="1696" width="128" height="32"/>
@@ -449,5 +446,9 @@
   <object id="122" x="1136" y="1840" width="32" height="16"/>
   <object id="123" x="1200" y="1840" width="32" height="16"/>
   <object id="124" x="1264" y="1840" width="32" height="16"/>
+ </objectgroup>
+ <objectgroup id="10" name="portal">
+  <object id="375" x="960" y="2944" width="16" height="32"/>
+  <object id="376" x="1072" y="2944" width="16" height="32"/>
  </objectgroup>
 </map>

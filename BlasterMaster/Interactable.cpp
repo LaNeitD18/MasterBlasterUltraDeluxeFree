@@ -13,6 +13,7 @@ Interactable::~Interactable()
 }
 
 #define DAMAGE_OF_SPIKE 25
+#define DAMAGE_OF_LAVA 25
 
 void Interactable::Interact(Player * player, Env_Wall * wall) {
 	BoundingBox playerBox = player->GetBoundingBox();
@@ -70,7 +71,20 @@ void Interactable::Interact(Player * player, Env_Spike * spike) {
 
 void Interactable::Interact(Player* player, Env_Lava* lava) {
 	// implement interact with lava (take damage)
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox lavaBox = lava->GetBoundingBox();
+	if (playerBox.IsOverlap(lavaBox)) {
+		player->TakeDamage(DAMAGE_OF_LAVA);
+	}
+}
 
+void Interactable::Interact(Player* player, Env_Portal* portal) {
+	// implement interact with lava (take damage)
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox portalBox = portal->GetBoundingBox();
+	if (playerBox.IsOverlap(portalBox)) {
+		
+	}
 }
 
 
