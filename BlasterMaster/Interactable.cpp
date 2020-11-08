@@ -2,6 +2,8 @@
 #include "Sophia.h"
 #include "Environment.h"
 #include "Worm.h"
+#include "Utils.h"
+#include "SceneArea2SideView.h"
 
 Interactable::Interactable()
 {
@@ -80,10 +82,22 @@ void Interactable::Interact(Player* player, Env_Lava* lava) {
 
 void Interactable::Interact(Player* player, Env_Portal* portal) {
 	// implement interact with lava (take damage)
+	Input& input = *GameGlobal::GetInput();
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox portalBox = portal->GetBoundingBox();
 	if (playerBox.IsOverlap(portalBox)) {
-		
+		PortalDirection portalDirection = portal->GetPortalDir();
+		if ((input[VK_RIGHT] && portalDirection == RIGHT) || (input[VK_LEFT] && portalDirection == LEFT)) {
+			BoundingBox limitArea = SceneArea2SideView::cameraLimitAreaOfSection[portal->GetSectionToEnter()];
+			//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
+			if (portalDirection == RIGHT) {
+				player->SetPosition(player->GetPosition() + Point(64, 0));
+			}
+			else {
+				player->SetPosition(player->GetPosition() - Point(64, 0));
+			}
+			Camera::GetInstance()->SetCameraLimitarea(limitArea);
+		}
 	}
 }
 

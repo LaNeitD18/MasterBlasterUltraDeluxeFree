@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="192" height="192" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="377">
- <tileset firstgid="1" name="level2-side-tiless" tilewidth="16" tileheight="16" tilecount="144" columns="144">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="192" height="192" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="378">
+ <tileset firstgid="1" name="level2-side-tiless" tilewidth="16" tileheight="16" tilecount="0" columns="144">
   <image source="Map/General/level2-side-tiless.png" width="2304" height="16"/>
  </tileset>
  <layer id="1" name="background" width="192" height="192">
@@ -226,7 +226,7 @@
   <object id="50" x="592" y="2992" width="80" height="48"/>
   <object id="52" x="784" y="2992" width="16" height="48"/>
   <object id="56" x="944" y="2848" width="80" height="96"/>
-  <object id="60" x="1024" y="1824" width="32" height="1232"/>
+  <object id="60" x="1024" y="1824" width="32" height="1136"/>
   <object id="61" x="1056" y="2976" width="128" height="32"/>
   <object id="62" x="1056" y="3040" width="448" height="16"/>
   <object id="64" x="1504" y="1824" width="32" height="1232"/>
@@ -415,6 +415,7 @@
   <object id="362" x="1952" y="96" width="64" height="32"/>
   <object id="363" x="1568" y="48" width="448" height="16"/>
   <object id="364" x="2016" y="48" width="32" height="1744"/>
+  <object id="377" x="1024" y="2976" width="32" height="80"/>
  </objectgroup>
  <objectgroup id="8" name="lava">
   <object id="207" x="2096" y="1888" width="32" height="16"/>

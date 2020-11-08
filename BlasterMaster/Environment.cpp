@@ -77,7 +77,12 @@ PortalDirection Env_Portal::GetPortalDir()
 	return dir;
 }
 
-Env_Portal::Env_Portal(float x, float y, float width, float height, PortalDirection direction)
+int Env_Portal::GetSectionToEnter()
+{
+	return sectionToEnter;
+}
+
+Env_Portal::Env_Portal(float x, float y, float width, float height, PortalDirection direction, int sectionToEnter)
 {
 	this->width = width;
 	this->height = height;
@@ -85,7 +90,8 @@ Env_Portal::Env_Portal(float x, float y, float width, float height, PortalDirect
 	box.t = y;
 	box.r = x + width;
 	box.b = y + height;
-	dir = direction;
+	this->dir = direction;
+	this->sectionToEnter = sectionToEnter;
 }
 
 void Env_Wall::Interact(Interactable * other) { other->Interact(this); }

@@ -18,6 +18,21 @@ Game * Game::__instance = NULL;
 	- hInst: Application instance handle
 	- hWnd: Application window handle
 */
+
+static BoundingBox cameraLimitAreaOfSection[15] = {
+	// section A
+	BoundingBox(0, 2814, 1038, 3094),
+	// section B
+	BoundingBox(1024, 1792, 1550, 3094),
+	//section C
+	BoundingBox(1536, 1792, 2062, 2072),
+	// section D
+	BoundingBox(2048, 1024, 2574, 2072),
+	// section E
+	BoundingBox(2560, 1792, 3086, 2072),
+	BoundingBox(1536, 32, 2062, 1814),
+};
+
 RESULT Game::Init(HWND hWnd)
 {
 	LPDIRECT3D9 d3d = Direct3DCreate9(D3D_SDK_VERSION);

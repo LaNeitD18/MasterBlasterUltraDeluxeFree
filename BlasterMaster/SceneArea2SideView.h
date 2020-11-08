@@ -52,4 +52,8 @@ public:
 	virtual void Update();
 	virtual void Render();
 	virtual void Release();
+
+	// just handle change in one scene
+	static BoundingBox cameraLimitAreaOfSection[15];
+	static Point startPointInSection[15];
 };

@@ -52,9 +52,11 @@ enum PortalDirection {
 class Env_Portal : public Environment
 {
 	PortalDirection dir;
+	int sectionToEnter;
 public:
 	PortalDirection GetPortalDir();
+	int GetSectionToEnter();
 	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
-	Env_Portal(float x, float y, float width, float height, PortalDirection direction);
+	Env_Portal(float x, float y, float width, float height, PortalDirection direction, int sectionToEnter);
 };
