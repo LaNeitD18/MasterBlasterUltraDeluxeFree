@@ -17,3 +17,10 @@ public:
 
 class Enemy : public AnimatedGameObject
 {};
+
+class AnimatedScene : public AnimatedGameObject
+{
+public:
+	virtual void Interact(Interactable* other);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
+};

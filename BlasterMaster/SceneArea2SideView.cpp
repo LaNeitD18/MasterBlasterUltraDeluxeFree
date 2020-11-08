@@ -78,9 +78,11 @@ void SceneArea2SideView::LoadContent()
 	/*mCamera->SetPosition(mMap->GetWidth() / 2 + GameGlobal::GetWidth() / 2,
 		mMap->GetHeight() / 2 + GameGlobal::GetHeight() / 2 + 16);*/
 
-	mCamera->SetPosition(GameGlobal::GetWidth() / 2,
-		mMap->GetHeight() - GameGlobal::GetHeight() / 2 + 32);
+	/*mCamera->SetPosition(GameGlobal::GetWidth() / 2,
+		mMap->GetHeight() - GameGlobal::GetHeight() / 2 + 32);*/
 	
+	// set limit area of section 1
+	mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[0]);
 	mMap->SetCamera(mCamera);
 	foreMap->SetCamera(mCamera);
 	//mMap->Draw();
@@ -668,6 +670,12 @@ void SceneArea2SideView::Update()
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		objects[i]->Update();
+	}
+
+	// enter to switch scene
+	if ((*input)[VK_TAB] & KEY_STATE_DOWN) {
+		//Game::GetInstance()->SwitchScene(3);
+		Game::GetInstance()->Init(L"Resources/scene.txt",3);
 	}
 
 	JumpCheckpoint();

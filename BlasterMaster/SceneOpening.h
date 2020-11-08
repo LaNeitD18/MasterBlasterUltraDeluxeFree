@@ -1,28 +1,23 @@
 #pragma once
+#include "Scene.h"
 #include "Game.h"
 #include "Textures.h"
-#include "Scene.h"
-#include "AnimatedGameObject.h"
+#include "GameObject.h"
 #include "GameMap.h"
+#include "AnimatedGameObject.h"
 
-class SceneArea2Overhead : public Scene
+class SceneOpening : public Scene
 {
 protected:
-	//CMario *player;					// A play scene has to have player, right? 
-
 	vector<GameObject*> objects;
 
 	TextureLibrary* textureLib;
 	SpriteLibrary* spriteLib;
 	AnimationLibrary* animationLib;
 	AnimationSets* animationSetLib;
-	GameMap* mMap;
-	GameMap* foreMap;
 
 	void LoadContent();
 
-	// camera
-	Camera *mCamera;
 private:
 	Game* game;
 
@@ -31,15 +26,34 @@ private:
 	void _ParseSection_ANIMATIONS(string line);
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
-	//void _ParseSection_MAP(string line, vector<tuple<int, int, int, int, int> > &mapNav);
 
 	Point screenSize;
+
 public:
-	SceneArea2Overhead(int id, LPCWSTR filePath, Game* game, Point screenSize);
-	virtual ~SceneArea2Overhead();
+	SceneOpening(int id, LPCWSTR filePath, Game* game, Point screenSize);
+	virtual ~SceneOpening();
 
 	virtual void Init();
 	virtual void Update();
 	virtual void Render();
 	virtual void Release();
+};
+
+#define TITLE_SPEED 0.00f;
+
+#define TITLE_BBOX_WIDTH 800
+#define TITLE_BBOX_HEIGHT 600
+
+#define TITLE_NORMAL 0
+
+class SceneOpeningTitle : public AnimatedScene
+{
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
+
+public:
+	SceneOpeningTitle();
+	SceneOpeningTitle(float x, float y);
+	virtual void SetState(int state);
 };
