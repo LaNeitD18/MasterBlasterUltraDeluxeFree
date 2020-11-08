@@ -18,7 +18,7 @@
 # next sprite: 10155
 
 [SPRITES]
-# id format: 5XX
+# id format: 10xxx
 #1 WORM
 Resources\Enemies\worm_sprites.txt
 

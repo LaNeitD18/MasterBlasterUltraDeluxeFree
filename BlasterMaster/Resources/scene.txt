@@ -2,5 +2,6 @@
 start	1
 #scene list
 [SCENES]
-1	Resources\Enemies\enemies.txt
-2	Resources\Enemies\enemies_test.txt
+1	Resources\scene_opening.txt
+2	Resources\Enemies\enemies.txt
+3	Resources\Enemies\enemies_overhead1.txt
