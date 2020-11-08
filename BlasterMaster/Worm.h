@@ -3,10 +3,10 @@
 
 #define WORM_WALKING_SPEED 0.02f;
 #define WORM_FALLING_SPEED_Y 0.03f;
-#define WORM_FALLING_SPEED_X 0.008f;
+#define WORM_FALLING_SPEED_X 0.007f;
 
-#define WORM_BBOX_WIDTH 16
-#define WORM_BBOX_HEIGHT 4
+#define WORM_BBOX_WIDTH 10
+#define WORM_BBOX_HEIGHT 6
 #define WORM_BBOX_HEIGHT_DIE 16
 
 #define WORM_STATE_WALKING 100
@@ -19,6 +19,9 @@
 
 class Worm : public Enemy
 {
+	float leftEdge;
+	float rightEdge;
+
 	void Fall();
 	void Walk();
 
@@ -33,5 +36,11 @@ public:
 	virtual BoundingBox GetBoundingBox();
 	virtual void Update();
 	virtual void Render();
+
+	int getLeftEdge();
+	void setLeftEdge(int left);
+
+	int getRightEdge();
+	void setRightEdge(int right);
 };
 

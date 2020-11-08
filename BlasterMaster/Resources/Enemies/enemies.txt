@@ -91,10 +91,10 @@ Resources\Enemies\sophia_ani.txt
 
 # WORM
 1	150	2850	1
-#1	210	2850	1
+1	210	2850	1
 
 # JUMPER
-2	18	88	2
+#2	210	2965	2
 
 # TELEPORTER
 3	700	500	3
@@ -103,7 +103,7 @@ Resources\Enemies\sophia_ani.txt
 4	700	100	4
 
 # DOME
-5	700	200	5
+5	150	2900	5
 
 # EYE
 6	520	450	6
@@ -112,7 +112,7 @@ Resources\Enemies\sophia_ani.txt
 7	600	200	7
 
 # FLOATER
-8	500	50	8
+8	210	2850	8
 
 # INSECT
 #9	100	2955	9

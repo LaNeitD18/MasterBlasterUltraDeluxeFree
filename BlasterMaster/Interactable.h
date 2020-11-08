@@ -42,7 +42,7 @@ class Interactable;
 
 // add new item
 #define INTERACTABLE_GROUP Player, Enemy, Bullet, Env_Wall, Sophia, Env_Spike, Env_Lava, \
-							Worm
+							Worm, Floater, Dome, Jumper
 
 // Interactable
 #define ___CLASS(x) class x;
@@ -85,6 +85,9 @@ public:
     
 	// Enemies
 	INTERACTABLE_MIRROR_DEF(Worm, Env_Wall);
+	INTERACTABLE_MIRROR_DEF(Floater, Env_Wall);
+	INTERACTABLE_MIRROR_DEF(Dome, Env_Wall);
+	INTERACTABLE_MIRROR_DEF(Jumper, Env_Wall);
 	
 	
 #undef INTERACTABLE_MIRROR_DEF

@@ -7,13 +7,14 @@ Dome::Dome() {
 Dome::Dome(float x, float y) {
 	SetState(DOME_STATE_WALKING);
 	pos = Point(x, y);
-	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
+	drawArguments.SetRotationCenter(Point(DOME_BBOX_WIDTH, DOME_BBOX_HEIGHT));
 }
 
 BoundingBox Dome::GetBoundingBox()
 {
-	float left = pos.x;
-	float top = pos.y;
+	float left = pos.x - DOME_BBOX_WIDTH;
+	float top = pos.y - DOME_BBOX_HEIGHT;
 	float right = pos.x + DOME_BBOX_WIDTH;
 	float bottom;
 
@@ -28,18 +29,36 @@ void Dome::Update()
 {
 	pos += dx();
 
-	if (v.x < 0 && pos.x < 0) {
-		pos.x = 0; v.x = -v.x;
+	if (v.x < 0 && wallLeft) {
+		drawArguments.SetRotation(ROTATE_90DEGREE_TO_RADIAN);
+		previousVelocity.x = v.x;
+		v.x = 0;
+		v.y = -previousVelocity.y;
 	}
-
-	if (v.x > 0 && pos.x > 290) {
-		pos.x = 290; v.x = -v.x;
+	if (v.x > 0 && wallRight) {
+		drawArguments.SetRotation(ROTATE_90DEGREE_TO_RADIAN * 3);
+		previousVelocity.x = v.x;
+		v.x = 0;
+		v.y = -previousVelocity.y;
 	}
+	if (v.y < 0 && wallTop) {
+		drawArguments.SetRotation(ROTATE_90DEGREE_TO_RADIAN*2);
+		previousVelocity.y = v.y;
+		v.y = 0;
+		v.x = -previousVelocity.x;
+	}
+	if (v.y > 0 && wallBot) {
+		drawArguments.SetRotation(ROTATE_90DEGREE_TO_RADIAN);
+		previousVelocity.y = v.y;
+		v.y = 0;
+		v.x = -previousVelocity.x;
+	}
+	//2968
 }
 
 void Dome::Render()
 {
-	SetAnimationType(DOME_ANI_TELEPORT);
+	SetAnimationType(DOME_ANI_WALKING);
 	/*if (state == TELEPORTER_STATE_DIE) {
 		ani = TELEPORTER_ANI_DIE;
 	}*/
@@ -60,7 +79,10 @@ void Dome::SetState(int state)
 		v.y = 0;
 		break;
 	case DOME_STATE_WALKING:
-		v.x = DOME_WALKING_SPEED;
+		v.x = -DOME_WALKING_SPEED_X;
+
+		previousVelocity.x = v.x;
+		previousVelocity.y = DOME_WALKING_SPEED_Y;
 	}
 
 }

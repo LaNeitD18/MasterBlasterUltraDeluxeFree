@@ -1,4 +1,4 @@
 # id	left	top	right	bottom	texture_id
 # walk right
-10001	0	0	76	44	1
-10002	76	0	152	44	1
+10001	170	410	190	422	15
+10002	190	410	210	422	15

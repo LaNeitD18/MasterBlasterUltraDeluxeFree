@@ -1,27 +1,31 @@
 #pragma once
 #include "AnimatedGameObject.h"
 
-#define FLOATER_WALKING_SPEED 0.00f;
+#define FLOATER_WALKING_SPEED 0.02f;
 
-#define FLOATER_BBOX_WIDTH 16
-#define FLOATER_BBOX_HEIGHT 26
+#define FLOATER_BBOX_WIDTH 10
+#define FLOATER_BBOX_HEIGHT 10
 #define FLOATER_BBOX_HEIGHT_DIE 16
 
-#define FLOATER_STATE_WALKING 100
+#define FLOATER_STATE_FLYING 100
 #define FLOATER_STATE_DIE 200
 
 #define FLOATER_ANI_FLY 0
 #define FLOATER_ANI_DIE 2
 
-class Floater : public AnimatedGameObject
+class Floater : public Enemy
 {
-	virtual BoundingBox GetBoundingBox();
-	virtual void Update();
-	virtual void Render();
 
 public:
 	Floater();
 	Floater(float x, float y);
 	virtual void SetState(int state);
+
+	virtual void Interact(Interactable* other) { other->Interact(this); }
+	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
+
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
 };
 

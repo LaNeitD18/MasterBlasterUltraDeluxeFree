@@ -27,8 +27,8 @@ void Jumper::Update()
 {
 	pos += dx();
 
-	if (v.x < 0 && pos.x < 0) {
-		pos.x = 0; v.x = -v.x;
+	if (v.x < 0 && wallLeft) {
+		v.x = -v.x;
 	}
 
 	if (v.x > 0 && pos.x > 290) {
