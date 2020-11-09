@@ -24,6 +24,7 @@ SceneOpening::SceneOpening(int id, LPCWSTR filePath, Game *game, Point screenSiz
 	LoadContent();
 	this->game = game;
 	this->screenSize = screenSize;
+	this->count = 0;
 }
 
 void SceneOpening::LoadContent()
@@ -53,7 +54,10 @@ SceneOpening::~SceneOpening()
 #define SCENE_SECTION_OBJECTS 6
 #define SCENE_SECTION_MAP 7
 
+//#define OBJECT_TYPE_BOX 100
+
 #define OBJECT_TYPE_TITLE 1
+#define OBJECT_TYPE_TALE 2
 #define MAX_SCENE_LINE 1024
 
 static D3DCOLOR titleColor[4] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,0,255,255),D3DCOLOR_ARGB(255,255,0,255),D3DCOLOR_ARGB(255,255,255,0) };
@@ -174,11 +178,21 @@ void SceneOpening::Update()
 	game->SetCamPos(pos);
 }
 
+#define DURATION_OF_TITLE 500
+#define DURATION_OF_TALE 2680
+
 void SceneOpening::Render()
 {
 	// LeSon
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
+	objects[0]->Render();
+	count++;
+	if(count>DURATION_OF_TITLE) {
+		objects[1]->Render();
+		count++;
+		if (count > DURATION_OF_TALE) {
+			count = 0;
+		}
+	}
 }
 
 void SceneOpening::_ParseSection_TEXTURES(string line)
@@ -332,6 +346,12 @@ void SceneOpening::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_TITLE:
 		obj = new SceneOpeningTitle(x, y);
 		break;
+	case OBJECT_TYPE_TALE:
+		obj = new SceneTale(x, y);
+		break;
+	/*case OBJECT_TYPE_BOX:
+		obj = new SceneBox(x, y);
+		break;*/
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -416,3 +436,96 @@ void SceneOpeningTitle::SetState(int state)
 		v.x = TITLE_SPEED;
 	}
 }
+
+BoundingBox SceneTale::GetBoundingBox()
+{
+	return BoundingBox();
+}
+
+void SceneTale::Update()
+{
+	Input& input = *GameGlobal::GetInput();
+	// enter to switch scene
+	if (input[VK_RETURN]) {
+		//Game::GetInstance()->SwitchScene(2);
+		Game::GetInstance()->Init(L"Resources/scene.txt", 2);
+	}
+}
+
+void SceneTale::Render()
+{
+	SetAnimationType(TALE_NORMAL);
+	/*if (state == TELEPORTER_STATE_DIE) {
+		ani = TELEPORTER_ANI_DIE;
+	}*/
+
+	AnimatedGameObject::Render();
+
+	//RenderBoundingBox();
+}
+
+SceneTale::SceneTale()
+{
+	SetState(TALE_NORMAL);
+}
+
+SceneTale::SceneTale(float x, float y)
+{
+	SetState(TALE_NORMAL);
+	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
+}
+
+void SceneTale::SetState(int state)
+{
+	GameObject::SetState(state);
+	switch (state)
+	{
+	case TALE_NORMAL:
+		v.x = TALE_SPEED;
+	}
+}
+
+//BoundingBox SceneBox::GetBoundingBox()
+//{
+//	return BoundingBox();
+//}
+//
+//void SceneBox::Update()
+//{
+//	
+//}
+//
+//void SceneBox::Render()
+//{
+//	SetAnimationType(BOX_NORMAL);
+//	/*if (state == TELEPORTER_STATE_DIE) {
+//		ani = TELEPORTER_ANI_DIE;
+//	}*/
+//
+//	AnimatedGameObject::Render();
+//
+//	//RenderBoundingBox();
+//}
+//
+//SceneBox::SceneBox()
+//{
+//	SetState(BOX_NORMAL);
+//}
+//
+//SceneBox::SceneBox(float x, float y)
+//{
+//	SetState(BOX_NORMAL);
+//	pos = Point(x, y);
+//	drawArguments.SetScale(D3DXVECTOR2(1, 1));
+//}
+//
+//void SceneBox::SetState(int state)
+//{
+//	GameObject::SetState(state);
+//	switch (state)
+//	{
+//	case BOX_NORMAL:
+//		v.x = BOX_SPEED;
+//	}
+//}

@@ -29,6 +29,8 @@ private:
 
 	Point screenSize;
 
+	int count = 50;
+
 public:
 	SceneOpening(int id, LPCWSTR filePath, Game* game, Point screenSize);
 	virtual ~SceneOpening();
@@ -57,3 +59,39 @@ public:
 	SceneOpeningTitle(float x, float y);
 	virtual void SetState(int state);
 };
+
+#define TALE_SPEED 0.01f;
+
+#define TALE_BBOX_WIDTH 800
+#define TALE_BBOX_HEIGHT 600
+
+#define TALE_NORMAL 0
+
+class SceneTale : public AnimatedScene
+{
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
+public:
+	SceneTale();
+	SceneTale(float x, float y);
+	virtual void SetState(int state);
+};
+
+//#define BOX_SPEED 0.01f;
+//
+//#define BOX_BBOX_WIDTH 800
+//#define BOX_BBOX_HEIGHT 600
+//
+//#define BOX_NORMAL 0
+//
+//class SceneBox : public AnimatedScene
+//{
+//	virtual BoundingBox GetBoundingBox();
+//	virtual void Update();
+//	virtual void Render();
+//public:
+//	SceneBox();
+//	SceneBox(float x, float y);
+//	virtual void SetState(int state);
+//};

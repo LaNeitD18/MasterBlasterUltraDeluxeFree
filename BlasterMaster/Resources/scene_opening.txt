@@ -1,8 +1,9 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
 1	Resources\sprites\Blaster_Master-title.png	255	255	255
-#2	Resources\sprites\Tale_Cutscene.png	255	255	255
+2	Resources\sprites\Tale_Cutscene.png	255	255	255
 #3	Resources\sprites\EnterCutscene.png	255	255	255
+100	Resources\bbox.png	255	255	255
 # next sprite
 
 [SPRITES]
@@ -11,7 +12,7 @@
 Resources\scene_opening_title_sprites.txt
 
 #2 tale
-#Resources\scene_opening_tale_sprites.txt
+Resources\scene_opening_tale_sprites.txt
 
 #3 sophia enter
 #Resources\scene_opening_enter_sprites.txt
@@ -22,7 +23,7 @@ Resources\scene_opening_title_sprites.txt
 Resources\scene_opening_title_ani.txt
 
 #2 ==== tale =========
-#Resources\scene_opening_tale_ani.txt
+Resources\scene_opening_tale_ani.txt
 
 #3 ==== sophia =========
 #Resources\scene_opening_enter_ani.txt
@@ -30,11 +31,14 @@ Resources\scene_opening_title_ani.txt
 [OBJECTS]
 # type	x	y	ani_set_id1	ani_set_id2...
 
+#box
+#100	0	0	100
+
 # title
 1	0	0	1
 
 # tale
-#2	18	88	2
+2	-8	-20	2
 
 # sophia
 #3	700	500	3
