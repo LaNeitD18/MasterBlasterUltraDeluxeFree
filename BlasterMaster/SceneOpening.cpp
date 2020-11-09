@@ -7,9 +7,6 @@
 #include "Sprites.h"
 #include "GameObject.h"
 
-#include <cstdlib>
-#include <ctime>
-
 #include "Worm.h"
 
 using namespace std;
@@ -494,7 +491,6 @@ BoundingBox SceneBox::GetBoundingBox()
 
 void SceneBox::Update()
 {
-	srand(time(NULL));
 	drawArguments.SetColor(titleColor[(rand() % 4)]);
 }
 

@@ -15,6 +15,9 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 
+#include <cstdlib>
+#include <ctime>
+
 #include "Utils.h"
 #include "Game.h"
 #include "GameObject.h"
@@ -165,6 +168,7 @@ int Run()
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+	srand(time(NULL));
 	game = Game::GetInstance();
 	HWND hWnd = CreateGameWindow(hInstance, nCmdShow, SCREEN_WIDTH, SCREEN_HEIGHT);
 
