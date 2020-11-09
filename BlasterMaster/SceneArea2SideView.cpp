@@ -660,10 +660,10 @@ void SceneArea2SideView::Update()
 		DebugOut(L"Frame to transition: %d", frameToTransition);
 		if (frameToTransition >= 260) {
 			if (directionEnterPortal == 1) {
-				target->SetPosition(target->GetPosition() + Point(80, 0));
+				target->SetPosition(target->GetPosition() + Point(90, 0));
 			}
 			else if (directionEnterPortal == 0) {
-				target->SetPosition(target->GetPosition() - Point(80, 0));
+				target->SetPosition(target->GetPosition() - Point(90, 0));
 			}
 			isCameraFree = false;
 			directionEnterPortal = -1;

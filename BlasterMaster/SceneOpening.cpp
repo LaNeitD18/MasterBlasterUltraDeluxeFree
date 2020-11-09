@@ -179,7 +179,7 @@ void SceneOpening::Update()
 }
 
 #define DURATION_OF_TITLE 500
-#define DURATION_OF_TALE 1605
+#define DURATION_OF_TALE 1590
 
 void SceneOpening::Render()
 {
