@@ -6,6 +6,7 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "GameObject.h"
+#include "GameGlobal.h"
 
 #include "Worm.h"
 

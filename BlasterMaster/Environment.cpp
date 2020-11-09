@@ -82,6 +82,7 @@ int Env_Portal::GetSectionToEnter()
 	return sectionToEnter;
 }
 
+
 Env_Portal::Env_Portal(float x, float y, float width, float height, PortalDirection direction, int sectionToEnter)
 {
 	this->width = width;
@@ -99,6 +100,8 @@ void Env_Wall::Interact(Interactable * other) { other->Interact(this); }
 void Env_Spike::Interact(Interactable * other) { other->Interact(this); }
 
 void Env_Lava::Interact(Interactable * other) { other->Interact(this); }
+
+void Env_Portal::Interact(Interactable * other) { other->Interact(this); }
 #include "InteractableGroupInclude.h"
 #define CURRENT_CLASS Env_Wall
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)

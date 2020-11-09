@@ -665,9 +665,9 @@ void SceneArea2SideView::Update()
 			}
 		}
 
-		for (size_t i = 0; i < objects.size(); i++)
+		for (auto object : objects)
 		{
-			objects[i]->Update();
+			object->Update();
 		}
 	}
 	else {
@@ -756,11 +756,9 @@ void SceneArea2SideView::Render()
 {
 	// LeSon
 	mMap->Draw();
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
-	foreMap->Draw();
 	for (auto object : objects)
 		object->Render();
+	foreMap->Draw();
 }
 
 /*
