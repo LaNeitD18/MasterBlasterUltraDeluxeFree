@@ -43,6 +43,7 @@ SceneArea2Overhead::SceneArea2Overhead(int id, LPCWSTR filePath, Game *game, Poi
 void SceneArea2Overhead::LoadContent()
 {
 	mMap = new GameMap("Map/General/level2-over-tiless.tmx", textureLib, spriteLib);
+	foreMap = new GameMap("Map/General/level2-side-fores.tmx", textureLib, spriteLib);
 
 	// camera setup
 	mCamera = new Camera(Point(GameGlobal::GetWidth(), GameGlobal::GetHeight()));
@@ -50,6 +51,7 @@ void SceneArea2Overhead::LoadContent()
 		mMap->GetHeight() - GameGlobal::GetHeight() / 2 + 36);
 
 	mMap->SetCamera(mCamera);
+	foreMap->SetCamera(mCamera);
 	//mMap->Draw();
 
 }
@@ -68,6 +70,9 @@ SceneArea2Overhead::~SceneArea2Overhead()
 	delete animationSetLib;
 	mMap->Release();
 	delete mMap;
+	foreMap->Release();
+	delete foreMap;
+
 }
 
 /*
@@ -465,30 +470,39 @@ void SceneArea2Overhead::Update()
 	{
 		if (mCamera->GetPosition().x - mCamera->GetWidth() / 2 <= 0) return; // LeSon
 		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-		mCamera->SetPosition(mCamera->GetPosition() + Point(-16, 0));
+		mCamera->SetPosition(mCamera->GetPosition() + Point(-8, 0));
 	}
 	if ((*input)[VK_RIGHT] & KEY_STATE_DOWN)
 	{
 		if (mCamera->GetPosition().x + mCamera->GetWidth() / 2 >= mMap->GetWidth() + 8) return; // LeSon
 		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-		mCamera->SetPosition(mCamera->GetPosition() + Point(16, 0));
+		mCamera->SetPosition(mCamera->GetPosition() + Point(8, 0));
 	}
 	if ((*input)[VK_UP] & KEY_STATE_DOWN)
 	{
 		if (mCamera->GetPosition().y - mCamera->GetHeight() / 2 <= 0) return; // LeSon
 		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-		mCamera->SetPosition(mCamera->GetPosition() + Point(0, -16));
+		mCamera->SetPosition(mCamera->GetPosition() + Point(0, -8));
 	}
 	if ((*input)[VK_DOWN] & KEY_STATE_DOWN)
 	{
 		if (mCamera->GetPosition().y + mCamera->GetHeight() / 2 >= mMap->GetHeight() + 32) return; // LeSon
 		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-		mCamera->SetPosition(mCamera->GetPosition() + Point(0, 16));
+		mCamera->SetPosition(mCamera->GetPosition() + Point(0, 8));
 	}
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		objects[i]->Update();
+	}
+
+	if ((*input)[VK_HOME] & KEY_STATE_DOWN) {
+		//Game::GetInstance()->SwitchScene(1);
+		Game::GetInstance()->Init(L"Resources/scene.txt",1);
+	}
+	if ((*input)[VK_BACK] & KEY_STATE_DOWN) {
+		//Game::GetInstance()->SwitchScene(2);
+		Game::GetInstance()->Init(L"Resources/scene.txt", 2);
 	}
 
 	// Update camera to follow mario
@@ -506,6 +520,7 @@ void SceneArea2Overhead::Render()
 	mMap->Draw();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+	foreMap->Draw();
 }
 
 /*
@@ -518,11 +533,14 @@ void SceneArea2Overhead::Release()
 
 	objects.clear();
 
-	//mMap->Release();
+	// map release sucks hihi
+	mMap->Release();
+	foreMap->Release();
 
-	/*textureLib->Clear();
+	// LeSon: maybe cannot do this, have to clear in SwitchScene for Game.cpp, discuss again hihi 
+	textureLib->Clear();
 	spriteLib->Clear();
-	animationLib->Clear();*/
+	animationLib->Clear();
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

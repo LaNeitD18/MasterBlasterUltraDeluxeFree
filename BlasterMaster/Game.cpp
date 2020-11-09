@@ -7,6 +7,7 @@
 #include "Utils.h"
 #include "useful_stuff.h"
 
+#include "SceneOpening.h"
 #include "SceneArea2SideView.h"
 #include "SceneArea2Overhead.h"
 #include "GameGlobal.h"
@@ -19,6 +20,7 @@ Game * Game::__instance = NULL;
 	- hInst: Application instance handle
 	- hWnd: Application window handle
 */
+
 RESULT Game::Init(HWND hWnd)
 {
 	LPDIRECT3D9 d3d = Direct3DCreate9(D3D_SDK_VERSION);
@@ -259,14 +261,23 @@ void Game::_ParseSection_SCENES(string line)
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);
 
-	Scene* scene = new SceneArea2SideView(id, path, this, Point(screen_width, screen_height)); // start map
+	Scene* scene = NULL;
+	if (id == 1) {
+		scene = new SceneOpening(id, path, this, Point(screen_width, screen_height)); // start map
+	}
+	else if (id == 2) {
+		scene = new SceneArea2SideView(id, path, this, Point(screen_width, screen_height));
+	}
+	else if (id == 3) {
+		scene = new SceneArea2Overhead(id, path, this, Point(screen_width, screen_height));
+	}
 	scenes[id] = scene;
 }
 
 /*
 	Load game campaign file and load/initiate first scene
 */
-void Game::Init(LPCWSTR gameFile)
+void Game::Init(LPCWSTR gameFile, int scene_number)
 {
 	DebugOut(L"[INFO] Start loading game file : %s\n", gameFile);
 
@@ -299,7 +310,8 @@ void Game::Init(LPCWSTR gameFile)
 
 	DebugOut(L"[INFO] Loading game file : %s has been loaded successfully\n",gameFile);
 
-	SwitchScene(current_scene);
+	//SwitchScene(current_scene);
+	SwitchScene(scene_number);
 }
 
 void Game::SwitchScene(int scene_id)
@@ -308,7 +320,7 @@ void Game::SwitchScene(int scene_id)
 	DebugOut(L"[INFO] Ala %d\n", scenes[current_scene]);
 	
 	// map release sucks, must be fixed to switch properly hihi
-	//scenes[current_scene]->Release();
+	scenes[current_scene]->Release();
 	
 	current_scene = scene_id;
 	Scene* s = scenes[scene_id];

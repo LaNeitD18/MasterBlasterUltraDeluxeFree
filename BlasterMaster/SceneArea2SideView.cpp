@@ -26,6 +26,35 @@
 
 using namespace std;
 
+// temporary set limit area for section, but not handle switch SceneOverhead, thinking of dividing into several SceneOverhead for easy win hihi
+BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[15] = {
+	// section A
+	BoundingBox(0, 2814, 1038, 3094),
+	// section B
+	BoundingBox(1024, 1792, 1550, 3094),
+	//section C
+	BoundingBox(1536, 1792, 2062, 2072),
+	// section D
+	BoundingBox(2048, 1024, 2574, 2072),
+	// section E
+	BoundingBox(2560, 1792, 3086, 2072),
+	BoundingBox(1536, 32, 2062, 1814),
+};
+
+Point SceneArea2SideView::startPointInSection[15] = {
+	// section A
+	Point(56, 2955),
+	// section B
+	Point(1076, 2955),
+	//section C
+	Point(1584, 1932),
+	// section D
+	Point(2096, 1932),
+	// section E
+	Point(2608, 1932),
+	Point(2000, 1164),
+};
+
 SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath)
 {
 	this->input = game->GetInput();
@@ -37,11 +66,15 @@ SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Poi
 	//mMap = new GameMap("Map/General/level2-side-tiless.tmx", textureLib, spriteLib);
 	this->game = game;
 	this->screenSize = screenSize;
+	this->isCameraFree = false;
+	this->directionEnterPortal = -1;
+	this->frameToTransition = 0;
 }
 
 void SceneArea2SideView::LoadContent()
 {
 	mMap = new GameMap("Map/General/level2-side-maporder.tmx", textureLib, spriteLib);
+	foreMap = new GameMap("Map/General/level2-side-fores.tmx", textureLib, spriteLib);
 
 	// camera setup
 	mCamera = new Camera(Point(GameGlobal::GetWidth(), GameGlobal::GetHeight()));
@@ -49,10 +82,13 @@ void SceneArea2SideView::LoadContent()
 	/*mCamera->SetPosition(mMap->GetWidth() / 2 + GameGlobal::GetWidth() / 2,
 		mMap->GetHeight() / 2 + GameGlobal::GetHeight() / 2 + 16);*/
 
-	mCamera->SetPosition(GameGlobal::GetWidth() / 2,
-		mMap->GetHeight() - GameGlobal::GetHeight() / 2 + 32);
+	/*mCamera->SetPosition(GameGlobal::GetWidth() / 2,
+		mMap->GetHeight() - GameGlobal::GetHeight() / 2 + 32);*/
 	
+	// set limit area of section 1
+	mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[0]);
 	mMap->SetCamera(mCamera);
+	foreMap->SetCamera(mCamera);
 	//mMap->Draw();
 	
 }
@@ -71,6 +107,8 @@ SceneArea2SideView::~SceneArea2SideView()
 	delete animationSetLib;
 	mMap->Release();
 	delete mMap;
+	foreMap->Release();
+	delete foreMap;
 }
 
 /*
@@ -356,8 +394,15 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 	float x = atof(tokens[1].c_str());
 	float y = atof(tokens[2].c_str());
 
-	float width = atoi(tokens[3].c_str());
-	float height = atoi(tokens[4].c_str());
+	float width = atof(tokens[3].c_str());
+	float height = atof(tokens[4].c_str());
+
+	int portaldirId = -1;
+	int sectionToEnter = -1;
+	if (tokens.size() == 7) {
+		portaldirId = atoi(tokens[5].c_str());
+		sectionToEnter = atoi(tokens[6].c_str());
+	}
 
 	Environment *env = NULL;
 
@@ -371,6 +416,16 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 		break;
 	case ENVIRONMENT_TYPE_LAVA:
 		env = new Env_Lava(x, y, width, height);
+		break;
+	case ENVIRONMENT_TYPE_PORTAL:
+		PortalDirection portaldir;
+		if (portaldirId == 0) {
+			portaldir = LEFT;
+		}
+		else {
+			portaldir = RIGHT;
+		}
+		env = new Env_Portal(x, y, width, height, portaldir, sectionToEnter);
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid env type: %d\n", env_type);
@@ -543,34 +598,37 @@ void SceneArea2SideView::JumpCheckpoint()
 	Input& input = *GameGlobal::GetInput();
 	// section A
 	if (input[0x30]) {
-		target->SetPosition(Point(56, 2955));
-		mCamera->SetCameraLimitarea(0, 2814, 1038, 3094);
+		target->SetPosition(startPointInSection[0]);
+		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[0]);
 	}
 	// section B
 	else if (input[0x31]) {
-		target->SetPosition(Point(1076, 2955));
-		mCamera->SetCameraLimitarea(1024, 1792, 1550, 3094);
+		target->SetPosition(startPointInSection[1]);
+		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[1]);
 	}
 	//section C
 	else if (input[0x32]) {
-		target->SetPosition(Point(1584, 1932));
-		mCamera->SetCameraLimitarea(1536, 1792, 2062, 2072);
+		target->SetPosition(startPointInSection[2]);
+		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[2]);
 	}
 	// section D
 	else if (input[0x33]) {
-		target->SetPosition(Point(2096, 1932));
-		mCamera->SetCameraLimitarea(2048, 1024, 2574, 2072);
+		target->SetPosition(startPointInSection[3]);
+		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[3]);
 	}
 	// section E
 	else if (input[0x34]) {
-		target->SetPosition(Point(2608, 1932));
-		mCamera->SetCameraLimitarea(2560, 1792, 3086, 2072);
+		target->SetPosition(startPointInSection[4]);
+		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[4]);
 	}
 	else if (input[0x35]) {
-		target->SetPosition(Point(2000, 1164));
-		mCamera->SetCameraLimitarea(1536, 32, 2062, 1792);
+		target->SetPosition(startPointInSection[5]);
+		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[5]);
 	}
 }
+
+#define FRAME_PORTAL_TRANSITIONS 260
+#define DISTANCE_SOPHIA_PORTAL 90
 
 void SceneArea2SideView::Update()
 {
@@ -588,16 +646,59 @@ void SceneArea2SideView::Update()
 
 
 	Camera::setCameraInstance(mCamera);
-	input->Update();
-	for (auto x : objects) {
-		Player* current_player = dynamic_cast<Player*>(x);
-		if (current_player != NULL) {
-			mCamera->SetTarget(current_player);
-			target = current_player;
+	if (!isCameraFree) {
+		input->Update();
+		for (auto x : objects) {
+			Player* current_player = dynamic_cast<Player*>(x);
+			if (current_player != NULL) {
+				mCamera->SetTarget(current_player);
+				target = current_player;
+			}
+		}
+		mCamera->FollowTarget();
+		mCamera->SnapToBoundary();
+
+		//LeSon
+		for (auto x : objects) {
+			for (auto y : environments) {
+				x->Interact((Interactable*)y);
+			}
+		}
+
+		for (size_t i = 0; i < objects.size(); i++)
+		{
+			objects[i]->Update();
 		}
 	}
-	mCamera->FollowTarget();
-	mCamera->SnapToBoundary();
+	else {
+		if (directionEnterPortal == 1) {
+			mCamera->SetPosition(mCamera->GetPosition() + Point(1, 0));
+			target->SetPosition(target->GetPosition() + Point(0.1, 0));
+		}
+		else if (directionEnterPortal == 0) {
+			mCamera->SetPosition(mCamera->GetPosition() + Point(-1, 0));
+			target->SetPosition(target->GetPosition() - Point(0.1, 0));
+		}
+		frameToTransition++;
+		DebugOut(L"Frame to transition: %d", frameToTransition);
+		if (frameToTransition >= FRAME_PORTAL_TRANSITIONS) {
+			if (directionEnterPortal == 1) {
+				target->SetPosition(target->GetPosition() + Point(DISTANCE_SOPHIA_PORTAL, 0));
+			}
+			else if (directionEnterPortal == 0) {
+				target->SetPosition(target->GetPosition() - Point(DISTANCE_SOPHIA_PORTAL, 0));
+			}
+			isCameraFree = false;
+			directionEnterPortal = -1;
+			frameToTransition = 0;
+		}
+	}
+
+	// enter to switch scene
+	if ((*input)[VK_TAB] & KEY_STATE_DOWN) {
+		//Game::GetInstance()->SwitchScene(3);
+		Game::GetInstance()->Init(L"Resources/scene.txt", 3);
+	}
 
 	//if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
 	//{
@@ -655,6 +756,9 @@ void SceneArea2SideView::Render()
 {
 	// LeSon
 	mMap->Draw();
+	for (int i = 0; i < objects.size(); i++)
+		objects[i]->Render();
+	foreMap->Draw();
 	for (auto object : objects)
 		object->Render();
 }
@@ -671,6 +775,7 @@ void SceneArea2SideView::Release()
 
 	// map release sucks hihi
 	mMap->Release();
+	foreMap->Release();
 
 	// LeSon: maybe cannot do this, have to clear in SwitchScene for Game.cpp, discuss again hihi 
 	textureLib->Clear();

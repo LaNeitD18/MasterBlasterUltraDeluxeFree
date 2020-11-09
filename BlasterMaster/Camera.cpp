@@ -12,9 +12,9 @@ Camera::Camera(Point size) {
 	mHeight = size.y;
 	mPosition = Point(0, 0);
 	boundary.l = 0;
-	boundary.r = 1038;
-	boundary.t = 2814;
-	boundary.b = 3094;
+	boundary.r = 0;
+	boundary.t = 0;
+	boundary.b = 0;
 	if (__instance == NULL)
 		__instance = this;
 	else

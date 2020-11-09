@@ -45,7 +45,7 @@ public:
 
 	Input* GetInput() { return input; }
 
-	void Init(LPCWSTR gameFile);
+	void Init(LPCWSTR gameFile, int scene_number);
 	Scene* GetCurrentScene() { return scenes[current_scene]; }
 	void SwitchScene(int scene_id);
 

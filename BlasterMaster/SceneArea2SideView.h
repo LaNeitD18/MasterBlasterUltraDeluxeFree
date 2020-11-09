@@ -24,6 +24,7 @@ protected:
 	AnimationLibrary* animationLib;
 	AnimationSets* animationSetLib;
 	GameMap* mMap;
+	GameMap* foreMap;
 
 	void LoadContent();
 
@@ -46,6 +47,7 @@ private:
 
 	//LeSon
 	void JumpCheckpoint();
+
 public: 
 	SceneArea2SideView(int id, LPCWSTR filePath, Game* game, Point screenSize);
 	virtual ~SceneArea2SideView();
@@ -58,4 +60,8 @@ public:
 	// Inherited via Manager
 	virtual void AddElement(GameObject *) override;
 	virtual void RemoveElement(GameObject *) override;
+
+	// just handle change in one scene
+	static BoundingBox cameraLimitAreaOfSection[15];
+	static Point startPointInSection[15];
 };
