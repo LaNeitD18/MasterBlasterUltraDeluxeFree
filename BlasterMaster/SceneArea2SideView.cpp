@@ -620,6 +620,9 @@ void SceneArea2SideView::JumpCheckpoint()
 	}
 }
 
+#define FRAME_PORTAL_TRANSITIONS 260
+#define DISTANCE_SOPHIA_PORTAL 90
+
 void SceneArea2SideView::Update()
 {
 	Camera::setCameraInstance(mCamera);
@@ -658,12 +661,12 @@ void SceneArea2SideView::Update()
 		}
 		frameToTransition++;
 		DebugOut(L"Frame to transition: %d", frameToTransition);
-		if (frameToTransition >= 260) {
+		if (frameToTransition >= FRAME_PORTAL_TRANSITIONS) {
 			if (directionEnterPortal == 1) {
-				target->SetPosition(target->GetPosition() + Point(90, 0));
+				target->SetPosition(target->GetPosition() + Point(DISTANCE_SOPHIA_PORTAL, 0));
 			}
 			else if (directionEnterPortal == 0) {
-				target->SetPosition(target->GetPosition() - Point(90, 0));
+				target->SetPosition(target->GetPosition() - Point(DISTANCE_SOPHIA_PORTAL, 0));
 			}
 			isCameraFree = false;
 			directionEnterPortal = -1;
