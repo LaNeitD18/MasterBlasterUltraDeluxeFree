@@ -90,11 +90,12 @@ void Interactable::Interact(Player* player, Env_Portal* portal) {
 		if ((input[VK_RIGHT] && portalDirection == RIGHT) || (input[VK_LEFT] && portalDirection == LEFT)) {
 			BoundingBox limitArea = SceneArea2SideView::cameraLimitAreaOfSection[portal->GetSectionToEnter()];
 			//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
+			Game::GetInstance()->GetCurrentScene()->SetFreeCamera(true);
 			if (portalDirection == RIGHT) {
-				player->SetPosition(player->GetPosition() + Point(90, 0));
+				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(1);
 			}
 			else {
-				player->SetPosition(player->GetPosition() - Point(90, 0));
+				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(0);
 			}
 			Camera::GetInstance()->SetCameraLimitarea(limitArea);
 		}

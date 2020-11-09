@@ -78,20 +78,20 @@ public:
 	virtual void SetState(int state);
 };
 
-//#define BOX_SPEED 0.01f;
-//
-//#define BOX_BBOX_WIDTH 800
-//#define BOX_BBOX_HEIGHT 600
-//
-//#define BOX_NORMAL 0
-//
-//class SceneBox : public AnimatedScene
-//{
-//	virtual BoundingBox GetBoundingBox();
-//	virtual void Update();
-//	virtual void Render();
-//public:
-//	SceneBox();
-//	SceneBox(float x, float y);
-//	virtual void SetState(int state);
-//};
+#define BOX_SPEED 0.01f;
+
+#define BOX_BBOX_WIDTH 800
+#define BOX_BBOX_HEIGHT 600
+
+#define BOX_NORMAL 0
+
+class SceneBox : public AnimatedScene
+{
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
+public:
+	SceneBox();
+	SceneBox(float x, float y);
+	virtual void SetState(int state);
+};

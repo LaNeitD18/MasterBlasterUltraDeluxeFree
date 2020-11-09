@@ -65,6 +65,9 @@ SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Poi
 	//mMap = new GameMap("Map/General/level2-side-tiless.tmx", textureLib, spriteLib);
 	this->game = game;
 	this->screenSize = screenSize;
+	this->isCameraFree = false;
+	this->directionEnterPortal = -1;
+	this->frameToTransition = 0;
 }
 
 void SceneArea2SideView::LoadContent()
@@ -620,16 +623,59 @@ void SceneArea2SideView::JumpCheckpoint()
 void SceneArea2SideView::Update()
 {
 	Camera::setCameraInstance(mCamera);
-	input->Update();
-	for (auto x : objects) {
-		Player* current_player = dynamic_cast<Player*>(x);
-		if (current_player != NULL) {
-			mCamera->SetTarget(current_player);
-			target = current_player;
+	if (!isCameraFree) {
+		input->Update();
+		for (auto x : objects) {
+			Player* current_player = dynamic_cast<Player*>(x);
+			if (current_player != NULL) {
+				mCamera->SetTarget(current_player);
+				target = current_player;
+			}
+		}
+		mCamera->FollowTarget();
+		mCamera->SnapToBoundary();
+
+		//LeSon
+		for (auto x : objects) {
+			for (auto y : environments) {
+				x->Interact((Interactable*)y);
+			}
+		}
+
+		for (size_t i = 0; i < objects.size(); i++)
+		{
+			objects[i]->Update();
 		}
 	}
-	mCamera->FollowTarget();
-	mCamera->SnapToBoundary();
+	else {
+		if (directionEnterPortal == 1) {
+			mCamera->SetPosition(mCamera->GetPosition() + Point(1, 0));
+			target->SetPosition(target->GetPosition() + Point(0.1, 0));
+		}
+		else if (directionEnterPortal == 0) {
+			mCamera->SetPosition(mCamera->GetPosition() + Point(-1, 0));
+			target->SetPosition(target->GetPosition() - Point(0.1, 0));
+		}
+		frameToTransition++;
+		DebugOut(L"Frame to transition: %d", frameToTransition);
+		if (frameToTransition >= 260) {
+			if (directionEnterPortal == 1) {
+				target->SetPosition(target->GetPosition() + Point(80, 0));
+			}
+			else if (directionEnterPortal == 0) {
+				target->SetPosition(target->GetPosition() - Point(80, 0));
+			}
+			isCameraFree = false;
+			directionEnterPortal = -1;
+			frameToTransition = 0;
+		}
+	}
+
+	// enter to switch scene
+	if ((*input)[VK_TAB] & KEY_STATE_DOWN) {
+		//Game::GetInstance()->SwitchScene(3);
+		Game::GetInstance()->Init(L"Resources/scene.txt", 3);
+	}
 
 	//if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
 	//{
@@ -659,24 +705,6 @@ void SceneArea2SideView::Update()
 	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
 	//	mCamera->SetPosition(mCamera->GetPosition() + Point(0, 8));
 	//}
-
-	//LeSon
-	for (auto x : objects) {
-		for (auto y : environments) {
-			x->Interact((Interactable*)y);
-		}
-	}
-
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		objects[i]->Update();
-	}
-
-	// enter to switch scene
-	if ((*input)[VK_TAB] & KEY_STATE_DOWN) {
-		//Game::GetInstance()->SwitchScene(3);
-		Game::GetInstance()->Init(L"Resources/scene.txt",3);
-	}
 
 	JumpCheckpoint();
 

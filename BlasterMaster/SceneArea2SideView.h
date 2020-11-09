@@ -44,6 +44,7 @@ private:
 
 	//LeSon
 	void JumpCheckpoint();
+
 public: 
 	SceneArea2SideView(int id, LPCWSTR filePath, Game* game, Point screenSize);
 	virtual ~SceneArea2SideView();

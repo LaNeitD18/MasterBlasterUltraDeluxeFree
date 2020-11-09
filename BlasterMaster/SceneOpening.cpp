@@ -54,7 +54,7 @@ SceneOpening::~SceneOpening()
 #define SCENE_SECTION_OBJECTS 6
 #define SCENE_SECTION_MAP 7
 
-//#define OBJECT_TYPE_BOX 100
+#define OBJECT_TYPE_BOX 100
 
 #define OBJECT_TYPE_TITLE 1
 #define OBJECT_TYPE_TALE 2
@@ -179,15 +179,18 @@ void SceneOpening::Update()
 }
 
 #define DURATION_OF_TITLE 500
-#define DURATION_OF_TALE 2680
+#define DURATION_OF_TALE 1605
 
 void SceneOpening::Render()
 {
 	// LeSon
-	objects[0]->Render();
-	count++;
-	if(count>DURATION_OF_TITLE) {
-		objects[1]->Render();
+	objects[0]->Render(); // bbox color
+	if (count < DURATION_OF_TITLE) {
+		objects[1]->Render(); // title drawing
+		count++;
+	}
+	else {
+		objects[2]->Render();
 		count++;
 		if (count > DURATION_OF_TALE) {
 			count = 0;
@@ -349,9 +352,9 @@ void SceneOpening::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_TALE:
 		obj = new SceneTale(x, y);
 		break;
-	/*case OBJECT_TYPE_BOX:
+	case OBJECT_TYPE_BOX:
 		obj = new SceneBox(x, y);
-		break;*/
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -399,8 +402,6 @@ void SceneOpeningTitle::Update()
 		//Game::GetInstance()->SwitchScene(2);
 		Game::GetInstance()->Init(L"Resources/scene.txt",2);
 	}
-	srand(time(NULL));
-	drawArguments.SetColor(titleColor[(rand() % 4)]);
 }
 
 void SceneOpeningTitle::Render()
@@ -486,46 +487,47 @@ void SceneTale::SetState(int state)
 	}
 }
 
-//BoundingBox SceneBox::GetBoundingBox()
-//{
-//	return BoundingBox();
-//}
-//
-//void SceneBox::Update()
-//{
-//	
-//}
-//
-//void SceneBox::Render()
-//{
-//	SetAnimationType(BOX_NORMAL);
-//	/*if (state == TELEPORTER_STATE_DIE) {
-//		ani = TELEPORTER_ANI_DIE;
-//	}*/
-//
-//	AnimatedGameObject::Render();
-//
-//	//RenderBoundingBox();
-//}
-//
-//SceneBox::SceneBox()
-//{
-//	SetState(BOX_NORMAL);
-//}
-//
-//SceneBox::SceneBox(float x, float y)
-//{
-//	SetState(BOX_NORMAL);
-//	pos = Point(x, y);
-//	drawArguments.SetScale(D3DXVECTOR2(1, 1));
-//}
-//
-//void SceneBox::SetState(int state)
-//{
-//	GameObject::SetState(state);
-//	switch (state)
-//	{
-//	case BOX_NORMAL:
-//		v.x = BOX_SPEED;
-//	}
-//}
+BoundingBox SceneBox::GetBoundingBox()
+{
+	return BoundingBox();
+}
+
+void SceneBox::Update()
+{
+	srand(time(NULL));
+	drawArguments.SetColor(titleColor[(rand() % 4)]);
+}
+
+void SceneBox::Render()
+{
+	SetAnimationType(BOX_NORMAL);
+	/*if (state == TELEPORTER_STATE_DIE) {
+		ani = TELEPORTER_ANI_DIE;
+	}*/
+
+	AnimatedGameObject::Render();
+
+	//RenderBoundingBox();
+}
+
+SceneBox::SceneBox()
+{
+	SetState(BOX_NORMAL);
+}
+
+SceneBox::SceneBox(float x, float y)
+{
+	SetState(BOX_NORMAL);
+	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
+}
+
+void SceneBox::SetState(int state)
+{
+	GameObject::SetState(state);
+	switch (state)
+	{
+	case BOX_NORMAL:
+		v.x = BOX_SPEED;
+	}
+}

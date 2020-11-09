@@ -17,6 +17,9 @@ Resources\scene_opening_tale_sprites.txt
 #3 sophia enter
 #Resources\scene_opening_enter_sprites.txt
 
+#100 box
+Resources\scene_opening_bbox_sprites.txt
+
 [ANIMATIONS]
 # id format: 201xx
 #1 ==== title =========
@@ -28,11 +31,14 @@ Resources\scene_opening_tale_ani.txt
 #3 ==== sophia =========
 #Resources\scene_opening_enter_ani.txt
 
+#100 == box ==
+Resources\scene_opening_bbox_ani.txt
+
 [OBJECTS]
 # type	x	y	ani_set_id1	ani_set_id2...
 
 #box
-#100	0	0	100
+100	0	0	100
 
 # title
 1	0	0	1
