@@ -729,18 +729,6 @@ void SceneArea2SideView::Update()
 	//	mCamera->SetPosition(mCamera->GetPosition() + Point(0, 8));
 	//}
 
-	//LeSon
-	for (auto x : objects) {
-		for (auto y : environments) {
-			x->Interact((Interactable*)y);
-		}
-	}
-
-	for (auto object : objects)
-	{
-		object->Update();
-	}
-
 	JumpCheckpoint();
 
 	// Update camera to follow mario
