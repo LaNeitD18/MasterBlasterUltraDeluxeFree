@@ -3,7 +3,6 @@
 #include <d3dx9.h>
 #include <unordered_map>
 #include "useful_stuff.h"
-#include "GameGlobal.h"
 #include "DrawArguments.h"
 #include "BoundingBox.h"
 

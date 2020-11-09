@@ -21,6 +21,8 @@
 #include "Orb.h"
 #include "Walker.h"
 
+#include "GameGlobal.h"
+
 using namespace std;
 
 SceneArea2Overhead::SceneArea2Overhead(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath)
@@ -34,6 +36,8 @@ SceneArea2Overhead::SceneArea2Overhead(int id, LPCWSTR filePath, Game *game, Poi
 	//mMap = new GameMap("Map/General/level2-side-tiless.tmx", textureLib, spriteLib);
 	this->game = game;
 	this->screenSize = screenSize;
+
+	GameGlobal::SetAnimationSetLibrary(animationSetLib);
 }
 
 void SceneArea2Overhead::LoadContent()

@@ -1,8 +1,9 @@
 #pragma once
 #include <Windows.h>
 #include "Interactable.h"
-#include "AnimatedGameObject.h"
+#include "GameObject.h"
 #include "GameGlobal.h"
+#include "JasonSideView.h"
 
 #define SOPHIA_WALKING_SPEED 0.03f
 #define SOPHIA_ACCELERATION 0.0005f
@@ -12,6 +13,7 @@
 #define SOPHIA_EPSILON_THRESHOLD 0.01f
 
 #define SOPHIA_ACTION_AMOUNT 13
+#define SOPHIA_MAX_HEALTH 100
 
 #define SOPHIA_BBOX_OFFSET_LEFT -10
 #define SOPHIA_BBOX_OFFSET_RIGHT 10
@@ -23,10 +25,6 @@
 
 #define SOPHIA_WHEEL_DURATION 4
 
-#define SOPHIA_INPUT_JUMP 'X'
-#define SOPHIA_INPUT_LEFT VK_LEFT
-#define SOPHIA_INPUT_RIGHT VK_RIGHT
-#define SOPHIA_INPUT_UP VK_UP
 /*
 Actions:
 	Walking
@@ -40,7 +38,9 @@ enum SophiaState
 	SOPHIA_STATE_JUMP_BOOST				= 0x0004,	// previous jumping / jump boost & down'X'
 	SOPHIA_STATE_LANDING				= 0x0008,	// about to touch ground
 
+	SOPHIA_STATE_LEAVING_VEHICLE		= 0x0200,
 	SOPHIA_STATE_LEFT_VEHICLE			= 0x8000,
+
 	SOPHIA_STATE_LOOKED_UP				= 0x4000, 
 	SOPHIA_STATE_LOOKING_LEFT			= 0x0400,
 
@@ -49,12 +49,13 @@ enum SophiaState
 
 	SOPHIA_STATE_AIRBORNE				= 0x0800,
 	
-	SOPHIA_STATE_TAKING_DAMAGE			= 0x0010,
+	//SOPHIA_STATE_TAKING_DAMAGE			= 0x0010,
 };
 
 enum SophiaAni {
-	SOPHIA_ANI_LEFT_VEHICLE			= 0,
+	SOPHIA_ANI_LEAVING_VEHICLE		= 0,
 	SOPHIA_ANI_IDLE					= 1,
+	SOPHIA_ANI_LEFT_VEHICLE			= 1,
 	SOPHIA_ANI_WALKING				= 2,
 	SOPHIA_ANI_JUMPING				= 3,
 	SOPHIA_ANI_JUMP_BOOST			= 4, //Note turning override airborne

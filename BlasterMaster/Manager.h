@@ -4,11 +4,23 @@ template <typename T>
 class Manager
 {
 public:
+	virtual void AddElement(T*) = 0;
+	virtual void RemoveElement(T*) = 0;
+
 	Manager() {}
 	virtual ~Manager() {}
-
-	virtual void AddElement(T*) = 0;
 };
 
-template <typename A, typename ... B>
-class Manager : public Manager<A>, public Manager<B>{};
+template <typename T>
+class Managed
+{
+protected:
+	Manager<T>* manager;
+public:
+	virtual void SetManager(Manager<T>* manager) 
+	{
+		this->manager = manager;
+	}
+	Managed() {}
+	virtual ~Managed() {}
+};

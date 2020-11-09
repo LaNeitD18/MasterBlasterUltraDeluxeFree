@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Utils.h"
 #include "DrawArguments.h"
+#include "GameGlobal.h"
 
 Sprite::Sprite(int id, BoundingBox boundingBox, LPDIRECT3DTEXTURE9 tex)
 {

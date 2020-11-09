@@ -57,7 +57,7 @@
     <ClCompile Include="WormPod.cpp" />
     <ClCompile Include="AnimatedGameObject.cpp" />
     <ClCompile Include="Environment.cpp" />
-    <ClCompile Include="Jason.cpp" />
+    <ClCompile Include="JasonSideView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
@@ -121,7 +121,8 @@
     <ClInclude Include="WormPod.h" />
     <ClInclude Include="AnimatedGameObject.h" />
     <ClInclude Include="Environment.h" />
-    <ClInclude Include="Jason.h" />
+    <ClInclude Include="JasonSideView.h" />
+    <ClInclude Include="InteractableGroupInclude.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib.lib" />

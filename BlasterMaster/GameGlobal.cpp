@@ -11,6 +11,7 @@ LPDIRECT3DDEVICE9 GameGlobal::mDevice = nullptr;
 bool GameGlobal::isGameRunning = true;
 IDirect3DSurface9* GameGlobal::backSurface = nullptr;
 Input* GameGlobal::input = NULL;
+AnimationSets* GameGlobal::mAniLib = NULL;
 
 GameGlobal::GameGlobal()
 {
@@ -102,3 +103,7 @@ int GameGlobal::GetHeight()
 {
 	return mHeight;
 }
+
+AnimationSets * GameGlobal::GetAnimationSetLibrary() { return mAniLib; }
+
+void GameGlobal::SetAnimationSetLibrary(AnimationSets * aniLib) { mAniLib = aniLib; }

@@ -1,5 +1,6 @@
 #include "GameMap.h"
 #include "Utils.h"
+#include "GameGlobal.h"
 
 GameMap::GameMap(const char* filePath, TextureLibrary* texLib, SpriteLibrary* spriteLib)
 {

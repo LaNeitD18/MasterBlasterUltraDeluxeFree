@@ -24,7 +24,7 @@ class Interactable;
 #define DUPLICATE2(...) DUPLICATE1 (EXPAND(DUPLICATE1 (EXPAND(DUPLICATE1 (EXPAND(__VA_ARGS__))))))
 #define DUPLICATE3(...) DUPLICATE2 (EXPAND(DUPLICATE2 (EXPAND(DUPLICATE2 (EXPAND(__VA_ARGS__))))))
 #define DUPLICATE4(...) DUPLICATE3 (EXPAND(DUPLICATE3 (EXPAND(DUPLICATE3 (EXPAND(__VA_ARGS__))))))
-#define DUPLICATE(...)  DUPLICATE4 (EXPAND(DUPLICATE4 (EXPAND(DUPLICATE4 (EXPAND(__VA_ARGS__))))))
+#define DUPLICATE_(...)  DUPLICATE4 (EXPAND(DUPLICATE4 (EXPAND(DUPLICATE4 (EXPAND(__VA_ARGS__))))))
 
 #define APPLY_MACRO_END(...)
 #define APPLY_MACRO_GET_END() 0, APPLY_MACRO_END
@@ -37,12 +37,12 @@ class Interactable;
 
 /**	Call Macro ARG0 for every other arguments. ARG0(ARG1) ARG0(ARG2) and so on
 */
-#define APPLY_MACRO(f, ...) DUPLICATE (APPLY_MACRO1 (f, __VA_ARGS__, (), 0))
+#define APPLY_MACRO(f, ...) DUPLICATE_ (APPLY_MACRO1 (f, __VA_ARGS__, (), 0))
 #pragma endregion
 
 // add new item
 #define INTERACTABLE_GROUP Player, Enemy, Env_Wall, Sophia, Env_Spike, Env_Lava, \
-							Worm //Bullet
+							Worm, JasonSideView //Bullet
 
 // Interactable
 #define ___CLASS(x) class x;
@@ -55,32 +55,20 @@ class Interactable
 {
 public:
 	Interactable();
-	~Interactable();
+	virtual ~Interactable();
 
 	virtual void Interact(Interactable* other) = 0;
 
 #define INTERACTABLE_DEF_H(groupmember) virtual void Interact(groupmember *) ;
 #define INTERACTABLE_DEF_CPP(groupmember) void CURRENT_CLASS :: Interact(groupmember * other) { Interactable::Interact(this, other);}
 	/* //COPY THIS TO ALL INTERACTABLE CLASS HEADER FILES
-	virtual void Interact(Interactable* other) { other->Interact(this); }
+	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 	//*/
 	/* //COPY THIS TO ALL INTERACTABLE CLASS CPP FILES
-	#include "Sophia.h"
-	#include "Environment.h"
-	#include "Dome.h"
-	#include "Eye.h"
-	#include "Floater.h"
-	#include "Insect.h"
-	#include "Jason.h"
-	#include "Jumper.h"
-	#include "Laser.h"
-	#include "Mine.h"
-	#include "Orb.h"
-	#include "Worm.h"
-	#include "Teleporter.h"
-	#include "Walker.h"
+	#include "InteractableGroupInclude.h"
 	#define CURRENT_CLASS <Current class>
+	void CURRENT_CLASS :: Interact(Interactable* other) { other->Interact(this); }
 	APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 	#undef CURRENT_CLASS
 	//*/
@@ -98,6 +86,7 @@ public:
 	//INTERACTABLE_MIRROR_DEF(Player, Enemy);
 	//INTERACTABLE_MIRROR_DEF(Bullet, Enemy);
 
+	INTERACTABLE_MIRROR_DEF(JasonSideView, Env_Wall);
 	//add to when new interaction comes out
 	INTERACTABLE_MIRROR_DEF(Player, Env_Wall);
 	INTERACTABLE_MIRROR_DEF(Player, Env_Spike);

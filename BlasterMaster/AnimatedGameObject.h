@@ -13,7 +13,14 @@ protected:
 public:
 	virtual void Render();
 	virtual void SetAnimationType(int ANI);
+
+	AnimatedGameObject() {}
+	virtual ~AnimatedGameObject() {}
 };
 
 class Enemy : public AnimatedGameObject
-{};
+{
+public:
+	Enemy() {}
+	virtual ~Enemy() {}
+};

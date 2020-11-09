@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "useful_stuff.h"
+#include "Manager.h"
 #include "Sprites.h"
 #include "Animations.h"
 #include "Textures.h"
@@ -19,7 +20,7 @@ using namespace std;
 #define DURATION_OF_INVULNERABILITY 60
 #define SPRITE_DURATION_OF_INVULNERABILTY 10
 
-class GameObject : public Interactable
+class GameObject : public Interactable, public Managed<GameObject>
 {
 public:
 	Point pos;
@@ -64,7 +65,7 @@ public:
 	virtual void SetState(int state) { this->state = state; }
 
 	GameObject();
-	~GameObject();
+	virtual ~GameObject();
 
 	// mark if collide with wall in different pos
 	bool wallTop;
@@ -77,10 +78,21 @@ public:
 	virtual void TakeDamage(int damage);
 };
 
+#define INPUT_JUMP				'X'
+#define INPUT_LEFT				VK_LEFT
+#define INPUT_RIGHT				VK_RIGHT
+#define INPUT_UP				VK_UP
+#define INPUT_DOWN				VK_DOWN
+#define INPUT_LEAVE_VEHICLE		'C'
+#define INPUT_SHOOT				'Z'
+
 class Player : public GameObject
 {
 public:
 	int invulnerableFrame;
 	virtual void TakeDamage(int damage);
 	virtual void Update();
+
+	virtual ~Player() {}
+	Player() {}
 };

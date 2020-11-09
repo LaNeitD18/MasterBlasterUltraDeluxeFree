@@ -2,6 +2,7 @@
 #include "Sophia.h"
 #include "Environment.h"
 #include "Worm.h"
+#include "JasonSideView.h"
 
 Interactable::Interactable()
 {
@@ -117,6 +118,16 @@ void Interactable::Interact(Worm* worm, Env_Wall* wall) {
 				worm->SetPosition(pos);
 			}
 		}
+	}
+}
+#pragma endregion
+
+#pragma region Long
+void Interactable::Interact(JasonSideView * player, Env_Wall * wall)
+{
+	Interactable::Interact((Player*)player, wall);
+	if (player->wallBot) {
+
 	}
 }
 #pragma endregion

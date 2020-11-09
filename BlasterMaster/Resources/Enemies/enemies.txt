@@ -18,7 +18,7 @@
 # next sprite: 10155
 
 [SPRITES]
-# id format: 5XX
+# id format: 5XX		Next available: 567
 #1 WORM
 Resources\Enemies\worm_sprites.txt
 
@@ -51,6 +51,9 @@ Resources\Enemies\orb_sprites.txt
 
 #12 SOPHIA
 Resources\Enemies\sophia_sprites.txt
+
+#13 JASON SIDEVIEW
+Resources\Enemies\Jason_Sideview_sprites.txt
 
 [ANIMATIONS]
 # id format: 5XX
@@ -86,6 +89,9 @@ Resources\Enemies\orb_ani.txt
 
 #12 ==== SOPHIA =========
 Resources\Enemies\sophia_ani.txt
+
+#13 ==== JASON SIDEVIEW =========
+Resources\Enemies\Jason_Sideview_ani.txt
 [OBJECTS]
 # type	x	y	ani_set_id1	ani_set_id2...
 

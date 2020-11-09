@@ -19,6 +19,7 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Textures.h"
+#include "GameGlobal.h"
 
 #include "SceneArea2SideView.h"
 

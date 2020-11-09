@@ -9,6 +9,7 @@
 
 #include "SceneArea2SideView.h"
 #include "SceneArea2Overhead.h"
+#include "GameGlobal.h"
 
 Game * Game::__instance = NULL;
 

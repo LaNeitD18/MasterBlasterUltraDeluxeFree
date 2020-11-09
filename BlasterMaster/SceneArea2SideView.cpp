@@ -22,6 +22,7 @@
 #include "Orb.h"
 #include "Walker.h"
 #include "Sophia.h"
+#include "JasonSideView.h"
 
 using namespace std;
 
@@ -58,8 +59,8 @@ void SceneArea2SideView::LoadContent()
 
 SceneArea2SideView::~SceneArea2SideView()
 {
-	for (int i = 0; i < objects.size(); i++)
-		delete objects[i];
+	for (auto i : objects)
+		delete i;
 	objects.clear();
 	textureLib->Clear();
 	delete textureLib;
@@ -101,6 +102,7 @@ SceneArea2SideView::~SceneArea2SideView()
 #define OBJECT_TYPE_ORB 10
 #define OBJECT_TYPE_WALKER 11
 #define OBJECT_TYPE_SOPHIA 12
+#define OBJECT_TYPE_JASON_SIDE_VIEW 13
 
 //LeSon
 #define ENVIRONMENT_TYPE_WALL 1
@@ -318,9 +320,14 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_WALKER:
 		obj = new Walker(x, y);
 		break;*/
-	case OBJECT_TYPE_SOPHIA:
+	case OBJECT_TYPE_SOPHIA: {
 		obj = new Sophia(x, y);
+		obj->SetManager(this);
 		break;
+	}
+	case OBJECT_TYPE_JASON_SIDE_VIEW: {
+		break;
+	}
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -333,7 +340,7 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 
 		obj->SetAnimationSet(ani_set);
 	}
-	objects.push_back(obj);
+	objects.insert(obj);
 }
 //LeSon
 void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
@@ -567,6 +574,19 @@ void SceneArea2SideView::JumpCheckpoint()
 
 void SceneArea2SideView::Update()
 {
+	// Quick & dirty
+
+	GameGlobal::SetAnimationSetLibrary(animationSetLib);
+
+	// Remove all things that need to remove last frame
+	for (auto obj : toRemove)
+	{
+		objects.erase(obj);
+		delete obj;
+	}
+	toRemove.clear();
+
+
 	Camera::setCameraInstance(mCamera);
 	input->Update();
 	for (auto x : objects) {
@@ -615,9 +635,9 @@ void SceneArea2SideView::Update()
 		}
 	}
 
-	for (size_t i = 0; i < objects.size(); i++)
+	for (auto object : objects)
 	{
-		objects[i]->Update();
+		object->Update();
 	}
 
 	JumpCheckpoint();
@@ -635,8 +655,8 @@ void SceneArea2SideView::Render()
 {
 	// LeSon
 	mMap->Draw();
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
+	for (auto object : objects)
+		object->Render();
 }
 
 /*
@@ -644,8 +664,8 @@ void SceneArea2SideView::Render()
 */
 void SceneArea2SideView::Release()
 {
-	for (int i = 0; i < objects.size(); i++)
-		delete objects[i];
+	for (auto object : objects)
+		delete object;
 
 	objects.clear();
 
@@ -658,4 +678,14 @@ void SceneArea2SideView::Release()
 	animationLib->Clear();
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
+}
+
+void SceneArea2SideView::AddElement(GameObject* obj)
+{
+	objects.insert(obj);
+}
+
+void SceneArea2SideView::RemoveElement(GameObject * obj)
+{
+	toRemove.push_back(obj);
 }
