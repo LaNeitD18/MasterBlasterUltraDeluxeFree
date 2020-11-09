@@ -148,6 +148,7 @@ SceneArea2SideView::~SceneArea2SideView()
 #define ENVIRONMENT_TYPE_PORTAL 3
 #define ENVIRONMENT_TYPE_LADDER 4
 #define ENVIRONMENT_TYPE_LAVA 5
+#define ENVIRONMENT_TYPE_DUNGEON 6
 #define ENVIRONMENT_TYPE_UNKNOWN -1
 
 #define MAX_SCENE_LINE 1024
@@ -397,12 +398,14 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 	float width = atof(tokens[3].c_str());
 	float height = atof(tokens[4].c_str());
 
-	int portaldirId = -1;
+	int dirId = -1;
 	int sectionToEnter = -1;
 	if (tokens.size() == 7) {
-		portaldirId = atoi(tokens[5].c_str());
+		dirId = atoi(tokens[5].c_str());
 		sectionToEnter = atoi(tokens[6].c_str());
 	}
+
+	GateDirection gateDir;
 
 	Environment *env = NULL;
 
@@ -418,14 +421,22 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 		env = new Env_Lava(x, y, width, height);
 		break;
 	case ENVIRONMENT_TYPE_PORTAL:
-		PortalDirection portaldir;
-		if (portaldirId == 0) {
-			portaldir = LEFT;
+		if (dirId == 0) {
+			gateDir = LEFT;
 		}
 		else {
-			portaldir = RIGHT;
+			gateDir = RIGHT;
 		}
-		env = new Env_Portal(x, y, width, height, portaldir, sectionToEnter);
+		env = new Env_Portal(x, y, width, height, gateDir, sectionToEnter);
+		break;
+	case ENVIRONMENT_TYPE_DUNGEON:
+		if (dirId == 0) {
+			gateDir = LEFT;
+		}
+		else {
+			gateDir = RIGHT;
+		}
+		env = new Env_Dungeon(x, y, width, height, gateDir, sectionToEnter);
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid env type: %d\n", env_type);

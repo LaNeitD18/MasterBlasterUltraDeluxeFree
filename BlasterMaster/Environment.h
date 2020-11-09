@@ -45,18 +45,30 @@ public:
 	Env_Lava(float x, float y, float width, float height);
 };
 
-enum PortalDirection {
+enum GateDirection {
 	LEFT = 0, RIGHT = 1
 };
 
 class Env_Portal : public Environment
 {
-	PortalDirection dir;
+	GateDirection dir;
 	int sectionToEnter;
 public:
-	PortalDirection GetPortalDir();
+	GateDirection GetPortalDir();
 	int GetSectionToEnter();
 	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
-	Env_Portal(float x, float y, float width, float height, PortalDirection direction, int sectionToEnter);
+	Env_Portal(float x, float y, float width, float height, GateDirection direction, int sectionToEnter);
+};
+
+class Env_Dungeon : public Environment
+{
+	GateDirection dir;
+	int sectionToEnter;
+public:
+	GateDirection GetDungeonDir();
+	int GetSectionToEnter();
+	virtual void Interact(Interactable* other);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
+	Env_Dungeon(float x, float y, float width, float height, GateDirection direction, int sectionToEnter);
 };

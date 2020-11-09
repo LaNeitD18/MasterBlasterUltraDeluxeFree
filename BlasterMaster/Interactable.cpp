@@ -4,6 +4,7 @@
 #include "Worm.h"
 #include "Utils.h"
 #include "SceneArea2SideView.h"
+#include "SceneArea2Overhead.h"
 #include "JasonSideView.h"
 
 Interactable::Interactable()
@@ -87,7 +88,7 @@ void Interactable::Interact(Player* player, Env_Portal* portal) {
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox portalBox = portal->GetBoundingBox();
 	if (playerBox.IsOverlap(portalBox)) {
-		PortalDirection portalDirection = portal->GetPortalDir();
+		GateDirection portalDirection = portal->GetPortalDir();
 		if ((input[VK_RIGHT] && portalDirection == RIGHT) || (input[VK_LEFT] && portalDirection == LEFT)) {
 			BoundingBox limitArea = SceneArea2SideView::cameraLimitAreaOfSection[portal->GetSectionToEnter()];
 			//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
@@ -98,6 +99,23 @@ void Interactable::Interact(Player* player, Env_Portal* portal) {
 			else {
 				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(0);
 			}
+			Camera::GetInstance()->SetCameraLimitarea(limitArea);
+		}
+	}
+}
+
+void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
+	// implement interact with lava (take damage)
+	Input& input = *GameGlobal::GetInput();
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox dungeonBox = dungeon->GetBoundingBox();
+	if (playerBox.IsOverlap(dungeonBox)) {
+		GateDirection gateDirection = dungeon->GetDungeonDir();
+		if ((input[VK_RIGHT] && gateDirection == RIGHT) || (input[VK_LEFT] && gateDirection == LEFT)) {
+			BoundingBox limitArea = SceneArea2Overhead::cameraLimitAreaOfSection[dungeon->GetSectionToEnter()];
+			//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
+			//Game::GetInstance()->GetCurrentScene()->SetFreeCamera(true);
+			Game::GetInstance()->Init(L"Resources/scene.txt", 3);
 			Camera::GetInstance()->SetCameraLimitarea(limitArea);
 		}
 	}
