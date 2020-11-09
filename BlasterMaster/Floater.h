@@ -1,10 +1,11 @@
 #pragma once
 #include "AnimatedGameObject.h"
 
-#define FLOATER_WALKING_SPEED 0.02f;
+#define FLOATER_FLYING_SPEED_X 0.005f;
+#define FLOATER_FLYING_SPEED_Y 0.02f;
 
-#define FLOATER_BBOX_WIDTH 10
-#define FLOATER_BBOX_HEIGHT 10
+#define FLOATER_BBOX_WIDTH 9
+#define FLOATER_BBOX_HEIGHT 8
 #define FLOATER_BBOX_HEIGHT_DIE 16
 
 #define FLOATER_STATE_FLYING 100

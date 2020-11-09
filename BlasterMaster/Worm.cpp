@@ -7,6 +7,7 @@ Worm::Worm() {
 
 Worm::Worm(float x, float y)
 {
+	leftEdge = rightEdge = 0;
 	SetState(WORM_STATE_FALLING);
 	pos = Point(x, y);
 	drawArguments.SetScale(D3DXVECTOR2(1, 1));
@@ -34,8 +35,8 @@ void Worm::Fall()
 
 void Worm::Walk()
 {
-	if (v.x < 0 && wallLeft) {
-		pos.x = 40; v.x = -v.x;
+	if (v.x < 0 && wallLeft || v.x > 0 && wallRight) {
+		v.x = -v.x;
 	}
 	if (v.x > 0 && pos.x > rightEdge) {
 		pos.x = rightEdge; v.x = -v.x;
@@ -50,11 +51,14 @@ void Worm::Update()
 		Fall();
 		if (wallBot) {
 			SetState(WORM_STATE_WALKING);
-			setRightEdge(pos.x);
+			if(rightEdge == 0)	setRightEdge(pos.x);
 		}
 	}
 	else if (state == WORM_STATE_WALKING) {
 		Walk();
+		if (!wallBot) {
+			SetState(WORM_STATE_FALLING);
+		}
 	}
 	// reset wall collision
 	wallBot = wallLeft = wallRight = wallTop = false;

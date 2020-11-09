@@ -19,6 +19,7 @@
 class Dome : public Enemy
 {
 	Point previousVelocity;
+	Point direction;
 
 public:
 	Dome();
@@ -31,5 +32,10 @@ public:
 	virtual BoundingBox GetBoundingBox();
 	virtual void Update();
 	virtual void Render();
+
+	void WalkRight();
+	void WalkLeft();
+	void WalkUp();
+	void WalkDown();
 };
 

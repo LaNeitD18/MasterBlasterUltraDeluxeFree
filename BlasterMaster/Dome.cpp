@@ -9,6 +9,7 @@ Dome::Dome(float x, float y) {
 	pos = Point(x, y);
 	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 	drawArguments.SetRotationCenter(Point(DOME_BBOX_WIDTH, DOME_BBOX_HEIGHT));
+	direction = Point(-1.0, -1.0);
 }
 
 BoundingBox Dome::GetBoundingBox()
@@ -29,7 +30,7 @@ void Dome::Update()
 {
 	pos += dx();
 
-	if (v.x < 0 && wallLeft) {
+	/*if (v.x < 0 && wallLeft) {
 		drawArguments.SetRotation(ROTATE_90DEGREE_TO_RADIAN);
 		previousVelocity.x = v.x;
 		v.x = 0;
@@ -47,13 +48,47 @@ void Dome::Update()
 		v.y = 0;
 		v.x = -previousVelocity.x;
 	}
-	if (v.y > 0 && wallBot) {
-		drawArguments.SetRotation(ROTATE_90DEGREE_TO_RADIAN);
-		previousVelocity.y = v.y;
-		v.y = 0;
-		v.x = -previousVelocity.x;
+	if (v.y > 0) {
+		if (wallBot) {
+			drawArguments.SetRotation(ROTATE_90DEGREE_TO_RADIAN * 0);
+			v.y = 0;
+			v.x = -previousVelocity.x;
+		}
+		else if (!wallBot && !wallRight) {
+			drawArguments.SetRotation(ROTATE_90DEGREE_TO_RADIAN * 0);
+		}
+	}*/
+	if (v.y < 0 && wallTop) {
+		WalkRight();
 	}
-	//2968
+	if (v.y > 0 && wallBot) {
+		WalkLeft();
+	}
+	if (v.x < 0 && wallLeft) {
+		WalkUp();
+	}
+	if (v.x > 0 && wallRight) {
+		WalkDown();
+	}
+	if (v.y > 0 && !wallBot && !wallRight && direction.x == 1) {
+		drawArguments.SetRotationCenter(Point(DOME_BBOX_WIDTH * 2, DOME_BBOX_HEIGHT * 2));
+		WalkRight();
+	}
+	if (v.y < 0 && !wallTop && !wallLeft && direction.x == 1) {
+		drawArguments.SetRotationCenter(Point(DOME_BBOX_WIDTH * 2, DOME_BBOX_HEIGHT * 2));
+		WalkLeft();
+	}
+	if (v.x > 0 && !wallTop && !wallRight && direction == Point(1,1)) {
+		drawArguments.SetRotationCenter(Point(DOME_BBOX_WIDTH * 2, DOME_BBOX_HEIGHT * 2));
+		WalkUp();
+	}
+	if (v.x < 0 && !wallLeft && !wallBot && direction.y == 1) {
+		drawArguments.SetRotationCenter(Point(DOME_BBOX_WIDTH * 2, DOME_BBOX_HEIGHT * 2));
+		WalkDown();
+	}
+	drawArguments.SetRotationCenter(Point(DOME_BBOX_WIDTH, DOME_BBOX_HEIGHT));
+	// reset wall collision
+	wallBot = wallLeft = wallRight = wallTop = false;
 }
 
 void Dome::Render()
@@ -66,6 +101,38 @@ void Dome::Render()
 	AnimatedGameObject::Render();
 
 	//RenderBoundingBox();
+}
+
+void Dome::WalkRight()
+{
+	drawArguments.SetRotation(ROTATE_90DEGREE_TO_RADIAN * 2);
+	v.y = 0;
+	v.x = -previousVelocity.x;
+	direction.x = 1;
+}
+
+void Dome::WalkLeft()
+{
+	drawArguments.SetRotation(ROTATE_90DEGREE_TO_RADIAN * 0);
+	v.y = 0;
+	v.x = previousVelocity.x;
+	direction.x = -1;
+}
+
+void Dome::WalkUp()
+{
+	drawArguments.SetRotation(ROTATE_90DEGREE_TO_RADIAN);
+	v.x = 0;
+	v.y = previousVelocity.y;
+	direction.y = -1;
+}
+
+void Dome::WalkDown()
+{
+	drawArguments.SetRotation(ROTATE_90DEGREE_TO_RADIAN * 3);
+	v.x = 0;
+	v.y = -previousVelocity.y;
+	direction.y = 1;
 }
 
 void Dome::SetState(int state)
@@ -81,8 +148,8 @@ void Dome::SetState(int state)
 	case DOME_STATE_WALKING:
 		v.x = -DOME_WALKING_SPEED_X;
 
-		previousVelocity.x = v.x;
-		previousVelocity.y = DOME_WALKING_SPEED_Y;
+		previousVelocity.x = -DOME_WALKING_SPEED_X;
+		previousVelocity.y = -DOME_WALKING_SPEED_Y;
 	}
 
 }
