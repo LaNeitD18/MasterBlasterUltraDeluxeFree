@@ -20,6 +20,7 @@
 #include "Insect.h"
 #include "Orb.h"
 #include "Walker.h"
+#include "JasonOverhead.h"
 
 #include "GameGlobal.h"
 
@@ -124,6 +125,7 @@ SceneArea2Overhead::~SceneArea2Overhead()
 #define OBJECT_TYPE_INSECT 9
 #define OBJECT_TYPE_ORB 10
 #define OBJECT_TYPE_WALKER 11
+#define OBJECT_TYPE_JASON 13
 
 #define MAX_SCENE_LINE 1024
 
@@ -302,6 +304,9 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 			break;*/
 	case OBJECT_TYPE_WORM:
 		obj = new Worm(x, y);
+		break;
+	case OBJECT_TYPE_JASON:
+		obj = new JasonOverhead(x, y);
 		break;
 	/*case OBJECT_TYPE_JUMPER:
 		obj = new Jumper(x, y);

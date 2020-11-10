@@ -9,6 +9,7 @@
 #include "Sophia.h"
 #include "GameObject.h"
 #include "AnimatedGameObject.h"
+#include "Jumper.h"
 
 using namespace std;
 
@@ -328,29 +329,28 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		temp = new Worm(x, y);
 		obj = temp;
 		break;
-	}
-	/*case OBJECT_TYPE_JUMPER:
+	case OBJECT_TYPE_JUMPER:
 		obj = new Jumper(x, y);
 		break;
-	case OBJECT_TYPE_TELEPORTER:
+	/*case OBJECT_TYPE_TELEPORTER:
 		obj = new Teleporter(x, y);
 		break;
 	case OBJECT_TYPE_CANNON:
 		obj = new Cannon(x, y);
-		break;
+		break;*/
 	case OBJECT_TYPE_DOME:
 		obj = new Dome(x, y);
 		break;
-	case OBJECT_TYPE_EYE:
+	/*case OBJECT_TYPE_EYE:
 		obj = new Eye(x, y);
 		break;
 	case OBJECT_TYPE_MINE:
 		obj = new Mine(x, y);
-		break;
+		break;*/
 	case OBJECT_TYPE_FLOATER:
 		obj = new Floater(x, y);
 		break;
-	case OBJECT_TYPE_INSECT:
+	/*case OBJECT_TYPE_INSECT:
 		obj = new Insect(x, y);
 		break;
 	case OBJECT_TYPE_ORB:

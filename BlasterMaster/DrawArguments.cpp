@@ -15,7 +15,7 @@ void DrawArguments::Init()
 {
 	mPosition = Point(0, 0);
 	mRotation = 0;
-	mRotationCenter = D3DXVECTOR2(mPosition.x, mPosition.y);
+	mRotationCenter = mPosition;
 	mTranslation = Point(0, 0);
 	mScale = D3DXVECTOR2(0, 1);
 	mScale.x = mScale.y = 1;
@@ -109,12 +109,12 @@ void DrawArguments::SetTranslation(Point translation)
 	mTranslation = translation;
 }
 
-D3DXVECTOR2 DrawArguments::GetRotationCenter()
+Point DrawArguments::GetRotationCenter()
 {
 	return mRotationCenter;
 }
 
-void DrawArguments::SetRotationCenter(D3DXVECTOR2 rotationCenter)
+void DrawArguments::SetRotationCenter(Point rotationCenter)
 {
 	mRotationCenter = rotationCenter;
 }

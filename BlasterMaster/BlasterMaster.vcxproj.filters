@@ -60,6 +60,7 @@
     <ClCompile Include="SceneOpening.cpp" />
     <ClCompile Include="JasonSideView.cpp" />
     <ClCompile Include="HealthBar.cpp" />
+    <ClCompile Include="JasonOverhead.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
@@ -127,6 +128,7 @@
     <ClInclude Include="JasonSideView.h" />
     <ClInclude Include="InteractableGroupInclude.h" />
     <ClInclude Include="HealthBar.h" />
+    <ClInclude Include="JasonOverhead.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib.lib" />

@@ -1,128 +1,22 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
-1	Resources\sprites\worm_76_44.png		255	255	255
-2	Resources\sprites\jumper_68_104.png		255	255	255
-3	Resources\sprites\teleporter_104_136.png	255	255	255
-4	Resources\sprites\cannon_109_108.png		255	255	255
-5	Resources\sprites\dome_76_72.png		255	255	255
-6	Resources\sprites\eye_76_76.png			255	255	255
-7	Resources\sprites\mine_64_40.png		255	255	255
-8	Resources\sprites\floater2_76_68.png		255	255	255
-9	Resources\sprites\insect_78_78.png		255	255	255
-10	Resources\sprites\orb_76_76.png			255	255	255
-11	Resources\sprites\orb2_72_72.png		255	255	255
-12	Resources\sprites\Jason_SideView.png		255	255	255
-13	Resources\sprites\Jason_Overhead.png		255	255	255
-14	Resources\sprites\Sophia.png			255	255	255
-15	Resources\sprites\enemies.png	254	255	255
+1	Resources\sprites\Jason_Overhead.png		255	255	255
 # next sprite: 10155
 
 [SPRITES]
 # id format: 5XX
-#1 WORM
-Resources\Enemies\worm_sprites.txt
-
-#2 JUMPER
-Resources\Enemies\jumper_sprites.txt
-
-#3 TELEPORTER
-Resources\Enemies\teleporter_sprites.txt
-
-#4 CANNON
-Resources\Enemies\cannon_sprites.txt
-
-#5 DOME
-Resources\Enemies\dome_sprites.txt
-
-#6 EYE
-Resources\Enemies\eye_sprites.txt
-
-#7 MINE
-Resources\Enemies\mine_sprites.txt
-
-#8 FLOATER
-Resources\Enemies\floater_sprites.txt
-
-#9 INSECT
-Resources\Enemies\insect_sprites.txt
-
-#10+11 ORB
-Resources\Enemies\orb_sprites.txt
-
-#12 SOPHIA
-Resources\Enemies\sophia_sprites.txt
+#1 JASON OVERHEAD
+Resources\Enemies\Jason_Overhead_sprites.txt
 
 [ANIMATIONS]
 # id format: 5XX
-#1 ==== WORM =========
-Resources\Enemies\worm_ani.txt
-
-#2 ==== JUMPER =========
-Resources\Enemies\jumper_ani.txt
-
-#3 ==== TELPORTER =========
-Resources\Enemies\teleporter_ani.txt
-
-#4 ==== CANNON =========
-Resources\Enemies\cannon_ani.txt
-
-#5 ==== DOME =========
-Resources\Enemies\dome_ani.txt
-
-#6 ==== EYE =========
-Resources\Enemies\eye_ani.txt
-
-#7 ==== MINE =========
-Resources\Enemies\mine_ani.txt
-
-#8 ==== FLOATER =========
-Resources\Enemies\floater_ani.txt
-
-#9 ==== INSECT =========
-Resources\Enemies\insect_ani.txt
-
-#10+11 ==== ORB =========
-Resources\Enemies\orb_ani.txt
-
-#12 ==== SOPHIA =========
-Resources\Enemies\sophia_ani.txt
+#1 ==== JASON OVERHEAD =========
+Resources\Enemies\Jason_Overhead_ani.txt
 [OBJECTS]
 # type	x	y	ani_set_id1	ani_set_id2...
 
-# WORM
-1	150	2850	1
-#1	210	2850	1
-
-# JUMPER
-2	18	88	2
-
-# TELEPORTER
-3	700	500	3
-
-# CANNON
-4	700	100	4
-
-# DOME
-5	700	200	5
-
-# EYE
-6	520	450	6
-
-# MINE
-7	600	200	7
-
-# FLOATER
-8	500	50	8
-
-# INSECT
-#9	100	2955	9
-
-# ORB
-10	700	300	10
-10	500	300	11
-
-# SOPHIA
-12	56	2940	12	13	14	15
+# JASONO
+13	120	1910	1
 
 [ENVIRONMENTS]
 # type	x	y	width	height	portaldirid	sectionToEnter

@@ -2,10 +2,14 @@
 #include "Sophia.h"
 #include "Environment.h"
 #include "Worm.h"
+#include "Floater.h"
+#include "Dome.h"
+#include "Jumper.h"
 #include "Utils.h"
 #include "SceneArea2SideView.h"
 #include "SceneArea2Overhead.h"
 #include "JasonSideView.h"
+#include "JasonOverhead.h"
 
 Interactable::Interactable()
 {
@@ -166,6 +170,150 @@ void Interactable::Interact(Worm* worm, Env_Wall* wall) {
 				worm->SetPosition(pos);
 			}
 		}
+	}
+}
+
+void Interactable::Interact(Floater* floater, Env_Wall* wall) {
+	BoundingBox floaterBox = floater->GetBoundingBox();
+	BoundingBox wallBox = wall->GetBoundingBox();
+	if (floaterBox.IsOverlap(wallBox)) {
+		float overlapAreaX = min(floaterBox.r, wallBox.r) - max(floaterBox.l, wallBox.l);
+		float overlapAreaY = min(floaterBox.b, wallBox.b) - max(floaterBox.t, wallBox.t);
+		if (overlapAreaX > overlapAreaY)
+		{
+			if (floaterBox.GetCenter().y > wallBox.GetCenter().y) {
+				floater->wallTop = true;
+				// Snap top (player pushed down)
+				Point pos = floater->GetPosition();
+				pos.y -= floaterBox.t - wallBox.b;
+				floater->SetPosition(pos);
+			}
+			else
+			{
+				floater->wallBot = true;
+				// Snap bottom (player pushed up)
+				Point pos = floater->GetPosition();
+				pos.y += wallBox.t - floaterBox.b;
+				floater->SetPosition(pos);
+			}
+		}
+		else
+		{
+			if (floaterBox.GetCenter().x < wallBox.GetCenter().x) {
+				floater->wallRight = true;
+				// Snap right (player to left)
+				Point pos = floater->GetPosition();
+				pos.x -= floaterBox.r - wallBox.l;
+				floater->SetPosition(pos);
+			}
+			else
+			{
+				floater->wallLeft = true;
+				// Snap left (player to right)
+				Point pos = floater->GetPosition();
+				pos.x += wallBox.r - floaterBox.l;
+				floater->SetPosition(pos);
+			}
+		}
+	}
+}
+
+void Interactable::Interact(Dome* dome, Env_Wall* wall) {
+	BoundingBox domeBox = dome->GetBoundingBox();
+	BoundingBox wallBox = wall->GetBoundingBox();
+	if (domeBox.IsOverlap(wallBox)) {
+		float overlapAreaX = min(domeBox.r, wallBox.r) - max(domeBox.l, wallBox.l);
+		float overlapAreaY = min(domeBox.b, wallBox.b) - max(domeBox.t, wallBox.t);
+		if (overlapAreaX > overlapAreaY)
+		{
+			if (domeBox.GetCenter().y > wallBox.GetCenter().y) {
+				dome->wallTop = true;
+				// Snap top (player pushed down)
+				Point pos = dome->GetPosition();
+				pos.y -= domeBox.t - wallBox.b;
+				dome->SetPosition(pos);
+			}
+			else
+			{
+				dome->wallBot = true;
+				// Snap bottom (player pushed up)
+				Point pos = dome->GetPosition();
+				pos.y += wallBox.t - domeBox.b;
+				dome->SetPosition(pos);
+			}
+		}
+		else
+		{
+			if (domeBox.GetCenter().x < wallBox.GetCenter().x) {
+				dome->wallRight = true;
+				// Snap right (player to left)
+				Point pos = dome->GetPosition();
+				pos.x -= domeBox.r - wallBox.l;
+				dome->SetPosition(pos);
+			}
+			else
+			{
+				dome->wallLeft = true;
+				// Snap left (player to right)
+				Point pos = dome->GetPosition();
+				pos.x += wallBox.r - domeBox.l;
+				dome->SetPosition(pos);
+			}
+		}
+	}
+}
+
+void Interactable::Interact(Jumper* jumper, Env_Wall* wall) {
+	BoundingBox jumperBox = jumper->GetBoundingBox();
+	BoundingBox wallBox = wall->GetBoundingBox();
+	if (jumperBox.IsOverlap(wallBox)) {
+		float overlapAreaX = min(jumperBox.r, wallBox.r) - max(jumperBox.l, wallBox.l);
+		float overlapAreaY = min(jumperBox.b, wallBox.b) - max(jumperBox.t, wallBox.t);
+		if (overlapAreaX > overlapAreaY)
+		{
+			if (jumperBox.GetCenter().y > wallBox.GetCenter().y) {
+				jumper->wallTop = true;
+				// Snap top (player pushed down)
+				Point pos = jumper->GetPosition();
+				pos.y -= jumperBox.t - wallBox.b;
+				jumper->SetPosition(pos);
+			}
+			else
+			{
+				jumper->wallBot = true;
+				// Snap bottom (player pushed up)
+				Point pos = jumper->GetPosition();
+				pos.y += wallBox.t - jumperBox.b;
+				jumper->SetPosition(pos);
+			}
+		}
+		else
+		{
+			if (jumperBox.GetCenter().x < wallBox.GetCenter().x) {
+				jumper->wallRight = true;
+				// Snap right (player to left)
+				Point pos = jumper->GetPosition();
+				pos.x -= jumperBox.r - wallBox.l;
+				jumper->SetPosition(pos);
+			}
+			else
+			{
+				jumper->wallLeft = true;
+				// Snap left (player to right)
+				Point pos = jumper->GetPosition();
+				pos.x += wallBox.r - jumperBox.l;
+				jumper->SetPosition(pos);
+			}
+		}
+	}
+}
+
+// JasonOverhead
+void Interactable::Interact(JasonOverhead* player, Env_Wall* wall)
+{
+	Interactable::Interact((Player*)player, wall);
+	if (player->wallBot) {
+
 	}
 }
 #pragma endregion

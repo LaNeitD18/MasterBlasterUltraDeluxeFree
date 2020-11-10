@@ -1,19 +1,19 @@
 #include "Floater.h"
 
 Floater::Floater() {
-	SetState(FLOATER_STATE_WALKING);
+	SetState(FLOATER_STATE_FLYING);
 }
 
 Floater::Floater(float x, float y) {
-	SetState(FLOATER_STATE_WALKING);
+	SetState(FLOATER_STATE_FLYING);
 	pos = Point(x, y);
-	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 }
 
 BoundingBox Floater::GetBoundingBox()
 {
-	float left = pos.x;
-	float top = pos.y;
+	float left = pos.x - FLOATER_BBOX_WIDTH;
+	float top = pos.y - FLOATER_BBOX_HEIGHT;
 	float right = pos.x + FLOATER_BBOX_WIDTH;
 	float bottom;
 
@@ -28,13 +28,20 @@ void Floater::Update()
 {
 	pos += dx();
 
-	if (v.x < 0 && pos.x < 0) {
-		pos.x = 0; v.x = -v.x;
+	if (v.x < 0 && wallLeft) {
+		v.x = -v.x;
+	}
+	if (v.x > 0 && wallRight) {
+		v.x = -v.x;
+	}
+	if (v.y < 0 && wallTop) {
+		v.y = -v.y;
+	}
+	if (v.y > 0 && wallBot) {
+		v.y = -v.y;
 	}
 
-	if (v.x > 0 && pos.x > 290) {
-		pos.x = 290; v.x = -v.x;
-	}
+	wallBot = wallTop = wallLeft = wallRight = false;
 }
 
 void Floater::Render()
@@ -59,8 +66,14 @@ void Floater::SetState(int state)
 		v.x = 0;
 		v.y = 0;
 		break;
-	case FLOATER_STATE_WALKING:
-		v.x = FLOATER_WALKING_SPEED;
+	case FLOATER_STATE_FLYING:
+		v.x = FLOATER_FLYING_SPEED_X;
+		v.y = FLOATER_FLYING_SPEED_Y;
 	}
 
 }
+
+#include "InteractableGroupInclude.h"
+#define CURRENT_CLASS Floater
+void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)

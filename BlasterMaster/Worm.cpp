@@ -7,16 +7,17 @@ Worm::Worm() {
 
 Worm::Worm(float x, float y)
 {
+	leftEdge = rightEdge = 0;
 	SetState(WORM_STATE_FALLING);
 	pos = Point(x, y);
-	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 	isFlipVertical = true;
 }
 
 BoundingBox Worm::GetBoundingBox()
 {
-	float left = pos.x;
-	float top = pos.y;
+	float left = pos.x - WORM_BBOX_WIDTH;
+	float top = pos.y - WORM_BBOX_HEIGHT;
 	float right = pos.x + WORM_BBOX_WIDTH;
 	float bottom;
 	if (state == WORM_STATE_DIE)
@@ -28,17 +29,17 @@ BoundingBox Worm::GetBoundingBox()
 
 void Worm::Fall() 
 {
-	if (pos.y > 2895)
+	if (!wallLeft)
 		v.x = -WORM_FALLING_SPEED_X;
 }
 
 void Worm::Walk()
 {
-	if (v.x < 0 && pos.x < 40) {
-		pos.x = 40; v.x = -v.x;
+	if (v.x < 0 && wallLeft || v.x > 0 && wallRight) {
+		v.x = -v.x;
 	}
-	if (v.x > 0 && pos.x > 126) {
-		pos.x = 126; v.x = -v.x;
+	if (v.x > 0 && pos.x > rightEdge) {
+		pos.x = rightEdge; v.x = -v.x;
 	}
 }
 
@@ -50,10 +51,14 @@ void Worm::Update()
 		Fall();
 		if (wallBot) {
 			SetState(WORM_STATE_WALKING);
+			if(rightEdge == 0)	setRightEdge(pos.x);
 		}
 	}
 	else if (state == WORM_STATE_WALKING) {
 		Walk();
+		if (!wallBot) {
+			SetState(WORM_STATE_FALLING);
+		}
 	}
 	// reset wall collision
 	wallBot = wallLeft = wallRight = wallTop = false;
@@ -79,6 +84,26 @@ void Worm::Render()
 	AnimatedGameObject::Render();
 
 	//RenderBoundingBox();
+}
+
+int Worm::getLeftEdge()
+{
+	return this->leftEdge;
+}
+
+void Worm::setLeftEdge(int left)
+{
+	this->leftEdge = left;
+}
+
+int Worm::getRightEdge()
+{
+	return this->rightEdge;
+}
+
+void Worm::setRightEdge(int right)
+{
+	this->rightEdge = right;
 }
 
 void Worm::SetState(int state)
