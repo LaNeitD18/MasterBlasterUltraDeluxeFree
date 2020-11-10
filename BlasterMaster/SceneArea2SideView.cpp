@@ -667,7 +667,7 @@ void SceneArea2SideView::Update()
 	if (!isCameraFree) {
 		input->Update();
 		target = NULL;
-		for (auto x : onScreenObj) {
+		for (auto x : objects) {
 			Player* current_player = dynamic_cast<Player*>(x);
 			if (current_player != NULL && 
 				current_player->IsPrimaryPlayer()) {
