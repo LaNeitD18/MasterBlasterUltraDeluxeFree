@@ -11,7 +11,7 @@ protected:
 	bool moving = true;
 	bool isFlipVertical = false;
 public:
-	virtual void Render();
+	virtual void Render() override;
 	virtual void SetAnimationType(int ANI);
 
 	AnimatedGameObject() {}

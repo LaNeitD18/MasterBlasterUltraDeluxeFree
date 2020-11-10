@@ -10,6 +10,8 @@
 
 static D3DCOLOR invulnerableColor[6] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,0,255,255),D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,255,0,255),D3DCOLOR_ARGB(255,255,255,255), D3DCOLOR_ARGB(0,255,255,255) };
 
+void GameObject::SetState(int state) { this->state = state; }
+
 GameObject::GameObject()
 {
 	drawArguments.Init();
@@ -22,6 +24,16 @@ RESULT GameObject::Init(TextureLibrary * textureLib)
 	bbox = textureLib->Get(ID_TEX_BBOX);
 	return 0;
 }
+
+void GameObject::SetPosition(Point pos) { this->pos = pos; }
+
+void GameObject::SetSpeed(Point v) { this->v = v; }
+
+Point GameObject::GetPosition() { return pos; }
+
+Point GameObject::GetSpeed() { return v; }
+
+int GameObject::GetState() { return this->state; }
 
 void GameObject::RenderBoundingBox()
 {
@@ -37,6 +49,8 @@ void GameObject::RenderBoundingBox()
 
 	Game::GetInstance()->Draw(pos, bbox, rect, 32);
 }
+
+void GameObject::SetAnimationSet(AnimationSet * ani_set) { animationSet = ani_set; }
 
 GameObject::~GameObject()
 {
@@ -92,3 +106,5 @@ void Player::Update()
 	}
 	drawArguments.SetColor(invulnerableColor[(invulnerableFrame / SPRITE_DURATION_OF_INVULNERABILTY) % 6]);
 }
+
+bool Player::IsPrimaryPlayer() { return true; }

@@ -2,29 +2,13 @@
 #include <fstream>
 
 #include "SceneArea2SideView.h"
+#include "GameGlobal.h"
 #include "Utils.h"
-#include "Textures.h"
-#include "Sprites.h"
-#include "Portal.h"
-#include "GameObject.h"
 
 #include "Worm.h"
-#include "Jumper.h"
-#include "Teleporter.h"
-#include "Cannon.h"
-#include "Dome.h"
-#include "Eye.h"
-#include "Laser.h"
-#include "Mine.h"
-#include "Floater.h"
-#include "WormPod.h"
-#include "Insect.h"
-#include "Orb.h"
-#include "Walker.h"
 #include "Sophia.h"
-#include "JasonSideView.h"
-
-#include "HealthBar.h"
+#include "GameObject.h"
+#include "AnimatedGameObject.h"
 
 using namespace std;
 
@@ -328,9 +312,13 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 				obj = new CPortal(x, y, r, b, scene_id);
 			}
 			break;*/
-	case OBJECT_TYPE_WORM:
-		obj = new Worm(x, y);
+	case OBJECT_TYPE_WORM: {
+		//obj = new Worm(x, y);;
+		AnimatedGameObject* temp = NULL;
+		temp = new Worm(x, y);
+		obj = temp;
 		break;
+	}
 	/*case OBJECT_TYPE_JUMPER:
 		obj = new Jumper(x, y);
 		break;

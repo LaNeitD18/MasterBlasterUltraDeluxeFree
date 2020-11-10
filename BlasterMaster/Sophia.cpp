@@ -183,6 +183,12 @@ void Sophia::Update()
 	// reset wall collision
 	wallBot = wallLeft = wallRight = wallTop = false;
 
+	if (HealthPoint <= 0)
+	{
+		newState |= SOPHIA_STATE_DYING;
+		// newState |= SOPHIA_STATE_DEAD;
+	}
+
 	if ((newState & state & SOPHIA_STATE_LEAVING_VEHICLE) ||
 		(newState & state & SOPHIA_STATE_LEFT_VEHICLE))
 		return;
@@ -235,6 +241,8 @@ void Sophia::Render()
 		targetAni = SOPHIA_ANI_LEFT_VEHICLE;
 	if ((state & SOPHIA_STATE_ENTERING_VEHICLE) && currentAni[SOPHIA_ANI_LEAVING_VEHICLE])
 		targetAni = SOPHIA_ANI_LEAVING_VEHICLE;
+	/*if (currentAni[SOPHIA_ANI_DYING])
+		targetAni = SOPHIA_ANI_DYING;//*/
 
 	int* targetFrame = &currentFrame[targetAni];
 	targetTime = currentTime[targetAni];
@@ -277,6 +285,10 @@ void Sophia::Render()
 					i == SOPHIA_ANI_LOOKED_UP_IDLE)
 					StartAnimationType(i);
 				//*/
+				if (i == SOPHIA_ANI_DYING)
+				{
+					manager->RemoveElement(this);
+				}
 				if (i == SOPHIA_ANI_LEAVING_VEHICLE) {
 					if (state & SOPHIA_STATE_LEAVING_VEHICLE) {
 						stateToChange.push_back(
@@ -495,6 +507,8 @@ void Sophia::SetState(int state)
 
 void Sophia::SetAniByState(int state)
 {
+	if (state & SOPHIA_STATE_DYING)
+		StartAnimationType(SOPHIA_ANI_DYING);
 	if (state & SOPHIA_STATE_LEFT_VEHICLE)
 		StartAnimationType(SOPHIA_ANI_LEFT_VEHICLE);
 	if ((state & SOPHIA_STATE_LEAVING_VEHICLE) ||
@@ -535,6 +549,14 @@ void Sophia::SetAniByState(int state)
 void Sophia::SetAnimationSet(AnimationSet * set)
 {
 	animations.push_back(set);
+}
+
+void Sophia::TakeDamage(int damage)
+{
+	if (!(state & SOPHIA_STATE_ENTERING_VEHICLE) &&
+		!(state & SOPHIA_STATE_LEFT_VEHICLE) &&
+		!(state & SOPHIA_STATE_LEAVING_VEHICLE))
+		Player::TakeDamage(damage);
 }
 
 #include "InteractableGroupInclude.h"

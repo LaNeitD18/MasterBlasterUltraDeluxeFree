@@ -10,7 +10,7 @@
 #define SOPHIA_JUMP_POWER 0.057f
 #define SOPHIA_JUMP_BOOST_DECAY 0.9f
 
-#define SOPHIA_ACTION_AMOUNT 13
+#define SOPHIA_ACTION_AMOUNT 14
 #define SOPHIA_MAX_HEALTH 100
 
 #define SOPHIA_BBOX_OFFSET_LEFT -10
@@ -49,6 +49,8 @@ enum SophiaState
 	SOPHIA_STATE_TURNING				= 0x1000,
 
 	SOPHIA_STATE_AIRBORNE				= 0x0800,
+
+	SOPHIA_STATE_DYING					= 0x0080,
 	
 	//SOPHIA_STATE_TAKING_DAMAGE			= 0x0010,
 };
@@ -68,6 +70,7 @@ enum SophiaAni {
 	SOPHIA_ANI_LOOKED_UP_JUMPING	= 10,
 	SOPHIA_ANI_LOOKED_UP_JUMP_BOOST	= 11,
 	SOPHIA_ANI_LOOKED_UP_LANDING	= 12,
+	SOPHIA_ANI_DYING				= 13,
 };
 class JasonSideView;
 
@@ -89,9 +92,9 @@ public:
 	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 
-	virtual BoundingBox GetBoundingBox();
-	virtual void Update();
-	virtual void Render();
+	virtual BoundingBox GetBoundingBox() override;
+	virtual void Update() override;
+	virtual void Render() override;
 	virtual void StartAnimationType(int ANI);
 	virtual void EndAnimationType(int ANI);
 
@@ -99,12 +102,13 @@ public:
 	void GoRight();
 	void GoHalt();
 
-	virtual bool IsPrimaryPlayer();
+	virtual bool IsPrimaryPlayer() override;
 
 	Sophia();
 	Sophia(float x, float y);
-	virtual void SetState(int state);
+	virtual void SetState(int state) override;
 	void SetAniByState(int state);
-	virtual void SetAnimationSet(AnimationSet* set);
+	virtual void SetAnimationSet(AnimationSet* set) override;
+	virtual void TakeDamage(int) override;
 };
 

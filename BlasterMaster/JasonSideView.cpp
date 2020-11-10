@@ -119,7 +119,7 @@ void JasonSideView::Update()
 			newState &= ~JASON_STATE_CRAWLING;
 		}
 
-	if (!dead) {
+	if (!dead && !(state & JASON_STATE_ENTERING_VEHICLE)) {
 		if ((input[INPUT_LEFT] & KEY_STATE_DOWN) &&
 			(input[INPUT_RIGHT] & KEY_STATE_DOWN))
 			GoHalt();

@@ -43,26 +43,26 @@ public:
 	DrawArguments drawArguments;
 
 public: 
-	void SetPosition(Point pos) { this->pos = pos; }
-	void SetSpeed(Point v) { this->v = v; }
+	void SetPosition(Point pos);
+	void SetSpeed(Point v);
 
-	Point GetPosition() { return pos; }
+	Point GetPosition();
 	//Point GetPosition() { return this->drawArguments.GetPosition(); }
 
-	Point GetSpeed() { return v; }
+	Point GetSpeed();
 
-	int GetState() { return this->state; }
+	int GetState();
 
 	void RenderBoundingBox();
 
-	virtual void SetAnimationSet(AnimationSet* ani_set) { animationSet = ani_set; }
+	virtual void SetAnimationSet(AnimationSet* ani_set);
 	
 	virtual RESULT Init(TextureLibrary* textureLib);
 
 	virtual BoundingBox GetBoundingBox() = 0;
 	virtual void Update() = 0;
 	virtual void Render() = 0;
-	virtual void SetState(int state) { this->state = state; }
+	virtual void SetState(int state);
 
 	GameObject();
 	virtual ~GameObject();
@@ -91,9 +91,9 @@ class Player : public GameObject
 public:
 	int invulnerableFrame;
 	virtual void TakeDamage(int damage);
-	virtual void Update();
+	virtual void Update() override;
 
-	virtual bool IsPrimaryPlayer() { return true; }
+	virtual bool IsPrimaryPlayer();
 
 	virtual ~Player() {}
 	Player() {}
