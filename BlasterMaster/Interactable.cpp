@@ -21,6 +21,7 @@ Interactable::~Interactable()
 }
 
 #define DAMAGE_OF_SPIKE 25
+#define DAMAGE_OF_ENEMY 1
 #define DAMAGE_OF_LAVA 25
 
 void Interactable::Interact(Player * player, Env_Wall * wall) {
@@ -305,6 +306,15 @@ void Interactable::Interact(Jumper* jumper, Env_Wall* wall) {
 				jumper->SetPosition(pos);
 			}
 		}
+	}
+}
+
+void Interactable::Interact(Player* player, Enemy* enemy) {
+	// implement interact between player and enemy (take damage)
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox enemyBox = enemy->GetBoundingBox();
+	if (playerBox.IsOverlap(enemyBox)) {
+		player->TakeDamage(DAMAGE_OF_ENEMY); // define later
 	}
 }
 

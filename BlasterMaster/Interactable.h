@@ -103,7 +103,8 @@ public:
 	INTERACTABLE_MIRROR_DEF(Floater, Env_Wall);
 	INTERACTABLE_MIRROR_DEF(Dome, Env_Wall);
 	INTERACTABLE_MIRROR_DEF(Jumper, Env_Wall);
-	
+
+	INTERACTABLE_MIRROR_DEF(Player, Enemy);
 	
 #undef INTERACTABLE_MIRROR_DEF
 };
