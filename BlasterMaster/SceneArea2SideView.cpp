@@ -24,6 +24,8 @@
 #include "Sophia.h"
 #include "JasonSideView.h"
 
+#include "HealthBar.h"
+
 using namespace std;
 
 // temporary set limit area for section, but not handle switch SceneOverhead, thinking of dividing into several SceneOverhead for easy win hihi
@@ -359,14 +361,12 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_WALKER:
 		obj = new Walker(x, y);
 		break;*/
-	case OBJECT_TYPE_SOPHIA: {
+	case OBJECT_TYPE_SOPHIA:
 		obj = new Sophia(x, y);
 		obj->SetManager(this);
 		break;
-	}
-	case OBJECT_TYPE_JASON_SIDE_VIEW: {
+	case OBJECT_TYPE_JASON_SIDE_VIEW:
 		break;
-	}
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -654,12 +654,19 @@ void SceneArea2SideView::Update()
 		delete obj;
 	}
 	toRemove.clear();
-
+	
+	// update onscreen objects
+	vector<GameObject*> onScreenObj;
+	for (auto x : objects) {
+		if (x->GetBoundingBox().IsOverlap(mCamera->GetBound())) {
+			onScreenObj.push_back(x);
+		}
+	}
 
 	Camera::setCameraInstance(mCamera);
 	if (!isCameraFree) {
 		input->Update();
-		for (auto x : objects) {
+		for (auto x : onScreenObj) {
 			Player* current_player = dynamic_cast<Player*>(x);
 			if (current_player != NULL) {
 				mCamera->SetTarget(current_player);
@@ -670,13 +677,13 @@ void SceneArea2SideView::Update()
 		mCamera->SnapToBoundary();
 
 		//LeSon
-		for (auto x : objects) {
+		for (auto x : onScreenObj) {
 			for (auto y : environments) {
 				x->Interact((Interactable*)y);
 			}
 		}
 
-		for (auto object : objects)
+		for (auto object : onScreenObj)
 		{
 			object->Update();
 		}

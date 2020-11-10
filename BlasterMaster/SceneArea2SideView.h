@@ -6,14 +6,14 @@
 #include "GameMap.h"
 #include "Environment.h"
 #include "Manager.h"
-#include <set>
+#include <unordered_set>
 
 class SceneArea2SideView: public Scene, public Manager<GameObject>
 {
 protected: 
 	//CMario *player;					// A play scene has to have player, right? 
 
-	set<GameObject*> objects;
+	unordered_set<GameObject*> objects;
 	vector<GameObject*> toRemove;
 
 	//LeSon
@@ -32,6 +32,8 @@ protected:
 	Camera *mCamera;
 	//LeSon
 	Player* target;
+
+	//vector<HealthBar*> healthBar;
 private:
 	Game* game;
 
