@@ -24,7 +24,12 @@ BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[15] = {
 	BoundingBox(2048, 1024, 2574, 2072),
 	// section E
 	BoundingBox(2560, 1792, 3086, 2072),
+	//section F
 	BoundingBox(1536, 32, 2062, 1814),
+	// section G
+	BoundingBox(2048, 512, 2574, 792),
+	// section E
+	BoundingBox(2048, 32, 2574, 312)
 };
 
 Point SceneArea2SideView::startPointInSection[15] = {
@@ -38,7 +43,12 @@ Point SceneArea2SideView::startPointInSection[15] = {
 	Point(2096, 1932),
 	// section E
 	Point(2608, 1932),
+	//section F
 	Point(2000, 1164),
+	// section G
+	Point(2096, 652),
+	// section H
+	Point(2096, 140)
 };
 
 SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath)
@@ -624,6 +634,16 @@ void SceneArea2SideView::JumpCheckpoint()
 		target->SetPosition(startPointInSection[5]);
 		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[5]);
 	}
+	// section G
+	else if (input[0x36]) {
+		target->SetPosition(startPointInSection[6]);
+		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[6]);
+	}
+	// section G
+	else if (input[0x37]) {
+		target->SetPosition(startPointInSection[7]);
+		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[7]);
+	}
 }
 
 #define FRAME_PORTAL_TRANSITIONS 260
@@ -642,7 +662,8 @@ void SceneArea2SideView::Update()
 		delete obj;
 	}
 	toRemove.clear();
-	
+
+	input->Update();
 	// update onscreen objects
 	vector<GameObject*> onScreenObj;
 	for (auto x : objects) {
@@ -653,7 +674,6 @@ void SceneArea2SideView::Update()
 
 	Camera::setCameraInstance(mCamera);
 	if (!isCameraFree) {
-		input->Update();
 		target = NULL;
 		for (auto x : objects) {
 			Player* current_player = dynamic_cast<Player*>(x);
@@ -697,7 +717,7 @@ void SceneArea2SideView::Update()
 			target->SetPosition(target->GetPosition() - Point(0.1, 0));
 		}
 		frameToTransition++;
-		DebugOut(L"Frame to transition: %d", frameToTransition);
+		//DebugOut(L"Frame to transition: %d", frameToTransition);
 		if (frameToTransition >= FRAME_PORTAL_TRANSITIONS) {
 			if (directionEnterPortal == 1) {
 				target->SetPosition(target->GetPosition() + Point(DISTANCE_SOPHIA_PORTAL, 0));
