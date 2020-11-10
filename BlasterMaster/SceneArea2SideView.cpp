@@ -10,6 +10,8 @@
 #include "GameObject.h"
 #include "AnimatedGameObject.h"
 #include "Jumper.h"
+#include "Dome.h"
+#include "Floater.h"
 
 using namespace std;
 
@@ -329,6 +331,7 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		temp = new Worm(x, y);
 		obj = temp;
 		break;
+	}
 	case OBJECT_TYPE_JUMPER:
 		obj = new Jumper(x, y);
 		break;
