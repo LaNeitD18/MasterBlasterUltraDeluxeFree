@@ -89,7 +89,7 @@ void Interactable::Interact(Player* player, Env_Portal* portal) {
 	BoundingBox portalBox = portal->GetBoundingBox();
 	if (playerBox.IsOverlap(portalBox)) {
 		GateDirection portalDirection = portal->GetPortalDir();
-		if ((input[VK_RIGHT] && portalDirection == RIGHT) || (input[VK_LEFT] && portalDirection == LEFT)) {
+		if (((input[VK_RIGHT] & KEY_STATE_DOWN) && portalDirection == RIGHT) || ((input[VK_LEFT] & KEY_STATE_DOWN) && portalDirection == LEFT)) {
 			BoundingBox limitArea = SceneArea2SideView::cameraLimitAreaOfSection[portal->GetSectionToEnter()];
 			//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
 			Game::GetInstance()->GetCurrentScene()->SetFreeCamera(true);
@@ -100,6 +100,7 @@ void Interactable::Interact(Player* player, Env_Portal* portal) {
 				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(0);
 			}
 			Camera::GetInstance()->SetCameraLimitarea(limitArea);
+			DebugOut(L"%d\n", portalDirection);
 		}
 	}
 }
