@@ -24,6 +24,8 @@
 #include "Sophia.h"
 #include "JasonSideView.h"
 
+#include "HealthBar.h"
+
 using namespace std;
 
 // temporary set limit area for section, but not handle switch SceneOverhead, thinking of dividing into several SceneOverhead for easy win hihi
@@ -148,6 +150,7 @@ SceneArea2SideView::~SceneArea2SideView()
 #define ENVIRONMENT_TYPE_PORTAL 3
 #define ENVIRONMENT_TYPE_LADDER 4
 #define ENVIRONMENT_TYPE_LAVA 5
+#define ENVIRONMENT_TYPE_DUNGEON 6
 #define ENVIRONMENT_TYPE_UNKNOWN -1
 
 #define MAX_SCENE_LINE 1024
@@ -358,14 +361,12 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_WALKER:
 		obj = new Walker(x, y);
 		break;*/
-	case OBJECT_TYPE_SOPHIA: {
+	case OBJECT_TYPE_SOPHIA:
 		obj = new Sophia(x, y);
 		obj->SetManager(this);
 		break;
-	}
-	case OBJECT_TYPE_JASON_SIDE_VIEW: {
+	case OBJECT_TYPE_JASON_SIDE_VIEW:
 		break;
-	}
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -397,12 +398,14 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 	float width = atof(tokens[3].c_str());
 	float height = atof(tokens[4].c_str());
 
-	int portaldirId = -1;
+	int dirId = -1;
 	int sectionToEnter = -1;
 	if (tokens.size() == 7) {
-		portaldirId = atoi(tokens[5].c_str());
+		dirId = atoi(tokens[5].c_str());
 		sectionToEnter = atoi(tokens[6].c_str());
 	}
+
+	GateDirection gateDir;
 
 	Environment *env = NULL;
 
@@ -418,14 +421,22 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 		env = new Env_Lava(x, y, width, height);
 		break;
 	case ENVIRONMENT_TYPE_PORTAL:
-		PortalDirection portaldir;
-		if (portaldirId == 0) {
-			portaldir = LEFT;
+		if (dirId == 0) {
+			gateDir = LEFT;
 		}
 		else {
-			portaldir = RIGHT;
+			gateDir = RIGHT;
 		}
-		env = new Env_Portal(x, y, width, height, portaldir, sectionToEnter);
+		env = new Env_Portal(x, y, width, height, gateDir, sectionToEnter);
+		break;
+	case ENVIRONMENT_TYPE_DUNGEON:
+		if (dirId == 0) {
+			gateDir = LEFT;
+		}
+		else {
+			gateDir = RIGHT;
+		}
+		env = new Env_Dungeon(x, y, width, height, gateDir, sectionToEnter);
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid env type: %d\n", env_type);
@@ -643,13 +654,20 @@ void SceneArea2SideView::Update()
 		delete obj;
 	}
 	toRemove.clear();
-
+	
+	// update onscreen objects
+	vector<GameObject*> onScreenObj;
+	for (auto x : objects) {
+		if (x->GetBoundingBox().IsOverlap(mCamera->GetBound())) {
+			onScreenObj.push_back(x);
+		}
+	}
 
 	Camera::setCameraInstance(mCamera);
 	if (!isCameraFree) {
 		input->Update();
 		target = NULL;
-		for (auto x : objects) {
+		for (auto x : onScreenObj) {
 			Player* current_player = dynamic_cast<Player*>(x);
 			if (current_player != NULL && 
 				current_player->IsPrimaryPlayer()) {
@@ -665,24 +683,21 @@ void SceneArea2SideView::Update()
 		mCamera->SnapToBoundary();
 
 		//LeSon
-		for (auto x : objects) {
+		for (auto x : onScreenObj) {
 			for (auto y : environments) {
 				x->Interact((Interactable*)y);
 			}
 		}
 
-		for (auto object : objects)
+		for (auto object : onScreenObj)
 		{
 			object->Update();
 		}
 
 		// Long
-		vector<GameObject*> temp;
-		for (auto item : objects)
-			temp.push_back(item);
-		for (int i = 0; i < temp.size(); i++)
-			for (int j = i + 1; j < temp.size(); j++)
-				temp[i]->Interact(temp[j]);
+		for (int i = 0; i < onScreenObj.size(); i++)
+			for (int j = i + 1; j < onScreenObj.size(); j++)
+				onScreenObj[i]->Interact(onScreenObj[j]);
 	}
 	else {
 		if (directionEnterPortal == 1) {

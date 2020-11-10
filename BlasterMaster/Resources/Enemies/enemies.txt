@@ -15,6 +15,7 @@
 13	Resources\sprites\Jason_Overhead.png		255	255	255
 14	Resources\sprites\Sophia.png			255	255	255
 15	Resources\sprites\enemies.png	254	255	255
+16	Resources\sprites\HP.png	255	255	255
 # next sprite: 10155
 
 [SPRITES]
@@ -55,6 +56,25 @@ Resources\Enemies\sophia_sprites.txt
 #13 JASON SIDEVIEW
 Resources\Enemies\Jason_Sideview_sprites.txt
 
+#100 HP1
+Resources\Enemies\HP1.txt
+#101 HP2
+Resources\Enemies\HP2.txt
+#102 HP3
+Resources\Enemies\HP3.txt
+#103 HP4
+Resources\Enemies\HP4.txt
+#104 HP5
+Resources\Enemies\HP5.txt
+#105 HP6
+Resources\Enemies\HP6.txt
+#106 HP7
+Resources\Enemies\HP7.txt
+#107 HP8
+Resources\Enemies\HP8.txt
+#108 HP0
+Resources\Enemies\HP0.txt
+
 [ANIMATIONS]
 # id format: 5XX		Next available: 567
 #1 ==== WORM =========
@@ -92,6 +112,7 @@ Resources\Enemies\sophia_ani.txt
 
 #13 ==== JASON SIDEVIEW =========
 Resources\Enemies\Jason_Sideview_ani.txt
+
 [OBJECTS]
 # type	x	y	ani_set_id1	ani_set_id2...
 
@@ -325,6 +346,7 @@ Resources\Enemies\Jason_Sideview_ani.txt
 1	3008	1920	32	16
 1	3040	1840	32	144
 3	2608	1936	16	16	0	3
+6	3008	1936	16	16	1	0
 # section F
 1	1536	48	32	1744
 1	1568	1760	448	32

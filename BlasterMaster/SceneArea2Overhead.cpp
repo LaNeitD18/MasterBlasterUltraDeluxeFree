@@ -25,6 +25,30 @@
 
 using namespace std;
 
+BoundingBox SceneArea2Overhead::cameraLimitAreaOfSection[9] = {
+	// section 1
+	BoundingBox(0, 0, 2048, 2048),
+	// section 2
+	
+	//section 3
+	
+	// section 4
+	
+	// section 5
+};
+
+Point SceneArea2Overhead::startPointInSection[5] = {
+	// section A
+	Point(75, 116),
+	// section B
+	
+	//section C
+	
+	// section D
+	
+	// section E
+};
+
 SceneArea2Overhead::SceneArea2Overhead(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath)
 {
 	this->input = game->GetInput();

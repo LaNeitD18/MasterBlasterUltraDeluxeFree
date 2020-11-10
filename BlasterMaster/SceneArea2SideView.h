@@ -32,6 +32,8 @@ protected:
 	Camera *mCamera;
 	//LeSon
 	Player* target;
+
+	//vector<HealthBar*> healthBar;
 private:
 	Game* game;
 

@@ -34,6 +34,7 @@
     <ClInclude Include="GameMap.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Header.h" />
+    <ClInclude Include="HealthBar.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Insect.h" />
     <ClInclude Include="Interactable.h" />
@@ -99,6 +100,7 @@
     <ClCompile Include="GameGlobal.cpp" />
     <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="HealthBar.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Insect.cpp" />
     <ClCompile Include="Interactable.cpp" />

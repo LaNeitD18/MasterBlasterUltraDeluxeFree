@@ -72,7 +72,7 @@ Env_Lava::Env_Lava(float x, float y, float width, float height)
 	box.b = y + height;
 }
 
-PortalDirection Env_Portal::GetPortalDir()
+GateDirection Env_Portal::GetPortalDir()
 {
 	return dir;
 }
@@ -82,8 +82,29 @@ int Env_Portal::GetSectionToEnter()
 	return sectionToEnter;
 }
 
+Env_Portal::Env_Portal(float x, float y, float width, float height, GateDirection direction, int sectionToEnter)
+{
+	this->width = width;
+	this->height = height;
+	box.l = x;
+	box.t = y;
+	box.r = x + width;
+	box.b = y + height;
+	this->dir = direction;
+	this->sectionToEnter = sectionToEnter;
+}
 
-Env_Portal::Env_Portal(float x, float y, float width, float height, PortalDirection direction, int sectionToEnter)
+int Env_Dungeon::GetSectionToEnter()
+{
+	return sectionToEnter;
+}
+
+GateDirection Env_Dungeon::GetDungeonDir()
+{
+	return dir;
+}
+
+Env_Dungeon::Env_Dungeon(float x, float y, float width, float height, GateDirection direction, int sectionToEnter)
 {
 	this->width = width;
 	this->height = height;
@@ -102,6 +123,8 @@ void Env_Spike::Interact(Interactable * other) { other->Interact(this); }
 void Env_Lava::Interact(Interactable * other) { other->Interact(this); }
 
 void Env_Portal::Interact(Interactable * other) { other->Interact(this); }
+
+void Env_Dungeon::Interact(Interactable * other) { other->Interact(this); }
 #include "InteractableGroupInclude.h"
 #define CURRENT_CLASS Env_Wall
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
@@ -115,5 +138,8 @@ APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS
 //*/
 #define CURRENT_CLASS Env_Portal
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
+#undef CURRENT_CLASS
+#define CURRENT_CLASS Env_Dungeon
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS
