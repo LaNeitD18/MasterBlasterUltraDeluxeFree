@@ -20,9 +20,9 @@ Interactable::~Interactable()
 {
 }
 
-#define DAMAGE_OF_SPIKE 25
-#define DAMAGE_OF_ENEMY 1
-#define DAMAGE_OF_LAVA 25
+#define DAMAGE_OF_SPIKE 15
+#define DAMAGE_OF_ENEMY 10
+#define DAMAGE_OF_LAVA 15
 
 void Interactable::Interact(Player * player, Env_Wall * wall) {
 	BoundingBox playerBox = player->GetBoundingBox();

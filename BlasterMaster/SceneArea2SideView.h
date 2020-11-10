@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "GameMap.h"
 #include "Environment.h"
+#include "HealthBar.h"
 #include "Manager.h"
 #include <unordered_set>
 
@@ -25,6 +26,8 @@ protected:
 	AnimationSets* animationSetLib;
 	GameMap* mMap;
 	GameMap* foreMap;
+
+	HealthBar* healthBar;
 
 	void LoadContent();
 

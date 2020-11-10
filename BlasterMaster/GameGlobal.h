@@ -31,10 +31,6 @@ public:
 	static void SetWidth(int width);
 	static int GetWidth();
 
-	static int GetScreenWidth();
-
-	static int GetScreenHeight();
-
 	static void SetHeight(int height);
 	static int GetHeight();
 
@@ -42,6 +38,9 @@ public:
 
 	static AnimationSets* GetAnimationSetLibrary();
 	static void SetAnimationSetLibrary(AnimationSets* aniLib);
+
+	static int GetHealthPoint();
+	static void SetHealthPoint(int hp);
 
 	static bool isGameRunning; //trang thai xem game co dang chay khong
 
@@ -54,6 +53,8 @@ private:
 	static LPDIRECT3DDEVICE9 mDevice; //device directX hiện tại
 	static Input* input;
 	static AnimationSets* mAniLib;
+
+	static int HealthPoint;
 };
 
 #endif

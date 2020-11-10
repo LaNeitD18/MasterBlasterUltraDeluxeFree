@@ -192,7 +192,8 @@ void Sophia::Update()
 	if ((newState & state & SOPHIA_STATE_LEAVING_VEHICLE) ||
 		(newState & state & SOPHIA_STATE_LEFT_VEHICLE))
 		return;
-	pos += dx();
+	//if (invulnerableFrame % 2 == 0)
+		pos += dx();
 
 	if (prevState != newState)
 	{

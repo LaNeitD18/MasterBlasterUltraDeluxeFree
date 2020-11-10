@@ -76,6 +76,9 @@ public:
 	// used for interact with damage
 	int HealthPoint;
 	virtual void TakeDamage(int damage);
+
+	int GetHP();
+	void SetHP(int healthpoint);
 };
 
 #define INPUT_JUMP				'X'

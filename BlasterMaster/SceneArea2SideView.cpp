@@ -75,6 +75,8 @@ void SceneArea2SideView::LoadContent()
 	mMap = new GameMap("Map/General/level2-side-maporder.tmx", textureLib, spriteLib);
 	foreMap = new GameMap("Map/General/level2-side-fores.tmx", textureLib, spriteLib);
 
+	healthBar = new HealthBar(textureLib, spriteLib);
+
 	// camera setup
 	mCamera = new Camera(Point(GameGlobal::GetWidth(), GameGlobal::GetHeight()));
 	Camera::setCameraInstance(mCamera);
@@ -108,6 +110,8 @@ SceneArea2SideView::~SceneArea2SideView()
 	delete mMap;
 	foreMap->Release();
 	delete foreMap;
+	healthBar->Release();
+	delete healthBar;
 }
 
 /*
@@ -709,6 +713,11 @@ void SceneArea2SideView::Update()
 		for (int i = 0; i < onScreenObj.size(); i++)
 			for (int j = i + 1; j < onScreenObj.size(); j++)
 				onScreenObj[i]->Interact(onScreenObj[j]);
+
+		// temporary global set hp for both sophia jason
+		if (target != NULL) {
+			GameGlobal::SetHealthPoint(target->GetHP());
+		}
 	}
 	else {
 		if (directionEnterPortal == 1) {
@@ -787,6 +796,7 @@ void SceneArea2SideView::Render()
 	for (auto object : objects)
 		object->Render();
 	foreMap->Draw();
+	healthBar->Draw();
 }
 
 /*
@@ -802,6 +812,8 @@ void SceneArea2SideView::Release()
 	// map release sucks hihi
 	mMap->Release();
 	foreMap->Release();
+
+	healthBar->Release();
 
 	// LeSon: maybe cannot do this, have to clear in SwitchScene for Game.cpp, discuss again hihi 
 	textureLib->Clear();

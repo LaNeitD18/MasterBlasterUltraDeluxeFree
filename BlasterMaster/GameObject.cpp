@@ -63,6 +63,16 @@ void GameObject::TakeDamage(int damage)
 		HealthPoint -= damage;
 }
 
+int GameObject::GetHP()
+{
+	return HealthPoint;
+}
+
+void GameObject::SetHP(int healthpoint)
+{
+	HealthPoint = healthpoint;
+}
+
 //void AnimatedGameObject::Render()
 //{
 //	currentAnimation->Render(pos, currentTime, currentFrame);
