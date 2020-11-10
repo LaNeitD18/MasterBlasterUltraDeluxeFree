@@ -31,7 +31,7 @@ public:
 	virtual void SetState(int state);
 
 	virtual void Interact(Interactable* other) { other->Interact(this); }
-	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 
 	virtual BoundingBox GetBoundingBox();
 	virtual void Update();

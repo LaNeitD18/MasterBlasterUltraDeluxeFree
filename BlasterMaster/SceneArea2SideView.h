@@ -5,13 +5,16 @@
 #include "GameObject.h"
 #include "GameMap.h"
 #include "Environment.h"
+#include "Manager.h"
+#include <set>
 
-class SceneArea2SideView: public Scene
+class SceneArea2SideView: public Scene, public Manager<GameObject>
 {
 protected: 
 	//CMario *player;					// A play scene has to have player, right? 
 
-	vector<GameObject*> objects;
+	set<GameObject*> objects;
+	vector<GameObject*> toRemove;
 
 	//LeSon
 	vector<Environment*> environments;
@@ -21,6 +24,7 @@ protected:
 	AnimationLibrary* animationLib;
 	AnimationSets* animationSetLib;
 	GameMap* mMap;
+	GameMap* foreMap;
 
 	void LoadContent();
 
@@ -43,6 +47,7 @@ private:
 
 	//LeSon
 	void JumpCheckpoint();
+
 public: 
 	SceneArea2SideView(int id, LPCWSTR filePath, Game* game, Point screenSize);
 	virtual ~SceneArea2SideView();
@@ -51,4 +56,12 @@ public:
 	virtual void Update();
 	virtual void Render();
 	virtual void Release();
+
+	// Inherited via Manager
+	virtual void AddElement(GameObject *) override;
+	virtual void RemoveElement(GameObject *) override;
+
+	// just handle change in one scene
+	static BoundingBox cameraLimitAreaOfSection[15];
+	static Point startPointInSection[15];
 };

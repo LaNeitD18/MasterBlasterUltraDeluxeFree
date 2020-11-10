@@ -15,10 +15,14 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 
+#include <cstdlib>
+#include <ctime>
+
 #include "Utils.h"
 #include "Game.h"
 #include "GameObject.h"
 #include "Textures.h"
+#include "GameGlobal.h"
 
 #include "SceneArea2SideView.h"
 
@@ -165,6 +169,7 @@ int Run()
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+	srand(time(NULL));
 	game = Game::GetInstance();
 	HWND hWnd = CreateGameWindow(hInstance, nCmdShow, SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -172,7 +177,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	game->Init(hWnd);
 
-	game->Init(L"Resources/scene.txt");
+	game->Init(L"Resources/scene.txt",1);
 
 	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 

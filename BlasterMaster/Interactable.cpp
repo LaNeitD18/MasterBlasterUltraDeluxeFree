@@ -5,6 +5,10 @@
 #include "Floater.h"
 #include "Dome.h"
 #include "Jumper.h"
+#include "Utils.h"
+#include "SceneArea2SideView.h"
+#include "JasonSideView.h"
+#include "JasonOverhead.h"
 
 Interactable::Interactable()
 {
@@ -16,8 +20,9 @@ Interactable::~Interactable()
 }
 
 #define DAMAGE_OF_SPIKE 25
+#define DAMAGE_OF_LAVA 25
 
-void Interactable::Interact(Sophia * player, Env_Wall * wall) {
+void Interactable::Interact(Player * player, Env_Wall * wall) {
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox wallBox = wall->GetBoundingBox();
 	if (playerBox.IsOverlap(wallBox)) {
@@ -62,7 +67,7 @@ void Interactable::Interact(Sophia * player, Env_Wall * wall) {
 	}
 }
 
-void Interactable::Interact(Sophia * player, Env_Spike * spike) {
+void Interactable::Interact(Player * player, Env_Spike * spike) {
 	// implement interact with spike (take damage)
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox spikeBox = spike->GetBoundingBox();
@@ -71,9 +76,35 @@ void Interactable::Interact(Sophia * player, Env_Spike * spike) {
 	}
 }
 
-void Interactable::Interact(Sophia* player, Env_Lava* lava) {
+void Interactable::Interact(Player* player, Env_Lava* lava) {
 	// implement interact with lava (take damage)
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox lavaBox = lava->GetBoundingBox();
+	if (playerBox.IsOverlap(lavaBox)) {
+		player->TakeDamage(DAMAGE_OF_LAVA);
+	}
+}
 
+void Interactable::Interact(Player* player, Env_Portal* portal) {
+	// implement interact with lava (take damage)
+	Input& input = *GameGlobal::GetInput();
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox portalBox = portal->GetBoundingBox();
+	if (playerBox.IsOverlap(portalBox)) {
+		PortalDirection portalDirection = portal->GetPortalDir();
+		if ((input[VK_RIGHT] && portalDirection == RIGHT) || (input[VK_LEFT] && portalDirection == LEFT)) {
+			BoundingBox limitArea = SceneArea2SideView::cameraLimitAreaOfSection[portal->GetSectionToEnter()];
+			//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
+			Game::GetInstance()->GetCurrentScene()->SetFreeCamera(true);
+			if (portalDirection == RIGHT) {
+				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(1);
+			}
+			else {
+				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(0);
+			}
+			Camera::GetInstance()->SetCameraLimitarea(limitArea);
+		}
+	}
 }
 
 
@@ -255,6 +286,25 @@ void Interactable::Interact(Jumper* jumper, Env_Wall* wall) {
 				jumper->SetPosition(pos);
 			}
 		}
+	}
+}
+
+// JasonOverhead
+void Interactable::Interact(JasonOverhead* player, Env_Wall* wall)
+{
+	Interactable::Interact((Player*)player, wall);
+	if (player->wallBot) {
+
+	}
+}
+#pragma endregion
+
+#pragma region Long
+void Interactable::Interact(JasonSideView * player, Env_Wall * wall)
+{
+	Interactable::Interact((Player*)player, wall);
+	if (player->wallBot) {
+
 	}
 }
 #pragma endregion

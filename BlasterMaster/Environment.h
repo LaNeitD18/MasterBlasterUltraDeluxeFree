@@ -25,7 +25,7 @@ class Env_Wall : public Environment
 {
 public:
 	virtual void Interact(Interactable* other);
-	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 	Env_Wall(float x, float y, float width, float height);
 };
 
@@ -33,7 +33,7 @@ class Env_Spike : public Environment
 {
 public:
 	virtual void Interact(Interactable* other);
-	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 	Env_Spike(float x, float y, float width, float height);
 };
 
@@ -41,6 +41,22 @@ class Env_Lava : public Environment
 {
 public:
 	virtual void Interact(Interactable* other);
-	APPLY_MACRO(INTERACTABLE_DEF, INTERACTABLE_GROUP);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 	Env_Lava(float x, float y, float width, float height);
+};
+
+enum PortalDirection {
+	LEFT = 0, RIGHT = 1
+};
+
+class Env_Portal : public Environment
+{
+	PortalDirection dir;
+	int sectionToEnter;
+public:
+	PortalDirection GetPortalDir();
+	int GetSectionToEnter();
+	virtual void Interact(Interactable* other);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
+	Env_Portal(float x, float y, float width, float height, PortalDirection direction, int sectionToEnter);
 };

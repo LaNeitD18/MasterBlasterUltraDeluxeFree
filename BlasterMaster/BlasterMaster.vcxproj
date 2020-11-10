@@ -37,6 +37,9 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Insect.h" />
     <ClInclude Include="Interactable.h" />
+    <ClInclude Include="InteractableGroupInclude.h" />
+    <ClInclude Include="JasonOverhead.h" />
+    <ClInclude Include="JasonSideView.h" />
     <ClInclude Include="Jumper.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Laser.h" />
@@ -71,6 +74,7 @@
     <ClInclude Include="SceneArea2SideView.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneOpening.h" />
     <ClInclude Include="Sophia.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Teleporter.h" />
@@ -99,6 +103,8 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Insect.cpp" />
     <ClCompile Include="Interactable.cpp" />
+    <ClCompile Include="JasonOverhead.cpp" />
+    <ClCompile Include="JasonSideView.cpp" />
     <ClCompile Include="Jumper.cpp" />
     <ClCompile Include="Laser.cpp" />
     <ClCompile Include="main.cpp" />
@@ -128,6 +134,7 @@
     <ClCompile Include="SceneArea2Overhead.cpp" />
     <ClCompile Include="SceneArea2SideView.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="SceneOpening.cpp" />
     <ClCompile Include="Sophia.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Sprites.cpp" />

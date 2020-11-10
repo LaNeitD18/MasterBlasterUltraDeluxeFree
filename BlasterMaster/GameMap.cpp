@@ -1,5 +1,6 @@
 #include "GameMap.h"
 #include "Utils.h"
+#include "GameGlobal.h"
 
 GameMap::GameMap(const char* filePath, TextureLibrary* texLib, SpriteLibrary* spriteLib)
 {
@@ -97,6 +98,7 @@ void GameMap::Draw()
 		int tileWidth = mMap->GetTileWidth();
 		int tileHeight = mMap->GetTileHeight();
 
+		// grid division
 		int centertileX = mCamera->GetPosition().x / tileWidth;
 		int centertileY = mCamera->GetPosition().y / tileHeight;
 		

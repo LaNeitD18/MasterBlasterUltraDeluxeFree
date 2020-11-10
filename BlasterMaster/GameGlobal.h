@@ -5,6 +5,7 @@
 #include <d3d9.h>
 #include <Windows.h>
 #include "Input.h"
+#include "Animations.h"
 
 class GameGlobal
 {
@@ -39,6 +40,9 @@ public:
 
 	static LPDIRECT3DSURFACE9 backSurface;
 
+	static AnimationSets* GetAnimationSetLibrary();
+	static void SetAnimationSetLibrary(AnimationSets* aniLib);
+
 	static bool isGameRunning; //trang thai xem game co dang chay khong
 
 private:
@@ -49,6 +53,7 @@ private:
 	//static int mScreenWidth, mScreenHeight; //size screen
 	static LPDIRECT3DDEVICE9 mDevice; //device directX hiện tại
 	static Input* input;
+	static AnimationSets* mAniLib;
 };
 
 #endif

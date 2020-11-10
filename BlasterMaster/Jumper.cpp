@@ -64,3 +64,9 @@ void Jumper::SetState(int state)
 	}
 
 }
+
+
+#include "InteractableGroupInclude.h"
+#define CURRENT_CLASS Jumper
+void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
