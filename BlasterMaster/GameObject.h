@@ -93,6 +93,8 @@ public:
 	virtual void TakeDamage(int damage);
 	virtual void Update();
 
+	virtual bool IsPrimaryPlayer() { return true; }
+
 	virtual ~Player() {}
 	Player() {}
 };

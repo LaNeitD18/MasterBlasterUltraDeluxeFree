@@ -86,7 +86,8 @@ public:
 	//INTERACTABLE_MIRROR_DEF(Player, Enemy);
 	//INTERACTABLE_MIRROR_DEF(Bullet, Enemy);
 
-	INTERACTABLE_MIRROR_DEF(JasonSideView, Env_Wall);
+	INTERACTABLE_MIRROR_DEF(JasonSideView, Env_Wall); 
+	INTERACTABLE_MIRROR_DEF(Sophia, JasonSideView);
 	//add to when new interaction comes out
 	INTERACTABLE_MIRROR_DEF(Player, Env_Wall);
 	INTERACTABLE_MIRROR_DEF(Player, Env_Spike);

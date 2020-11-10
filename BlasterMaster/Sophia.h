@@ -3,25 +3,25 @@
 #include "Interactable.h"
 #include "GameObject.h"
 #include "GameGlobal.h"
-#include "JasonSideView.h"
 
 #define SOPHIA_WALKING_SPEED 0.03f
 #define SOPHIA_ACCELERATION 0.0005f
 #define SOPHIA_JUMP_BOOST_AMOUNT 0.2f
 #define SOPHIA_JUMP_POWER 0.057f
 #define SOPHIA_JUMP_BOOST_DECAY 0.9f
-#define SOPHIA_EPSILON_THRESHOLD 0.01f
 
 #define SOPHIA_ACTION_AMOUNT 13
 #define SOPHIA_MAX_HEALTH 100
 
 #define SOPHIA_BBOX_OFFSET_LEFT -10
 #define SOPHIA_BBOX_OFFSET_RIGHT 10
-#define SOPHIA_BBOX_OFFSET_TOP 4
+#define SOPHIA_BBOX_OFFSET_TOP 4.01f
 #define SOPHIA_BBOX_OFFSET_BOTTOM 20
 
+#define SOPHIA_EPSILON_THRESHOLD 0.01f
 #define SOPHIA_FALL_ACCELERATE_COEFFICIENT 1.05f
 #define SOPHIA_FALL_DECELERATE_COEFFICIENT 0.9f
+#define SOPHIA_FALL_MAX_SPEED 0.1f
 
 #define SOPHIA_WHEEL_DURATION 4
 
@@ -39,6 +39,7 @@ enum SophiaState
 	SOPHIA_STATE_LANDING				= 0x0008,	// about to touch ground
 
 	SOPHIA_STATE_LEAVING_VEHICLE		= 0x0200,
+	SOPHIA_STATE_ENTERING_VEHICLE		= 0x0100,
 	SOPHIA_STATE_LEFT_VEHICLE			= 0x8000,
 
 	SOPHIA_STATE_LOOKED_UP				= 0x4000, 
@@ -68,7 +69,7 @@ enum SophiaAni {
 	SOPHIA_ANI_LOOKED_UP_JUMP_BOOST	= 11,
 	SOPHIA_ANI_LOOKED_UP_LANDING	= 12,
 };
-
+class JasonSideView;
 
 class Sophia :
 	public Player
@@ -97,6 +98,8 @@ public:
 	void GoLeft();
 	void GoRight();
 	void GoHalt();
+
+	virtual bool IsPrimaryPlayer();
 
 	Sophia();
 	Sophia(float x, float y);

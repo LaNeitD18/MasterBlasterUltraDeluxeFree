@@ -1,5 +1,6 @@
 #include "Sophia.h"
 #include "Camera.h"
+#include "JasonSideView.h"
 
 void Sophia::Interact(Interactable * other) { other->Interact(this); }
 
@@ -29,7 +30,10 @@ void Sophia::Update()
 	// psuedo gravity
 	if (!wallBot)
 		if (v.y >= SOPHIA_EPSILON_THRESHOLD)
+		{
+			if (v.y < SOPHIA_FALL_MAX_SPEED)
 			v.y *= SOPHIA_FALL_ACCELERATE_COEFFICIENT;
+		}
 		else if (v.y <= -SOPHIA_EPSILON_THRESHOLD)
 			v.y *= SOPHIA_FALL_DECELERATE_COEFFICIENT;
 		else v.y = SOPHIA_EPSILON_THRESHOLD;
@@ -155,13 +159,16 @@ void Sophia::Update()
 	}
 
 	if (!(newState & SOPHIA_STATE_AIRBORNE) &&
+		!(prevState & SOPHIA_STATE_LEAVING_VEHICLE) &&
+		!(prevState & SOPHIA_STATE_LEFT_VEHICLE) &&
 		(input[INPUT_LEAVE_VEHICLE] == KEY_STATE_ON_DOWN))
 	{
 		newState |= SOPHIA_STATE_LEAVING_VEHICLE;
 		JasonSideView* jason = new JasonSideView(pos.x, pos.y);
 		jason->SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(JASON_SIDEVIEW_ANIMATION_SET_NUMBER));
 		jason->SetManager(manager);
-		jason->v = v;
+		jason->v.x = v.x;
+		jason->v.y = -JASON_ENTER_VEHICLE_DISAPPEAR_SPEED;
 		manager->AddElement(jason);
 	}
 	if (newState & SOPHIA_ANI_LEFT_VEHICLE)
@@ -222,10 +229,12 @@ void Sophia::Render()
 		targetAni = SOPHIA_ANI_LOOKED_UP_LANDING;
 	if (currentAni[SOPHIA_ANI_LOOKING_UP])
 		targetAni = SOPHIA_ANI_LOOKING_UP;
-	if (currentAni[SOPHIA_ANI_LEAVING_VEHICLE])
+	if ((state & SOPHIA_STATE_LEAVING_VEHICLE) && currentAni[SOPHIA_ANI_LEAVING_VEHICLE])
 		targetAni = SOPHIA_ANI_LEAVING_VEHICLE;
 	if (state & SOPHIA_STATE_LEFT_VEHICLE)
 		targetAni = SOPHIA_ANI_LEFT_VEHICLE;
+	if ((state & SOPHIA_STATE_ENTERING_VEHICLE) && currentAni[SOPHIA_ANI_LEAVING_VEHICLE])
+		targetAni = SOPHIA_ANI_LEAVING_VEHICLE;
 
 	int* targetFrame = &currentFrame[targetAni];
 	targetTime = currentTime[targetAni];
@@ -268,11 +277,19 @@ void Sophia::Render()
 					i == SOPHIA_ANI_LOOKED_UP_IDLE)
 					StartAnimationType(i);
 				//*/
-				if (state & SOPHIA_STATE_LEAVING_VEHICLE) {
-					stateToChange.push_back(
-						make_pair(SOPHIA_STATE_LEAVING_VEHICLE, false));
-					stateToChange.push_back(
-						make_pair(SOPHIA_STATE_LEFT_VEHICLE, true));
+				if (i == SOPHIA_ANI_LEAVING_VEHICLE) {
+					if (state & SOPHIA_STATE_LEAVING_VEHICLE) {
+						stateToChange.push_back(
+							make_pair(SOPHIA_STATE_LEAVING_VEHICLE, false));
+						stateToChange.push_back(
+							make_pair(SOPHIA_STATE_LEFT_VEHICLE, true));
+					}
+					if (state & SOPHIA_STATE_ENTERING_VEHICLE) {
+						stateToChange.push_back(
+							make_pair(SOPHIA_STATE_ENTERING_VEHICLE, false));
+						stateToChange.push_back(
+							make_pair(SOPHIA_STATE_LEFT_VEHICLE, false));
+					}
 				}
 				if (i == SOPHIA_ANI_JUMPING || i == SOPHIA_ANI_LOOKED_UP_JUMPING) {
 					stateToChange.push_back(
@@ -318,6 +335,7 @@ void Sophia::Render()
 		SetState(newState);
 		SetAniByState(newState);
 	}
+	StartAnimationType(SOPHIA_ANI_IDLE);
 
 	/*
 	int previousFrame = currentFrame;
@@ -429,6 +447,13 @@ void Sophia::GoHalt()
 		v.x = 0;
 }
 
+bool Sophia::IsPrimaryPlayer()
+{
+	return !(state & SOPHIA_STATE_LEAVING_VEHICLE) && 
+		!(state & SOPHIA_STATE_LEFT_VEHICLE) && 
+		!(state & SOPHIA_STATE_ENTERING_VEHICLE);
+}
+
 Sophia::Sophia()
 {
 	SetState(0);
@@ -472,7 +497,8 @@ void Sophia::SetAniByState(int state)
 {
 	if (state & SOPHIA_STATE_LEFT_VEHICLE)
 		StartAnimationType(SOPHIA_ANI_LEFT_VEHICLE);
-	if (state & SOPHIA_STATE_LEAVING_VEHICLE)
+	if ((state & SOPHIA_STATE_LEAVING_VEHICLE) ||
+		(state & SOPHIA_STATE_ENTERING_VEHICLE))
 		StartAnimationType(SOPHIA_ANI_LEAVING_VEHICLE);
 	if (state & SOPHIA_STATE_LOOKING_UP)
 		StartAnimationType(SOPHIA_ANI_LOOKING_UP);

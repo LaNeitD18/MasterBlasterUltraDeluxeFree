@@ -156,8 +156,22 @@ void Interactable::Interact(JasonSideView * player, Env_Wall * wall)
 {
 	Interactable::Interact((Player*)player, wall);
 	if (player->wallBot) {
-
+		Point v = player->v;
+		if (v.y > JASON_JUMP_SPEED + JASON_GRAVITY * 3) {
+			float damage = v.y / JASON_JUMP_SPEED;
+			damage *= damage;
+			damage -= 1;
+			damage *= damage;
+			damage *= JASON_MAX_HEALTH;
+			player->TakeDamage(round(damage));
+		}
 	}
+}
+void Interactable::Interact(Sophia* sophia, JasonSideView * jason)
+{
+	if (jason->GetBoundingBox().
+		IsInsideBox(sophia->GetBoundingBox()))
+		jason->sophia = sophia;
 }
 #pragma endregion
 

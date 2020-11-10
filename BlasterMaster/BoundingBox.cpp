@@ -1,5 +1,14 @@
 #include "BoundingBox.h"
 
+bool BoundingBox::IsInsideBox(BoundingBox other)
+{
+	return 
+		this->r <= other.r &&
+		this->b <= other.b &&
+		this->l >= other.l &&
+		this->t >= other.t;
+}
+
 bool BoundingBox::IsOverlap(BoundingBox other)
 {
 	float left = other.l - this->r;

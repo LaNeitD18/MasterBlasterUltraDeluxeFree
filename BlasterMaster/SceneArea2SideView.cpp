@@ -648,12 +648,18 @@ void SceneArea2SideView::Update()
 	Camera::setCameraInstance(mCamera);
 	if (!isCameraFree) {
 		input->Update();
+		target = NULL;
 		for (auto x : objects) {
 			Player* current_player = dynamic_cast<Player*>(x);
-			if (current_player != NULL) {
+			if (current_player != NULL && 
+				current_player->IsPrimaryPlayer()) {
 				mCamera->SetTarget(current_player);
 				target = current_player;
 			}
+		}
+		if (target == NULL)
+		{
+			Game::GetInstance()->Init(L"Resources/scene.txt", 2);
 		}
 		mCamera->FollowTarget();
 		mCamera->SnapToBoundary();
@@ -669,6 +675,14 @@ void SceneArea2SideView::Update()
 		{
 			object->Update();
 		}
+
+		// Long
+		vector<GameObject*> temp;
+		for (auto item : objects)
+			temp.push_back(item);
+		for (int i = 0; i < temp.size(); i++)
+			for (int j = i + 1; j < temp.size(); j++)
+				temp[i]->Interact(temp[j]);
 	}
 	else {
 		if (directionEnterPortal == 1) {
@@ -728,19 +742,7 @@ void SceneArea2SideView::Update()
 	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
 	//	mCamera->SetPosition(mCamera->GetPosition() + Point(0, 8));
 	//}
-
-	//LeSon
-	for (auto x : objects) {
-		for (auto y : environments) {
-			x->Interact((Interactable*)y);
-		}
-	}
-
-	for (auto object : objects)
-	{
-		object->Update();
-	}
-
+	
 	JumpCheckpoint();
 
 	// Update camera to follow mario

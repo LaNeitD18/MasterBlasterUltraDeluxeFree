@@ -1,5 +1,6 @@
 #include "JasonSideView.h"
 #include "GameGlobal.h"
+#include "Sophia.h"
 
 JasonSideView::JasonSideView()
 {
@@ -8,6 +9,7 @@ JasonSideView::JasonSideView()
 
 	currentAnimation = NULL;
 	HealthPoint = JASON_MAX_HEALTH;
+	sophia = NULL;
 }
 JasonSideView::JasonSideView(float x, float y)
 {
@@ -18,12 +20,18 @@ JasonSideView::JasonSideView(float x, float y)
 	// set looking right
 	drawArguments.FlipVertical(true);
 	HealthPoint = JASON_MAX_HEALTH;
+	sophia = NULL;
 }
 
 JasonSideView::~JasonSideView()
 {
 }
-
+/*
+bool JasonSideView::IsPrimaryPlayer()
+{
+	return !(state & JASON_STATE_ENTERING_VEHICLE);
+}
+//*/
 
 BoundingBox JasonSideView::GetBoundingBox()
 {
@@ -79,7 +87,6 @@ void JasonSideView::Render()
 
 void JasonSideView::Update()
 {
-	pos += dx();
 	int newState = state;
 	int flags = 0;
 	bool dead = (state & JASON_STATE_DYING) ||
@@ -99,6 +106,18 @@ void JasonSideView::Update()
 
 	if (wallTop && (v.y < 0))
 		v.y = 0;
+
+	if (!(newState & JASON_STATE_AIRBORNE) &&
+		(input[INPUT_DOWN] == KEY_STATE_ON_DOWN))
+	{
+		newState |= JASON_STATE_CRAWLING;
+	}
+	else
+		if (!(newState & JASON_STATE_AIRBORNE) &&
+			(input[INPUT_UP] == KEY_STATE_ON_DOWN))
+		{
+			newState &= ~JASON_STATE_CRAWLING;
+		}
 
 	if (!dead) {
 		if ((input[INPUT_LEFT] & KEY_STATE_DOWN) &&
@@ -120,6 +139,7 @@ void JasonSideView::Update()
 
 	if (!(newState & JASON_STATE_AIRBORNE) &&
 		(input[INPUT_JUMP] == KEY_STATE_ON_DOWN) &&
+		!(newState & JASON_STATE_CRAWLING) &&
 		!dead)
 	{
 		v.y = -JASON_JUMP_SPEED;
@@ -133,24 +153,10 @@ void JasonSideView::Update()
 		newState &= ~JASON_STATE_WALKING;
 	}
 
-	if (!(newState & JASON_STATE_AIRBORNE) &&
-		(input[INPUT_DOWN] == KEY_STATE_ON_DOWN))
-	{
-		newState |= JASON_STATE_CRAWLING;
-	}
-	else
-	if (!(newState & JASON_STATE_AIRBORNE) &&
-		(input[INPUT_UP] == KEY_STATE_ON_DOWN))
-	{
-		newState &= ~JASON_STATE_CRAWLING;
-	}
-
-	if ((input[INPUT_LEFT] & KEY_STATE_DOWN) && 
-		!(input[INPUT_RIGHT] & KEY_STATE_DOWN))
+	if (v.x < 0)
 		newState |= JASON_STATE_LOOKING_LEFT;
 
-	if ((input[INPUT_RIGHT] & KEY_STATE_DOWN) &&
-		!(input[INPUT_LEFT] & KEY_STATE_DOWN))
+	if (v.x > 0)
 		newState &= ~JASON_STATE_LOOKING_LEFT;
 
 	if (HealthPoint <= 0)
@@ -158,13 +164,33 @@ void JasonSideView::Update()
 		newState |= JASON_STATE_DYING;
 	}
 
+	if (sophia != NULL &&
+		input[INPUT_LEAVE_VEHICLE] == KEY_STATE_ON_DOWN)
+	{
+		newState |= JASON_STATE_ENTERING_VEHICLE;
+		newState &= ~JASON_STATE_CRAWLING;
+		newState |= JASON_STATE_AIRBORNE;
+		pos.x = sophia->pos.x;
+		v.x = 0;
+		v.y = -JASON_ENTER_VEHICLE_JUMP_SPEED;
+		sophia->SetState(sophia->GetState() | SOPHIA_STATE_ENTERING_VEHICLE);
+		sophia->SetAniByState(sophia->GetState());
+	}
+
+	if ((state & JASON_STATE_ENTERING_VEHICLE) &&
+		(v.y > JASON_ENTER_VEHICLE_DISAPPEAR_SPEED))
+		manager->RemoveElement(this);
+
 	Player::Update();
 
 	wallBot = wallLeft = wallRight = wallTop = false;
 
+	sophia = NULL;
+
 	if (dead)
 		return;
 
+	pos += dx();
 	if (newState != state)
 		SetState(newState);
 }

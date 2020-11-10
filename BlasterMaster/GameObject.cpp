@@ -45,7 +45,8 @@ GameObject::~GameObject()
 
 void GameObject::TakeDamage(int damage)
 {
-	HealthPoint -= damage;
+	if (damage > 0)
+		HealthPoint -= damage;
 }
 
 //void AnimatedGameObject::Render()
@@ -76,7 +77,7 @@ void GameObject::TakeDamage(int damage)
 
 void Player::TakeDamage(int damage)
 {
-	if (invulnerableFrame <= 0) {
+	if (invulnerableFrame <= 0 & HealthPoint > 0) {
 		GameObject::TakeDamage(damage);
 		invulnerableFrame = DURATION_OF_INVULNERABILITY;
 		DebugOut(L"Current HP : %d", HealthPoint);
