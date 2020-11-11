@@ -42,6 +42,9 @@ public:
 	static int GetHealthPointSideView();
 	static void SetHealthPointSideView(int hp);
 
+	static int GetLivesToPlay();
+	static void SetLivesToPlay(int l);
+
 	static bool isGameRunning; //trang thai xem game co dang chay khong
 
 private:
@@ -55,6 +58,7 @@ private:
 	static AnimationSets* mAniLib;
 
 	static int HealthPointSideView;
+	static int livesToPlay;
 };
 
 #endif

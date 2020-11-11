@@ -34,7 +34,7 @@ BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[15] = {
 	// section H
 	BoundingBox(2048, 32, 2574, 312),
 	// section I
-	BoundingBox(2560, 32, 3086, 544)
+	BoundingBox(2560, 32, 3086, 568)
 };
 
 Point SceneArea2SideView::startPointInSection[15] = {
@@ -726,11 +726,25 @@ void SceneArea2SideView::Update()
 		// temporary global set hp for both sophia jason
 		if (target != NULL) {
 			GameGlobal::SetHealthPointSideView(target->GetHP());
+			if (target->GetHP() < 0) {
+				GameGlobal::SetLivesToPlay(GameGlobal::GetLivesToPlay() - 1);
+			}
 		}
 
 		JumpCheckpoint();
 	}
 	else {
+		// update enemies when change section
+		for (auto x : onScreenObj) {
+			bool isPlayer = dynamic_cast<Player*>(x) != NULL;
+			if (!isPlayer) {
+				for (auto y : environments) {
+					x->Interact((Interactable*)y);
+				}
+				x->Update();
+			}
+		}
+
 		if (directionEnterPortal == 1) {
 			mCamera->SetPosition(mCamera->GetPosition() + Point(1, 0));
 			target->SetPosition(target->GetPosition() + Point(0.1, 0));

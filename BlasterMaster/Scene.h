@@ -15,6 +15,7 @@ protected:
 	int directionEnterPortal; // 0 portal left 1 portal right -1 normal
 	int frameToTransition;
 
+
 public: 
 	Scene(int id, LPCWSTR filePath);
 

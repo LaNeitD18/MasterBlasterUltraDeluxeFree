@@ -14,6 +14,7 @@ Input* GameGlobal::input = NULL;
 AnimationSets* GameGlobal::mAniLib = NULL;
 // temporary hp, set later for sophia jason
 int GameGlobal::HealthPointSideView = 80;
+int GameGlobal::livesToPlay = 3;
 
 GameGlobal::GameGlobal()
 {
@@ -103,3 +104,7 @@ void GameGlobal::SetAnimationSetLibrary(AnimationSets * aniLib) { mAniLib = aniL
 int GameGlobal::GetHealthPointSideView() { return HealthPointSideView; }
 
 void GameGlobal::SetHealthPointSideView(int hp) { HealthPointSideView = hp; }
+
+int GameGlobal::GetLivesToPlay() { return livesToPlay; }
+
+void GameGlobal::SetLivesToPlay(int l) { livesToPlay = l; }

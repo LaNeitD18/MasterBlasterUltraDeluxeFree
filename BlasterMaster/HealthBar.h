@@ -27,6 +27,6 @@ public:
 
 private:
 	void Load(TextureLibrary* texLib, SpriteLibrary* spriteLib);
-	std::map<int, Sprite*>          mBar;
+	std::map<int, Sprite*>		mBar;
 
 };

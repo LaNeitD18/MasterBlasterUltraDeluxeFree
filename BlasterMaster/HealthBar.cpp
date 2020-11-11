@@ -28,7 +28,6 @@ void HealthBar::Load(TextureLibrary * texLib, SpriteLibrary * spriteLib)
 
 		Sprite* sprite = spriteLib->Get(HP_TEXTURE_ID+i);
 
-
 		mBar.insert(std::pair<int, Sprite*>(i, sprite));
 	}
 }
