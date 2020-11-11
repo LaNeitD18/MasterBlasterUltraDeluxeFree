@@ -39,8 +39,8 @@ public:
 	static AnimationSets* GetAnimationSetLibrary();
 	static void SetAnimationSetLibrary(AnimationSets* aniLib);
 
-	static int GetHealthPoint();
-	static void SetHealthPoint(int hp);
+	static int GetHealthPointSideView();
+	static void SetHealthPointSideView(int hp);
 
 	static bool isGameRunning; //trang thai xem game co dang chay khong
 
@@ -54,7 +54,7 @@ private:
 	static Input* input;
 	static AnimationSets* mAniLib;
 
-	static int HealthPoint;
+	static int HealthPointSideView;
 };
 
 #endif

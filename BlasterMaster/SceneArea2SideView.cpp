@@ -31,8 +31,10 @@ BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[15] = {
 	BoundingBox(1536, 32, 2062, 1814),
 	// section G
 	BoundingBox(2048, 512, 2574, 792),
-	// section E
-	BoundingBox(2048, 32, 2574, 312)
+	// section H
+	BoundingBox(2048, 32, 2574, 312),
+	// section I
+	BoundingBox(2560, 32, 3086, 544)
 };
 
 Point SceneArea2SideView::startPointInSection[15] = {
@@ -51,7 +53,9 @@ Point SceneArea2SideView::startPointInSection[15] = {
 	// section G
 	Point(2096, 652),
 	// section H
-	Point(2096, 140)
+	Point(2096, 140),
+	// section G
+	Point(2608, 140)
 };
 
 SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath)
@@ -646,10 +650,15 @@ void SceneArea2SideView::JumpCheckpoint()
 		target->SetPosition(startPointInSection[6]);
 		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[6]);
 	}
-	// section G
+	// section H
 	else if (input[0x37]) {
 		target->SetPosition(startPointInSection[7]);
 		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[7]);
+	}
+	// section I
+	else if (input[0x38]) {
+		target->SetPosition(startPointInSection[8]);
+		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[8]);
 	}
 }
 
@@ -716,8 +725,10 @@ void SceneArea2SideView::Update()
 
 		// temporary global set hp for both sophia jason
 		if (target != NULL) {
-			GameGlobal::SetHealthPoint(target->GetHP());
+			GameGlobal::SetHealthPointSideView(target->GetHP());
 		}
+
+		JumpCheckpoint();
 	}
 	else {
 		if (directionEnterPortal == 1) {
@@ -777,8 +788,6 @@ void SceneArea2SideView::Update()
 	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
 	//	mCamera->SetPosition(mCamera->GetPosition() + Point(0, 8));
 	//}
-	
-	JumpCheckpoint();
 
 	// Update camera to follow mario
 	Point pos;

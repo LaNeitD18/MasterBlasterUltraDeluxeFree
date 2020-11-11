@@ -38,7 +38,7 @@ void HealthBar::Draw()
 	Point trans = Point(GameGlobal::GetWidth() / 2 - Camera::GetInstance()->GetPosition().x,
 		GameGlobal::GetHeight() / 2 - Camera::GetInstance()->GetPosition().y);
 
-	int currentHP = GameGlobal::GetHealthPoint();
+	int currentHP = GameGlobal::GetHealthPointSideView();
 	int barId;
 	if (currentHP >= 80) {
 		currentHP = 80;

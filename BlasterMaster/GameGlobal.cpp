@@ -13,7 +13,7 @@ IDirect3DSurface9* GameGlobal::backSurface = nullptr;
 Input* GameGlobal::input = NULL;
 AnimationSets* GameGlobal::mAniLib = NULL;
 // temporary hp, set later for sophia jason
-int GameGlobal::HealthPoint = 80;
+int GameGlobal::HealthPointSideView = 80;
 
 GameGlobal::GameGlobal()
 {
@@ -100,6 +100,6 @@ AnimationSets * GameGlobal::GetAnimationSetLibrary() { return mAniLib; }
 
 void GameGlobal::SetAnimationSetLibrary(AnimationSets * aniLib) { mAniLib = aniLib; }
 
-int GameGlobal::GetHealthPoint() { return HealthPoint; }
+int GameGlobal::GetHealthPointSideView() { return HealthPointSideView; }
 
-void GameGlobal::SetHealthPoint(int hp) { HealthPoint = hp; }
+void GameGlobal::SetHealthPointSideView(int hp) { HealthPointSideView = hp; }
