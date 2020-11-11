@@ -115,9 +115,9 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 	Input& input = *GameGlobal::GetInput();
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox dungeonBox = dungeon->GetBoundingBox();
-	if (playerBox.IsOverlap(dungeonBox)) {
-		GateDirection gateDirection = dungeon->GetDungeonDir();
-		if ((input[VK_RIGHT] && gateDirection == RIGHT) || (input[VK_LEFT] && gateDirection == LEFT)) {
+	bool isJasonPlay = dynamic_cast<JasonSideView*>(player) != NULL;
+	if (playerBox.IsOverlap(dungeonBox) && isJasonPlay) {
+		if (input[VK_DOWN] & KEY_STATE_DOWN) {
 			BoundingBox limitArea = SceneArea2Overhead::cameraLimitAreaOfSection[dungeon->GetSectionToEnter()];
 			//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
 			//Game::GetInstance()->GetCurrentScene()->SetFreeCamera(true);
