@@ -50,16 +50,16 @@ Point SceneArea2Overhead::startPointInSection[5] = {
 	// section E
 };
 
-SceneArea2Overhead::SceneArea2Overhead(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath)
+SceneArea2Overhead::SceneArea2Overhead(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath, game)
 {
 	this->input = game->GetInput();
-	textureLib = new TextureLibrary(game);
+	/*textureLib = new TextureLibrary(game);
 	spriteLib = new SpriteLibrary();
 	animationLib = new AnimationLibrary();
-	animationSetLib = new AnimationSets();
+	animationSetLib = new AnimationSets();*/
 	LoadContent();
 	//mMap = new GameMap("Map/General/level2-side-tiless.tmx", textureLib, spriteLib);
-	this->game = game;
+	//this->game = game;
 	this->screenSize = screenSize;
 
 	GameGlobal::SetAnimationSetLibrary(animationSetLib);
@@ -86,13 +86,13 @@ SceneArea2Overhead::~SceneArea2Overhead()
 	for (int i = 0; i < objects.size(); i++)
 		delete objects[i];
 	objects.clear();
-	textureLib->Clear();
+	/*textureLib->Clear();
 	delete textureLib;
 	spriteLib->Clear();
 	delete spriteLib;
 	animationLib->Clear();
 	delete animationLib;
-	delete animationSetLib;
+	delete animationSetLib;*/
 	mMap->Release();
 	delete mMap;
 	foreMap->Release();
@@ -567,9 +567,9 @@ void SceneArea2Overhead::Release()
 	foreMap->Release();
 
 	// LeSon: maybe cannot do this, have to clear in SwitchScene for Game.cpp, discuss again hihi 
-	textureLib->Clear();
+	/*textureLib->Clear();
 	spriteLib->Clear();
-	animationLib->Clear();
+	animationLib->Clear();*/
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

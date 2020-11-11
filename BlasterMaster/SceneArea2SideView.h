@@ -20,10 +20,6 @@ protected:
 	//LeSon
 	vector<Environment*> environments;
 
-	TextureLibrary* textureLib;
-	SpriteLibrary* spriteLib;
-	AnimationLibrary* animationLib;
-	AnimationSets* animationSetLib;
 	GameMap* mMap;
 	GameMap* foreMap;
 
@@ -38,8 +34,6 @@ protected:
 
 	//vector<HealthBar*> healthBar;
 private:
-	Game* game;
-
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);

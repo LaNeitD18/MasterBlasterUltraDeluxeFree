@@ -12,10 +12,10 @@ protected:
 
 	vector<GameObject*> objects;
 
-	TextureLibrary* textureLib;
+	/*TextureLibrary* textureLib;
 	SpriteLibrary* spriteLib;
 	AnimationLibrary* animationLib;
-	AnimationSets* animationSetLib;
+	AnimationSets* animationSetLib;*/
 	GameMap* mMap;
 	GameMap* foreMap;
 
@@ -24,7 +24,7 @@ protected:
 	// camera
 	Camera *mCamera;
 private:
-	Game* game;
+	//Game* game;
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);

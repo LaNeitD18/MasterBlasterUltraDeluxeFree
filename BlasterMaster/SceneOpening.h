@@ -11,16 +11,9 @@ class SceneOpening : public Scene
 protected:
 	vector<GameObject*> objects;
 
-	TextureLibrary* textureLib;
-	SpriteLibrary* spriteLib;
-	AnimationLibrary* animationLib;
-	AnimationSets* animationSetLib;
-
 	void LoadContent();
 
 private:
-	Game* game;
-
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -29,6 +22,7 @@ private:
 
 	Point screenSize;
 
+	// time before render tale
 	int count = 50;
 
 public:

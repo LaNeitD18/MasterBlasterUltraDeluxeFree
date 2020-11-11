@@ -34,7 +34,9 @@ BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[15] = {
 	// section H
 	BoundingBox(2048, 32, 2574, 312),
 	// section I
-	BoundingBox(2560, 32, 3086, 568)
+	BoundingBox(2560, 32, 3086, 568),
+	// section J
+	BoundingBox(2048, 256, 2574, 536)
 };
 
 Point SceneArea2SideView::startPointInSection[15] = {
@@ -58,20 +60,17 @@ Point SceneArea2SideView::startPointInSection[15] = {
 	Point(2608, 140)
 };
 
-SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath)
+SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath, game)
 {
 	this->input = game->GetInput();
-	textureLib = new TextureLibrary(game);
-	spriteLib = new SpriteLibrary();
-	animationLib = new AnimationLibrary();
-	animationSetLib = new AnimationSets();
 	LoadContent();
 	//mMap = new GameMap("Map/General/level2-side-tiless.tmx", textureLib, spriteLib);
-	this->game = game;
 	this->screenSize = screenSize;
 	this->isCameraFree = false;
 	this->directionEnterPortal = -1;
 	this->frameToTransition = 0;
+	LoadLivesLeftDisplay(textureLib, spriteLib);
+	this->count = 0;
 }
 
 void SceneArea2SideView::LoadContent()
@@ -103,13 +102,6 @@ SceneArea2SideView::~SceneArea2SideView()
 	for (auto i : objects)
 		delete i;
 	objects.clear();
-	textureLib->Clear();
-	delete textureLib;
-	spriteLib->Clear();
-	delete spriteLib;
-	animationLib->Clear();
-	delete animationLib;
-	delete animationSetLib;
 	mMap->Release();
 	delete mMap;
 	foreMap->Release();
@@ -668,6 +660,9 @@ void SceneArea2SideView::JumpCheckpoint()
 void SceneArea2SideView::Update()
 {
 	// Quick & dirty
+	if (count < DURATION_OF_LIVESHOW) {
+		return;
+	}
 
 	GameGlobal::SetAnimationSetLibrary(animationSetLib);
 
@@ -702,7 +697,15 @@ void SceneArea2SideView::Update()
 		if (target == NULL)
 		{
 			Game::GetInstance()->Init(L"Resources/scene.txt", 2);
+			int currentLivesPlay = GameGlobal::GetLivesToPlay();
+			GameGlobal::SetLivesToPlay(currentLivesPlay - 1);
+			count = 0;
+			if (currentLivesPlay == 0) {// change later for continue game
+				GameGlobal::SetLivesToPlay(2);
+			}
+			return;
 		}
+		GameGlobal::SetHealthPointSideView(target->GetHP());
 		mCamera->FollowTarget();
 		mCamera->SnapToBoundary();
 
@@ -724,12 +727,6 @@ void SceneArea2SideView::Update()
 				onScreenObj[i]->Interact(onScreenObj[j]);
 
 		// temporary global set hp for both sophia jason
-		if (target != NULL) {
-			GameGlobal::SetHealthPointSideView(target->GetHP());
-			if (target->GetHP() < 0) {
-				GameGlobal::SetLivesToPlay(GameGlobal::GetLivesToPlay() - 1);
-			}
-		}
 
 		JumpCheckpoint();
 	}
@@ -815,11 +812,24 @@ void SceneArea2SideView::Update()
 void SceneArea2SideView::Render()
 {
 	// LeSon
-	mMap->Draw();
-	for (auto object : objects)
-		object->Render();
-	foreMap->Draw();
-	healthBar->Draw();
+	int currentLivesPlay = GameGlobal::GetLivesToPlay();
+	if (count < DURATION_OF_LIVESHOW && currentLivesPlay >= 0)
+	{
+		displayLivesLeft(currentLivesPlay);
+		count++;
+	}
+	else
+	{
+		count = DURATION_OF_LIVESHOW + 1;
+		mMap->Draw();
+		healthBar->Draw();
+		for (auto object : objects)
+			object->Render();
+		foreMap->Draw();
+	}
+	
+
+	
 }
 
 /*
@@ -836,12 +846,9 @@ void SceneArea2SideView::Release()
 	mMap->Release();
 	foreMap->Release();
 
-	healthBar->Release();
+	Scene::Release();
 
-	// LeSon: maybe cannot do this, have to clear in SwitchScene for Game.cpp, discuss again hihi 
-	textureLib->Clear();
-	spriteLib->Clear();
-	animationLib->Clear();
+	healthBar->Release();
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

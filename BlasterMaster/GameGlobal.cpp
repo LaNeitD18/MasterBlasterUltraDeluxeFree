@@ -14,7 +14,7 @@ Input* GameGlobal::input = NULL;
 AnimationSets* GameGlobal::mAniLib = NULL;
 // temporary hp, set later for sophia jason
 int GameGlobal::HealthPointSideView = 80;
-int GameGlobal::livesToPlay = 3;
+int GameGlobal::livesToPlay = 2;
 
 GameGlobal::GameGlobal()
 {

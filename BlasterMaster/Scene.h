@@ -2,6 +2,15 @@
 
 #include <d3dx9.h>
 #include "Input.h"
+#include <vector>
+#include "Sprites.h"
+#include "Textures.h"
+#include "GameGlobal.h"
+
+#define DURATION_OF_LIVESHOW 250
+
+#define LIVESHOW_TEXTURE_ID 94500
+
 
 class Scene
 {
@@ -15,13 +24,24 @@ protected:
 	int directionEnterPortal; // 0 portal left 1 portal right -1 normal
 	int frameToTransition;
 
+	Game* game;
+
+	TextureLibrary* textureLib;
+	SpriteLibrary* spriteLib;
+	AnimationLibrary* animationLib;
+	AnimationSets* animationSetLib;
+
+	std::unordered_map<int, Sprite*>		livesLeftDisplay;
+
+	int count = 50;
 
 public: 
-	Scene(int id, LPCWSTR filePath);
+	Scene(int id, LPCWSTR filePath, Game* game);
+	~Scene();
 
 	Input* GetInput() { return input; }
 	virtual void Init() = 0;
-	virtual void Release() = 0;
+	virtual void Release();
 	virtual void Update() = 0;
 	virtual void Render() = 0;
 
@@ -30,5 +50,8 @@ public:
 	void SetFreeCamera(bool isFree);
 	int GetDirectionEnter();
 	void SetDirectionEnter(int dir);
+
+	void LoadLivesLeftDisplay(TextureLibrary* texLib, SpriteLibrary* spriteLib);
+	void displayLivesLeft(int n);
 	
 };

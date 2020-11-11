@@ -12,17 +12,14 @@
 
 using namespace std;
 
-SceneOpening::SceneOpening(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath)
+SceneOpening::SceneOpening(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath, game)
 {
 	this->input = game->GetInput();
-	textureLib = new TextureLibrary(game);
-	spriteLib = new SpriteLibrary();
-	animationLib = new AnimationLibrary();
-	animationSetLib = new AnimationSets();
 	LoadContent();
-	this->game = game;
 	this->screenSize = screenSize;
 	this->count = 0;
+
+	GameGlobal::SetAnimationSetLibrary(animationSetLib);
 }
 
 void SceneOpening::LoadContent()
@@ -35,13 +32,6 @@ SceneOpening::~SceneOpening()
 	for (int i = 0; i < objects.size(); i++)
 		delete objects[i];
 	objects.clear();
-	textureLib->Clear();
-	delete textureLib;
-	spriteLib->Clear();
-	delete spriteLib;
-	animationLib->Clear();
-	delete animationLib;
-	delete animationSetLib;
 }
 
 #define SCENE_SECTION_UNKNOWN -1
@@ -374,11 +364,6 @@ void SceneOpening::Release()
 		delete objects[i];
 
 	objects.clear();
-
-	// LeSon: maybe cannot do this, have to clear in SwitchScene for Game.cpp, discuss again hihi 
-	textureLib->Clear();
-	spriteLib->Clear();
-	animationLib->Clear();
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
