@@ -31,8 +31,12 @@ BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[15] = {
 	BoundingBox(1536, 32, 2062, 1814),
 	// section G
 	BoundingBox(2048, 512, 2574, 792),
-	// section E
-	BoundingBox(2048, 32, 2574, 312)
+	// section H
+	BoundingBox(2048, 32, 2574, 312),
+	// section I
+	BoundingBox(2560, 32, 3086, 568),
+	// section J
+	BoundingBox(2048, 256, 2574, 536)
 };
 
 Point SceneArea2SideView::startPointInSection[15] = {
@@ -51,29 +55,30 @@ Point SceneArea2SideView::startPointInSection[15] = {
 	// section G
 	Point(2096, 652),
 	// section H
-	Point(2096, 140)
+	Point(2096, 140),
+	// section G
+	Point(2608, 140)
 };
 
-SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath)
+SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath, game)
 {
 	this->input = game->GetInput();
-	textureLib = new TextureLibrary(game);
-	spriteLib = new SpriteLibrary();
-	animationLib = new AnimationLibrary();
-	animationSetLib = new AnimationSets();
 	LoadContent();
 	//mMap = new GameMap("Map/General/level2-side-tiless.tmx", textureLib, spriteLib);
-	this->game = game;
 	this->screenSize = screenSize;
 	this->isCameraFree = false;
 	this->directionEnterPortal = -1;
 	this->frameToTransition = 0;
+	LoadLivesLeftDisplay(textureLib, spriteLib);
+	this->count = 0;
 }
 
 void SceneArea2SideView::LoadContent()
 {
 	mMap = new GameMap("Map/General/level2-side-maporder.tmx", textureLib, spriteLib);
 	foreMap = new GameMap("Map/General/level2-side-fores.tmx", textureLib, spriteLib);
+
+	healthBar = new HealthBar(textureLib, spriteLib);
 
 	// camera setup
 	mCamera = new Camera(Point(GameGlobal::GetWidth(), GameGlobal::GetHeight()));
@@ -97,17 +102,12 @@ SceneArea2SideView::~SceneArea2SideView()
 	for (auto i : objects)
 		delete i;
 	objects.clear();
-	textureLib->Clear();
-	delete textureLib;
-	spriteLib->Clear();
-	delete spriteLib;
-	animationLib->Clear();
-	delete animationLib;
-	delete animationSetLib;
 	mMap->Release();
 	delete mMap;
 	foreMap->Release();
 	delete foreMap;
+	healthBar->Release();
+	delete healthBar;
 }
 
 /*
@@ -642,10 +642,15 @@ void SceneArea2SideView::JumpCheckpoint()
 		target->SetPosition(startPointInSection[6]);
 		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[6]);
 	}
-	// section G
+	// section H
 	else if (input[0x37]) {
 		target->SetPosition(startPointInSection[7]);
 		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[7]);
+	}
+	// section I
+	else if (input[0x38]) {
+		target->SetPosition(startPointInSection[8]);
+		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[8]);
 	}
 }
 
@@ -655,6 +660,9 @@ void SceneArea2SideView::JumpCheckpoint()
 void SceneArea2SideView::Update()
 {
 	// Quick & dirty
+	if (count < DURATION_OF_LIVESHOW) {
+		return;
+	}
 
 	GameGlobal::SetAnimationSetLibrary(animationSetLib);
 
@@ -689,7 +697,15 @@ void SceneArea2SideView::Update()
 		if (target == NULL)
 		{
 			Game::GetInstance()->Init(L"Resources/scene.txt", 2);
+			int currentLivesPlay = GameGlobal::GetLivesToPlay();
+			GameGlobal::SetLivesToPlay(currentLivesPlay - 1);
+			count = 0;
+			if (currentLivesPlay == 0) {// change later for continue game
+				GameGlobal::SetLivesToPlay(2);
+			}
+			return;
 		}
+		GameGlobal::SetHealthPointSideView(target->GetHP());
 		mCamera->FollowTarget();
 		mCamera->SnapToBoundary();
 
@@ -709,8 +725,23 @@ void SceneArea2SideView::Update()
 		for (int i = 0; i < onScreenObj.size(); i++)
 			for (int j = i + 1; j < onScreenObj.size(); j++)
 				onScreenObj[i]->Interact(onScreenObj[j]);
+
+		// temporary global set hp for both sophia jason
+
+		JumpCheckpoint();
 	}
 	else {
+		// update enemies when change section
+		for (auto x : onScreenObj) {
+			bool isPlayer = dynamic_cast<Player*>(x) != NULL;
+			if (!isPlayer) {
+				for (auto y : environments) {
+					x->Interact((Interactable*)y);
+				}
+				x->Update();
+			}
+		}
+
 		if (directionEnterPortal == 1) {
 			mCamera->SetPosition(mCamera->GetPosition() + Point(1, 0));
 			target->SetPosition(target->GetPosition() + Point(0.1, 0));
@@ -768,8 +799,6 @@ void SceneArea2SideView::Update()
 	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
 	//	mCamera->SetPosition(mCamera->GetPosition() + Point(0, 8));
 	//}
-	
-	JumpCheckpoint();
 
 	// Update camera to follow mario
 	Point pos;
@@ -783,10 +812,24 @@ void SceneArea2SideView::Update()
 void SceneArea2SideView::Render()
 {
 	// LeSon
-	mMap->Draw();
-	for (auto object : objects)
-		object->Render();
-	foreMap->Draw();
+	int currentLivesPlay = GameGlobal::GetLivesToPlay();
+	if (count < DURATION_OF_LIVESHOW && currentLivesPlay >= 0)
+	{
+		displayLivesLeft(currentLivesPlay);
+		count++;
+	}
+	else
+	{
+		count = DURATION_OF_LIVESHOW + 1;
+		mMap->Draw();
+		healthBar->Draw();
+		for (auto object : objects)
+			object->Render();
+		foreMap->Draw();
+	}
+	
+
+	
 }
 
 /*
@@ -803,10 +846,9 @@ void SceneArea2SideView::Release()
 	mMap->Release();
 	foreMap->Release();
 
-	// LeSon: maybe cannot do this, have to clear in SwitchScene for Game.cpp, discuss again hihi 
-	textureLib->Clear();
-	spriteLib->Clear();
-	animationLib->Clear();
+	Scene::Release();
+
+	healthBar->Release();
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

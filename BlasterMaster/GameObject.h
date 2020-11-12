@@ -17,7 +17,7 @@
 using namespace std;
 
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
-#define DURATION_OF_INVULNERABILITY 60
+#define DURATION_OF_INVULNERABILITY 200
 #define SPRITE_DURATION_OF_INVULNERABILTY 10
 
 class GameObject : public Interactable, public Managed<GameObject>
@@ -76,6 +76,9 @@ public:
 	// used for interact with damage
 	int HealthPoint;
 	virtual void TakeDamage(int damage);
+
+	int GetHP();
+	void SetHP(int healthpoint);
 };
 
 #define INPUT_JUMP				'X'

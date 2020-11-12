@@ -1,3 +1,0 @@
-# id	left	top	right	bottom	texture_id
-# idle
-30007	140	0	158	120	16
