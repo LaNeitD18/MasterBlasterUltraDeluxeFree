@@ -21,9 +21,9 @@ Interactable::~Interactable()
 {
 }
 
-#define DAMAGE_OF_SPIKE 25
-#define DAMAGE_OF_ENEMY 1
-#define DAMAGE_OF_LAVA 25
+#define DAMAGE_OF_SPIKE 15
+#define DAMAGE_OF_ENEMY 10
+#define DAMAGE_OF_LAVA 15
 
 void Interactable::Interact(Player * player, Env_Wall * wall) {
 	BoundingBox playerBox = player->GetBoundingBox();
@@ -116,9 +116,9 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 	Input& input = *GameGlobal::GetInput();
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox dungeonBox = dungeon->GetBoundingBox();
-	if (playerBox.IsOverlap(dungeonBox)) {
-		GateDirection gateDirection = dungeon->GetDungeonDir();
-		if ((input[VK_RIGHT] && gateDirection == RIGHT) || (input[VK_LEFT] && gateDirection == LEFT)) {
+	bool isJasonPlay = dynamic_cast<JasonSideView*>(player) != NULL;
+	if (playerBox.IsOverlap(dungeonBox) && isJasonPlay) {
+		if (input[VK_DOWN] & KEY_STATE_DOWN) {
 			BoundingBox limitArea = SceneArea2Overhead::cameraLimitAreaOfSection[dungeon->GetSectionToEnter()];
 			//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
 			//Game::GetInstance()->GetCurrentScene()->SetFreeCamera(true);

@@ -12,6 +12,9 @@ bool GameGlobal::isGameRunning = true;
 IDirect3DSurface9* GameGlobal::backSurface = nullptr;
 Input* GameGlobal::input = NULL;
 AnimationSets* GameGlobal::mAniLib = NULL;
+// temporary hp, set later for sophia jason
+int GameGlobal::HealthPointSideView = 80;
+int GameGlobal::livesToPlay = 2;
 
 GameGlobal::GameGlobal()
 {
@@ -84,16 +87,6 @@ int GameGlobal::GetWidth()
 	return mWidth;
 }
 
-//int GameGlobal::GetScreenWidth()
-//{
-//	return mScreenWidth;
-//}
-
-//int GameGlobal::GetScreenHeight()
-//{
-//	return mScreenHeight;
-//}
-
 void GameGlobal::SetHeight(int height)
 {
 	mHeight = height;
@@ -107,3 +100,11 @@ int GameGlobal::GetHeight()
 AnimationSets * GameGlobal::GetAnimationSetLibrary() { return mAniLib; }
 
 void GameGlobal::SetAnimationSetLibrary(AnimationSets * aniLib) { mAniLib = aniLib; }
+
+int GameGlobal::GetHealthPointSideView() { return HealthPointSideView; }
+
+void GameGlobal::SetHealthPointSideView(int hp) { HealthPointSideView = hp; }
+
+int GameGlobal::GetLivesToPlay() { return livesToPlay; }
+
+void GameGlobal::SetLivesToPlay(int l) { livesToPlay = l; }
