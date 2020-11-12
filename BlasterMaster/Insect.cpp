@@ -12,8 +12,8 @@ Insect::Insect(float x, float y) {
 
 BoundingBox Insect::GetBoundingBox()
 {
-	float left = pos.x;
-	float top = pos.y;
+	float left = pos.x - INSECT_BBOX_WIDTH;
+	float top = pos.y - INSECT_BBOX_HEIGHT;
 	float right = pos.x + INSECT_BBOX_WIDTH;
 	float bottom;
 
@@ -35,6 +35,8 @@ void Insect::Update()
 	if (v.x > 0 && pos.x > 290) {
 		pos.x = 290; v.x = -v.x;
 	}
+	// reset wall collision
+	wallBot = wallLeft = wallRight = wallTop = false;
 }
 
 void Insect::Render()
@@ -42,7 +44,7 @@ void Insect::Render()
 	if (state == INSECT_STATE_DIE) {
 		SetAnimationType(INSECT_ANI_DIE);
 	}
-	else SetAnimationType(INSECT_ANI_WALKING_RIGHT);
+	else SetAnimationType(INSECT_ANI_WALKING);
 	//else if (v.x <= 0) SetAnimationType(Insect_ANI_WALKING_LEFT);
 
 	AnimatedGameObject::Render();
@@ -63,5 +65,9 @@ void Insect::SetState(int state)
 	case INSECT_STATE_WALKING:
 		v.x = INSECT_WALKING_SPEED;
 	}
-
 }
+
+#include "InteractableGroupInclude.h"
+#define CURRENT_CLASS Insect
+void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)

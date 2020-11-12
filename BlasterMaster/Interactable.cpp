@@ -5,6 +5,7 @@
 #include "Floater.h"
 #include "Dome.h"
 #include "Jumper.h"
+#include "Insect.h"
 #include "Utils.h"
 #include "SceneArea2SideView.h"
 #include "SceneArea2Overhead.h"

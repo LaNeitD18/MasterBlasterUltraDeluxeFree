@@ -67,7 +67,7 @@ void Floater::SetState(int state)
 		v.y = 0;
 		break;
 	case FLOATER_STATE_FLYING:
-		v.x = FLOATER_FLYING_SPEED_X;
+		v.x = -FLOATER_FLYING_SPEED_X;
 		v.y = FLOATER_FLYING_SPEED_Y;
 	}
 
