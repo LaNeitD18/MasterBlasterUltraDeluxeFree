@@ -93,6 +93,13 @@ void JasonSideView::Update()
 		(state & JASON_STATE_DEAD);
 	Input& input = *GameGlobal::GetInput();
 
+	Player::Update();
+
+	if (dead) 
+		return;
+
+	pos += dx();
+
 	if (!wallBot) {
 		flags |= JASON_STATE_AIRBORNE;
 		newState |= JASON_STATE_AIRBORNE;
@@ -175,22 +182,20 @@ void JasonSideView::Update()
 		v.y = -JASON_ENTER_VEHICLE_JUMP_SPEED;
 		sophia->SetState(sophia->GetState() | SOPHIA_STATE_ENTERING_VEHICLE);
 		sophia->SetAniByState(sophia->GetState());
+		sophia->jason = this;
 	}
 
 	if ((state & JASON_STATE_ENTERING_VEHICLE) &&
-		(v.y > JASON_ENTER_VEHICLE_DISAPPEAR_SPEED))
+		(v.y > JASON_ENTER_VEHICLE_DISAPPEAR_SPEED)) {
 		manager->RemoveElement(this);
-
-	Player::Update();
+		if (sophia != NULL)
+			sophia->jason = NULL;
+	}
 
 	wallBot = wallLeft = wallRight = wallTop = false;
 
 	sophia = NULL;
 
-	if (dead)
-		return;
-
-	pos += dx();
 	if (newState != state)
 		SetState(newState);
 }

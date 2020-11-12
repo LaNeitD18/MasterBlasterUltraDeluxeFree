@@ -110,5 +110,7 @@ public:
 	void SetAniByState(int state);
 	virtual void SetAnimationSet(AnimationSet* set) override;
 	virtual void TakeDamage(int) override;
+
+	JasonSideView* jason;
 };
 

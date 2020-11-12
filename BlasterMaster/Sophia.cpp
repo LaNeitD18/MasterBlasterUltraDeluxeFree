@@ -16,6 +16,11 @@ BoundingBox Sophia::GetBoundingBox()
 
 void Sophia::Update()
 {
+	if ((state & SOPHIA_STATE_LEAVING_VEHICLE) ||
+		(state & SOPHIA_STATE_LEFT_VEHICLE))
+		return;
+	pos += dx();
+
 	Player::Update();
 	//*
 	int prevState = state;
@@ -164,7 +169,7 @@ void Sophia::Update()
 		(input[INPUT_LEAVE_VEHICLE] == KEY_STATE_ON_DOWN))
 	{
 		newState |= SOPHIA_STATE_LEAVING_VEHICLE;
-		JasonSideView* jason = new JasonSideView(pos.x, pos.y);
+		jason = new JasonSideView(pos.x, pos.y);
 		jason->SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(JASON_SIDEVIEW_ANIMATION_SET_NUMBER));
 		jason->SetManager(manager);
 		jason->v.x = v.x;
@@ -188,11 +193,6 @@ void Sophia::Update()
 		newState |= SOPHIA_STATE_DYING;
 		// newState |= SOPHIA_STATE_DEAD;
 	}
-
-	if ((newState & state & SOPHIA_STATE_LEAVING_VEHICLE) ||
-		(newState & state & SOPHIA_STATE_LEFT_VEHICLE))
-		return;
-	pos += dx();
 
 	if (prevState != newState)
 	{
@@ -301,6 +301,8 @@ void Sophia::Render()
 							make_pair(SOPHIA_STATE_ENTERING_VEHICLE, false));
 						stateToChange.push_back(
 							make_pair(SOPHIA_STATE_LEFT_VEHICLE, false));
+						if (jason != NULL)
+							manager->RemoveElement(jason);
 					}
 				}
 				if (i == SOPHIA_ANI_JUMPING || i == SOPHIA_ANI_LOOKED_UP_JUMPING) {
