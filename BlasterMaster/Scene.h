@@ -5,7 +5,7 @@
 #include <vector>
 #include "Sprites.h"
 #include "Textures.h"
-#include "GameGlobal.h"
+#include "Animations.h"
 
 #define DURATION_OF_LIVESHOW 250
 

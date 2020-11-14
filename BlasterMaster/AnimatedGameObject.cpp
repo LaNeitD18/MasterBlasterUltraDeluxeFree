@@ -10,6 +10,8 @@ void AnimatedGameObject::Render()
 
 	//drawArguments.SetPosition(pos);
 	drawArguments.FlipVertical(isFlipVertical);
+	drawArguments.FlipHorizontal(isFlipHorizontal);
+	drawArguments.SetRotation(rotation);
 
 	currentAnimation->Render(currentTime, previousFrame, drawArguments);
 	if (!moving)

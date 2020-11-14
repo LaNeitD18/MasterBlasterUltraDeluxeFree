@@ -101,7 +101,7 @@ void GameObject::SetHP(int healthpoint)
 
 void Player::TakeDamage(int damage)
 {
-	if (invulnerableFrame <= 0 & HealthPoint > 0) {
+	if (invulnerableFrame <= 0 && HealthPoint > 0 && damage > 0) {
 		GameObject::TakeDamage(damage);
 		invulnerableFrame = DURATION_OF_INVULNERABILITY;
 		DebugOut(L"Current HP : %d", HealthPoint);

@@ -4,6 +4,7 @@
 #include "SceneArea2SideView.h"
 #include "GameGlobal.h"
 #include "Utils.h"
+#include "Game.h"
 
 #include "Worm.h"
 #include "Sophia.h"
@@ -234,7 +235,7 @@ void SceneArea2SideView::_ParseSection_ANIMATIONS(string animationPath)
 			vector<string> tokens = split(line);
 
 			if (tokens.size() < 3)
-				return; // skip invalid lines - an animation must at least has 1 frame and 1 frame time
+				continue; // skip invalid lines - an animation must at least has 1 frame and 1 frame time
 
 			//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
 
@@ -325,13 +326,9 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 				obj = new CPortal(x, y, r, b, scene_id);
 			}
 			break;*/
-	case OBJECT_TYPE_WORM: {
-		//obj = new Worm(x, y);;
-		AnimatedGameObject* temp = NULL;
-		temp = new Worm(x, y);
-		obj = temp;
+	case OBJECT_TYPE_WORM:
+		obj = new Worm(x, y);
 		break;
-	}
 	case OBJECT_TYPE_JUMPER:
 		obj = new Jumper(x, y);
 		break;
@@ -822,10 +819,10 @@ void SceneArea2SideView::Render()
 	{
 		count = DURATION_OF_LIVESHOW + 1;
 		mMap->Draw();
-		healthBar->Draw();
 		for (auto object : objects)
 			object->Render();
 		foreMap->Draw();
+		healthBar->Draw();
 	}
 	
 

@@ -43,8 +43,8 @@ class Interactable;
 // add new item
 #define INTERACTABLE_GROUP Player, Enemy, Env_Wall, Sophia, Env_Spike, Env_Lava, Env_Portal, AnimatedScene,\
 							Worm, Floater, Dome, Jumper, Env_Dungeon, \
-							JasonSideView, JasonOverhead \
-							// Bullet
+							JasonSideView, JasonOverhead, Bullet \
+							
 
 // Interactable
 #define ___CLASS(x) class x;

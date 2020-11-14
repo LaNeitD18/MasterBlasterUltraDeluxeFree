@@ -25,6 +25,9 @@
 
 #define SOPHIA_WHEEL_DURATION 4
 
+#define SOPHIA_BULLET_OFFSET_X 4
+#define SOPHIA_BULLET_OFFSET_Y 6
+#define SOPHIA_BULLET_SPEED 0.1f
 /*
 Actions:
 	Walking
@@ -101,6 +104,7 @@ public:
 	void GoLeft();
 	void GoRight();
 	void GoHalt();
+	void Shoot();
 
 	virtual bool IsPrimaryPlayer() override;
 

@@ -16,7 +16,8 @@
 14	Resources\sprites\Sophia.png			255	255	255
 15	Resources\sprites\enemies.png	254	255	255
 16	Resources\sprites\HP.png	255	255	255
-# next sprite: 10155
+17	Resources\sprites\116445.png	0	57	115
+# next sprite: 10163
 
 [SPRITES]
 # id format: 10xxx
@@ -56,6 +57,9 @@ Resources\Enemies\sophia_sprites.txt
 #13 JASON SIDEVIEW
 Resources\Enemies\Jason_Sideview_sprites.txt
 
+#14 BULLET
+Resources\Enemies\bullet_sprites.txt
+
 #100 HP1
 Resources\Enemies\HP1.txt
 #101 HP2
@@ -76,7 +80,7 @@ Resources\Enemies\HP8.txt
 Resources\Enemies\HP0.txt
 
 [ANIMATIONS]
-# id format: 5XX		Next available: 567
+# id format: 5XX		Next available: 570
 #1 ==== WORM =========
 Resources\Enemies\worm_ani.txt
 
@@ -112,6 +116,9 @@ Resources\Enemies\sophia_ani.txt
 
 #13 ==== JASON SIDEVIEW =========
 Resources\Enemies\Jason_Sideview_ani.txt
+
+#14 ==== BULLET =========
+Resources\Enemies\bullet_ani.txt
 
 [OBJECTS]
 # type	x	y	ani_set_id1	ani_set_id2...

@@ -1,8 +1,7 @@
 #include "Scene.h"
 #include "BoundingBox.h"
 #include "Camera.h"
-#include "SceneArea2SideView.h"
-#include "SceneArea2Overhead.h"
+#include "GameGlobal.h"
 
 Scene::Scene(int id, LPCWSTR filePath, Game* game)
 {

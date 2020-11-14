@@ -26,13 +26,15 @@ Interactable::~Interactable()
 
 void Interactable::Interact(Player * player, Env_Wall * wall) {
 	BoundingBox playerBox = player->GetBoundingBox();
+	Point playerBoxCenter = playerBox.GetCenter();
+	playerBox.Move(player->GetSpeed());
 	BoundingBox wallBox = wall->GetBoundingBox();
 	if (playerBox.IsOverlap(wallBox)) {
 		float overlapAreaX = min(playerBox.r, wallBox.r) - max(playerBox.l, wallBox.l);
 		float overlapAreaY = min(playerBox.b, wallBox.b) - max(playerBox.t, wallBox.t);
 		if (overlapAreaX > overlapAreaY)
 		{
-			if (playerBox.GetCenter().y > wallBox.GetCenter().y) {
+			if (playerBoxCenter.y > wallBox.GetCenter().y) {
 				player->wallTop = true;
 				// Snap top (player pushed down)
 				Point pos = player->GetPosition();
@@ -50,7 +52,7 @@ void Interactable::Interact(Player * player, Env_Wall * wall) {
 		}
 		else
 		{
-			if (playerBox.GetCenter().x < wallBox.GetCenter().x) {
+			if (playerBoxCenter.x < wallBox.GetCenter().x) {
 				player->wallRight = true;
 				// Snap right (player to left)
 				Point pos = player->GetPosition();
@@ -334,11 +336,9 @@ void Interactable::Interact(JasonSideView * player, Env_Wall * wall)
 	Interactable::Interact((Player*)player, wall);
 	if (player->wallBot) {
 		Point v = player->v;
-		if (v.y > JASON_JUMP_SPEED + JASON_GRAVITY * 3) {
+		if (v.y > JASON_JUMP_SPEED + JASON_GRAVITY) {
 			float damage = v.y / JASON_JUMP_SPEED;
-			damage *= damage;
-			damage -= 1;
-			damage *= damage;
+			damage = (damage * damage - 1.24) / 1.37;
 			damage *= JASON_MAX_HEALTH;
 			player->TakeDamage(round(damage));
 		}

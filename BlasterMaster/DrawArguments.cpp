@@ -5,21 +5,20 @@ DrawArguments::DrawArguments() { Init(); }
 
 DrawArguments::DrawArguments(Point position, bool isFlipHorizontal, D3DXVECTOR2 scale)
 {
+	Init();
 	this->mPosition = position;
 	this->mIsFlipHorizontal = isFlipHorizontal;
 	this->mScale = scale;
-	Init();
 }
 
 void DrawArguments::Init() 
 {
-	mPosition = Point(0, 0);
+	mPosition = Point();
 	mRotation = 0;
-	mRotationCenter = mPosition;
-	mTranslation = Point(0, 0);
-	mScale = D3DXVECTOR2(0, 1);
-	mScale.x = mScale.y = 1;
-	mIsFlipHorizontal = false;
+	mRotationCenter = Point();
+	mTranslation = Point();
+	mScale = D3DXVECTOR2(1, 1);
+	mIsFlipHorizontal = mIsFlipVertical = false;
 	mColor = D3DCOLOR_ARGB(255, 255, 255, 255);
 }
 
