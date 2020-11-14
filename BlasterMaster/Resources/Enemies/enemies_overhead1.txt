@@ -16,7 +16,7 @@ Resources\Enemies\Jason_Overhead_ani.txt
 # type	x	y	ani_set_id1	ani_set_id2...
 
 # JASONO
-13	120	1910	1
+13	172	1878	1
 
 [ENVIRONMENTS]
 # type	x	y	width	height	portaldirid	sectionToEnter
