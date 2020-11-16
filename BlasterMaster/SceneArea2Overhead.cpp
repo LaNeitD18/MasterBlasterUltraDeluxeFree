@@ -495,29 +495,38 @@ void SceneArea2Overhead::Init()
 void SceneArea2Overhead::Update()
 {
 	input->Update();
-	if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
-	{
-		if (mCamera->GetPosition().x - mCamera->GetWidth() / 2 <= 0) return; // LeSon
-		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-		mCamera->SetPosition(mCamera->GetPosition() + Point(-8, 0));
-	}
-	if ((*input)[VK_RIGHT] & KEY_STATE_DOWN)
-	{
-		if (mCamera->GetPosition().x + mCamera->GetWidth() / 2 >= mMap->GetWidth() + 8) return; // LeSon
-		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-		mCamera->SetPosition(mCamera->GetPosition() + Point(8, 0));
-	}
-	if ((*input)[VK_UP] & KEY_STATE_DOWN)
-	{
-		if (mCamera->GetPosition().y - mCamera->GetHeight() / 2 <= 0) return; // LeSon
-		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-		mCamera->SetPosition(mCamera->GetPosition() + Point(0, -8));
-	}
-	if ((*input)[VK_DOWN] & KEY_STATE_DOWN)
-	{
-		if (mCamera->GetPosition().y + mCamera->GetHeight() / 2 >= mMap->GetHeight() + 32) return; // LeSon
-		// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-		mCamera->SetPosition(mCamera->GetPosition() + Point(0, 8));
+	//if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
+	//{
+	//	if (mCamera->GetPosition().x - mCamera->GetWidth() / 2 <= 0) return; // LeSon
+	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
+	//	mCamera->SetPosition(mCamera->GetPosition() + Point(-8, 0));
+	//}
+	//if ((*input)[VK_RIGHT] & KEY_STATE_DOWN)
+	//{
+	//	if (mCamera->GetPosition().x + mCamera->GetWidth() / 2 >= mMap->GetWidth() + 8) return; // LeSon
+	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
+	//	mCamera->SetPosition(mCamera->GetPosition() + Point(8, 0));
+	//}
+	//if ((*input)[VK_UP] & KEY_STATE_DOWN)
+	//{
+	//	if (mCamera->GetPosition().y - mCamera->GetHeight() / 2 <= 0) return; // LeSon
+	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
+	//	mCamera->SetPosition(mCamera->GetPosition() + Point(0, -8));
+	//}
+	//if ((*input)[VK_DOWN] & KEY_STATE_DOWN)
+	//{
+	//	if (mCamera->GetPosition().y + mCamera->GetHeight() / 2 >= mMap->GetHeight() + 32) return; // LeSon
+	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
+	//	mCamera->SetPosition(mCamera->GetPosition() + Point(0, 8));
+	//}
+
+	Camera::setCameraInstance(mCamera);
+
+	for (auto x : objects) {
+		Player* target = dynamic_cast<Player*>(x);
+		if (target != NULL) {
+			mCamera->SetTarget(target);
+		}
 	}
 
 	for (size_t i = 0; i < objects.size(); i++)

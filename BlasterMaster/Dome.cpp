@@ -71,7 +71,7 @@ void Dome::Update()
 		WalkDown();
 	}
 	if (v.y > 0 && !wallBot && !wallRight && direction.x == 1) {
-		drawArguments.SetRotationCenter(Point(DOME_BBOX_WIDTH * 2, DOME_BBOX_HEIGHT * 2));
+		drawArguments.SetRotationCenter(Point(DOME_BBOX_WIDTH * 2, DOME_BBOX_HEIGHT));
 		WalkRight();
 	}
 	if (v.y < 0 && !wallTop && !wallLeft && direction.x == 1) {
