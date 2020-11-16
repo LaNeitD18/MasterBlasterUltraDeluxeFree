@@ -696,13 +696,14 @@ void SceneArea2SideView::Update()
 		}
 		if (target == NULL)
 		{
-			Game::GetInstance()->Init(L"Resources/scene.txt", 2);
 			int currentLivesPlay = GameGlobal::GetLivesToPlay();
 			GameGlobal::SetLivesToPlay(currentLivesPlay - 1);
 			count = 0;
 			if (currentLivesPlay == 0) {// change later for continue game
 				GameGlobal::SetLivesToPlay(2);
 			}
+			this->Release();
+			Game::GetInstance()->Init(L"Resources/scene.txt", 2);
 			return;
 		}
 		GameGlobal::SetHealthPointSideView(target->GetHP());
@@ -768,7 +769,9 @@ void SceneArea2SideView::Update()
 	// enter to switch scene
 	if ((*input)[VK_TAB] & KEY_STATE_DOWN) {
 		//Game::GetInstance()->SwitchScene(3);
+		this->Release();
 		Game::GetInstance()->Init(L"Resources/scene.txt", 3);
+		return;
 	}
 
 	//if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
@@ -815,7 +818,8 @@ void SceneArea2SideView::Render()
 	int currentLivesPlay = GameGlobal::GetLivesToPlay();
 	if (count < DURATION_OF_LIVESHOW && currentLivesPlay >= 0)
 	{
-		displayLivesLeft(currentLivesPlay);
+		DebugOut(L"count: %d\n", count);
+		//displayLivesLeft(currentLivesPlay);
 		count++;
 	}
 	else

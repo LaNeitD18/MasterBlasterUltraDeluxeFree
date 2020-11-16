@@ -122,8 +122,9 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 			BoundingBox limitArea = SceneArea2Overhead::cameraLimitAreaOfSection[dungeon->GetSectionToEnter()];
 			//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
 			//Game::GetInstance()->GetCurrentScene()->SetFreeCamera(true);
-			Game::GetInstance()->Init(L"Resources/scene.txt", 3);
+			Game::GetInstance()->GetCurrentScene()->Release();
 			Camera::GetInstance()->SetCameraLimitarea(limitArea);
+			Game::GetInstance()->Init(L"Resources/scene.txt", 3);
 		}
 	}
 }

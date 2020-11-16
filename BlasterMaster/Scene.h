@@ -7,7 +7,7 @@
 #include "Textures.h"
 #include "GameGlobal.h"
 
-#define DURATION_OF_LIVESHOW 250
+#define DURATION_OF_LIVESHOW 5
 
 #define LIVESHOW_TEXTURE_ID 94500
 

@@ -523,9 +523,10 @@ void SceneArea2Overhead::Update()
 	Camera::setCameraInstance(mCamera);
 
 	for (auto x : objects) {
-		Player* target = dynamic_cast<Player*>(x);
-		if (target != NULL) {
-			mCamera->SetTarget(target);
+		Player* current_player = dynamic_cast<Player*>(x);
+		if (current_player != NULL) {
+			mCamera->SetTarget(current_player);
+			target = current_player;
 		}
 	}
 
@@ -536,11 +537,15 @@ void SceneArea2Overhead::Update()
 
 	if ((*input)[VK_HOME] & KEY_STATE_DOWN) {
 		//Game::GetInstance()->SwitchScene(1);
+		this->Release();
 		Game::GetInstance()->Init(L"Resources/scene.txt",1);
+		return;
 	}
 	if ((*input)[VK_BACK] & KEY_STATE_DOWN) {
 		//Game::GetInstance()->SwitchScene(2);
+		this->Release();
 		Game::GetInstance()->Init(L"Resources/scene.txt", 2);
+		return;
 	}
 
 	// Update camera to follow mario
