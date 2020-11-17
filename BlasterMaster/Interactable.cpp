@@ -1,15 +1,9 @@
 #include "Interactable.h"
-#include "Sophia.h"
-#include "Environment.h"
-#include "Worm.h"
-#include "Floater.h"
-#include "Dome.h"
-#include "Jumper.h"
-#include "Utils.h"
+#include "InteractableGroupInclude.h"
 #include "SceneArea2SideView.h"
 #include "SceneArea2Overhead.h"
-#include "JasonSideView.h"
-#include "JasonOverhead.h"
+#include "Game.h"
+#include "Utils.h"
 
 Interactable::Interactable()
 {
@@ -26,9 +20,36 @@ Interactable::~Interactable()
 
 void Interactable::Interact(Player * player, Env_Wall * wall) {
 	BoundingBox playerBox = player->GetBoundingBox();
-	Point playerBoxCenter = playerBox.GetCenter();
-	playerBox.Move(player->GetSpeed());
 	BoundingBox wallBox = wall->GetBoundingBox();
+	//*
+	bool top, left, right, bottom;
+	Point move = player->dx();
+	top = left = right = bottom = false;
+	double offsetTime = wallBox.SweptAABB(playerBox, move, top, left, bottom, right);
+
+	player->wallTop |= top;
+	player->wallRight |= right;
+	player->wallLeft |= left;
+	player->wallBot |= bottom;
+
+	if (offsetTime >= 0.0 && offsetTime <= 1.0)
+		move = move - move * offsetTime;
+	else
+		return;
+
+	if (top || bottom) {
+		Point pos = player->GetPosition();
+		pos.y -= move.y;
+		player->SetPosition(pos);
+	}
+	if (left || right) {
+		Point pos = player->GetPosition();
+		pos.x -= move.x;
+		player->SetPosition(pos);
+	}
+	/*/
+	playerBox.Move(player->dx());
+	Point playerBoxCenter = playerBox.GetCenter();
 	if (playerBox.IsOverlap(wallBox)) {
 		float overlapAreaX = min(playerBox.r, wallBox.r) - max(playerBox.l, wallBox.l);
 		float overlapAreaY = min(playerBox.b, wallBox.b) - max(playerBox.t, wallBox.t);
@@ -69,6 +90,7 @@ void Interactable::Interact(Player * player, Env_Wall * wall) {
 			}
 		}
 	}
+	//*/
 }
 
 void Interactable::Interact(Player * player, Env_Spike * spike) {
@@ -349,6 +371,14 @@ void Interactable::Interact(Sophia* sophia, JasonSideView * jason)
 	if (jason->GetBoundingBox().
 		IsInsideBox(sophia->GetBoundingBox()))
 		jason->sophia = sophia;
+}
+void Interactable::Interact(Bullet* bullet, Env_Wall * wall)
+{
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox wallBox = wall->GetBoundingBox();
+
+	if (wallBox.SweptAABB(bulletBox, bullet->dx()) != -INFINITY)
+		bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
 }
 #pragma endregion
 

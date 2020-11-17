@@ -177,9 +177,10 @@ void Sophia::Update()
 		jason->v.y = -JASON_ENTER_VEHICLE_DISAPPEAR_SPEED;
 		manager->AddElement(jason);
 	}
+	//*
 	if (newState & SOPHIA_ANI_LEFT_VEHICLE)
 		StartAnimationType(SOPHIA_ANI_LEFT_VEHICLE);
-
+	//*/
 	if (input[INPUT_SHOOT] == KEY_STATE_ON_DOWN)
 		Shoot();
 

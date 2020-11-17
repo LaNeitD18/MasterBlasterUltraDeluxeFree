@@ -24,11 +24,18 @@ Bullet::~Bullet()
 BoundingBox Bullet::GetBoundingBox()
 {
 	if (v.y == 0)
-		return BoundingBox(
-			pos.x + BULLET_OFFSET_LEFT, 
-			pos.y + BULLET_OFFSET_UP,
-			pos.x + BULLET_OFFSET_RIGHT, 
-			pos.y + BULLET_OFFSET_DOWN);
+		if (v.x < 0)
+			return BoundingBox(
+				pos.x + BULLET_OFFSET_LEFT,
+				pos.y + BULLET_OFFSET_UP,
+				pos.x + BULLET_OFFSET_RIGHT,
+				pos.y + BULLET_OFFSET_DOWN);
+		else
+			return BoundingBox(
+				pos.x - BULLET_OFFSET_RIGHT,
+				pos.y + BULLET_OFFSET_UP,
+				pos.x - BULLET_OFFSET_LEFT,
+				pos.y + BULLET_OFFSET_DOWN);
 	else
 		return BoundingBox(
 			pos.x + BULLET_OFFSET_UP,
@@ -39,8 +46,10 @@ BoundingBox Bullet::GetBoundingBox()
 
 void Bullet::Update()
 {
-	if (!(state & BULLET_STATE_EXPLODE))
-		pos += dx();
+	pos += dx();
+
+	if (state & BULLET_STATE_EXPLODE)
+		v = Point();
 
 	if (v.y < 0) {
 		rotation = M_PI_2;
@@ -51,7 +60,7 @@ void Bullet::Update()
 	else
 		isFlipVertical = false;
 
-	if (!Camera::GetInstance()->GetBound().IsInsideBox(GetBoundingBox().GetCenter()))
+	if (!Camera::GetInstance()->GetBound().IsInsideBox(pos))
 		SetState(state | BULLET_STATE_EXPLODE);
 
 	if (state & BULLET_STATE_EXPLODE)

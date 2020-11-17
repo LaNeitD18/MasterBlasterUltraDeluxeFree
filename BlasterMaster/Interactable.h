@@ -106,6 +106,8 @@ public:
 
 	INTERACTABLE_MIRROR_DEF(Player, Enemy);
 	
+	// Bullet
+	INTERACTABLE_MIRROR_DEF(Bullet, Env_Wall);
 #undef INTERACTABLE_MIRROR_DEF
 };
 

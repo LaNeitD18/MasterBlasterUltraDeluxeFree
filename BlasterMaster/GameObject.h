@@ -33,7 +33,7 @@ public:
 
 	int state;
 
-	DWORD dt = 33; 
+	DWORD dt = 33;
 
 	float scaleIndex = 0.3;
 

@@ -1,10 +1,11 @@
 #pragma once
 #include "AnimatedGameObject.h"
 
-#define BULLET_OFFSET_RIGHT 0
-#define BULLET_OFFSET_DOWN 3
-#define BULLET_OFFSET_UP -3
-#define BULLET_OFFSET_LEFT -12
+// Note: define for shooting left
+#define BULLET_OFFSET_RIGHT 3
+#define BULLET_OFFSET_DOWN 2.99
+#define BULLET_OFFSET_UP -2.99
+#define BULLET_OFFSET_LEFT -3
 
 #define BULLET_ANIMATION_SET_NUMBER 17
 
