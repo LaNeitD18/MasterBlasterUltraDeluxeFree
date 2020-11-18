@@ -131,7 +131,13 @@ void Interactable::Interact(Player* player, Env_Portal* portal) {
 				}
 			}
 			else {
-				BoundingBox limitArea = SceneArea2Overhead::cameraLimitAreaOfSection[sectionToEnter];
+				BoundingBox limitArea = NULL;
+				if (dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene())) {
+					limitArea = SceneArea2SideView::cameraLimitAreaOfSection[sectionToEnter];
+				}
+				else if (dynamic_cast<SceneArea2Overhead*>(Game::GetInstance()->GetCurrentScene())) {
+					limitArea = SceneArea2Overhead::cameraLimitAreaOfSection[sectionToEnter];
+				}
 				Camera::GetInstance()->SetCameraLimitarea(limitArea);
 			}
 			

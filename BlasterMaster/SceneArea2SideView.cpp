@@ -610,50 +610,52 @@ void SceneArea2SideView::Init()
 
 void SceneArea2SideView::JumpCheckpoint()
 {
-	Input& input = *GameGlobal::GetInput();
-	// section A
-	if (input[0x30]) {
-		target->SetPosition(startPointInSection[0]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[0]);
-	}
-	// section B
-	else if (input[0x31]) {
-		target->SetPosition(startPointInSection[1]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[1]);
-	}
-	//section C
-	else if (input[0x32]) {
-		target->SetPosition(startPointInSection[2]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[2]);
-	}
-	// section D
-	else if (input[0x33]) {
-		target->SetPosition(startPointInSection[3]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[3]);
-	}
-	// section E
-	else if (input[0x34]) {
-		target->SetPosition(startPointInSection[4]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[4]);
-	}
-	else if (input[0x35]) {
-		target->SetPosition(startPointInSection[5]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[5]);
-	}
-	// section G
-	else if (input[0x36]) {
-		target->SetPosition(startPointInSection[6]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[6]);
-	}
-	// section H
-	else if (input[0x37]) {
-		target->SetPosition(startPointInSection[7]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[7]);
-	}
-	// section I
-	else if (input[0x38]) {
-		target->SetPosition(startPointInSection[8]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[8]);
+	if (!isCameraFree) {
+		Input& input = *GameGlobal::GetInput();
+		// section A
+		if (input[0x30]) {
+			target->SetPosition(startPointInSection[0]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[0]);
+		}
+		// section B
+		else if (input[0x31]) {
+			target->SetPosition(startPointInSection[1]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[1]);
+		}
+		//section C
+		else if (input[0x32]) {
+			target->SetPosition(startPointInSection[2]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[2]);
+		}
+		// section D
+		else if (input[0x33]) {
+			target->SetPosition(startPointInSection[3]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[3]);
+		}
+		// section E
+		else if (input[0x34]) {
+			target->SetPosition(startPointInSection[4]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[4]);
+		}
+		else if (input[0x35]) {
+			target->SetPosition(startPointInSection[5]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[5]);
+		}
+		// section G
+		else if (input[0x36]) {
+			target->SetPosition(startPointInSection[6]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[6]);
+		}
+		// section H
+		else if (input[0x37]) {
+			target->SetPosition(startPointInSection[7]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[7]);
+		}
+		// section I
+		else if (input[0x38]) {
+			target->SetPosition(startPointInSection[8]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[8]);
+		}
 	}
 }
 
@@ -731,8 +733,6 @@ void SceneArea2SideView::Update()
 				onScreenObj[i]->Interact(onScreenObj[j]);
 
 		// temporary global set hp for both sophia jason
-
-		JumpCheckpoint();
 	}
 	else {
 		// update enemies when change section
@@ -776,6 +776,8 @@ void SceneArea2SideView::Update()
 		Game::GetInstance()->Init(L"Resources/scene.txt", 3);
 		return;
 	}
+
+	JumpCheckpoint();
 
 	//if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
 	//{
