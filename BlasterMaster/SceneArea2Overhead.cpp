@@ -547,7 +547,8 @@ void SceneArea2Overhead::JumpCheckpoint()
 }
 
 #define FRAME_PORTAL_TRANSITIONS 130
-#define DISTANCE_JASON_PORTAL 35
+#define DISTANCE_JASON_PORTAL_LEFT_RIGHT 35
+#define DISTANCE_JASON_PORTAL_UP_DOWN 50
 
 void SceneArea2Overhead::Update()
 {
@@ -655,16 +656,16 @@ void SceneArea2Overhead::Update()
 		//DebugOut(L"Frame to transition: %d", frameToTransition);
 		if (frameToTransition >= FRAME_PORTAL_TRANSITIONS) {
 			if (directionEnterPortal == 1) {
-				target->SetPosition(target->GetPosition() + Point(DISTANCE_JASON_PORTAL, 0));
+				target->SetPosition(target->GetPosition() + Point(DISTANCE_JASON_PORTAL_LEFT_RIGHT, 0));
 			}
 			else if (directionEnterPortal == 0) {
-				target->SetPosition(target->GetPosition() - Point(DISTANCE_JASON_PORTAL, 0));
+				target->SetPosition(target->GetPosition() - Point(DISTANCE_JASON_PORTAL_LEFT_RIGHT, 0));
 			}
 			else if (directionEnterPortal == 2) {
-				target->SetPosition(target->GetPosition() - Point(0, DISTANCE_JASON_PORTAL));
+				target->SetPosition(target->GetPosition() - Point(0, DISTANCE_JASON_PORTAL_UP_DOWN));
 			}
 			else if (directionEnterPortal == 3) {
-				target->SetPosition(target->GetPosition() + Point(0, DISTANCE_JASON_PORTAL));
+				target->SetPosition(target->GetPosition() + Point(0, DISTANCE_JASON_PORTAL_UP_DOWN));
 			}
 			isCameraFree = false;
 			directionEnterPortal = -1;
