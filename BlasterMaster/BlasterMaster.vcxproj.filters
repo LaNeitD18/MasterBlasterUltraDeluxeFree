@@ -61,6 +61,7 @@
     <ClCompile Include="Walker.cpp" />
     <ClCompile Include="Worm.cpp" />
     <ClCompile Include="WormPod.cpp" />
+    <ClCompile Include="Bullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedGameObject.h" />
@@ -129,6 +130,7 @@
     <ClInclude Include="Walker.h" />
     <ClInclude Include="Worm.h" />
     <ClInclude Include="WormPod.h" />
+    <ClInclude Include="Bullet.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib.lib" />

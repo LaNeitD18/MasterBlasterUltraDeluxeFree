@@ -4,6 +4,7 @@
 #include "SceneArea2SideView.h"
 #include "GameGlobal.h"
 #include "Utils.h"
+#include "Game.h"
 
 #include "Worm.h"
 #include "Sophia.h"
@@ -234,7 +235,7 @@ void SceneArea2SideView::_ParseSection_ANIMATIONS(string animationPath)
 			vector<string> tokens = split(line);
 
 			if (tokens.size() < 3)
-				return; // skip invalid lines - an animation must at least has 1 frame and 1 frame time
+				continue; // skip invalid lines - an animation must at least has 1 frame and 1 frame time
 
 			//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
 
@@ -325,13 +326,9 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 				obj = new CPortal(x, y, r, b, scene_id);
 			}
 			break;*/
-	case OBJECT_TYPE_WORM: {
-		//obj = new Worm(x, y);;
-		AnimatedGameObject* temp = NULL;
-		temp = new Worm(x, y);
-		obj = temp;
+	case OBJECT_TYPE_WORM:
+		obj = new Worm(x, y);
 		break;
-	}
 	case OBJECT_TYPE_JUMPER:
 		obj = new Jumper(x, y);
 		break;
@@ -425,8 +422,14 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 		if (dirId == 0) {
 			gateDir = LEFT;
 		}
-		else {
+		else if (dirId == 1) {
 			gateDir = RIGHT;
+		}
+		else if (dirId == 2) {
+			gateDir = TOP;
+		}
+		else if (dirId == 3) {
+			gateDir = BOTTOM;
 		}
 		env = new Env_Portal(x, y, width, height, gateDir, sectionToEnter);
 		break;
@@ -655,7 +658,7 @@ void SceneArea2SideView::JumpCheckpoint()
 }
 
 #define FRAME_PORTAL_TRANSITIONS 260
-#define DISTANCE_SOPHIA_PORTAL 90
+#define DISTANCE_JASON_PORTAL 90
 
 void SceneArea2SideView::Update()
 {
@@ -755,10 +758,10 @@ void SceneArea2SideView::Update()
 		//DebugOut(L"Frame to transition: %d", frameToTransition);
 		if (frameToTransition >= FRAME_PORTAL_TRANSITIONS) {
 			if (directionEnterPortal == 1) {
-				target->SetPosition(target->GetPosition() + Point(DISTANCE_SOPHIA_PORTAL, 0));
+				target->SetPosition(target->GetPosition() + Point(DISTANCE_JASON_PORTAL, 0));
 			}
 			else if (directionEnterPortal == 0) {
-				target->SetPosition(target->GetPosition() - Point(DISTANCE_SOPHIA_PORTAL, 0));
+				target->SetPosition(target->GetPosition() - Point(DISTANCE_JASON_PORTAL, 0));
 			}
 			isCameraFree = false;
 			directionEnterPortal = -1;
@@ -819,17 +822,17 @@ void SceneArea2SideView::Render()
 	if (count < DURATION_OF_LIVESHOW && currentLivesPlay >= 0)
 	{
 		DebugOut(L"count: %d\n", count);
-		//displayLivesLeft(currentLivesPlay);
+		displayLivesLeft(currentLivesPlay);
 		count++;
 	}
 	else
 	{
 		count = DURATION_OF_LIVESHOW + 1;
 		mMap->Draw();
-		healthBar->Draw();
 		for (auto object : objects)
 			object->Render();
 		foreMap->Draw();
+		healthBar->Draw();
 	}
 	
 

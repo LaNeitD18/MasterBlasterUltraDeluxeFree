@@ -1,5 +1,10 @@
 #include "BoundingBox.h"
 
+bool BoundingBox::IsInsideBox(Point pos)
+{
+	return pos.x > l && pos.x < r && pos.y > t && pos.y < b;
+}
+
 bool BoundingBox::IsInsideBox(BoundingBox other)
 {
 	return 
@@ -18,6 +23,14 @@ bool BoundingBox::IsOverlap(BoundingBox other)
 
 	// check collision
 	return !(left > 0 || right < 0 || top < 0 || bottom > 0);
+}
+
+void BoundingBox::Move(Point direction)
+{
+	l += direction.x;
+	r += direction.x;
+	t += direction.y;
+	b += direction.y;
 }
 
 Point BoundingBox::GetCenter()

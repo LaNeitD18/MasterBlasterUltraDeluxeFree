@@ -46,7 +46,7 @@ public:
 };
 
 enum GateDirection {
-	LEFT = 0, RIGHT = 1
+	LEFT = 0, RIGHT = 1, TOP = 2, BOTTOM = 3
 };
 
 class Env_Portal : public Environment

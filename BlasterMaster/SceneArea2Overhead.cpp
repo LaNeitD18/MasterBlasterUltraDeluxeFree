@@ -2,102 +2,94 @@
 #include <fstream>
 
 #include "SceneArea2Overhead.h"
+#include "GameGlobal.h"
 #include "Utils.h"
-#include "Textures.h"
-#include "Sprites.h"
-#include "Portal.h"
+#include "Game.h"
 
 #include "Worm.h"
-#include "Jumper.h"
-#include "Teleporter.h"
-#include "Cannon.h"
-#include "Dome.h"
-#include "Eye.h"
-#include "Laser.h"
-#include "Mine.h"
-#include "Floater.h"
-#include "WormPod.h"
-#include "Insect.h"
-#include "Orb.h"
-#include "Walker.h"
 #include "JasonOverhead.h"
-
-#include "GameGlobal.h"
+#include "GameObject.h"
+#include "AnimatedGameObject.h"
+#include "Jumper.h"
+#include "Dome.h"
+#include "Floater.h"
 
 using namespace std;
 
 BoundingBox SceneArea2Overhead::cameraLimitAreaOfSection[9] = {
 	// section 1
-	BoundingBox(0, 0, 2048, 2048),
+	BoundingBox(0, 0, 528, 280),
 	// section 2
-	
+	BoundingBox(0, 256, 526, 784),
 	//section 3
-	
+	BoundingBox(1280, 768, 1550, 1294),
 	// section 4
-	
-	// section 5
+	BoundingBox(0, 1792, 270, 2072),
+	// section 1 for 2
+	BoundingBox(512,0,1040,528),
+	// section 2 for 2
+	BoundingBox(512,504,782,784)
 };
 
 Point SceneArea2Overhead::startPointInSection[5] = {
 	// section A
 	Point(75, 116),
 	// section B
-	
+	Point(78, 368),
 	//section C
-	
+	Point(1406, 1136),
 	// section D
-	
+	Point(124, 1904)
 	// section E
 };
 
 SceneArea2Overhead::SceneArea2Overhead(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath, game)
 {
 	this->input = game->GetInput();
-	/*textureLib = new TextureLibrary(game);
-	spriteLib = new SpriteLibrary();
-	animationLib = new AnimationLibrary();
-	animationSetLib = new AnimationSets();*/
 	LoadContent();
 	//mMap = new GameMap("Map/General/level2-side-tiless.tmx", textureLib, spriteLib);
-	//this->game = game;
 	this->screenSize = screenSize;
-
-	GameGlobal::SetAnimationSetLibrary(animationSetLib);
+	this->isCameraFree = false;
+	this->directionEnterPortal = -1;
+	this->frameToTransition = 0;
+	LoadLivesLeftDisplay(textureLib, spriteLib);
+	this->count = 0;
 }
 
 void SceneArea2Overhead::LoadContent()
 {
 	mMap = new GameMap("Map/General/level2-over-tiless.tmx", textureLib, spriteLib);
-	foreMap = new GameMap("Map/General/level2-side-fores.tmx", textureLib, spriteLib);
+	foreMap = new GameMap("Map/General/level2-over-fores.tmx", textureLib, spriteLib);
+
+	healthBar = new HealthBar(textureLib, spriteLib);
 
 	// camera setup
 	mCamera = new Camera(Point(GameGlobal::GetWidth(), GameGlobal::GetHeight()));
-	mCamera->SetPosition(GameGlobal::GetWidth() / 2,
-		mMap->GetHeight() - GameGlobal::GetHeight() / 2 + 36);
+	Camera::setCameraInstance(mCamera);
+	/*mCamera->SetPosition(mMap->GetWidth() / 2 + GameGlobal::GetWidth() / 2,
+		mMap->GetHeight() / 2 + GameGlobal::GetHeight() / 2 + 16);*/
 
+	/*mCamera->SetPosition(GameGlobal::GetWidth() / 2,
+		mMap->GetHeight() - GameGlobal::GetHeight() / 2 + 32);*/
+
+	// set limit area of section 1
+	mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[0]);
 	mMap->SetCamera(mCamera);
 	foreMap->SetCamera(mCamera);
-	//mMap->Draw();
 
 }
 
 SceneArea2Overhead::~SceneArea2Overhead()
 {
-	for (int i = 0; i < objects.size(); i++)
-		delete objects[i];
+	for (auto i : objects)
+		delete i;
 	objects.clear();
-	/*textureLib->Clear();
-	delete textureLib;
-	spriteLib->Clear();
-	delete spriteLib;
-	animationLib->Clear();
-	delete animationLib;
-	delete animationSetLib;*/
 	mMap->Release();
 	delete mMap;
 	foreMap->Release();
 	delete foreMap;
-
+	healthBar->Release();
+	delete healthBar;
 }
 
 /*
@@ -112,7 +104,10 @@ SceneArea2Overhead::~SceneArea2Overhead()
 #define SCENE_SECTION_ANIMATION_SETS 5
 #define SCENE_SECTION_OBJECTS 6
 #define SCENE_SECTION_MAP 7
-#define OBJECT_TYPE_PORTAL 50
+//LeSon
+#define SCENE_SECTION_ENVIRONMENT 8
+
+//#define OBJECT_TYPE_PORTAL 50
 
 #define OBJECT_TYPE_WORM 1
 #define OBJECT_TYPE_JUMPER 2
@@ -125,7 +120,16 @@ SceneArea2Overhead::~SceneArea2Overhead()
 #define OBJECT_TYPE_INSECT 9
 #define OBJECT_TYPE_ORB 10
 #define OBJECT_TYPE_WALKER 11
-#define OBJECT_TYPE_JASON 13
+#define OBJECT_TYPE_JASON_OVERHEAD 12
+
+//LeSon
+#define ENVIRONMENT_TYPE_WALL 1
+#define ENVIRONMENT_TYPE_SPIKE 2
+#define ENVIRONMENT_TYPE_PORTAL 3
+#define ENVIRONMENT_TYPE_LADDER 4
+#define ENVIRONMENT_TYPE_LAVA 5
+#define ENVIRONMENT_TYPE_DUNGEON 6
+#define ENVIRONMENT_TYPE_UNKNOWN -1
 
 #define MAX_SCENE_LINE 1024
 
@@ -274,38 +278,15 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 	float x = atof(tokens[1].c_str());
 	float y = atof(tokens[2].c_str());
 
-	int ani_set_id = atoi(tokens[3].c_str());
 
 	GameObject *obj = NULL;
 
 	switch (object_type)
 	{
-		/*case OBJECT_TYPE_MARIO:
-			if (player!=NULL)
-			{
-				DebugOut(L"[ERROR] MARIO object was created before!\n");
-				return;
-			}
-			obj = new CMario(x,y);
-			player = (CMario*)obj;
-
-			DebugOut(L"[INFO] Player object created!\n");
-			break;
-		case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
-		case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-		case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
-		case OBJECT_TYPE_PORTAL:
-			{
-				float r = atof(tokens[4].c_str());
-				float b = atof(tokens[5].c_str());
-				int scene_id = atoi(tokens[6].c_str());
-				obj = new CPortal(x, y, r, b, scene_id);
-			}
-			break;*/
 	case OBJECT_TYPE_WORM:
 		obj = new Worm(x, y);
 		break;
-	case OBJECT_TYPE_JASON:
+	case OBJECT_TYPE_JASON_OVERHEAD:
 		obj = new JasonOverhead(x, y);
 		break;
 	/*case OBJECT_TYPE_JUMPER:
@@ -343,58 +324,96 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 		return;
 	}
 
-	AnimationSet *ani_set = animationSetLib->Get(ani_set_id);
+	//hihi
+	for (int i = 3; i < tokens.size(); i++)
+	{
+		int ani_set_id = atoi(tokens[i].c_str());
+		AnimationSet *ani_set = animationSetLib->Get(ani_set_id);
 
-	obj->SetAnimationSet(ani_set);
-	objects.push_back(obj);
+		obj->SetAnimationSet(ani_set);
+	}
+	objects.insert(obj);
 }
-//
-//void SceneArea2Overhead::_ParseSection_MAP(string line, vector<tuple<int, int, int, int, int>> &mapNav)
-//{
-//	unordered_map<int, MapSegment *> tempMap;
-//	vector<string> tokens = split(line);
-//
-//	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
-//
-//	if (tokens.size() < 12)
-//		return; // skip invalid lines - an object set must have at least id, x, y
-//
-//	int id = atoi(tokens[1].c_str());
-//
-//	RECT boundingBox;
-//	boundingBox.top = atoi(tokens[1].c_str());
-//	boundingBox.left = atoi(tokens[2].c_str());
-//	boundingBox.bottom = atoi(tokens[3].c_str());
-//	boundingBox.right = atoi(tokens[4].c_str());
-//
-//	int spriteID = atoi(tokens[11].c_str());
-//	const char *spriteFile = tokens[5].c_str();
-//	const char *environmentFile = tokens[6].c_str();
-//
-//	MapSegment *mapSeg = new MapSegment(textureLib, spriteID,
-//										spriteFile, environmentFile, boundingBox);
-//
-//	int top = atoi(tokens[7].c_str());
-//	int left = atoi(tokens[8].c_str());
-//	int bottom = atoi(tokens[9].c_str());
-//	int right = atoi(tokens[10].c_str());
-//
-//	mapNav.push_back(tuple<int, int, int, int, int>{
-//		id,
-//		top,
-//		left,
-//		bottom,
-//		right});
-//
-//	while (map.size() < id + 1)
-//		map.push_back(NULL);
-//	map[id] = mapSeg;
-//}
+
+//LeSon
+void SceneArea2Overhead::_ParseSection_ENVIRONMENT(string line)
+{
+	vector<string> tokens = split(line);
+
+	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
+
+	if (tokens.size() < 5)
+		return; // skip invalid lines - environment must have id, x y, width, height
+
+	int env_type = atoi(tokens[0].c_str());
+	float x = atof(tokens[1].c_str());
+	float y = atof(tokens[2].c_str());
+
+	float width = atof(tokens[3].c_str());
+	float height = atof(tokens[4].c_str());
+
+	int dirId = -1;
+	int sectionToEnter = -1;
+	if (tokens.size() == 7) {
+		dirId = atoi(tokens[5].c_str());
+		sectionToEnter = atoi(tokens[6].c_str());
+	}
+
+	GateDirection gateDir;
+
+	Environment *env = NULL;
+
+	switch (env_type)
+	{
+	case ENVIRONMENT_TYPE_WALL:
+		env = new Env_Wall(x, y, width, height);
+		break;
+	case ENVIRONMENT_TYPE_SPIKE:
+		env = new Env_Spike(x, y, width, height);
+		break;
+	case ENVIRONMENT_TYPE_LAVA:
+		env = new Env_Lava(x, y, width, height);
+		break;
+	case ENVIRONMENT_TYPE_PORTAL:
+		if (dirId == 0) {
+			gateDir = LEFT;
+		}
+		else if (dirId == 1) {
+			gateDir = RIGHT;
+		}
+		else if (dirId == 2) {
+			gateDir = TOP;
+		}
+		else {
+			gateDir = BOTTOM;
+		}
+		env = new Env_Portal(x, y, width, height, gateDir, sectionToEnter);
+		break;
+	case ENVIRONMENT_TYPE_DUNGEON:
+		if (dirId == 0) {
+			gateDir = LEFT;
+		}
+		else {
+			gateDir = RIGHT;
+		}
+		env = new Env_Dungeon(x, y, width, height, gateDir, sectionToEnter);
+		break;
+	default:
+		DebugOut(L"[ERR] Invalid env type: %d\n", env_type);
+		return;
+	}
+
+	environments.push_back(env);
+	DebugOut(L"[INFO] An environment add type=%d, x=%f, y=%f, width=%f, height=%f\n", env_type, x, y, width, height);
+}
 
 void SceneArea2Overhead::Init()
 {
 	//vector<tuple<int, int, int, int, int>> mapNav;
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
+
+	// move bbox init
+	textureLib->Add(ID_TEX_BBOX, L"Resources\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	ifstream f;
 	f.open(sceneFilePath);
@@ -434,7 +453,14 @@ void SceneArea2Overhead::Init()
 		{
 			section = SCENE_SECTION_OBJECTS;
 			continue;
-		}/*
+		}
+		// LeSon
+		if (line == "[ENVIRONMENTS]")
+		{
+			section = SCENE_SECTION_ENVIRONMENT;
+			continue;
+		}
+		/*
 		if (line == "[MAP]")
 		{
 			section = SCENE_SECTION_MAP;
@@ -465,16 +491,19 @@ void SceneArea2Overhead::Init()
 			break;
 		case SCENE_SECTION_OBJECTS:
 			_ParseSection_OBJECTS(line);
-			break;/*
-		case SCENE_SECTION_MAP:
-			_ParseSection_MAP(line, mapNav);
-			break;*/
+			break;
+			//LeSon
+		case SCENE_SECTION_ENVIRONMENT:
+			_ParseSection_ENVIRONMENT(line);
+			break;
+			/*
+			case SCENE_SECTION_MAP:
+				_ParseSection_MAP(line, mapNav);
+				break;*/
 		}
 	}
 
 	f.close();
-
-	textureLib->Add(ID_TEX_BBOX, L"Resources\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	//// NAK son
 	//// NAK tien
@@ -490,20 +519,180 @@ void SceneArea2Overhead::Init()
 	//}
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
+	//displayMessage("yeah");
 }
+
+void SceneArea2Overhead::JumpCheckpoint()
+{
+	Input& input = *GameGlobal::GetInput();
+	// section A
+	if (input[0x30]) {
+		target->SetPosition(startPointInSection[0]);
+		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[0]);
+	}
+	// section B
+	else if (input[0x31]) {
+		target->SetPosition(startPointInSection[1]);
+		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[1]);
+	}
+	//section C
+	else if (input[0x32]) {
+		target->SetPosition(startPointInSection[2]);
+		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[2]);
+	}
+	else if (input[0x33]) {
+		target->SetPosition(startPointInSection[3]);
+		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[3]);
+	}
+}
+
+#define FRAME_PORTAL_TRANSITIONS 130
+#define DISTANCE_JASON_PORTAL 35
 
 void SceneArea2Overhead::Update()
 {
+	// Quick & dirty
+	if (count < DURATION_OF_LIVESHOW) {
+		return;
+	}
+
+	GameGlobal::SetAnimationSetLibrary(animationSetLib);
+
+	// Remove all things that need to remove last frame
+	for (auto obj : toRemove)
+	{
+		objects.erase(obj);
+		delete obj;
+	}
+	toRemove.clear();
+
 	input->Update();
+	// update onscreen objects
+	vector<GameObject*> onScreenObj;
+	for (auto x : objects) {
+		if (x->GetBoundingBox().IsOverlap(mCamera->GetBound())) {
+			onScreenObj.push_back(x);
+		}
+	}
+
+	Camera::setCameraInstance(mCamera);
+	if (!isCameraFree) {
+		target = NULL;
+		for (auto x : objects) {
+			Player* current_player = dynamic_cast<Player*>(x);
+			if (current_player != NULL &&
+				current_player->IsPrimaryPlayer()) {
+				mCamera->SetTarget(current_player);
+				target = current_player;
+			}
+		}
+		if (target == NULL)
+		{
+			int currentLivesPlay = GameGlobal::GetLivesToPlay();
+			GameGlobal::SetLivesToPlay(currentLivesPlay - 1);
+			count = 0;
+			if (currentLivesPlay == 0) {// change later for continue game
+				GameGlobal::SetLivesToPlay(2);
+			}
+			this->Release();
+			Game::GetInstance()->Init(L"Resources/scene.txt", 2);
+			return;
+		}
+		GameGlobal::SetHealthPointSideView(target->GetHP());
+		mCamera->FollowTarget();
+		mCamera->SnapToBoundary();
+
+		//LeSon
+		for (auto x : onScreenObj) {
+			for (auto y : environments) {
+				x->Interact((Interactable*)y);
+			}
+		}
+
+		for (auto object : onScreenObj)
+		{
+			object->Update();
+		}
+
+		// Long
+		for (int i = 0; i < onScreenObj.size(); i++)
+			for (int j = i + 1; j < onScreenObj.size(); j++)
+				onScreenObj[i]->Interact(onScreenObj[j]);
+
+		// temporary global set hp for both sophia jason
+
+		JumpCheckpoint();
+	}
+	else {
+		// update enemies when change section
+		for (auto x : onScreenObj) {
+			bool isPlayer = dynamic_cast<Player*>(x) != NULL;
+			if (!isPlayer) {
+				for (auto y : environments) {
+					x->Interact((Interactable*)y);
+				}
+				x->Update();
+			}
+		}
+
+		if (directionEnterPortal == 1) {
+			mCamera->SetPosition(mCamera->GetPosition() + Point(2, 0));
+			target->SetPosition(target->GetPosition() + Point(0.4, 0));
+		}
+		else if (directionEnterPortal == 0) {
+			mCamera->SetPosition(mCamera->GetPosition() + Point(-2, 0));
+			target->SetPosition(target->GetPosition() - Point(0.4, 0));
+		}
+		else if (directionEnterPortal == 2) {
+			mCamera->SetPosition(mCamera->GetPosition() + Point(0, -2));
+			target->SetPosition(target->GetPosition() - Point(0, 0.4));
+		}
+		else if (directionEnterPortal == 3) {
+			mCamera->SetPosition(mCamera->GetPosition() + Point(0, 2));
+			target->SetPosition(target->GetPosition() + Point(0, 0.4));
+		}
+		frameToTransition++;
+		//DebugOut(L"Frame to transition: %d", frameToTransition);
+		if (frameToTransition >= FRAME_PORTAL_TRANSITIONS) {
+			if (directionEnterPortal == 1) {
+				target->SetPosition(target->GetPosition() + Point(DISTANCE_JASON_PORTAL, 0));
+			}
+			else if (directionEnterPortal == 0) {
+				target->SetPosition(target->GetPosition() - Point(DISTANCE_JASON_PORTAL, 0));
+			}
+			else if (directionEnterPortal == 2) {
+				target->SetPosition(target->GetPosition() - Point(0, DISTANCE_JASON_PORTAL));
+			}
+			else if (directionEnterPortal == 3) {
+				target->SetPosition(target->GetPosition() + Point(0, DISTANCE_JASON_PORTAL));
+			}
+			isCameraFree = false;
+			directionEnterPortal = -1;
+			frameToTransition = 0;
+		}
+	}
+
+	// enter to switch scene
+	if ((*input)[VK_BACK] & KEY_STATE_DOWN) {
+		//Game::GetInstance()->SwitchScene(3);
+		this->Release();
+		Game::GetInstance()->Init(L"Resources/scene.txt", 2);
+		return;
+	}
+
 	//if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
 	//{
-	//	if (mCamera->GetPosition().x - mCamera->GetWidth() / 2 <= 0) return; // LeSon
+	//	if (mCamera->GetPosition().x - mCamera->GetWidth() / 2 <= 0) {
+	//		return;
+	//	} // LeSon
 	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
 	//	mCamera->SetPosition(mCamera->GetPosition() + Point(-8, 0));
 	//}
 	//if ((*input)[VK_RIGHT] & KEY_STATE_DOWN)
 	//{
-	//	if (mCamera->GetPosition().x + mCamera->GetWidth() / 2 >= mMap->GetWidth() + 8) return; // LeSon
+	//	if (mCamera->GetPosition().x + mCamera->GetWidth() / 2 >= mMap->GetWidth() + 8) {
+	//		return;
+	//	}// LeSon
 	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
 	//	mCamera->SetPosition(mCamera->GetPosition() + Point(8, 0));
 	//}
@@ -520,34 +709,6 @@ void SceneArea2Overhead::Update()
 	//	mCamera->SetPosition(mCamera->GetPosition() + Point(0, 8));
 	//}
 
-	Camera::setCameraInstance(mCamera);
-
-	for (auto x : objects) {
-		Player* current_player = dynamic_cast<Player*>(x);
-		if (current_player != NULL) {
-			mCamera->SetTarget(current_player);
-			target = current_player;
-		}
-	}
-
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		objects[i]->Update();
-	}
-
-	if ((*input)[VK_HOME] & KEY_STATE_DOWN) {
-		//Game::GetInstance()->SwitchScene(1);
-		this->Release();
-		Game::GetInstance()->Init(L"Resources/scene.txt",1);
-		return;
-	}
-	if ((*input)[VK_BACK] & KEY_STATE_DOWN) {
-		//Game::GetInstance()->SwitchScene(2);
-		this->Release();
-		Game::GetInstance()->Init(L"Resources/scene.txt", 2);
-		return;
-	}
-
 	// Update camera to follow mario
 	Point pos;
 	/*
@@ -560,10 +721,22 @@ void SceneArea2Overhead::Update()
 void SceneArea2Overhead::Render()
 {
 	// LeSon
-	mMap->Draw();
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
-	foreMap->Draw();
+	/*int currentLivesPlay = GameGlobal::GetLivesToPlay();
+	if (count < DURATION_OF_LIVESHOW && currentLivesPlay >= 0)
+	{
+		DebugOut(L"count: %d\n", count);
+		displayLivesLeft(currentLivesPlay);
+		count++;
+	}
+	else
+	{*/
+		count = DURATION_OF_LIVESHOW + 1;
+		mMap->Draw();
+		for (auto object : objects)
+			object->Render();
+		foreMap->Draw();
+		healthBar->Draw();
+	//}
 }
 
 /*
@@ -571,8 +744,8 @@ void SceneArea2Overhead::Render()
 */
 void SceneArea2Overhead::Release()
 {
-	for (int i = 0; i < objects.size(); i++)
-		delete objects[i];
+	for (auto object : objects)
+		delete object;
 
 	objects.clear();
 
@@ -580,10 +753,20 @@ void SceneArea2Overhead::Release()
 	mMap->Release();
 	foreMap->Release();
 
-	// LeSon: maybe cannot do this, have to clear in SwitchScene for Game.cpp, discuss again hihi 
-	/*textureLib->Clear();
-	spriteLib->Clear();
-	animationLib->Clear();*/
+	Scene::Release();
+
+	healthBar->Release();
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
+
+void SceneArea2Overhead::AddElement(GameObject* obj)
+{
+	objects.insert(obj);
+}
+
+void SceneArea2Overhead::RemoveElement(GameObject * obj)
+{
+	toRemove.push_back(obj);
+}
+

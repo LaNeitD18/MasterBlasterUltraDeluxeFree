@@ -11,6 +11,7 @@ public:
 	bool IsInsideBox(Point pos);
 	bool IsInsideBox(BoundingBox other);
 	bool IsOverlap(BoundingBox other);
+	void Move(Point direction);
 	Point GetCenter();
 	BoundingBox(float l = 0, float t = 0, float r = 0, float b = 0)
 		:l(l), t(t), r(r), b(b) {};
