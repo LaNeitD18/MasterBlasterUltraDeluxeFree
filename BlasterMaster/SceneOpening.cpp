@@ -157,6 +157,13 @@ void SceneOpening::Update()
 		objects[i]->Update();
 	}
 
+	if ((*input)[VK_RETURN] & KEY_STATE_DOWN) {
+		//Game::GetInstance()->SwitchScene(2);
+		this->Release();
+		Game::GetInstance()->Init(L"Resources/scene.txt", 2);
+		return;
+	}
+
 	// Update camera to follow mario
 	Point pos;
 	/*
@@ -381,10 +388,6 @@ void SceneOpeningTitle::Update()
 {
 	Input& input = *GameGlobal::GetInput();
 	// enter to switch scene
-	if (input[VK_RETURN]) {
-		//Game::GetInstance()->SwitchScene(2);
-		Game::GetInstance()->Init(L"Resources/scene.txt",2);
-	}
 }
 
 void SceneOpeningTitle::Render()
@@ -430,10 +433,6 @@ void SceneTale::Update()
 {
 	Input& input = *GameGlobal::GetInput();
 	// enter to switch scene
-	if (input[VK_RETURN]) {
-		//Game::GetInstance()->SwitchScene(2);
-		Game::GetInstance()->Init(L"Resources/scene.txt", 2);
-	}
 }
 
 void SceneTale::Render()

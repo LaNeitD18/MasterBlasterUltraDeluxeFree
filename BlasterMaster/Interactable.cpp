@@ -116,19 +116,51 @@ void Interactable::Interact(Player* player, Env_Portal* portal) {
 	Input& input = *GameGlobal::GetInput();
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox portalBox = portal->GetBoundingBox();
-	if (playerBox.IsOverlap(portalBox)) {
+	if (/*playerBox.IsOverlap(portalBox) &&*/ portalBox.IsInsideBox(playerBox.GetCenter())) {
 		GateDirection portalDirection = portal->GetPortalDir();
-		if (((input[VK_RIGHT] & KEY_STATE_DOWN) && portalDirection == RIGHT) || ((input[VK_LEFT] & KEY_STATE_DOWN) && portalDirection == LEFT)) {
-			BoundingBox limitArea = SceneArea2SideView::cameraLimitAreaOfSection[portal->GetSectionToEnter()];
+		if (((input[VK_RIGHT] & KEY_STATE_DOWN) && portalDirection == RIGHT) || ((input[VK_LEFT] & KEY_STATE_DOWN) && portalDirection == LEFT) || ((input[VK_UP] & KEY_STATE_DOWN) && portalDirection == TOP) || ((input[VK_DOWN] & KEY_STATE_DOWN) && portalDirection == BOTTOM)) {
+			
 			//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
 			Game::GetInstance()->GetCurrentScene()->SetFreeCamera(true);
 			if (portalDirection == RIGHT) {
 				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(1);
 			}
-			else {
+			else if (portalDirection == LEFT) {
 				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(0);
 			}
-			Camera::GetInstance()->SetCameraLimitarea(limitArea);
+			else if (portalDirection == TOP) {
+				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(2);
+			}
+			else {
+				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(3);
+			}
+			int sectionToEnter = portal->GetSectionToEnter();
+			if (sectionToEnter == -1) {
+				BoundingBox currentCameraLimit = Camera::GetInstance()->GetBound();
+				if (portalDirection == RIGHT) {
+					Camera::GetInstance()->SetCameraLimitarea(currentCameraLimit.l + 256, currentCameraLimit.t, currentCameraLimit.r + 256, currentCameraLimit.b);
+				}
+				else if (portalDirection == LEFT) {
+					Camera::GetInstance()->SetCameraLimitarea(currentCameraLimit.l - 256, currentCameraLimit.t, currentCameraLimit.r - 256, currentCameraLimit.b);
+				}
+				else if (portalDirection == TOP) {
+					Camera::GetInstance()->SetCameraLimitarea(currentCameraLimit.l, currentCameraLimit.t - 256, currentCameraLimit.r, currentCameraLimit.b - 256);
+				}
+				else {
+					Camera::GetInstance()->SetCameraLimitarea(currentCameraLimit.l, currentCameraLimit.t + 256, currentCameraLimit.r, currentCameraLimit.b + 256);
+				}
+			}
+			else {
+				BoundingBox limitArea = NULL;
+				if (dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene())) {
+					limitArea = SceneArea2SideView::cameraLimitAreaOfSection[sectionToEnter];
+				}
+				else if (dynamic_cast<SceneArea2Overhead*>(Game::GetInstance()->GetCurrentScene())) {
+					limitArea = SceneArea2Overhead::cameraLimitAreaOfSection[sectionToEnter];
+				}
+				Camera::GetInstance()->SetCameraLimitarea(limitArea);
+			}
+			
 			DebugOut(L"%d\n", portalDirection);
 		}
 	}
@@ -143,8 +175,8 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 	if (playerBox.IsOverlap(dungeonBox) && isJasonPlay) {
 		if (input[VK_DOWN] & KEY_STATE_DOWN) {
 			BoundingBox limitArea = SceneArea2Overhead::cameraLimitAreaOfSection[dungeon->GetSectionToEnter()];
-			//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
-			//Game::GetInstance()->GetCurrentScene()->SetFreeCamera(true);
+			Point startPoint = SceneArea2SideView::startPointInSection[dungeon->GetSectionToEnter()];
+			//Game::GetInstance()->GetCurrentScene()->Release();
 			Game::GetInstance()->Init(L"Resources/scene.txt", 3);
 			Camera::GetInstance()->SetCameraLimitarea(limitArea);
 		}

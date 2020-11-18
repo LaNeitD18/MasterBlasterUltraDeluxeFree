@@ -1,5 +1,6 @@
 #include "JasonOverhead.h"
 #include "GameGlobal.h"
+#include "Utils.h"
 
 JasonOverhead::JasonOverhead()
 {
@@ -14,6 +15,7 @@ JasonOverhead::JasonOverhead(float x, float y)
 	pos = Point(x, y);
 
 	SetState(JASONO_STATE_GOING_UP);
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 	//SetAnimationType(0);
 	// set looking right
 	//drawArguments.FlipVertical(true);
@@ -50,10 +52,11 @@ void JasonOverhead::Render()
 	cameraOffset.x -= Camera::GetInstance()->GetWidth() / 2;
 	cameraOffset.y -= Camera::GetInstance()->GetHeight() / 2;
 	drawArguments.SetPosition(pos - cameraOffset);
+	//drawArguments.SetPosition(Point(100,100));
 
 	drawArguments.FlipVertical(isFlipVertical);
 
-	currentAnimation->Render(currentTime, previousFrame, drawArguments);
+	/*currentAnimation->Render(currentTime, previousFrame, drawArguments);
 	if (!moving)
 		return;
 	if (currentAnimation == animationSet->at(JASONO_ANI_WALK))
@@ -72,6 +75,17 @@ void JasonOverhead::Render()
 			currentTime %= currentAnimation->GetLoopDuration();
 			previousFrame = 0;
 		}
+	}*/
+
+	currentAnimation->Render(currentTime, previousFrame, drawArguments);
+	if (!moving)
+		return;
+	if(v.x != 0 || v.y != 0)
+		currentTime++;
+	if (currentTime >= currentAnimation->GetLoopDuration())
+	{
+		currentTime %= currentAnimation->GetLoopDuration();
+		previousFrame = 0;
 	}
 }
 
@@ -82,37 +96,40 @@ void JasonOverhead::Update()
 
 	int newState = state;
 	int flags = 0;
-	bool dead = (state & JASONO_STATE_DYING) ||
-		(state & JASONO_STATE_DEAD);
+	bool dead = (state == JASONO_STATE_DYING) ||
+		(state == JASONO_STATE_DEAD);
 
 	if (wallTop && (v.y < 0))
 		v.y = 0;
 
 	if (!dead) {
-		if ((input['A'] & KEY_STATE_DOWN) &&
-			(input['D'] & KEY_STATE_DOWN))
+		if ((input[VK_LEFT] & KEY_STATE_DOWN) &&
+			(input[VK_RIGHT] & KEY_STATE_DOWN))
 			GoHalt();
-		else if (input['A'] & KEY_STATE_DOWN) {
+		else if (input[VK_LEFT] & KEY_STATE_DOWN) {
 			GoLeft();
-			newState |= JASONO_STATE_LOOKING_LEFT;
+			newState = JASONO_STATE_LOOKING_LEFT;
 			isFlipVertical = false;
 		}
-		else if (input['D'] & KEY_STATE_DOWN) {
+		else if (input[VK_RIGHT] & KEY_STATE_DOWN) {
 			GoRight();
-			newState &= ~JASONO_STATE_LOOKING_LEFT;
+			newState = JASONO_STATE_LOOKING_LEFT;
 			isFlipVertical = true;
 		}
-		else if (input['W'] & KEY_STATE_DOWN) {
+		else if (input[VK_UP] & KEY_STATE_DOWN) {
 			GoUp();
-			newState &= ~JASONO_STATE_GOING_UP;
+			newState = JASONO_STATE_GOING_UP;
 		}
-		else if (input['S'] & KEY_STATE_DOWN) {
+		else if (input[VK_DOWN] & KEY_STATE_DOWN) {
 			GoDown();
-			newState &= ~JASONO_STATE_GOING_DOWN;
+			newState = JASONO_STATE_GOING_DOWN;
+		}
+		else {
+			v.x = v.y = 0;
 		}
 	}
 
-	if (wallBot && v.y == 0 && v.x != 0)
+	/*if (wallBot && v.y == 0 && v.x != 0)
 	{
 		newState |= JASONO_STATE_WALKING;
 	}
@@ -122,24 +139,26 @@ void JasonOverhead::Update()
 
 	if ((input['A'] & KEY_STATE_DOWN) &&
 		!(input['D'] & KEY_STATE_DOWN))
-		newState |= JASONO_STATE_LOOKING_LEFT;
+		newState = JASONO_STATE_LOOKING_LEFT;
 
 	if ((input['D'] & KEY_STATE_DOWN) &&
 		!(input['A'] & KEY_STATE_DOWN))
-		newState &= ~JASONO_STATE_LOOKING_LEFT;
+		newState = JASONO_STATE_LOOKING_LEFT;*/
 
-	if (HealthPoint <= 0)
+	/*if (HealthPoint <= 0)
 	{
-		newState |= JASONO_STATE_DYING;
-	}
+		newState = JASONO_STATE_DYING;
+	}*/
 
 	Player::Update();
 
 	wallBot = wallLeft = wallRight = wallTop = false;
 
-	if (dead)
+	if (dead) {
+		DebugOut(L"Dead");
 		return;
-
+	}
+		
 	if (newState != state)
 		SetState(newState);
 }
@@ -180,6 +199,7 @@ void JasonOverhead::SetAnimationType(int ANI)
 
 void JasonOverhead::GoLeft()
 {
+	v.y = 0;
 	v.x -= JASONO_ACCELERATION;
 
 	if (v.x < -JASONO_WALKING_SPEED)
@@ -191,6 +211,7 @@ void JasonOverhead::GoLeft()
 
 void JasonOverhead::GoRight()
 {
+	v.y = 0;
 	v.x += JASONO_ACCELERATION;
 
 	if (v.x > JASONO_WALKING_SPEED)
@@ -202,12 +223,26 @@ void JasonOverhead::GoRight()
 
 void JasonOverhead::GoUp()
 {
-	
+	v.x = 0;
+	v.y -= JASONO_ACCELERATION;
+
+	if (v.y < -JASONO_WALKING_SPEED)
+		v.y = -JASONO_WALKING_SPEED;
+
+	if (wallTop)
+		v.y = 0;
 }
 
 void JasonOverhead::GoDown()
 {
-	
+	v.x = 0;
+	v.y += JASONO_ACCELERATION;
+
+	if (v.y > JASONO_WALKING_SPEED)
+		v.y = JASONO_WALKING_SPEED;
+
+	if (wallBot)
+		v.y = 0;
 }
 
 void JasonOverhead::GoHalt()

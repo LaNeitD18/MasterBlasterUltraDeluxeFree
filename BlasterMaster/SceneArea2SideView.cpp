@@ -422,8 +422,14 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 		if (dirId == 0) {
 			gateDir = LEFT;
 		}
-		else {
+		else if (dirId == 1) {
 			gateDir = RIGHT;
+		}
+		else if (dirId == 2) {
+			gateDir = TOP;
+		}
+		else if (dirId == 3) {
+			gateDir = BOTTOM;
 		}
 		env = new Env_Portal(x, y, width, height, gateDir, sectionToEnter);
 		break;
@@ -604,55 +610,57 @@ void SceneArea2SideView::Init()
 
 void SceneArea2SideView::JumpCheckpoint()
 {
-	Input& input = *GameGlobal::GetInput();
-	// section A
-	if (input[0x30]) {
-		target->SetPosition(startPointInSection[0]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[0]);
-	}
-	// section B
-	else if (input[0x31]) {
-		target->SetPosition(startPointInSection[1]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[1]);
-	}
-	//section C
-	else if (input[0x32]) {
-		target->SetPosition(startPointInSection[2]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[2]);
-	}
-	// section D
-	else if (input[0x33]) {
-		target->SetPosition(startPointInSection[3]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[3]);
-	}
-	// section E
-	else if (input[0x34]) {
-		target->SetPosition(startPointInSection[4]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[4]);
-	}
-	else if (input[0x35]) {
-		target->SetPosition(startPointInSection[5]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[5]);
-	}
-	// section G
-	else if (input[0x36]) {
-		target->SetPosition(startPointInSection[6]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[6]);
-	}
-	// section H
-	else if (input[0x37]) {
-		target->SetPosition(startPointInSection[7]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[7]);
-	}
-	// section I
-	else if (input[0x38]) {
-		target->SetPosition(startPointInSection[8]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[8]);
+	if (!isCameraFree) {
+		Input& input = *GameGlobal::GetInput();
+		// section A
+		if (input[0x30]) {
+			target->SetPosition(startPointInSection[0]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[0]);
+		}
+		// section B
+		else if (input[0x31]) {
+			target->SetPosition(startPointInSection[1]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[1]);
+		}
+		//section C
+		else if (input[0x32]) {
+			target->SetPosition(startPointInSection[2]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[2]);
+		}
+		// section D
+		else if (input[0x33]) {
+			target->SetPosition(startPointInSection[3]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[3]);
+		}
+		// section E
+		else if (input[0x34]) {
+			target->SetPosition(startPointInSection[4]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[4]);
+		}
+		else if (input[0x35]) {
+			target->SetPosition(startPointInSection[5]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[5]);
+		}
+		// section G
+		else if (input[0x36]) {
+			target->SetPosition(startPointInSection[6]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[6]);
+		}
+		// section H
+		else if (input[0x37]) {
+			target->SetPosition(startPointInSection[7]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[7]);
+		}
+		// section I
+		else if (input[0x38]) {
+			target->SetPosition(startPointInSection[8]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[8]);
+		}
 	}
 }
 
 #define FRAME_PORTAL_TRANSITIONS 260
-#define DISTANCE_SOPHIA_PORTAL 90
+#define DISTANCE_JASON_PORTAL 90
 
 void SceneArea2SideView::Update()
 {
@@ -693,13 +701,14 @@ void SceneArea2SideView::Update()
 		}
 		if (target == NULL)
 		{
-			Game::GetInstance()->Init(L"Resources/scene.txt", 2);
 			int currentLivesPlay = GameGlobal::GetLivesToPlay();
 			GameGlobal::SetLivesToPlay(currentLivesPlay - 1);
 			count = 0;
 			if (currentLivesPlay == 0) {// change later for continue game
 				GameGlobal::SetLivesToPlay(2);
 			}
+			this->Release();
+			Game::GetInstance()->Init(L"Resources/scene.txt", 2);
 			return;
 		}
 		GameGlobal::SetHealthPointSideView(target->GetHP());
@@ -724,8 +733,6 @@ void SceneArea2SideView::Update()
 				onScreenObj[i]->Interact(onScreenObj[j]);
 
 		// temporary global set hp for both sophia jason
-
-		JumpCheckpoint();
 	}
 	else {
 		// update enemies when change section
@@ -751,10 +758,10 @@ void SceneArea2SideView::Update()
 		//DebugOut(L"Frame to transition: %d", frameToTransition);
 		if (frameToTransition >= FRAME_PORTAL_TRANSITIONS) {
 			if (directionEnterPortal == 1) {
-				target->SetPosition(target->GetPosition() + Point(DISTANCE_SOPHIA_PORTAL, 0));
+				target->SetPosition(target->GetPosition() + Point(DISTANCE_JASON_PORTAL, 0));
 			}
 			else if (directionEnterPortal == 0) {
-				target->SetPosition(target->GetPosition() - Point(DISTANCE_SOPHIA_PORTAL, 0));
+				target->SetPosition(target->GetPosition() - Point(DISTANCE_JASON_PORTAL, 0));
 			}
 			isCameraFree = false;
 			directionEnterPortal = -1;
@@ -765,8 +772,12 @@ void SceneArea2SideView::Update()
 	// enter to switch scene
 	if ((*input)[VK_TAB] & KEY_STATE_DOWN) {
 		//Game::GetInstance()->SwitchScene(3);
+		this->Release();
 		Game::GetInstance()->Init(L"Resources/scene.txt", 3);
+		return;
 	}
+
+	JumpCheckpoint();
 
 	//if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
 	//{
@@ -812,6 +823,7 @@ void SceneArea2SideView::Render()
 	int currentLivesPlay = GameGlobal::GetLivesToPlay();
 	if (count < DURATION_OF_LIVESHOW && currentLivesPlay >= 0)
 	{
+		DebugOut(L"count: %d\n", count);
 		displayLivesLeft(currentLivesPlay);
 		count++;
 	}

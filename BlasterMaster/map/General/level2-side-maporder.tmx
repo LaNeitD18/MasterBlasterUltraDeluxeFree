@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="192" height="192" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="536">
- <tileset firstgid="1" name="level2-side-tiless" tilewidth="16" tileheight="16" tilecount="144" columns="144">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="192" height="192" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="538">
+ <tileset firstgid="1" name="level2-side-tiless" tilewidth="16" tileheight="16" tilecount="0" columns="144">
   <image source="Map/General/level2-side-tiless.png" width="2304" height="16"/>
  </tileset>
  <layer id="1" name="background" width="192" height="192">
@@ -540,30 +540,31 @@
  </objectgroup>
  <objectgroup id="10" name="portal">
   <object id="375" x="960" y="2944" width="32" height="32"/>
-  <object id="376" x="1056" y="2960" width="16" height="16"/>
-  <object id="380" x="1488" y="1936" width="16" height="16"/>
-  <object id="381" x="1568" y="1936" width="16" height="16"/>
-  <object id="386" x="2000" y="1936" width="16" height="16"/>
-  <object id="388" x="2080" y="1936" width="16" height="16"/>
-  <object id="390" x="2512" y="1936" width="16" height="16"/>
-  <object id="391" x="2592" y="1936" width="16" height="16"/>
-  <object id="396" x="2080" y="1168" width="16" height="16"/>
-  <object id="397" x="2000" y="1168" width="16" height="16"/>
-  <object id="416" x="2000" y="656" width="16" height="16"/>
-  <object id="417" x="2080" y="656" width="16" height="16"/>
-  <object id="449" x="2000" y="144" width="16" height="16"/>
-  <object id="450" x="2080" y="144" width="16" height="16"/>
-  <object id="493" x="2512" y="144" width="16" height="16"/>
-  <object id="495" x="2592" y="144" width="16" height="16"/>
-  <object id="517" x="2592" y="400" width="16" height="16"/>
-  <object id="531" x="1488" y="1168" width="16" height="16"/>
-  <object id="532" x="1568" y="1168" width="16" height="16"/>
+  <object id="376" x="1056" y="2960" width="32" height="16"/>
+  <object id="380" x="1472" y="1936" width="32" height="16"/>
+  <object id="381" x="1568" y="1936" width="32" height="16"/>
+  <object id="386" x="1984" y="1936" width="32" height="16"/>
+  <object id="388" x="2080" y="1936" width="32" height="16"/>
+  <object id="390" x="2496" y="1936" width="32" height="16"/>
+  <object id="391" x="2592" y="1936" width="32" height="16"/>
+  <object id="396" x="2080" y="1168" width="32" height="16"/>
+  <object id="397" x="1984" y="1168" width="32" height="16"/>
+  <object id="416" x="1984" y="656" width="32" height="16"/>
+  <object id="417" x="2080" y="656" width="32" height="16"/>
+  <object id="449" x="1984" y="144" width="32" height="16"/>
+  <object id="450" x="2080" y="144" width="32" height="16"/>
+  <object id="493" x="2496" y="144" width="32" height="16"/>
+  <object id="495" x="2592" y="144" width="32" height="16"/>
+  <object id="517" x="2592" y="400" width="32" height="16"/>
+  <object id="531" x="1472" y="1168" width="32" height="16"/>
+  <object id="532" x="1568" y="1168" width="32" height="16"/>
+  <object id="537" x="2496" y="400" width="32" height="16"/>
  </objectgroup>
  <objectgroup id="12" name="ladder">
   <object id="535" x="1584" y="144" width="16" height="208"/>
  </objectgroup>
  <objectgroup id="11" name="dungeon">
-  <object id="398" x="3008" y="1936" width="16" height="16"/>
+  <object id="398" x="3008" y="1936" width="32" height="16"/>
   <object id="518" x="2432" y="720" width="16" height="16"/>
   <object id="520" x="1600" y="144" width="16" height="16"/>
   <object id="521" x="2112" y="432" width="16" height="16"/>

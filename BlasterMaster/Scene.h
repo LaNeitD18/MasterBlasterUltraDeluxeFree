@@ -21,7 +21,7 @@ protected:
 
 	//LeSon
 	bool isCameraFree; // used for go to portal
-	int directionEnterPortal; // 0 portal left 1 portal right -1 normal
+	int directionEnterPortal; // 0 portal left 1 portal right 2 portal top 3 portal bottom -1 normal
 	int frameToTransition;
 
 	Game* game;
