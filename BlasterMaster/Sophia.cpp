@@ -17,12 +17,12 @@ BoundingBox Sophia::GetBoundingBox()
 
 void Sophia::Update()
 {
+	Player::Update();
 	if ((state & SOPHIA_STATE_LEAVING_VEHICLE) ||
 		(state & SOPHIA_STATE_LEFT_VEHICLE))
 		return;
 	pos += dx();
 
-	Player::Update();
 	//*
 	int prevState = state;
 	int newState = state;
@@ -173,7 +173,7 @@ void Sophia::Update()
 		jason = new JasonSideView(pos.x, pos.y);
 		jason->SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(JASON_SIDEVIEW_ANIMATION_SET_NUMBER));
 		jason->SetManager(manager);
-		jason->v.x = v.x;
+		jason->v.x = 33;
 		jason->v.y = -JASON_ENTER_VEHICLE_DISAPPEAR_SPEED;
 		manager->AddElement(jason);
 	}
@@ -476,7 +476,6 @@ void Sophia::Shoot()
 	Bullet* bullet = new Bullet(
 		pos + bulletOffset,
 		bulletV, 2);
-	bullet->SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(BULLET_ANIMATION_SET_NUMBER));
 	bullet->SetManager(manager);
 	manager->AddElement(bullet);
 }

@@ -25,6 +25,8 @@ class Enemy : public AnimatedGameObject
 public:
 	Enemy() {}
 	virtual ~Enemy() {}
+
+	virtual void TakeDamage(int damage);
 };
 
 

@@ -1,8 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
-#define JASONO_WALKING_SPEED 0.02f
-#define JASONO_ACCELERATION 0.001f
+#define JASONO_WALKING_SPEED 0.66f
+#define JASONO_ACCELERATION 0.033f
 #define JASONO_MAX_HEALTH 100
 
 #define JASONO_BBOX_WIDTH  12

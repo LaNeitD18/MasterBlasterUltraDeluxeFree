@@ -1,8 +1,8 @@
 #pragma once
 #include "AnimatedGameObject.h"
 
-#define FLOATER_FLYING_SPEED_X 0.005f;
-#define FLOATER_FLYING_SPEED_Y 0.02f;
+#define FLOATER_FLYING_SPEED_X 0.165f;
+#define FLOATER_FLYING_SPEED_Y 0.66f;
 
 #define FLOATER_BBOX_WIDTH 9
 #define FLOATER_BBOX_HEIGHT 8

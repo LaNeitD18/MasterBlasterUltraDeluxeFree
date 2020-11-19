@@ -1,9 +1,9 @@
 #pragma once
 #include "AnimatedGameObject.h"
 
-#define WORM_WALKING_SPEED 0.02f;
-#define WORM_FALLING_SPEED_Y 0.03f;
-#define WORM_FALLING_SPEED_X 0.007f;
+#define WORM_WALKING_SPEED 0.66f;
+#define WORM_FALLING_SPEED_Y 1.0f;
+#define WORM_FALLING_SPEED_X 0.23f;
 
 #define WORM_BBOX_WIDTH 9.5
 #define WORM_BBOX_HEIGHT 5

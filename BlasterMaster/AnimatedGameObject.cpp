@@ -35,8 +35,16 @@ void AnimatedGameObject::SetAnimationType(int ANI)
 	}
 }
 
+void Enemy::TakeDamage(int damage)
+{
+	HealthPoint -= damage;
+	if (HealthPoint < 0)
+		manager->RemoveElement(this);
+}
+
 void AnimatedScene::Interact(Interactable * other) { other->Interact(this); }
 #include "InteractableGroupInclude.h"
 #define CURRENT_CLASS AnimatedScene
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS
+

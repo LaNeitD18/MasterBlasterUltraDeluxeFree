@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include "Utils.h"
 #include "Camera.h"
+#include "GameGlobal.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 
@@ -10,11 +11,23 @@ Bullet::Bullet()
 
 Bullet::Bullet(Point pos, Point v, int level)
 {
+
 	this->pos = pos;
 	this->v = v;
 
 	state = 0;
 	this->level = level;
+
+	if (v.y < 0) {
+		rotation = M_PI_2;
+		isFlipVertical = false;
+	}
+	else if (v.x > 0)
+		isFlipVertical = true;
+	else
+		isFlipVertical = false;
+
+	SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(BULLET_ANIMATION_SET_NUMBER));
 }
 
 Bullet::~Bullet()
@@ -50,15 +63,6 @@ void Bullet::Update()
 
 	if (state & BULLET_STATE_EXPLODE)
 		v = Point();
-
-	if (v.y < 0) {
-		rotation = M_PI_2;
-		isFlipVertical = false;
-	}
-	else if (v.x > 0)
-		isFlipVertical = true;
-	else
-		isFlipVertical = false;
 
 	if (!Camera::GetInstance()->GetBound().IsInsideBox(pos))
 		SetState(state | BULLET_STATE_EXPLODE);
