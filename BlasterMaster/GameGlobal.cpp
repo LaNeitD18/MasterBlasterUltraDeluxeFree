@@ -12,6 +12,7 @@ bool GameGlobal::isGameRunning = true;
 IDirect3DSurface9* GameGlobal::backSurface = nullptr;
 Input* GameGlobal::input = NULL;
 AnimationSets* GameGlobal::mAniLib = NULL;
+Point GameGlobal::lastPositionSophia = Point(0, 0);
 // temporary hp, set later for sophia jason
 int GameGlobal::HealthPointSideView = 80;
 int GameGlobal::livesToPlay = 2;
@@ -108,3 +109,13 @@ void GameGlobal::SetHealthPointSideView(int hp) { HealthPointSideView = hp; }
 int GameGlobal::GetLivesToPlay() { return livesToPlay; }
 
 void GameGlobal::SetLivesToPlay(int l) { livesToPlay = l; }
+
+Point GameGlobal::GetLastPositionSophia()
+{
+	return lastPositionSophia;
+}
+
+void GameGlobal::SetLastPositionSophia(Point pos)
+{
+	lastPositionSophia = pos;
+}

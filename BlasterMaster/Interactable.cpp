@@ -119,7 +119,6 @@ void Interactable::Interact(Player* player, Env_Portal* portal) {
 	if (/*playerBox.IsOverlap(portalBox) &&*/ portalBox.IsInsideBox(playerBox.GetCenter())) {
 		GateDirection portalDirection = portal->GetPortalDir();
 		if (((input[VK_RIGHT] & KEY_STATE_DOWN) && portalDirection == RIGHT) || ((input[VK_LEFT] & KEY_STATE_DOWN) && portalDirection == LEFT) || ((input[VK_UP] & KEY_STATE_DOWN) && portalDirection == TOP) || ((input[VK_DOWN] & KEY_STATE_DOWN) && portalDirection == BOTTOM)) {
-			
 			//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
 			Game::GetInstance()->GetCurrentScene()->SetFreeCamera(true);
 			if (portalDirection == RIGHT) {
@@ -171,14 +170,70 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 	Input& input = *GameGlobal::GetInput();
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox dungeonBox = dungeon->GetBoundingBox();
-	bool isJasonPlay = dynamic_cast<JasonSideView*>(player) != NULL;
+	JasonSideView* jasonPlay = dynamic_cast<JasonSideView*>(player);
+	bool isJasonPlay = jasonPlay != NULL;
 	if (playerBox.IsOverlap(dungeonBox) && isJasonPlay) {
 		if (input[VK_DOWN] & KEY_STATE_DOWN) {
 			BoundingBox limitArea = SceneArea2Overhead::cameraLimitAreaOfSection[dungeon->GetSectionToEnter()];
-			Point startPoint = SceneArea2SideView::startPointInSection[dungeon->GetSectionToEnter()];
+			Point startPoint = SceneArea2Overhead::startPointInSection[dungeon->GetSectionToEnter()];
 			//Game::GetInstance()->GetCurrentScene()->Release();
 			Game::GetInstance()->Init(L"Resources/scene.txt", 3);
-			Camera::GetInstance()->SetCameraLimitarea(limitArea);
+			SceneArea2Overhead* scene = dynamic_cast<SceneArea2Overhead*>(Game::GetInstance()->GetCurrentScene());
+			for (auto x : scene->GetObjects()) {
+				JasonOverhead* current_player = dynamic_cast<JasonOverhead*>(x);
+				if (current_player != NULL &&
+					current_player->IsPrimaryPlayer()) {
+					scene->SetTarget(current_player);
+					break;
+				}
+			}
+			scene->GetTarget()->SetPosition(startPoint);
+			scene->GetCamera()->SetCameraLimitarea(limitArea);
+			//Camera::GetInstance()->SetCameraLimitarea(limitArea);
+			/*Sophia* sophia = dynamic_cast<Sophia*>(jasonPlay->sophia); // sophia null
+			GameGlobal::SetLastPositionSophia(sophia->GetPosition());*/
+		}
+	}
+}
+
+void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
+	// implement interact with lava (take damage)
+	Input& input = *GameGlobal::GetInput();
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox outdoorBox = outdoor->GetBoundingBox();
+	if (outdoorBox.IsInsideBox(playerBox.GetCenter())) {
+		GateDirection doorDirection = outdoor->GetOutDir();
+		if (((input[VK_RIGHT] & KEY_STATE_DOWN) && doorDirection == RIGHT) || ((input[VK_LEFT] & KEY_STATE_DOWN) && doorDirection == LEFT) || ((input[VK_UP] & KEY_STATE_DOWN) && doorDirection == TOP) || ((input[VK_DOWN] & KEY_STATE_DOWN) && doorDirection == BOTTOM)) {
+			BoundingBox limitArea = SceneArea2SideView::cameraLimitAreaOfSection[outdoor->GetSectionToEnter()];
+			Point startPoint = SceneArea2SideView::startPointInSection[outdoor->GetSectionToEnter()];
+			//Game::GetInstance()->GetCurrentScene()->Release();
+			Game::GetInstance()->Init(L"Resources/scene.txt", 2);
+			SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
+			Sophia* current_player = NULL;
+			for (auto x : scene->GetObjects()) {
+				current_player = dynamic_cast<Sophia*>(x);
+				if (current_player != NULL &&
+					current_player->IsPrimaryPlayer()) {
+					scene->SetTarget(current_player);
+					current_player->SetPosition(startPoint);
+					//current_player->SetPosition(GameGlobal::GetLastPositionSophia());
+					break;
+				}
+			}
+			JasonSideView* jason = new JasonSideView(startPoint.x, startPoint.y);
+			current_player->jason = jason;
+			jason->sophia = current_player;
+			jason->SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(JASON_SIDEVIEW_ANIMATION_SET_NUMBER));
+			jason->SetManager(current_player->GetManager());
+			jason->v.x = 0;
+			jason->v.y = -JASON_ENTER_VEHICLE_DISAPPEAR_SPEED;
+			current_player->GetManager()->AddElement(jason);
+			current_player->SetState(SOPHIA_STATE_LEFT_VEHICLE);
+			scene->SetTarget(jason);
+			//scene->GetTarget()->SetPosition(startPoint);
+			scene->GetCamera()->SetCameraLimitarea(limitArea);
+			//Camera::GetInstance()->SetCameraLimitarea(limitArea);
+			
 		}
 	}
 }

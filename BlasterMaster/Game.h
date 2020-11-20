@@ -49,6 +49,9 @@ public:
 	Scene* GetCurrentScene() { return scenes[current_scene]; }
 	void SwitchScene(int scene_id);
 
+	//hihi
+	Scene* GetScene(int id) { return scenes[id]; }
+
 	int screen_width;
 	int screen_height;
 
