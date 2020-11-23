@@ -171,6 +171,7 @@ void Sophia::Update()
 	{
 		newState |= SOPHIA_STATE_LEAVING_VEHICLE;
 		jason = new JasonSideView(pos.x, pos.y);
+		jason->sophia = this;
 		jason->SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(JASON_SIDEVIEW_ANIMATION_SET_NUMBER));
 		jason->SetManager(manager);
 		jason->v.x = v.x;

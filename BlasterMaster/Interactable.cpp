@@ -190,8 +190,8 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 			scene->GetTarget()->SetPosition(startPoint);
 			scene->GetCamera()->SetCameraLimitarea(limitArea);
 			//Camera::GetInstance()->SetCameraLimitarea(limitArea);
-			/*Sophia* sophia = dynamic_cast<Sophia*>(jasonPlay->sophia); // sophia null
-			GameGlobal::SetLastPositionSophia(sophia->GetPosition());*/
+			Sophia* sophia = dynamic_cast<Sophia*>(jasonPlay->sophia); // sophia null
+			GameGlobal::SetLastPositionSophia(sophia->GetPosition());
 		}
 	}
 }
@@ -215,8 +215,8 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 				if (current_player != NULL &&
 					current_player->IsPrimaryPlayer()) {
 					scene->SetTarget(current_player);
-					current_player->SetPosition(startPoint);
-					//current_player->SetPosition(GameGlobal::GetLastPositionSophia());
+					//current_player->SetPosition(startPoint);
+					current_player->SetPosition(GameGlobal::GetLastPositionSophia());
 					break;
 				}
 			}
@@ -457,7 +457,8 @@ void Interactable::Interact(Sophia* sophia, JasonSideView * jason)
 {
 	if (jason->GetBoundingBox().
 		IsInsideBox(sophia->GetBoundingBox()))
-		jason->sophia = sophia;
+		//jason->sophia = sophia;
+		jason->isTouchingSophia = true;
 }
 void Interactable::Interact(Bullet* bullet, Env_Wall * wall)
 {

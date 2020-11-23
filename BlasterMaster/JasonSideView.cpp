@@ -1,6 +1,7 @@
 #include "JasonSideView.h"
 #include "GameGlobal.h"
 #include "Sophia.h"
+#include "Utils.h"
 
 JasonSideView::JasonSideView()
 {
@@ -171,7 +172,7 @@ void JasonSideView::Update()
 		newState |= JASON_STATE_DYING;
 	}
 
-	if (sophia != NULL &&
+	if (/*sophia != NULL*/ isTouchingSophia &&
 		input[INPUT_LEAVE_VEHICLE] == KEY_STATE_ON_DOWN)
 	{
 		newState |= JASON_STATE_ENTERING_VEHICLE;
@@ -182,7 +183,6 @@ void JasonSideView::Update()
 		v.y = -JASON_ENTER_VEHICLE_JUMP_SPEED;
 		sophia->SetState(sophia->GetState() | SOPHIA_STATE_ENTERING_VEHICLE);
 		sophia->SetAniByState(sophia->GetState());
-		sophia->jason = this;
 	}
 
 	if ((state & JASON_STATE_ENTERING_VEHICLE) &&
@@ -190,11 +190,15 @@ void JasonSideView::Update()
 		manager->RemoveElement(this);
 		if (sophia != NULL)
 			sophia->jason = NULL;
+		else {
+			DebugOut(L"WARNING: Jason dont know sophia\n");
+		}
 	}
 
 	wallBot = wallLeft = wallRight = wallTop = false;
 
-	sophia = NULL;
+	//sophia = NULL;
+	isTouchingSophia = false;
 
 	if (newState != state)
 		SetState(newState);
