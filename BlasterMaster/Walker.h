@@ -1,7 +1,7 @@
 #pragma once
 #include "AnimatedGameObject.h"
 
-#define WALKER_WALKING_SPEED 0.03f;
+#define WALKER_WALKING_SPEED 1.0f;
 
 #define WALKER_BBOX_WIDTH 16
 #define WALKER_BBOX_HEIGHT 26

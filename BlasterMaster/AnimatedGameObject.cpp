@@ -37,11 +37,6 @@ void AnimatedGameObject::SetAnimationType(int ANI)
 	}
 }
 
-void AnimatedScene::Interact(Interactable * other) { other->Interact(this); }
-#include "InteractableGroupInclude.h"
-#define CURRENT_CLASS AnimatedScene
-APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
-#undef CURRENT_CLASS
 
 void Enemy::TakeDamage(int damage)
 {
@@ -60,3 +55,9 @@ void Enemy::Update()
 	}
 	drawArguments.SetColor(invulnerableColor[(damageFrame / ENEMY_SPRITE_DURATION_OF_DAMAGE_FLASH) % 2]);
 }
+
+void AnimatedScene::Interact(Interactable * other) { other->Interact(this); }
+#include "InteractableGroupInclude.h"
+#define CURRENT_CLASS AnimatedScene
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
+#undef CURRENT_CLASS

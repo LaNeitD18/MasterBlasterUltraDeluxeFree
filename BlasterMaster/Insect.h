@@ -1,7 +1,7 @@
 #pragma once
 #include "AnimatedGameObject.h"
 
-#define INSECT_WALKING_SPEED 0.03f;
+#define INSECT_WALKING_SPEED 1.0f;
 
 #define INSECT_BBOX_WIDTH 9
 #define INSECT_BBOX_HEIGHT 9

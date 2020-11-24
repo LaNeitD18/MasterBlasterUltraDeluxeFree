@@ -33,9 +33,9 @@ public:
 
 	int state;
 
-	DWORD dt = 33;
+	DWORD dt = 1;
 
-	float scaleIndex = 0.3;
+	float scaleIndex = 1;
 
 	AnimationSet* animationSet;
 	LPDIRECT3DTEXTURE9 bbox;

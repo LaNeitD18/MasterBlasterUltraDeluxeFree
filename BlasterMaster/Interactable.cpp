@@ -425,16 +425,7 @@ void Interactable::Interact(Player* player, Enemy* enemy) {
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox enemyBox = enemy->GetBoundingBox();
 	if (playerBox.IsOverlap(enemyBox)) {
-		player->TakeDamage(DAMAGE_OF_ENEMY); // define later
-	}
-}
-
-// JasonOverhead
-void Interactable::Interact(JasonOverhead* player, Env_Wall* wall)
-{
-	Interactable::Interact((Player*)player, wall);
-	if (player->wallBot) {
-
+		player->TakeDamage(DAMAGE_OF_ENEMY);
 	}
 }
 #pragma endregion
