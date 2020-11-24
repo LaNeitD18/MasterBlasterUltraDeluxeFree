@@ -57,6 +57,11 @@ public:
 	virtual void Render();
 	virtual void Release();
 
+	Player* GetTarget();
+	Camera* GetCamera();
+	void SetTarget(Player* player);
+	unordered_set<GameObject*> GetObjects();
+
 	// Inherited via Manager
 	virtual void AddElement(GameObject *) override;
 	virtual void RemoveElement(GameObject *) override;

@@ -45,6 +45,9 @@ public:
 	static int GetLivesToPlay();
 	static void SetLivesToPlay(int l);
 
+	static Point GetLastPositionSophia();
+	static void SetLastPositionSophia(Point pos);
+
 	static bool isGameRunning; //trang thai xem game co dang chay khong
 
 private:
@@ -56,6 +59,8 @@ private:
 	static LPDIRECT3DDEVICE9 mDevice; //device directX hiện tại
 	static Input* input;
 	static AnimationSets* mAniLib;
+
+	static Point lastPositionSophia;
 
 	static int HealthPointSideView;
 	static int livesToPlay;

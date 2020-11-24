@@ -116,6 +116,28 @@ Env_Dungeon::Env_Dungeon(float x, float y, float width, float height, GateDirect
 	this->sectionToEnter = sectionToEnter;
 }
 
+Env_Outdoor::Env_Outdoor(float x, float y, float width, float height, GateDirection direction, int sectionToEnter)
+{
+	this->width = width;
+	this->height = height;
+	box.l = x;
+	box.t = y;
+	box.r = x + width;
+	box.b = y + height;
+	this->dir = direction;
+	this->sectionToEnter = sectionToEnter;
+}
+
+GateDirection Env_Outdoor::GetOutDir()
+{
+	return dir;
+}
+
+int Env_Outdoor::GetSectionToEnter()
+{
+	return sectionToEnter;
+}
+
 void Env_Wall::Interact(Interactable * other) { other->Interact(this); }
 
 void Env_Spike::Interact(Interactable * other) { other->Interact(this); }
@@ -125,6 +147,8 @@ void Env_Lava::Interact(Interactable * other) { other->Interact(this); }
 void Env_Portal::Interact(Interactable * other) { other->Interact(this); }
 
 void Env_Dungeon::Interact(Interactable * other) { other->Interact(this); }
+
+void Env_Outdoor::Interact(Interactable * other) { other->Interact(this); }
 #include "InteractableGroupInclude.h"
 #define CURRENT_CLASS Env_Wall
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
@@ -141,5 +165,8 @@ APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS
 #define CURRENT_CLASS Env_Dungeon
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
+#undef CURRENT_CLASS
+#define CURRENT_CLASS Env_Outdoor
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS

@@ -128,7 +128,7 @@ SceneArea2Overhead::~SceneArea2Overhead()
 #define ENVIRONMENT_TYPE_PORTAL 3
 #define ENVIRONMENT_TYPE_LADDER 4
 #define ENVIRONMENT_TYPE_LAVA 5
-#define ENVIRONMENT_TYPE_DUNGEON 6
+#define ENVIRONMENT_TYPE_OUTDOOR 6
 #define ENVIRONMENT_TYPE_UNKNOWN -1
 
 #define MAX_SCENE_LINE 1024
@@ -389,14 +389,20 @@ void SceneArea2Overhead::_ParseSection_ENVIRONMENT(string line)
 		}
 		env = new Env_Portal(x, y, width, height, gateDir, sectionToEnter);
 		break;
-	case ENVIRONMENT_TYPE_DUNGEON:
+	case ENVIRONMENT_TYPE_OUTDOOR:
 		if (dirId == 0) {
 			gateDir = LEFT;
 		}
-		else {
+		else if (dirId == 1) {
 			gateDir = RIGHT;
 		}
-		env = new Env_Dungeon(x, y, width, height, gateDir, sectionToEnter);
+		else if (dirId == 2) {
+			gateDir = TOP;
+		}
+		else {
+			gateDir = BOTTOM;
+		}
+		env = new Env_Outdoor(x, y, width, height, gateDir, sectionToEnter);
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid env type: %d\n", env_type);
@@ -503,6 +509,16 @@ void SceneArea2Overhead::Init()
 		}
 	}
 
+	/*target = NULL;
+	for (auto x : objects) {
+		Player* current_player = dynamic_cast<Player*>(x);
+		if (current_player != NULL &&
+			current_player->IsPrimaryPlayer()) {
+			mCamera->SetTarget(current_player);
+			target = current_player;
+		}
+	}*/
+
 	f.close();
 
 	//// NAK son
@@ -524,30 +540,33 @@ void SceneArea2Overhead::Init()
 
 void SceneArea2Overhead::JumpCheckpoint()
 {
-	Input& input = *GameGlobal::GetInput();
-	// section A
-	if (input[0x30]) {
-		target->SetPosition(startPointInSection[0]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[0]);
-	}
-	// section B
-	else if (input[0x31]) {
-		target->SetPosition(startPointInSection[1]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[1]);
-	}
-	//section C
-	else if (input[0x32]) {
-		target->SetPosition(startPointInSection[2]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[2]);
-	}
-	else if (input[0x33]) {
-		target->SetPosition(startPointInSection[3]);
-		mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[3]);
+	if (!isCameraFree) {
+		Input& input = *GameGlobal::GetInput();
+		// section A
+		if (input[0x30]) {
+			target->SetPosition(startPointInSection[0]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[0]);
+		}
+		// section B
+		else if (input[0x31]) {
+			target->SetPosition(startPointInSection[1]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[1]);
+		}
+		//section C
+		else if (input[0x32]) {
+			target->SetPosition(startPointInSection[2]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[2]);
+		}
+		else if (input[0x33]) {
+			target->SetPosition(startPointInSection[3]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[3]);
+		}
 	}
 }
 
 #define FRAME_PORTAL_TRANSITIONS 130
-#define DISTANCE_JASON_PORTAL 35
+#define DISTANCE_JASON_PORTAL_LEFT_RIGHT 35
+#define DISTANCE_JASON_PORTAL_UP_DOWN 50
 
 void SceneArea2Overhead::Update()
 {
@@ -620,8 +639,6 @@ void SceneArea2Overhead::Update()
 				onScreenObj[i]->Interact(onScreenObj[j]);
 
 		// temporary global set hp for both sophia jason
-
-		JumpCheckpoint();
 	}
 	else {
 		// update enemies when change section
@@ -655,16 +672,16 @@ void SceneArea2Overhead::Update()
 		//DebugOut(L"Frame to transition: %d", frameToTransition);
 		if (frameToTransition >= FRAME_PORTAL_TRANSITIONS) {
 			if (directionEnterPortal == 1) {
-				target->SetPosition(target->GetPosition() + Point(DISTANCE_JASON_PORTAL, 0));
+				target->SetPosition(target->GetPosition() + Point(DISTANCE_JASON_PORTAL_LEFT_RIGHT, 0));
 			}
 			else if (directionEnterPortal == 0) {
-				target->SetPosition(target->GetPosition() - Point(DISTANCE_JASON_PORTAL, 0));
+				target->SetPosition(target->GetPosition() - Point(DISTANCE_JASON_PORTAL_LEFT_RIGHT, 0));
 			}
 			else if (directionEnterPortal == 2) {
-				target->SetPosition(target->GetPosition() - Point(0, DISTANCE_JASON_PORTAL));
+				target->SetPosition(target->GetPosition() - Point(0, DISTANCE_JASON_PORTAL_UP_DOWN));
 			}
 			else if (directionEnterPortal == 3) {
-				target->SetPosition(target->GetPosition() + Point(0, DISTANCE_JASON_PORTAL));
+				target->SetPosition(target->GetPosition() + Point(0, DISTANCE_JASON_PORTAL_UP_DOWN));
 			}
 			isCameraFree = false;
 			directionEnterPortal = -1;
@@ -679,6 +696,8 @@ void SceneArea2Overhead::Update()
 		Game::GetInstance()->Init(L"Resources/scene.txt", 2);
 		return;
 	}
+
+	JumpCheckpoint();
 
 	//if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
 	//{
@@ -758,6 +777,26 @@ void SceneArea2Overhead::Release()
 	healthBar->Release();
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
+}
+
+Player * SceneArea2Overhead::GetTarget()
+{
+	return target;
+}
+
+Camera * SceneArea2Overhead::GetCamera()
+{
+	return mCamera;
+}
+
+void SceneArea2Overhead::SetTarget(Player * player)
+{
+	this->target = player;
+}
+
+unordered_set<GameObject*> SceneArea2Overhead::GetObjects()
+{
+	return objects;
 }
 
 void SceneArea2Overhead::AddElement(GameObject* obj)

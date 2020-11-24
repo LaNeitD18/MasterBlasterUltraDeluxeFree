@@ -100,7 +100,7 @@ double BoundingBox::SweptAABB(BoundingBox movingBox, Point v,
 	float overlapAreaY = min(this->b, movingBox.b) - max(this->t, movingBox.t);
 	//*/
 
-	if (overlapAreaX < overlapAreaY)
+	if (overlapAreaX <= overlapAreaY)
 	{
 		if (overlapAreaX >= 0)
 		{

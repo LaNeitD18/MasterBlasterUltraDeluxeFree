@@ -79,4 +79,5 @@ public:
 	virtual ~JasonSideView();
 
 	Sophia* sophia;
+	bool isTouchingSophia;
 };

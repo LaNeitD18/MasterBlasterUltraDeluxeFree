@@ -17,6 +17,9 @@ class Managed
 protected:
 	Manager<T>* manager;
 public:
+	virtual Manager<T>* GetManager() {
+		return manager;// LeSon add
+	}
 	virtual void SetManager(Manager<T>* manager) 
 	{
 		this->manager = manager;

@@ -37,7 +37,15 @@ BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[15] = {
 	// section I
 	BoundingBox(2560, 32, 3086, 568),
 	// section J
-	BoundingBox(2048, 256, 2574, 536)
+	BoundingBox(2048, 256, 2574, 536),
+	// dungeon 1
+	BoundingBox(2560, 1792, 3086, 2072),
+	// dungeon 2
+	BoundingBox(2048, 512, 2574, 792),
+	// dungeon 3
+	BoundingBox(1536, 32, 2062, 1814),
+	//dungeon 4
+	BoundingBox(2048, 256, 2574, 536),
 };
 
 Point SceneArea2SideView::startPointInSection[15] = {
@@ -57,8 +65,18 @@ Point SceneArea2SideView::startPointInSection[15] = {
 	Point(2096, 652),
 	// section H
 	Point(2096, 140),
-	// section G
-	Point(2608, 140)
+	// section I
+	Point(2608, 140),
+	// section J
+	Point(2512,396),
+	// dungeon 1
+	Point(3008,1932),
+	// dungeon 2
+	Point(2432,716),
+	// dungeon 3
+	Point(1600,140),
+	// dungeon 4
+	Point(2112,428)
 };
 
 SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath, game)
@@ -589,6 +607,16 @@ void SceneArea2SideView::Init()
 		}
 	}
 
+	/*target = NULL;
+	for (auto x : objects) {
+		Player* current_player = dynamic_cast<Player*>(x);
+		if (current_player != NULL &&
+			current_player->IsPrimaryPlayer()) {
+			mCamera->SetTarget(current_player);
+			target = current_player;
+		}
+	}*/
+
 	f.close();
 
 	//// NAK son
@@ -603,6 +631,7 @@ void SceneArea2SideView::Init()
 
 	//	map[id]->PartialInit(map[top], map[left], map[bottom], map[right]);
 	//}
+	GameGlobal::SetAnimationSetLibrary(animationSetLib);
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 	//displayMessage("yeah");
@@ -821,7 +850,7 @@ void SceneArea2SideView::Render()
 {
 	// LeSon
 	int currentLivesPlay = GameGlobal::GetLivesToPlay();
-	if (count < DURATION_OF_LIVESHOW && currentLivesPlay >= 0)
+	if (count < DURATION_OF_LIVESHOW && currentLivesPlay >= 0 && target==NULL)
 	{
 		DebugOut(L"count: %d\n", count);
 		displayLivesLeft(currentLivesPlay);
@@ -860,6 +889,26 @@ void SceneArea2SideView::Release()
 	healthBar->Release();
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
+}
+
+Player* SceneArea2SideView::GetTarget()
+{
+	return target;
+}
+
+Camera * SceneArea2SideView::GetCamera()
+{
+	return mCamera;
+}
+
+void SceneArea2SideView::SetTarget(Player * player)
+{
+	this->target = player;
+}
+
+unordered_set<GameObject*> SceneArea2SideView::GetObjects()
+{
+	return objects;
 }
 
 void SceneArea2SideView::AddElement(GameObject* obj)
