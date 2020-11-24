@@ -29,6 +29,7 @@ BoundingBox Dome::GetBoundingBox()
 void Dome::Update()
 {
 	pos += dx();
+	Enemy::Update();
 
 	/*if (v.x < 0 && wallLeft) {
 		drawArguments.SetRotation(ROTATE_90DEGREE_TO_RADIAN);

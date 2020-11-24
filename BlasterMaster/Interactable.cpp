@@ -468,6 +468,16 @@ void Interactable::Interact(Bullet* bullet, Env_Wall * wall)
 	if (wallBox.SweptAABB(bulletBox, bullet->dx()) != -INFINITY)
 		bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
 }
+void Interactable::Interact(Bullet* bullet, Enemy* enemy) {
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox enemyBox = enemy->GetBoundingBox();
+	if (enemyBox.SweptAABB(bulletBox, bullet->dx() + enemy->dx()) != -INFINITY)
+	{
+		enemy->TakeDamage(10);
+		bullet->GetManager()->RemoveElement(bullet);
+		// TODO: Take damage instead of removing enemy
+	}
+}
 #pragma endregion
 
 #undef DAMAGE_OF_SPIKE

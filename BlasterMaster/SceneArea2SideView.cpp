@@ -379,7 +379,6 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		break;*/
 	case OBJECT_TYPE_SOPHIA:
 		obj = new Sophia(x, y);
-		obj->SetManager(this);
 		break;
 	case OBJECT_TYPE_JASON_SIDE_VIEW:
 		break;
@@ -387,6 +386,7 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
 	}
+	obj->SetManager(this);
 
 	for (int i = 3; i < tokens.size(); i++)
 	{

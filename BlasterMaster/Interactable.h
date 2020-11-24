@@ -105,6 +105,8 @@ public:
 	INTERACTABLE_MIRROR_DEF(Jumper, Env_Wall);
 	//INTERACTABLE_MIRROR_DEF(Insect, Env_Wall);
 
+	INTERACTABLE_MIRROR_DEF(Bullet, Enemy);
+
 	INTERACTABLE_MIRROR_DEF(Player, Enemy);
 	
 	// Bullet
