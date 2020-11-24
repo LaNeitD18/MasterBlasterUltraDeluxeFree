@@ -13,7 +13,7 @@
 11	Resources\sprites\orb2_72_72.png		255	255	255
 12	Resources\sprites\Jason_SideView.png		255	255	255
 13	Resources\sprites\Jason_Overhead.png		255	255	255
-14	Resources\sprites\Sophia.png			255	255	255
+14	Resources\sprites\Sophia2.png	254	255	255
 15	Resources\sprites\enemies.png	254	255	255
 16	Resources\sprites\HP.png	255	255	255
 17	Resources\sprites\116445.png	0	57	115
