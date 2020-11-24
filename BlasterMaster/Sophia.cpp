@@ -18,15 +18,15 @@ BoundingBox Sophia::GetBoundingBox()
 void Sophia::Update()
 {
 	Player::Update();
-	if ((state & SOPHIA_STATE_LEAVING_VEHICLE) ||
-		(state & SOPHIA_STATE_LEFT_VEHICLE))
-		return;
-	pos += dx();
-
-	Player::Update();
 	if (state & SOPHIA_STATE_DYING)
 		drawArguments.SetColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 
+	if ((state & SOPHIA_STATE_LEAVING_VEHICLE) ||
+		(state & SOPHIA_STATE_LEFT_VEHICLE) ||
+		(state & SOPHIA_STATE_DYING))
+		return;
+	pos += dx();
+	
 	//*
 	int prevState = state;
 	int newState = state;
@@ -315,8 +315,9 @@ void Sophia::Render()
 					}
 				}
 				if (i == SOPHIA_ANI_JUMPING || i == SOPHIA_ANI_LOOKED_UP_JUMPING) {
-					stateToChange.push_back(
-						make_pair(SOPHIA_STATE_JUMP_BOOST, true));
+					if (!(state & SOPHIA_STATE_AIRBORNE))
+						stateToChange.push_back(
+							make_pair(SOPHIA_STATE_JUMP_BOOST, true));
 					stateToChange.push_back(
 						make_pair(SOPHIA_STATE_JUMPING, false));
 				}
