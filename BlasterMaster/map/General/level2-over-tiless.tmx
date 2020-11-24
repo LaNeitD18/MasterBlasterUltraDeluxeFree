@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="356">
- <tileset firstgid="1" name="level2-over-tiless" tilewidth="16" tileheight="16" tilecount="59" columns="59">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="378">
+ <tileset firstgid="1" name="level2-over-tiless" tilewidth="16" tileheight="16" tilecount="0" columns="59">
   <image source="Map/General/level2-over-tiless.png" width="944" height="16"/>
  </tileset>
  <layer id="1" name="background" width="128" height="128">
@@ -160,12 +160,24 @@
   <object id="54" x="1248" y="736" width="64" height="1264"/>
   <object id="55" x="1504" y="736" width="16" height="1264"/>
   <object id="56" x="32" y="208" width="448" height="64"/>
-  <object id="57" x="544" y="448" width="448" height="64"/>
+  <object id="57" x="544" y="464" width="448" height="32"/>
   <object id="58" x="32" y="720" width="1984" height="64"/>
   <object id="59" x="32" y="976" width="1216" height="64"/>
   <object id="60" x="32" y="1232" width="1472" height="64"/>
   <object id="61" x="32" y="1488" width="1472" height="64"/>
   <object id="62" x="32" y="1744" width="1472" height="64"/>
+  <object id="356" x="544" y="1120" width="192" height="32"/>
+  <object id="357" x="112" y="96" width="32" height="112"/>
+  <object id="358" x="176" y="16" width="32" height="96"/>
+  <object id="359" x="240" y="96" width="32" height="112"/>
+  <object id="360" x="304" y="16" width="32" height="96"/>
+  <object id="361" x="368" y="96" width="32" height="112"/>
+  <object id="362" x="624" y="16" width="32" height="352"/>
+  <object id="363" x="752" y="128" width="32" height="336"/>
+  <object id="364" x="1328" y="784" width="32" height="64"/>
+  <object id="365" x="1312" y="928" width="128" height="32"/>
+  <object id="366" x="1376" y="1056" width="128" height="32"/>
+  <object id="369" x="1392" y="784" width="32" height="64"/>
  </objectgroup>
  <objectgroup id="4" name="spike">
   <object id="156" x="800" y="1824" width="72" height="32"/>
@@ -230,6 +242,13 @@
   <object id="333" x="968" y="832" width="24" height="96"/>
   <object id="334" x="936" y="912" width="32" height="16"/>
   <object id="335" x="544" y="544" width="40" height="48"/>
+  <object id="370" x="544" y="656" width="8" height="48"/>
+  <object id="371" x="600" y="656" width="16" height="24"/>
+  <object id="372" x="592" y="544" width="144"/>
+  <object id="373" x="696" y="576" width="40" height="128"/>
+  <object id="374" x="600" y="640" width="8" height="16"/>
+  <object id="376" x="680" y="640" width="16" height="16"/>
+  <object id="377" x="664" y="656" width="32" height="48"/>
  </objectgroup>
  <objectgroup id="7" name="portal">
   <object id="38" x="208" y="1904" width="16" height="16"/>
