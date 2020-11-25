@@ -18,11 +18,15 @@ BoundingBox Sophia::GetBoundingBox()
 void Sophia::Update()
 {
 	Player::Update();
+	if (state & SOPHIA_STATE_DYING)
+		drawArguments.SetColor(D3DCOLOR_ARGB(255, 255, 255, 255));
+
 	if ((state & SOPHIA_STATE_LEAVING_VEHICLE) ||
-		(state & SOPHIA_STATE_LEFT_VEHICLE))
+		(state & SOPHIA_STATE_LEFT_VEHICLE) ||
+		(state & SOPHIA_STATE_DYING))
 		return;
 	pos += dx();
-
+	
 	//*
 	int prevState = state;
 	int newState = state;
@@ -34,15 +38,20 @@ void Sophia::Update()
 	int flags = SOPHIA_STATE_LOOKING_LEFT & state;
 
 	// psuedo gravity
-	if (!wallBot)
+	if (!wallBot || v.y < 0) // If not touching ground or going up
 		if (v.y >= SOPHIA_EPSILON_THRESHOLD)
 		{
 			if (v.y < SOPHIA_FALL_MAX_SPEED)
 			v.y *= SOPHIA_FALL_ACCELERATE_COEFFICIENT;
 		}
-		else if (v.y <= -SOPHIA_EPSILON_THRESHOLD)
-			v.y *= SOPHIA_FALL_DECELERATE_COEFFICIENT;
-		else v.y = SOPHIA_EPSILON_THRESHOLD;
+		else
+		{
+			if (v.y <= -SOPHIA_EPSILON_THRESHOLD)
+				v.y *= SOPHIA_FALL_DECELERATE_COEFFICIENT;
+			else v.y = SOPHIA_EPSILON_THRESHOLD;
+			if (wallTop)
+				v.y = SOPHIA_EPSILON_THRESHOLD;
+		}
 	else {
 		v.y = 0;
 	}
@@ -240,7 +249,8 @@ void Sophia::Render()
 		targetAni = SOPHIA_ANI_LEFT_VEHICLE;
 	if ((state & SOPHIA_STATE_ENTERING_VEHICLE) && currentAni[SOPHIA_ANI_LEAVING_VEHICLE])
 		targetAni = SOPHIA_ANI_LEAVING_VEHICLE;
-	/*if (currentAni[SOPHIA_ANI_DYING])
+	//*
+	if (currentAni[SOPHIA_ANI_DYING])
 		targetAni = SOPHIA_ANI_DYING;//*/
 
 	int* targetFrame = &currentFrame[targetAni];
@@ -305,8 +315,9 @@ void Sophia::Render()
 					}
 				}
 				if (i == SOPHIA_ANI_JUMPING || i == SOPHIA_ANI_LOOKED_UP_JUMPING) {
-					stateToChange.push_back(
-						make_pair(SOPHIA_STATE_JUMP_BOOST, true));
+					if (!(state & SOPHIA_STATE_AIRBORNE))
+						stateToChange.push_back(
+							make_pair(SOPHIA_STATE_JUMP_BOOST, true));
 					stateToChange.push_back(
 						make_pair(SOPHIA_STATE_JUMPING, false));
 				}

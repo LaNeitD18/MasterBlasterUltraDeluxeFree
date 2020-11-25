@@ -436,7 +436,6 @@ void Interactable::Interact(JasonSideView * player, Env_Wall * wall)
 	//*
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox wallBox = wall->GetBoundingBox();
-	//*
 	bool top, left, right, bottom;
 	Point move = player->dx();
 	top = left = right = bottom = false;
@@ -454,14 +453,13 @@ void Interactable::Interact(JasonSideView * player, Env_Wall * wall)
 
 	if (top || bottom) {
 		Point v = player->GetSpeed();
-		v.y -= move.y;
-		if (bottom && v.y > JASON_JUMP_SPEED + JASON_GRAVITY) 
-		{
+		if (bottom && v.y > JASON_JUMP_SPEED + JASON_GRAVITY) {
 			float damage = v.y / JASON_JUMP_SPEED;
 			damage = (damage * damage - 1.24) / 1.37;
 			damage *= JASON_MAX_HEALTH;
 			player->TakeDamage(round(damage));
 		}
+		v.y -= move.y;
 		player->SetSpeed(v);
 	}
 	if (left || right) {
@@ -496,6 +494,16 @@ void Interactable::Interact(Bullet* bullet, Env_Wall * wall)
 
 	if (wallBox.SweptAABB(bulletBox, bullet->dx()) != -INFINITY)
 		bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
+}
+void Interactable::Interact(Bullet* bullet, Enemy* enemy) {
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox enemyBox = enemy->GetBoundingBox();
+	if (enemyBox.SweptAABB(bulletBox, bullet->dx() + enemy->dx()) != -INFINITY)
+	{
+		enemy->TakeDamage(10);
+		bullet->GetManager()->RemoveElement(bullet);
+		// TODO: Take damage instead of removing enemy
+	}
 }
 #pragma endregion
 

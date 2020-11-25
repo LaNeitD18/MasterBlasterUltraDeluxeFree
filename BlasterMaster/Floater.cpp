@@ -27,6 +27,7 @@ BoundingBox Floater::GetBoundingBox()
 void Floater::Update()
 {
 	pos += dx();
+	Enemy::Update();
 
 	if (v.x < 0 && wallLeft) {
 		v.x = -v.x;

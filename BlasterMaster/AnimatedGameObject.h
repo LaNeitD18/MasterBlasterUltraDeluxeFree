@@ -20,13 +20,17 @@ public:
 	virtual ~AnimatedGameObject() {}
 };
 
+#define DURATION_OF_DAMAGE_FLASH 100
+#define ENEMY_SPRITE_DURATION_OF_DAMAGE_FLASH 10
 class Enemy : public AnimatedGameObject
 {
 public:
-	Enemy() {}
+	Enemy() { HealthPoint = 20; }
 	virtual ~Enemy() {}
 
 	virtual void TakeDamage(int damage);
+	virtual void Update();
+	int damageFrame;
 };
 
 

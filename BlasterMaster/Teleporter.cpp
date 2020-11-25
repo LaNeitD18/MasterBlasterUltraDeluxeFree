@@ -26,6 +26,7 @@ BoundingBox Teleporter::GetBoundingBox()
 void Teleporter::Update()
 {
 	pos += dx();
+	Enemy::Update();
 
 	if (v.x < 0 && pos.x < 0) {
 		pos.x = 0; v.x = -v.x;

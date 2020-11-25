@@ -95,6 +95,8 @@ double BoundingBox::SweptAABB(BoundingBox movingBox, Point v,
 	//*
 	float overlapAreaX = min(this->r, movingBox.r + v.x) - max(this->l, movingBox.l + v.x);
 	float overlapAreaY = min(this->b, movingBox.b + v.y) - max(this->t, movingBox.t + v.y);
+	float overlapAreaXprev = min(this->r, movingBox.r) - max(this->l, movingBox.l);
+	float overlapAreaYprev = min(this->b, movingBox.b) - max(this->t, movingBox.t);
 	/*/
 	float overlapAreaX = min(this->r, movingBox.r) - max(this->l, movingBox.l);
 	float overlapAreaY = min(this->b, movingBox.b) - max(this->t, movingBox.t);
@@ -102,23 +104,17 @@ double BoundingBox::SweptAABB(BoundingBox movingBox, Point v,
 
 	if (overlapAreaX <= overlapAreaY)
 	{
-		if (overlapAreaX >= 0)
-		{
-			if (GetCenter().x > movingBox.GetCenter().x)
-				right = true;
-			else
-				left = true;
-		}
+		if (GetCenter().x > movingBox.GetCenter().x)
+			right = true;
+		if (GetCenter().x < movingBox.GetCenter().x)
+			left = true;
 	}
 	else
 	{
-		if (overlapAreaY >= 0)
-		{
-			if (GetCenter().y < movingBox.GetCenter().y)
-				top = true;
-			else
-				bottom = true;
-		}
+		if (GetCenter().y < movingBox.GetCenter().y)
+			top = true;
+		if (GetCenter().y > movingBox.GetCenter().y)
+			bottom = true;
 	}
 
 	return entryTime;

@@ -13,7 +13,7 @@
 11	Resources\sprites\orb2_72_72.png		255	255	255
 12	Resources\sprites\Jason_SideView.png		255	255	255
 13	Resources\sprites\Jason_Overhead.png		255	255	255
-14	Resources\sprites\Sophia.png			255	255	255
+14	Resources\sprites\Sophia2.png	254	255	255
 15	Resources\sprites\enemies.png	254	255	255
 16	Resources\sprites\HP.png	255	255	255
 17	Resources\sprites\116445.png	0	57	115
@@ -259,6 +259,7 @@ Resources\Enemies\bullet_ani.txt
 1	1056	2944	32	16
 1	1120	1888	256	32
 1	1376	1952	128	32
+1	1472	2944	32	16
 1	1440	1888	64	32
 2	1136	2800	32	16
 2	1136	2032	32	16
@@ -269,6 +270,7 @@ Resources\Enemies\bullet_ani.txt
 2	1200	1840	32	16
 2	1264	1840	32	16
 3	1056	2960	32	16	0	0
+3	1472	2960	32	16	1	5
 3	1472	1936	32	16	1	2
 # section C
 1	1536	1840	32	144
