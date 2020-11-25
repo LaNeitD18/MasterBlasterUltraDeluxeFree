@@ -38,14 +38,14 @@ void Interactable::Interact(Player * player, Env_Wall * wall) {
 		return;
 
 	if (top || bottom) {
-		Point pos = player->GetPosition();
-		pos.y -= move.y;
-		player->SetPosition(pos);
+		Point v = player->GetSpeed();
+		v.y -= move.y;
+		player->SetSpeed(v);
 	}
 	if (left || right) {
-		Point pos = player->GetPosition();
-		pos.x -= move.x;
-		player->SetPosition(pos);
+		Point v = player->GetSpeed();
+		v.x -= move.x;
+		player->SetSpeed(v);
 	}
 	/*/
 	playerBox.Move(player->dx());
@@ -433,6 +433,43 @@ void Interactable::Interact(Player* player, Enemy* enemy) {
 #pragma region Long
 void Interactable::Interact(JasonSideView * player, Env_Wall * wall)
 {
+	//*
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox wallBox = wall->GetBoundingBox();
+	//*
+	bool top, left, right, bottom;
+	Point move = player->dx();
+	top = left = right = bottom = false;
+	double offsetTime = wallBox.SweptAABB(playerBox, move, top, left, bottom, right);
+
+	player->wallTop |= top;
+	player->wallRight |= right;
+	player->wallLeft |= left;
+	player->wallBot |= bottom;
+
+	if (offsetTime >= 0.0 && offsetTime <= 1.0)
+		move = move - move * offsetTime;
+	else
+		return;
+
+	if (top || bottom) {
+		Point v = player->GetSpeed();
+		v.y -= move.y;
+		if (bottom && v.y > JASON_JUMP_SPEED + JASON_GRAVITY) 
+		{
+			float damage = v.y / JASON_JUMP_SPEED;
+			damage = (damage * damage - 1.24) / 1.37;
+			damage *= JASON_MAX_HEALTH;
+			player->TakeDamage(round(damage));
+		}
+		player->SetSpeed(v);
+	}
+	if (left || right) {
+		Point v = player->GetSpeed();
+		v.x -= move.x;
+		player->SetSpeed(v);
+	}
+	/*/
 	Interactable::Interact((Player*)player, wall);
 	if (player->wallBot) {
 		Point v = player->v;
@@ -443,6 +480,7 @@ void Interactable::Interact(JasonSideView * player, Env_Wall * wall)
 			player->TakeDamage(round(damage));
 		}
 	}
+	//*/
 }
 void Interactable::Interact(Sophia* sophia, JasonSideView * jason)
 {

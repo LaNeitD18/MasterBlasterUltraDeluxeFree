@@ -174,7 +174,7 @@ void Sophia::Update()
 		jason->sophia = this;
 		jason->SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(JASON_SIDEVIEW_ANIMATION_SET_NUMBER));
 		jason->SetManager(manager);
-		jason->v.x = 33;
+		jason->v.x = 0;
 		jason->v.y = -JASON_ENTER_VEHICLE_DISAPPEAR_SPEED;
 		manager->AddElement(jason);
 	}
