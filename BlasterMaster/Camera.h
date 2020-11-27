@@ -41,6 +41,7 @@ public:
 	void SnapToBoundary();
 	void FollowTarget();
 	void SetTarget(Player* target);
+	BoundingBox GetCameraLimitarea();
 	void SetCameraLimitarea(BoundingBox boundary);
 	void SetCameraLimitarea(float left, float top, float right, float bot);
 

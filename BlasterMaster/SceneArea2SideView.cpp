@@ -25,7 +25,7 @@ BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[15] = {
 	//section C
 	BoundingBox(1536, 1792, 2062, 2072),
 	// section D
-	BoundingBox(2048, 1024, 2574, 2072),
+	BoundingBox(2048, 1024, 2574, 2070),
 	// section E
 	BoundingBox(2560, 1792, 3086, 2072),
 	//section F
