@@ -46,7 +46,7 @@ public:
 };
 
 enum GateDirection {
-	LEFT = 0, RIGHT = 1
+	LEFT = 0, RIGHT = 1, TOP = 2, BOTTOM = 3
 };
 
 class Env_Portal : public Environment
@@ -71,4 +71,16 @@ public:
 	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 	Env_Dungeon(float x, float y, float width, float height, GateDirection direction, int sectionToEnter);
+};
+
+class Env_Outdoor : public Environment
+{
+	GateDirection dir;
+	int sectionToEnter;
+public:
+	GateDirection GetOutDir();
+	int GetSectionToEnter();
+	virtual void Interact(Interactable* other);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
+	Env_Outdoor(float x, float y, float width, float height, GateDirection direction, int sectionToEnter);
 };

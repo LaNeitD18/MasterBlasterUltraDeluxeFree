@@ -30,7 +30,7 @@ BoundingBox JasonOverhead::GetBoundingBox()
 {
 	return BoundingBox(
 		pos.x - JASONO_BBOX_WIDTH,
-		pos.y - JASONO_BBOX_HEIGHT,
+		pos.y - JASONO_BBOX_HEIGHT + 2,
 		pos.x + JASONO_BBOX_WIDTH,
 		pos.y + JASONO_BBOX_HEIGHT);
 }
@@ -103,24 +103,24 @@ void JasonOverhead::Update()
 		v.y = 0;
 
 	if (!dead) {
-		if ((input['A'] & KEY_STATE_DOWN) &&
-			(input['D'] & KEY_STATE_DOWN))
+		if ((input[VK_LEFT] & KEY_STATE_DOWN) &&
+			(input[VK_RIGHT] & KEY_STATE_DOWN))
 			GoHalt();
-		else if (input['A'] & KEY_STATE_DOWN) {
+		else if (input[VK_LEFT] & KEY_STATE_DOWN) {
 			GoLeft();
 			newState = JASONO_STATE_LOOKING_LEFT;
 			isFlipVertical = false;
 		}
-		else if (input['D'] & KEY_STATE_DOWN) {
+		else if (input[VK_RIGHT] & KEY_STATE_DOWN) {
 			GoRight();
 			newState = JASONO_STATE_LOOKING_LEFT;
 			isFlipVertical = true;
 		}
-		else if (input['W'] & KEY_STATE_DOWN) {
+		else if (input[VK_UP] & KEY_STATE_DOWN) {
 			GoUp();
 			newState = JASONO_STATE_GOING_UP;
 		}
-		else if (input['S'] & KEY_STATE_DOWN) {
+		else if (input[VK_DOWN] & KEY_STATE_DOWN) {
 			GoDown();
 			newState = JASONO_STATE_GOING_DOWN;
 		}

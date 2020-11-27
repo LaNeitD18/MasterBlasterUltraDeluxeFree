@@ -1,5 +1,4 @@
 #pragma once
-#include "Game.h"
 #include "Textures.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -9,10 +8,12 @@
 #include "Manager.h"
 #include <unordered_set>
 
+class Game;
+
 class SceneArea2SideView: public Scene, public Manager<GameObject>
 {
 protected: 
-	//CMario *player;					// A play scene has to have player, right? 
+	//CMario *player;					// A play scene has to have player, right?  // No =)
 	
 	unordered_set<GameObject*> objects;
 	vector<GameObject*> toRemove;
@@ -55,6 +56,11 @@ public:
 	virtual void Update();
 	virtual void Render();
 	virtual void Release();
+
+	Player* GetTarget();
+	Camera* GetCamera();
+	void SetTarget(Player* player);
+	unordered_set<GameObject*> GetObjects();
 
 	// Inherited via Manager
 	virtual void AddElement(GameObject *) override;

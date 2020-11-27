@@ -1,5 +1,7 @@
 #include "AnimatedGameObject.h"
 
+static D3DCOLOR invulnerableColor[2] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(0,255,255,255) };
+
 void AnimatedGameObject::Render()
 {
 	// set to world coordinate
@@ -10,6 +12,8 @@ void AnimatedGameObject::Render()
 
 	//drawArguments.SetPosition(pos);
 	drawArguments.FlipVertical(isFlipVertical);
+	drawArguments.FlipHorizontal(isFlipHorizontal);
+	drawArguments.SetRotation(rotation);
 
 	currentAnimation->Render(currentTime, previousFrame, drawArguments);
 	if (!moving)
@@ -31,6 +35,25 @@ void AnimatedGameObject::SetAnimationType(int ANI)
 		previousFrame = 0;
 		currentTime = 0;
 	}
+}
+
+
+void Enemy::TakeDamage(int damage)
+{
+	HealthPoint -= damage;
+	damageFrame = DURATION_OF_DAMAGE_FLASH;
+	if (HealthPoint <= 0)
+		manager->RemoveElement(this);
+}
+
+
+void Enemy::Update()
+{
+	if (damageFrame > 0)
+	{
+		damageFrame--;
+	}
+	drawArguments.SetColor(invulnerableColor[(damageFrame / ENEMY_SPRITE_DURATION_OF_DAMAGE_FLASH) % 2]);
 }
 
 void AnimatedScene::Interact(Interactable * other) { other->Interact(this); }

@@ -1,7 +1,7 @@
 #pragma once
 #include "AnimatedGameObject.h"
 
-#define JUMPER_WALKING_SPEED 0.01f;
+#define JUMPER_WALKING_SPEED 0.33f;
 
 #define JUMPER_BBOX_WIDTH 16
 #define JUMPER_BBOX_HEIGHT 26

@@ -4,10 +4,10 @@
 #include "GameObject.h"
 #include "GameGlobal.h"
 
-#define SOPHIA_WALKING_SPEED 0.03f
-#define SOPHIA_ACCELERATION 0.0005f
-#define SOPHIA_JUMP_BOOST_AMOUNT 0.2f
-#define SOPHIA_JUMP_POWER 0.057f
+#define SOPHIA_WALKING_SPEED 1.0f
+#define SOPHIA_ACCELERATION 0.0166f
+#define SOPHIA_JUMP_BOOST_AMOUNT 6.6f
+#define SOPHIA_JUMP_POWER 1.881f
 #define SOPHIA_JUMP_BOOST_DECAY 0.9f
 
 #define SOPHIA_ACTION_AMOUNT 14
@@ -18,13 +18,16 @@
 #define SOPHIA_BBOX_OFFSET_TOP 4.01f
 #define SOPHIA_BBOX_OFFSET_BOTTOM 20
 
-#define SOPHIA_EPSILON_THRESHOLD 0.01f
+#define SOPHIA_EPSILON_THRESHOLD 0.33f
 #define SOPHIA_FALL_ACCELERATE_COEFFICIENT 1.05f
 #define SOPHIA_FALL_DECELERATE_COEFFICIENT 0.9f
-#define SOPHIA_FALL_MAX_SPEED 0.1f
+#define SOPHIA_FALL_MAX_SPEED 3.3f
 
 #define SOPHIA_WHEEL_DURATION 4
 
+#define SOPHIA_BULLET_OFFSET_X 4
+#define SOPHIA_BULLET_OFFSET_Y 7
+#define SOPHIA_BULLET_SPEED 3.3f
 /*
 Actions:
 	Walking
@@ -101,6 +104,7 @@ public:
 	void GoLeft();
 	void GoRight();
 	void GoHalt();
+	void Shoot();
 
 	virtual bool IsPrimaryPlayer() override;
 
@@ -110,5 +114,7 @@ public:
 	void SetAniByState(int state);
 	virtual void SetAnimationSet(AnimationSet* set) override;
 	virtual void TakeDamage(int) override;
+
+	JasonSideView* jason;
 };
 

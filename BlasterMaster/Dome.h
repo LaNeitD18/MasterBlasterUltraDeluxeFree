@@ -1,8 +1,8 @@
 #pragma once
 #include "AnimatedGameObject.h"
 
-#define DOME_WALKING_SPEED_X 0.01f;
-#define DOME_WALKING_SPEED_Y 0.005f;
+#define DOME_WALKING_SPEED_X 0.33f;
+#define DOME_WALKING_SPEED_Y 0.33f;
 
 #define DOME_BBOX_WIDTH 8
 #define DOME_BBOX_HEIGHT 8

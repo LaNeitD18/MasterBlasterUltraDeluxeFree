@@ -1,13 +1,13 @@
 #pragma once
 #include "GameObject.h"
 
-#define JASON_GRAVITY 0.002f
-#define JASON_ACCELERATION 0.001f
-#define JASON_WALKING_SPEED 0.02f
-#define JASON_CRAWLING_SPEED 0.005f
-#define JASON_JUMP_SPEED 0.062f
-#define JASON_ENTER_VEHICLE_JUMP_SPEED 0.044f
-#define JASON_ENTER_VEHICLE_DISAPPEAR_SPEED 0.03f
+#define JASON_GRAVITY 0.066f
+#define JASON_ACCELERATION 0.033f
+#define JASON_WALKING_SPEED 0.66f
+#define JASON_CRAWLING_SPEED 0.166f
+#define JASON_JUMP_SPEED 2.05f
+#define JASON_ENTER_VEHICLE_JUMP_SPEED 1.45f
+#define JASON_ENTER_VEHICLE_DISAPPEAR_SPEED 1.0f
 // 0.064f
 
 #define JASON_BBOX_OFFSET_LEFT_CRAWL -6
@@ -79,4 +79,5 @@ public:
 	virtual ~JasonSideView();
 
 	Sophia* sophia;
+	bool isTouchingSophia;
 };

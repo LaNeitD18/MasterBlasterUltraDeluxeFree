@@ -15,3 +15,4 @@
 #include "Teleporter.h"
 #include "Walker.h"
 #include "JasonOverhead.h"
+#include "Bullet.h"

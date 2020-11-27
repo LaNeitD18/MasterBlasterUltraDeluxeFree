@@ -1,6 +1,7 @@
 #include "Sophia.h"
 #include "Camera.h"
 #include "JasonSideView.h"
+#include "Bullet.h"
 
 void Sophia::Interact(Interactable * other) { other->Interact(this); }
 
@@ -17,6 +18,15 @@ BoundingBox Sophia::GetBoundingBox()
 void Sophia::Update()
 {
 	Player::Update();
+	if (state & SOPHIA_STATE_DYING)
+		drawArguments.SetColor(D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	if ((state & SOPHIA_STATE_LEAVING_VEHICLE) ||
+		(state & SOPHIA_STATE_LEFT_VEHICLE) ||
+		(state & SOPHIA_STATE_DYING))
+		return;
+	pos += dx();
+	
 	//*
 	int prevState = state;
 	int newState = state;
@@ -28,15 +38,20 @@ void Sophia::Update()
 	int flags = SOPHIA_STATE_LOOKING_LEFT & state;
 
 	// psuedo gravity
-	if (!wallBot)
+	if (!wallBot || v.y < 0) // If not touching ground or going up
 		if (v.y >= SOPHIA_EPSILON_THRESHOLD)
 		{
 			if (v.y < SOPHIA_FALL_MAX_SPEED)
 			v.y *= SOPHIA_FALL_ACCELERATE_COEFFICIENT;
 		}
-		else if (v.y <= -SOPHIA_EPSILON_THRESHOLD)
-			v.y *= SOPHIA_FALL_DECELERATE_COEFFICIENT;
-		else v.y = SOPHIA_EPSILON_THRESHOLD;
+		else
+		{
+			if (v.y <= -SOPHIA_EPSILON_THRESHOLD)
+				v.y *= SOPHIA_FALL_DECELERATE_COEFFICIENT;
+			else v.y = SOPHIA_EPSILON_THRESHOLD;
+			if (wallTop)
+				v.y = SOPHIA_EPSILON_THRESHOLD;
+		}
 	else {
 		v.y = 0;
 	}
@@ -164,36 +179,26 @@ void Sophia::Update()
 		(input[INPUT_LEAVE_VEHICLE] == KEY_STATE_ON_DOWN))
 	{
 		newState |= SOPHIA_STATE_LEAVING_VEHICLE;
-		JasonSideView* jason = new JasonSideView(pos.x, pos.y);
+		jason = new JasonSideView(pos.x, pos.y);
+		jason->sophia = this;
 		jason->SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(JASON_SIDEVIEW_ANIMATION_SET_NUMBER));
 		jason->SetManager(manager);
-		jason->v.x = v.x;
+		jason->v.x = 0;
 		jason->v.y = -JASON_ENTER_VEHICLE_DISAPPEAR_SPEED;
 		manager->AddElement(jason);
 	}
+	//*
 	if (newState & SOPHIA_ANI_LEFT_VEHICLE)
 		StartAnimationType(SOPHIA_ANI_LEFT_VEHICLE);
-
-	/*
-	if (input['Q'] & KEY_STATE_DOWN)
-		newState |= SOPHIA_STATE_LEAVING_VEHICLE;
 	//*/
-	//newState |= flags;
-
-	// reset wall collision
-	wallBot = wallLeft = wallRight = wallTop = false;
+	if (input[INPUT_SHOOT] == KEY_STATE_ON_DOWN)
+		Shoot();
 
 	if (HealthPoint <= 0)
 	{
 		newState |= SOPHIA_STATE_DYING;
 		// newState |= SOPHIA_STATE_DEAD;
 	}
-
-	if ((newState & state & SOPHIA_STATE_LEAVING_VEHICLE) ||
-		(newState & state & SOPHIA_STATE_LEFT_VEHICLE))
-		return;
-	//if (invulnerableFrame % 2 == 0)
-		pos += dx();
 
 	if (prevState != newState)
 	{
@@ -203,7 +208,9 @@ void Sophia::Update()
 	else
 		SetAniByState(newState &
 		(SOPHIA_STATE_LOOKED_UP | SOPHIA_STATE_WALKING));
-	//*/
+
+	// reset wall collision
+	wallBot = wallLeft = wallRight = wallTop = false;
 }
 
 void Sophia::Render()
@@ -242,7 +249,8 @@ void Sophia::Render()
 		targetAni = SOPHIA_ANI_LEFT_VEHICLE;
 	if ((state & SOPHIA_STATE_ENTERING_VEHICLE) && currentAni[SOPHIA_ANI_LEAVING_VEHICLE])
 		targetAni = SOPHIA_ANI_LEAVING_VEHICLE;
-	/*if (currentAni[SOPHIA_ANI_DYING])
+	//*
+	if (currentAni[SOPHIA_ANI_DYING])
 		targetAni = SOPHIA_ANI_DYING;//*/
 
 	int* targetFrame = &currentFrame[targetAni];
@@ -302,11 +310,14 @@ void Sophia::Render()
 							make_pair(SOPHIA_STATE_ENTERING_VEHICLE, false));
 						stateToChange.push_back(
 							make_pair(SOPHIA_STATE_LEFT_VEHICLE, false));
+						if (jason != NULL)
+							manager->RemoveElement(jason);
 					}
 				}
 				if (i == SOPHIA_ANI_JUMPING || i == SOPHIA_ANI_LOOKED_UP_JUMPING) {
-					stateToChange.push_back(
-						make_pair(SOPHIA_STATE_JUMP_BOOST, true));
+					if (!(state & SOPHIA_STATE_AIRBORNE))
+						stateToChange.push_back(
+							make_pair(SOPHIA_STATE_JUMP_BOOST, true));
 					stateToChange.push_back(
 						make_pair(SOPHIA_STATE_JUMPING, false));
 				}
@@ -458,6 +469,27 @@ void Sophia::GoHalt()
 		v.x = 0;
 	if (v.x < 0 && wallRight)
 		v.x = 0;
+}
+
+void Sophia::Shoot()
+{
+	Point bulletV;
+	Point bulletOffset;
+	if (state & SOPHIA_STATE_LOOKING_LEFT) {
+		bulletV = Point(-SOPHIA_BULLET_SPEED, 0);
+		bulletOffset = Point(SOPHIA_BULLET_OFFSET_X, SOPHIA_BULLET_OFFSET_Y);
+	}
+	else {
+		bulletV = Point(SOPHIA_BULLET_SPEED, 0);
+		bulletOffset = Point(-SOPHIA_BULLET_OFFSET_X, SOPHIA_BULLET_OFFSET_Y);
+	}
+	if (state & SOPHIA_STATE_LOOKED_UP)
+		bulletV = Point(0, -SOPHIA_BULLET_SPEED);
+	Bullet* bullet = new Bullet(
+		pos + bulletOffset,
+		bulletV, 2);
+	bullet->SetManager(manager);
+	manager->AddElement(bullet);
 }
 
 bool Sophia::IsPrimaryPlayer()

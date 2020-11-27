@@ -129,7 +129,12 @@ void Sprite::Draw(DrawArguments drawArguments)
 	D3DXVECTOR2 inScale = drawArguments.GetScale();
 	// position used in translation
 	D3DXVECTOR2 inTranslation = D3DXVECTOR2(drawArguments.GetTranslation().x + pos.x, drawArguments.GetTranslation().y + pos.y);
-	D3DXVECTOR2 inRotationCenter = D3DXVECTOR2(drawArguments.GetRotationCenter().x, drawArguments.GetRotationCenter().y);
+	
+	Point centerSprite = Point((inSourceRect.right - inSourceRect.left) / 2,
+		(inSourceRect.bottom - inSourceRect.top) / 2);
+	Point rotationCenter = drawArguments.GetRotationCenter() + centerSprite;
+	D3DXVECTOR2 inRotationCenter = D3DXVECTOR2(rotationCenter.x, rotationCenter.y);
+	
 	D3DXVECTOR2 scalingScenter = D3DXVECTOR2((inSourceRect.right - inSourceRect.left) / 2, (inSourceRect.bottom - inSourceRect.top) / 2);
 	inTranslation.x = round(inTranslation.x - scalingScenter.x);
 	inTranslation.y = round(inTranslation.y - scalingScenter.y);

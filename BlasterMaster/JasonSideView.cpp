@@ -1,6 +1,7 @@
 #include "JasonSideView.h"
 #include "GameGlobal.h"
 #include "Sophia.h"
+#include "Utils.h"
 
 JasonSideView::JasonSideView()
 {
@@ -93,6 +94,13 @@ void JasonSideView::Update()
 		(state & JASON_STATE_DEAD);
 	Input& input = *GameGlobal::GetInput();
 
+	Player::Update();
+
+	if (dead) 
+		return;
+
+	pos += dx();
+
 	if (!wallBot) {
 		flags |= JASON_STATE_AIRBORNE;
 		newState |= JASON_STATE_AIRBORNE;
@@ -164,7 +172,7 @@ void JasonSideView::Update()
 		newState |= JASON_STATE_DYING;
 	}
 
-	if (sophia != NULL &&
+	if (/*sophia != NULL*/ isTouchingSophia &&
 		input[INPUT_LEAVE_VEHICLE] == KEY_STATE_ON_DOWN)
 	{
 		newState |= JASON_STATE_ENTERING_VEHICLE;
@@ -178,19 +186,20 @@ void JasonSideView::Update()
 	}
 
 	if ((state & JASON_STATE_ENTERING_VEHICLE) &&
-		(v.y > JASON_ENTER_VEHICLE_DISAPPEAR_SPEED))
+		(v.y > JASON_ENTER_VEHICLE_DISAPPEAR_SPEED)) {
 		manager->RemoveElement(this);
-
-	Player::Update();
+		if (sophia != NULL)
+			sophia->jason = NULL;
+		else {
+			DebugOut(L"WARNING: Jason dont know sophia\n");
+		}
+	}
 
 	wallBot = wallLeft = wallRight = wallTop = false;
 
-	sophia = NULL;
+	//sophia = NULL;
+	isTouchingSophia = false;
 
-	if (dead)
-		return;
-
-	pos += dx();
 	if (newState != state)
 		SetState(newState);
 }

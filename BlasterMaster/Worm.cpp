@@ -46,6 +46,7 @@ void Worm::Walk()
 void Worm::Update()
 {
 	pos += dx();
+	Enemy::Update();
 
 	if (state == WORM_STATE_FALLING) {
 		Fall();
