@@ -534,14 +534,14 @@ void SceneArea2Overhead::Update()
 		objects[i]->Update();
 	}
 
-	if ((*input)[VK_HOME] & KEY_STATE_DOWN) {
-		//Game::GetInstance()->SwitchScene(1);
-		Game::GetInstance()->Init(L"Resources/scene.txt",1);
-	}
-	if ((*input)[VK_BACK] & KEY_STATE_DOWN) {
-		//Game::GetInstance()->SwitchScene(2);
-		Game::GetInstance()->Init(L"Resources/scene.txt", 2);
-	}
+	//if ((*input)[VK_HOME] & KEY_STATE_DOWN) {
+	//	//Game::GetInstance()->SwitchScene(1);
+	//	Game::GetInstance()->Init(L"Resources/scene.txt",1);
+	//}
+	//if ((*input)[VK_BACK] & KEY_STATE_DOWN) {
+	//	//Game::GetInstance()->SwitchScene(2);
+	//	Game::GetInstance()->Init(L"Resources/scene.txt", 2);
+	//}
 
 	// Update camera to follow mario
 	Point pos;
