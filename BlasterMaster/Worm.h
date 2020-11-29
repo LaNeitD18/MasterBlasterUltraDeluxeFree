@@ -27,7 +27,6 @@
 class Worm : public Enemy
 {
 	float jumpRange = 0;
-	Point direction;
 
 	void Fall();
 	void Walk();

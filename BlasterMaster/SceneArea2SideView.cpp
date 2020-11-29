@@ -13,6 +13,7 @@
 #include "Jumper.h"
 #include "Dome.h"
 #include "Floater.h"
+#include "Insect.h"
 
 using namespace std;
 
@@ -368,10 +369,10 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_FLOATER:
 		obj = new Floater(x, y);
 		break;
-	/*case OBJECT_TYPE_INSECT:
+	case OBJECT_TYPE_INSECT:
 		obj = new Insect(x, y);
 		break;
-	case OBJECT_TYPE_ORB:
+	/*case OBJECT_TYPE_ORB:
 		obj = new Orb(x, y);
 		break;
 	case OBJECT_TYPE_WALKER:
