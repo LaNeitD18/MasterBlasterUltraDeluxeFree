@@ -7,6 +7,10 @@
 
 #define JASONO_BBOX_WIDTH  12
 #define JASONO_BBOX_HEIGHT 16
+#define JASONO_BBOX_OFFSET_LEFT		-12 + 2
+#define JASONO_BBOX_OFFSET_RIGHT	 12 - 2
+#define JASONO_BBOX_OFFSET_TOP		-16 + 2
+#define JASONO_BBOX_OFFSET_BOTTOM	 16 - 1
 
 enum JasonOverheadState
 {
