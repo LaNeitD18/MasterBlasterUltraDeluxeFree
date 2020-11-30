@@ -54,6 +54,7 @@ void Insect::Fall() {
 void Insect::Update()
 {
 	pos += dx();
+	Enemy::Update();
 
 	if (wallLeft) {
 		direction.x = 1;
@@ -73,7 +74,6 @@ void Insect::Update()
 	else if (state == INSECT_STATE_FALLING) {
 		Fall();
 	}
-
 	
 	// reset wall collision
 	wallBot = wallLeft = wallRight = wallTop = false;
