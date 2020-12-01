@@ -77,6 +77,7 @@
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneOpening.h" />
+    <ClInclude Include="Ship.h" />
     <ClInclude Include="Sophia.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Teleporter.h" />
@@ -139,6 +140,7 @@
     <ClCompile Include="SceneArea2SideView.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="SceneOpening.cpp" />
+    <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Sophia.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Sprites.cpp" />

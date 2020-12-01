@@ -99,6 +99,7 @@ public:
     
 	// Enemies
 	INTERACTABLE_MIRROR_DEF(Enemy, Env_Wall);
+	INTERACTABLE_MIRROR_DEF(Enemy, Env_Portal);
 	//INTERACTABLE_MIRROR_DEF(Insect, Env_Wall);
 
 	INTERACTABLE_MIRROR_DEF(Bullet, Enemy);

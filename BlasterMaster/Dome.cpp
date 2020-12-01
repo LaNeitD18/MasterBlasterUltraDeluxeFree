@@ -1,8 +1,7 @@
-#include "Dome.h"
+﻿#include "Dome.h"
 #include "Utils.h"
 #include "SceneArea2SideView.h"
 #include "Game.h"
-#include "time.h"
 
 Dome::Dome() {
 	SetState(DOME_STATE_WALKING_LEFT);
@@ -14,7 +13,6 @@ Dome::Dome(float x, float y) {
 	drawArguments.SetRotationCenter(Point(0, 0));
 	direction = Point(-1, 1);
 	SetState(DOME_STATE_WALKING_LEFT);
-	drawArguments.SetRotation(4);
 }
 
 BoundingBox Dome::GetBoundingBox()
@@ -22,12 +20,8 @@ BoundingBox Dome::GetBoundingBox()
 	float left = pos.x + DOME_BBOX_OFFSET_LEFT;
 	float top = pos.y + DOME_BBOX_OFFSET_TOP;
 	float right = pos.x + DOME_BBOX_OFFSET_RIGHT;
-	float bottom;
-
-	if (state == DOME_STATE_DIE)
-		bottom = pos.y + DOME_BBOX_HEIGHT_DIE;
-	else
-		bottom = pos.y + DOME_BBOX_OFFSET_BOTTOM;
+	float bottom = pos.y + DOME_BBOX_OFFSET_BOTTOM;
+		
 	return BoundingBox(left, top, right, bottom);
 }
 
@@ -36,21 +30,26 @@ void Dome::Update()
 	pos += dx();
 	Enemy::Update();
 
+	// lay vi tri player
 	SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
 	Point playerPos = scene->GetTarget()->GetPosition();
 
-	if (abs(pos.x - playerPos.x) <= 2 && abs(pos.y - playerPos.y) >= 20) {
-		if (wallBot) {
+	// xet neu player va dome gan nhau theo x
+	if (abs(pos.x - playerPos.x) <= 2) {
+		// dome dang di tren wallBot va player phia tren dome
+		if (wallBot && playerPos.y < pos.y - 20) {
 			direction.y = -1;
 			wallBot = false;
 			SetState(DOME_STATE_JUMPING_VERTICAL);
 		}
-		if (wallTop) {
+		// dome tren wall top va player phia duoi dome
+		if (wallTop && playerPos.y > pos.y) {
 			direction.y = 1;
 			wallTop = false;
 			SetState(DOME_STATE_JUMPING_VERTICAL);
 		}
 	}
+	// TH phong theo chieu ngang
 	else if (abs(pos.y - playerPos.y) <= 2) {
 		if (wallLeft) {
 			direction.x = 1;
@@ -84,6 +83,7 @@ void Dome::Update()
 		JumpHorizontally();
 	}
 
+	// set rotation tùy theo vị trí hiện tại
 	if (wallBot) {
 		rotation = ROTATE_90DEGREE_TO_RADIAN * 0;
 	}
@@ -111,6 +111,7 @@ void Dome::Render()
 }
 
 void Dome::SetStateByDirection() {
+	// đang đi ngang, xét TH theo x là state hiện tại, y là state trước đó
 	if (v.x != 0) {
 		if (direction == Point(-1, 1) || direction == Point(1, 1)) {
 			pos.y -= 2;
@@ -121,7 +122,7 @@ void Dome::SetStateByDirection() {
 			SetState(DOME_STATE_WALKING_DOWN);
 		}
 	}
-
+	// đang đi dọc, xét TH theo y là state hiện tại, x là state trước đó
 	else if (v.y != 0) {
 		if (direction == Point(-1, 1) || direction == Point(-1, -1)) {
 			pos.x += 2;
@@ -136,9 +137,12 @@ void Dome::SetStateByDirection() {
 
 void Dome::WalkLeft()
 {
+	// nếu gặp wallLeft, đi như bth
 	if (wallLeft) {
 		SetStateByDirection();
 	}
+	// nếu đi ngang hết wall mà ko gặp wallLeft, thì đổi ngược dir x, y 
+	// để luôn đóng khung dome và quy định nó đi bên trong khung --> set state mới phù hợp
 	else {
 		if (!wallBot && !wallTop) {
 			direction.x = -direction.x;

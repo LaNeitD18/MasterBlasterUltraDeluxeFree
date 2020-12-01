@@ -293,6 +293,38 @@ void Interactable::Interact(Player* player, Enemy* enemy) {
 		player->TakeDamage(DAMAGE_OF_ENEMY);
 	}
 }
+
+void Interactable::Interact(Enemy* enemy, Env_Portal* portal) {
+	BoundingBox enemyBox = enemy->GetBoundingBox();
+	BoundingBox portalBox = portal->GetBoundingBox();
+	
+	if (enemyBox.IsOverlap(portalBox)) {
+		float overlapAreaX = min(enemyBox.r, portalBox.r) - max(enemyBox.l, portalBox.l);
+		float overlapAreaY = min(enemyBox.b, portalBox.b) - max(enemyBox.t, portalBox.t);
+		if (overlapAreaX > overlapAreaY)
+		{
+			
+		}
+		else
+		{
+			if (enemyBox.GetCenter().x < portalBox.GetCenter().x) {
+				enemy->wallRight = true;
+				// Snap right (player to left)
+				Point pos = enemy->GetPosition();
+				pos.x -= enemyBox.r - portalBox.l;
+				enemy->SetPosition(pos);
+			}
+			else
+			{
+				enemy->wallLeft = true;
+				// Snap left (player to right)
+				Point pos = enemy->GetPosition();
+				pos.x += portalBox.r - enemyBox.l;
+				enemy->SetPosition(pos);
+			}
+		}
+	}
+}
 #pragma endregion
 
 #pragma region Long

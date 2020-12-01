@@ -16,3 +16,4 @@
 #include "Walker.h"
 #include "JasonOverhead.h"
 #include "Bullet.h"
+#include "Ship.h"
