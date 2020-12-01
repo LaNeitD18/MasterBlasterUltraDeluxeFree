@@ -153,6 +153,13 @@ void Interactable::Interact(Player* player, Env_Portal* portal) {
 				BoundingBox limitArea = NULL;
 				if (dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene())) {
 					limitArea = SceneArea2SideView::cameraLimitAreaOfSection[sectionToEnter];
+					// section BF transition
+					if (portal->GetBoundingBox().l == 1472 && portal->GetBoundingBox().t == 2960) {
+						Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(50);
+					}
+					if (portal->GetBoundingBox().l == 1568 && portal->GetBoundingBox().t == 912) {
+						Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(55);
+					}
 				}
 				else if (dynamic_cast<SceneArea2Overhead*>(Game::GetInstance()->GetCurrentScene())) {
 					limitArea = SceneArea2Overhead::cameraLimitAreaOfSection[sectionToEnter];
