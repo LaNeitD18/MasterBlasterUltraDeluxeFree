@@ -35,11 +35,11 @@ Point SceneArea2Overhead::startPointInSection[5] = {
 	// section A
 	Point(75, 116),
 	// section B
-	Point(78, 368),
+	Point(74, 368),
 	//section C
-	Point(1406, 1136),
+	Point(1402, 1136),
 	// section D
-	Point(124, 1904)
+	Point(120, 1908)
 	// section E
 };
 

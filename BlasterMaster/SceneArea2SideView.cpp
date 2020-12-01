@@ -17,7 +17,7 @@
 using namespace std;
 
 // temporary set limit area for section, but not handle switch SceneOverhead, thinking of dividing into several SceneOverhead for easy win hihi
-BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[16] = {
+BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[19] = {
 	// section A
 	BoundingBox(0, 2814, 1038, 3094),
 	// section B
@@ -47,10 +47,16 @@ BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[16] = {
 	// dungeon 3
 	BoundingBox(1536, 32, 2062, 1814),
 	//dungeon 4
-	BoundingBox(2048, 256, 2574, 536)
+	BoundingBox(2048, 256, 2574, 536),
+	// section L
+	BoundingBox(768,1534,1550,1814),
+	// section M
+	BoundingBox(512,1024,782,1814),
+	//section N
+	BoundingBox(768,1024,1294,1548),
 };
 
-Point SceneArea2SideView::startPointInSection[16] = {
+Point SceneArea2SideView::startPointInSection[19] = {
 	// section A
 	Point(56, 2955),
 	// section B
@@ -80,7 +86,13 @@ Point SceneArea2SideView::startPointInSection[16] = {
 	// dungeon 3
 	Point(1600,140),
 	// dungeon 4
-	Point(2112,428)
+	Point(2112,428),
+	// section L
+	Point(1488, 1674),
+	// section M
+	Point(720, 1674),
+	// section N
+	Point(816,1156),
 };
 
 SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath, game)
@@ -698,6 +710,21 @@ void SceneArea2SideView::JumpCheckpoint()
 		else if (input[0x51]) {
 			target->SetPosition(startPointInSection[10]);
 			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[10]);
+		}
+		// section L
+		else if (input[0x57]) {
+			target->SetPosition(startPointInSection[15]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[15]);
+		}
+		// section L
+		else if (input[0x45]) {
+			target->SetPosition(startPointInSection[16]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[16]);
+		}
+		// section L
+		else if (input[0x52]) {
+			target->SetPosition(startPointInSection[17]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[17]);
 		}
 	}
 }
