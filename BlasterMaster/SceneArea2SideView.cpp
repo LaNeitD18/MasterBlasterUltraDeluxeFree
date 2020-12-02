@@ -853,7 +853,7 @@ void SceneArea2SideView::Update()
 			}
 			// section BF transitions
 			else if (directionEnterPortal == 50) {
-				target->SetPosition(Point(1586, 902));
+				target->SetPosition(Point(1586, 906));
 			}
 			else if (directionEnterPortal == 55) {
 				target->SetPosition(Point(1488, 2954));
