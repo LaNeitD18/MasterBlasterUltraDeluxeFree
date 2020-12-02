@@ -54,6 +54,8 @@ BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[19] = {
 	BoundingBox(512,1024,782,1814),
 	//section N
 	BoundingBox(768,1024,1294,1548),
+	//section O
+	BoundingBox(1280,1270,1550,1550)
 };
 
 Point SceneArea2SideView::startPointInSection[19] = {
@@ -92,7 +94,9 @@ Point SceneArea2SideView::startPointInSection[19] = {
 	// section M
 	Point(720, 1674),
 	// section N
-	Point(816,1156),
+	Point(816,1158),
+	//section O
+	Point(1328,1418)
 };
 
 SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath, game)
@@ -716,15 +720,20 @@ void SceneArea2SideView::JumpCheckpoint()
 			target->SetPosition(startPointInSection[15]);
 			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[15]);
 		}
-		// section L
+		// section M
 		else if (input[0x45]) {
 			target->SetPosition(startPointInSection[16]);
 			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[16]);
 		}
-		// section L
+		// section N
 		else if (input[0x52]) {
 			target->SetPosition(startPointInSection[17]);
 			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[17]);
+		}
+		// section O
+		else if (input[0x54]) {
+			target->SetPosition(startPointInSection[18]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[18]);
 		}
 	}
 }
