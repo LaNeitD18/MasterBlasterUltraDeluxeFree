@@ -1,4 +1,4 @@
-#include "Ship.h"
+﻿#include "Ship.h"
 #include "Utils.h"
 #include "SceneArea2SideView.h"
 #include "Game.h"
@@ -12,7 +12,8 @@ Ship::Ship(float x, float y) {
 	pos = Point(x, y);
 	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 	SetState(SHIP_STATE_FLYING);
-	timeToShoot = 120;
+	timeToShoot = 0;
+	jumpingTurn = 0;
 }
 
 BoundingBox Ship::GetBoundingBox()
@@ -36,14 +37,12 @@ void Ship::Shoot()
 		manager->AddElement(bullet);
 		//DebugOut(L"pos %f \n", playerPos.x);
 	}
-	timeToShoot = 30;
 }
 
 void Ship::Update()
 {
 	pos += dx();
 	Enemy::Update();
-	timeToShoot--;
 
 	if (wallLeft) {
 		v.x = SHIP_FLYING_SPEED;
@@ -52,17 +51,21 @@ void Ship::Update()
 		v.x = -SHIP_FLYING_SPEED;
 	}
 
+	// bắn hết lượt cuối thì reset số lượt và time, lần đầu khởi tạo thì cũng coi như vừa bắn xong lần cuối
 	if (timeToShoot == 0) {
+		// nếu còn lượt thì bắn, trừ lượt và đặt lại time cho viên tiếp theo
 		if (jumpingTurn != 0) {
 			Shoot();
 			jumpingTurn--;
+			timeToShoot = 30;
 		}
 		else {
 			srand(time(NULL));
 			jumpingTurn = rand() % 1 + 4;
-			timeToShoot = 120;
+			timeToShoot = 180;
 		}
 	}
+	timeToShoot--;
 
 	// reset wall collision
 	wallBot = wallLeft = wallRight = wallTop = false;

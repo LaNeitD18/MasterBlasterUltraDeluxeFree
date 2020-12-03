@@ -87,7 +87,7 @@ Resources\Enemies\HP8.txt
 Resources\Enemies\HP0.txt
 
 [ANIMATIONS]
-# id format: 5XX		Next available: 577
+# id format: 5XX		Next available: 578
 #1 ==== WORM =========
 Resources\Enemies\worm_ani.txt
 

@@ -1,4 +1,5 @@
 # id	left	top	right	bottom	texture_id
 # fly
 10031	84	406	102	422	15
+# shoot
 10032	104	406	122	422	15

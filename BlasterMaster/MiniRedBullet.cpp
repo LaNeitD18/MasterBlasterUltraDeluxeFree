@@ -45,7 +45,8 @@ void MiniRedBullet::Update()
 	}
 
 	if (!Camera::GetInstance()->GetBound().IsInsideBox(pos))
-		SetState(MINI_BULLET_STATE_EXPLODE);
+		//SetState(MINI_BULLET_STATE_EXPLODE);
+		manager->RemoveElement(this);
 
 	if (currentTime == 0 && state == MINI_BULLET_STATE_EXPLODE)
 		manager->RemoveElement(this);

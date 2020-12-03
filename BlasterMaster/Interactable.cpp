@@ -294,7 +294,12 @@ void Interactable::Interact(Player* player, Enemy* enemy) {
 }
 
 void Interactable::Interact(Player* player, MiniRedBullet* bullet) {
-
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox playerBox = player->GetBoundingBox();
+	if (playerBox.SweptAABB(bulletBox, bullet->dx() + player->dx()) != -INFINITY)
+	{
+		player->TakeDamage(10);
+	}
 }
 
 void Interactable::Interact(Env_Wall* wall, MiniRedBullet* bullet) {
