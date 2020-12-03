@@ -238,7 +238,6 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 	}
 }
 
-
 #pragma region Tien
 void Interactable::Interact(Enemy* enemy, Env_Wall* wall) {
 	BoundingBox enemyBox = enemy->GetBoundingBox();
@@ -293,6 +292,56 @@ void Interactable::Interact(Player* player, Enemy* enemy) {
 		player->TakeDamage(DAMAGE_OF_ENEMY);
 	}
 }
+
+void Interactable::Interact(Player* player, MiniRedBullet* bullet) {
+
+}
+
+void Interactable::Interact(Env_Wall* wall, MiniRedBullet* bullet) {
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox wallBox = wall->GetBoundingBox();
+	if (bulletBox.IsOverlap(wallBox)) {
+		float overlapAreaX = min(bulletBox.r, wallBox.r) - max(bulletBox.l, wallBox.l);
+		float overlapAreaY = min(bulletBox.b, wallBox.b) - max(bulletBox.t, wallBox.t);
+		if (overlapAreaX > overlapAreaY)
+		{
+			if (bulletBox.GetCenter().y > wallBox.GetCenter().y) {
+				bullet->wallTop = true;
+				// Snap top (player pushed down)
+				Point pos = bullet->GetPosition();
+				pos.y -= bulletBox.t - wallBox.b;
+				bullet->SetPosition(pos);
+			}
+			else
+			{
+				bullet->wallBot = true;
+				// Snap bottom (player pushed up)
+				Point pos = bullet->GetPosition();
+				pos.y += wallBox.t - bulletBox.b;
+				bullet->SetPosition(pos);
+			}
+		}
+		else
+		{
+			if (bulletBox.GetCenter().x < wallBox.GetCenter().x) {
+				bullet->wallRight = true;
+				// Snap right (player to left)
+				Point pos = bullet->GetPosition();
+				pos.x -= bulletBox.r - wallBox.l;
+				bullet->SetPosition(pos);
+			}
+			else
+			{
+				bullet->wallLeft = true;
+				// Snap left (player to right)
+				Point pos = bullet->GetPosition();
+				pos.x += wallBox.r - bulletBox.l;
+				bullet->SetPosition(pos);
+			}
+		}
+	}
+}
+
 
 void Interactable::Interact(Enemy* enemy, Env_Portal* portal) {
 	BoundingBox enemyBox = enemy->GetBoundingBox();

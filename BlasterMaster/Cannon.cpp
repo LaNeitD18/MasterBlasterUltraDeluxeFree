@@ -7,7 +7,7 @@ Cannon::Cannon() {
 Cannon::Cannon(float x, float y) {
 	SetState(CANNON_STATE_WALKING);
 	pos = Point(x, y);
-	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 }
 
 BoundingBox Cannon::GetBoundingBox()
@@ -62,5 +62,9 @@ void Cannon::SetState(int state)
 	case CANNON_STATE_WALKING:
 		v.x = CANNON_WALKING_SPEED;
 	}
-
 }
+
+#include "InteractableGroupInclude.h"
+#define CURRENT_CLASS Cannon
+void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)

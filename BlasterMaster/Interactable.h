@@ -42,7 +42,7 @@ class Interactable;
 
 // add new item
 #define INTERACTABLE_GROUP Player, Enemy, Env_Wall, Sophia, Env_Spike, Env_Lava, Env_Portal, AnimatedScene, Env_Dungeon, Env_Outdoor, \
-							Worm, Floater, Dome, Jumper, Insect, \
+							Worm, Floater, Dome, Jumper, Insect, Ship, MiniRedBullet,\
 							JasonSideView, JasonOverhead, Bullet \
 
 // Interactable
@@ -97,6 +97,8 @@ public:
 	INTERACTABLE_MIRROR_DEF(Player, Env_Dungeon);
 	INTERACTABLE_MIRROR_DEF(Player, Env_Outdoor);
     
+	INTERACTABLE_MIRROR_DEF(Player, MiniRedBullet);
+	INTERACTABLE_MIRROR_DEF(Env_Wall, MiniRedBullet);
 	// Enemies
 	INTERACTABLE_MIRROR_DEF(Enemy, Env_Wall);
 	INTERACTABLE_MIRROR_DEF(Enemy, Env_Portal);

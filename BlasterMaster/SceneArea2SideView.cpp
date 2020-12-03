@@ -15,6 +15,7 @@
 #include "Floater.h"
 #include "Insect.h"
 #include "Ship.h"
+#include "Cannon.h"
 
 using namespace std;
 
@@ -161,7 +162,7 @@ SceneArea2SideView::~SceneArea2SideView()
 #define OBJECT_TYPE_WALKER 11
 #define OBJECT_TYPE_SOPHIA 12
 #define OBJECT_TYPE_JASON_SIDE_VIEW 13
-#define OBJECT_TYPE_SHIP 15
+#define OBJECT_TYPE_SHIP 18
 
 //LeSon
 #define ENVIRONMENT_TYPE_WALL 1
@@ -355,10 +356,10 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		break;
 	/*case OBJECT_TYPE_TELEPORTER:
 		obj = new Teleporter(x, y);
-		break;
+		break;*/
 	case OBJECT_TYPE_CANNON:
 		obj = new Cannon(x, y);
-		break;*/
+		break;
 	case OBJECT_TYPE_DOME:
 		obj = new Dome(x, y);
 		break;

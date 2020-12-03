@@ -1,7 +1,7 @@
 #pragma once
 #include "AnimatedGameObject.h"
 
-#define SHIP_FLYING_SPEED 1.0f
+#define SHIP_FLYING_SPEED 0.5f
 
 #define SHIP_BBOX_OFFSET_LEFT	-13 + 1
 #define SHIP_BBOX_OFFSET_RIGHT	 13 - 1
@@ -14,6 +14,9 @@
 
 class Ship : public Enemy
 {
+	int timeToShoot;
+	int jumpingTurn;
+	void Shoot();
 public:
 	Ship();
 	Ship(float x, float y);

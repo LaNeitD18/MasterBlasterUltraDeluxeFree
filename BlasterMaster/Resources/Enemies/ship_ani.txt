@@ -1,9 +1,9 @@
 # ani_id	sprite1_id	frames1	sprite2_id	frames2	...
 # idle 
-503	10015	15	10016	15	10015	15	10017	15
+574	10164	12	10165	12
 #
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
-# CANNON
-4	503
+# SHIP
+18	574

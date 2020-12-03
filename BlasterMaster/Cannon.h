@@ -13,15 +13,19 @@
 #define CANNON_ANI_TELEPORT 0
 #define CANNON_ANI_DIE 2
 
-class Cannon : public AnimatedGameObject
+class Cannon : public Enemy
 {
-	virtual BoundingBox GetBoundingBox();
-	virtual void Update();
-	virtual void Render();
 
 public:
 	Cannon();
 	Cannon(float x, float y);
 	virtual void SetState(int state);
+
+	virtual void Interact(Interactable* other);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
+
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
 };
 

@@ -17,3 +17,4 @@
 #include "JasonOverhead.h"
 #include "Bullet.h"
 #include "Ship.h"
+#include "MiniRedBullet.h"
