@@ -509,7 +509,6 @@ void Interactable::Interact(Bullet* bullet, Enemy* enemy) {
 	{
 		enemy->TakeDamage(10);
 		bullet->GetManager()->RemoveElement(bullet);
-		// TODO: Take damage instead of removing enemy
 	}
 }
 #pragma endregion

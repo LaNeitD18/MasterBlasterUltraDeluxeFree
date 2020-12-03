@@ -1,4 +1,5 @@
 #include "AnimatedGameObject.h"
+#include "Utils.h"
 
 static D3DCOLOR invulnerableColor[2] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(0,255,255,255) };
 
@@ -37,13 +38,22 @@ void AnimatedGameObject::SetAnimationType(int ANI)
 	}
 }
 
+#define RATE_DISPLAY_POWER_ITEM 75
 
 void Enemy::TakeDamage(int damage)
 {
 	HealthPoint -= damage;
 	damageFrame = DURATION_OF_DAMAGE_FLASH;
-	if (HealthPoint <= 0)
+	if (HealthPoint <= 0) {
+		// get position of obj
+		Point pos = this->GetPosition();
 		manager->RemoveElement(this);
+		// TODO: Generate HP items 75 percent
+		int random = rand() % 100 + 1;
+		if (random <= RATE_DISPLAY_POWER_ITEM) {
+			displayMessage("power");
+		}
+	}
 }
 
 
