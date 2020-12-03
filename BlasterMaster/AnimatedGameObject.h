@@ -31,6 +31,7 @@ public:
 	virtual void TakeDamage(int damage);
 	virtual void Update();
 	int damageFrame;
+	Point direction;
 };
 
 

@@ -29,10 +29,10 @@ JasonOverhead::~JasonOverhead()
 BoundingBox JasonOverhead::GetBoundingBox()
 {
 	return BoundingBox(
-		pos.x - JASONO_BBOX_WIDTH,
-		pos.y - JASONO_BBOX_HEIGHT,
-		pos.x + JASONO_BBOX_WIDTH,
-		pos.y + JASONO_BBOX_HEIGHT);
+		pos.x + JASONO_BBOX_OFFSET_LEFT,
+		pos.y + JASONO_BBOX_OFFSET_TOP,
+		pos.x + JASONO_BBOX_OFFSET_RIGHT,
+		pos.y + JASONO_BBOX_OFFSET_BOTTOM);
 }
 
 void JasonOverhead::Render()

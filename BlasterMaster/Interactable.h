@@ -98,10 +98,7 @@ public:
 	INTERACTABLE_MIRROR_DEF(Player, Env_Outdoor);
     
 	// Enemies
-	INTERACTABLE_MIRROR_DEF(Worm, Env_Wall);
-	INTERACTABLE_MIRROR_DEF(Floater, Env_Wall);
-	INTERACTABLE_MIRROR_DEF(Dome, Env_Wall);
-	INTERACTABLE_MIRROR_DEF(Jumper, Env_Wall);
+	INTERACTABLE_MIRROR_DEF(Enemy, Env_Wall);
 	//INTERACTABLE_MIRROR_DEF(Insect, Env_Wall);
 
 	INTERACTABLE_MIRROR_DEF(Bullet, Enemy);
