@@ -1,15 +1,25 @@
 # ani_id	sprite1_id	frames1	sprite2_id	frames2	...
-# normal
+# bullet short
 567	10157	10
 
-# normal lv up
+# bullet long
 568	10158	10
 
+# orb small
+569	10164	10
+# orb medium
+570	10165	10
+# orb large
+571	10166	10
+
+# jason explosion bullet
+572	10167	10
+
 # explode
-569	10159	1	10160	1	10161	1	10162	1
+573	10159	1	10160	1	10161	1	10162	1
 
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
 # Bullet
-17	567	568	569
+17	567	568	569	570	571	572	573

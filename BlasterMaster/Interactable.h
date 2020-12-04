@@ -43,11 +43,13 @@ class Interactable;
 // add new item
 #define INTERACTABLE_GROUP Player, Enemy, Env_Wall, Sophia, Env_Spike, Env_Lava, Env_Portal, AnimatedScene, Env_Dungeon, Env_Outdoor, \
 							Worm, Floater, Dome, Jumper, Insect, \
-							JasonSideView, JasonOverhead, Bullet \
+							JasonSideView, JasonOverhead, PlayerBullet, EnemyBullet \
 
 // Interactable
 #define ___CLASS(x) class x;
 APPLY_MACRO(___CLASS, INTERACTABLE_GROUP)
+
+class Bullet;
 // Interactable
 class Interactable
 	/** Implement visitor pattern for interacting with self
@@ -104,12 +106,12 @@ public:
 	INTERACTABLE_MIRROR_DEF(Jumper, Env_Wall);
 	//INTERACTABLE_MIRROR_DEF(Insect, Env_Wall);
 
-	INTERACTABLE_MIRROR_DEF(Bullet, Enemy);
+	INTERACTABLE_MIRROR_DEF(PlayerBullet, Enemy);
 
 	INTERACTABLE_MIRROR_DEF(Player, Enemy);
 	
 	// Bullet
-	INTERACTABLE_MIRROR_DEF(Bullet, Env_Wall);
+	INTERACTABLE_MIRROR_DEF(PlayerBullet, Env_Wall);
 #undef INTERACTABLE_MIRROR_DEF
 };
 

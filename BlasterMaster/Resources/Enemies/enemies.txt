@@ -17,7 +17,7 @@
 15	Resources\sprites\enemies.png	254	255	255
 16	Resources\sprites\HP.png	255	255	255
 17	Resources\sprites\116445.png	0	57	115
-# next sprite: 10163
+# next sprite: 10168
 
 [SPRITES]
 # id format: 10xxx
@@ -80,7 +80,7 @@ Resources\Enemies\HP8.txt
 Resources\Enemies\HP0.txt
 
 [ANIMATIONS]
-# id format: 5XX		Next available: 570
+# id format: 5XX		Next available: 574
 #1 ==== WORM =========
 Resources\Enemies\worm_ani.txt
 

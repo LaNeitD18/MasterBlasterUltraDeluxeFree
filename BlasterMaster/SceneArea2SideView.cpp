@@ -918,5 +918,5 @@ void SceneArea2SideView::AddElement(GameObject* obj)
 
 void SceneArea2SideView::RemoveElement(GameObject * obj)
 {
-	toRemove.push_back(obj);
+	toRemove.insert(obj);
 }
