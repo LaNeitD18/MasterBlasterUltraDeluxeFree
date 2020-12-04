@@ -86,7 +86,7 @@ public:
 #define INPUT_RIGHT				VK_RIGHT
 #define INPUT_UP				VK_UP
 #define INPUT_DOWN				VK_DOWN
-#define INPUT_LEAVE_VEHICLE		VK_SHIFT
+#define INPUT_LEAVE_VEHICLE		'C'
 #define INPUT_SHOOT				'Z'
 
 class Player : public GameObject
