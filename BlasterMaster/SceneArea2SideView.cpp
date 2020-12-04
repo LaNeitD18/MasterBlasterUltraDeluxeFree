@@ -17,7 +17,7 @@
 using namespace std;
 
 // temporary set limit area for section, but not handle switch SceneOverhead, thinking of dividing into several SceneOverhead for easy win hihi
-BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[15] = {
+BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[19] = {
 	// section A
 	BoundingBox(0, 2814, 1038, 3094),
 	// section B
@@ -38,6 +38,8 @@ BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[15] = {
 	BoundingBox(2560, 32, 3086, 568),
 	// section J
 	BoundingBox(2048, 256, 2574, 536),
+	// section K
+	BoundingBox(1280, 1024, 1550, 1304),
 	// dungeon 1
 	BoundingBox(2560, 1792, 3086, 2072),
 	// dungeon 2
@@ -46,9 +48,17 @@ BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[15] = {
 	BoundingBox(1536, 32, 2062, 1814),
 	//dungeon 4
 	BoundingBox(2048, 256, 2574, 536),
+	// section L
+	BoundingBox(768,1534,1550,1814),
+	// section M
+	BoundingBox(512,1024,782,1814),
+	//section N
+	BoundingBox(768,1024,1294,1548),
+	//section O
+	BoundingBox(1280,1270,1550,1550)
 };
 
-Point SceneArea2SideView::startPointInSection[15] = {
+Point SceneArea2SideView::startPointInSection[19] = {
 	// section A
 	Point(56, 2955),
 	// section B
@@ -69,6 +79,8 @@ Point SceneArea2SideView::startPointInSection[15] = {
 	Point(2608, 140),
 	// section J
 	Point(2512,396),
+	// section K
+	Point(1488, 1164),
 	// dungeon 1
 	Point(3008,1932),
 	// dungeon 2
@@ -76,7 +88,15 @@ Point SceneArea2SideView::startPointInSection[15] = {
 	// dungeon 3
 	Point(1600,140),
 	// dungeon 4
-	Point(2112,428)
+	Point(2112,428),
+	// section L
+	Point(1488, 1674),
+	// section M
+	Point(720, 1674),
+	// section N
+	Point(816,1158),
+	//section O
+	Point(1328,1418)
 };
 
 SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath, game)
@@ -685,10 +705,40 @@ void SceneArea2SideView::JumpCheckpoint()
 			target->SetPosition(startPointInSection[8]);
 			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[8]);
 		}
+		// section J
+		else if (input[0x39]) {
+			target->SetPosition(startPointInSection[9]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[9]);
+		}
+		// section K
+		else if (input[0x51]) {
+			target->SetPosition(startPointInSection[10]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[10]);
+		}
+		// section L
+		else if (input[0x57]) {
+			target->SetPosition(startPointInSection[15]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[15]);
+		}
+		// section M
+		else if (input[0x45]) {
+			target->SetPosition(startPointInSection[16]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[16]);
+		}
+		// section N
+		else if (input[0x52]) {
+			target->SetPosition(startPointInSection[17]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[17]);
+		}
+		// section O
+		else if (input[0x54]) {
+			target->SetPosition(startPointInSection[18]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[18]);
+		}
 	}
 }
 
-#define FRAME_PORTAL_TRANSITIONS 260
+#define FRAME_PORTAL_TRANSITIONS 130
 #define DISTANCE_JASON_PORTAL 90
 
 void SceneArea2SideView::Update()
@@ -776,12 +826,21 @@ void SceneArea2SideView::Update()
 		}
 
 		if (directionEnterPortal == 1) {
-			mCamera->SetPosition(mCamera->GetPosition() + Point(1, 0));
-			target->SetPosition(target->GetPosition() + Point(0.1, 0));
+			mCamera->SetPosition(mCamera->GetPosition() + Point(2, 0));
+			target->SetPosition(target->GetPosition() + Point(0.2, 0));
 		}
 		else if (directionEnterPortal == 0) {
-			mCamera->SetPosition(mCamera->GetPosition() + Point(-1, 0));
-			target->SetPosition(target->GetPosition() - Point(0.1, 0));
+			mCamera->SetPosition(mCamera->GetPosition() + Point(-2, 0));
+			target->SetPosition(target->GetPosition() - Point(0.2, 0));
+		}
+		// section BF transitions
+		else if (directionEnterPortal == 50) {
+			mCamera->SetPosition(mCamera->GetPosition() + Point(2, 0));
+			target->SetPosition(target->GetPosition() + Point(0.2, 0));
+		}
+		else if (directionEnterPortal == 55) {
+			mCamera->SetPosition(mCamera->GetPosition() + Point(-2, 0));
+			target->SetPosition(target->GetPosition() - Point(0.2, 0));
 		}
 		frameToTransition++;
 		//DebugOut(L"Frame to transition: %d", frameToTransition);
@@ -791,6 +850,13 @@ void SceneArea2SideView::Update()
 			}
 			else if (directionEnterPortal == 0) {
 				target->SetPosition(target->GetPosition() - Point(DISTANCE_JASON_PORTAL, 0));
+			}
+			// section BF transitions
+			else if (directionEnterPortal == 50) {
+				target->SetPosition(Point(1586, 906));
+			}
+			else if (directionEnterPortal == 55) {
+				target->SetPosition(Point(1488, 2954));
 			}
 			isCameraFree = false;
 			directionEnterPortal = -1;

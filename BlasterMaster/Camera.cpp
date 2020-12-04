@@ -100,6 +100,11 @@ void Camera::SetTarget(Player * target)
 	this->target = target;
 }
 
+BoundingBox Camera::GetCameraLimitarea()
+{
+	return boundary;
+}
+
 void Camera::SetCameraLimitarea(BoundingBox boundary)
 {
 	this->boundary = boundary;

@@ -67,6 +67,6 @@ public:
 	virtual void RemoveElement(GameObject *) override;
 
 	// just handle change in one scene
-	static BoundingBox cameraLimitAreaOfSection[15];
-	static Point startPointInSection[15];
+	static BoundingBox cameraLimitAreaOfSection[19];
+	static Point startPointInSection[19];
 };
