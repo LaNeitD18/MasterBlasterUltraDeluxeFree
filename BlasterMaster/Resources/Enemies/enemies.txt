@@ -17,7 +17,18 @@
 15	Resources\sprites\enemies.png	254	255	255
 16	Resources\sprites\HP.png	255	255	255
 17	Resources\sprites\116445.png	0	57	115
-# next sprite: 10163
+18	Resources\sprites\ItemObjects.png	255	255	255
+# next sprite: 10177			Tien
+# next sprite: 20000			Son
+# next sprite: 30000			Long
+
+# Next animation: 1000			Tien
+# Next animation: 2000			Son
+# Next animation: 3000			Long
+
+# Next set: 100				Tien
+# Next set: 200				Son
+# Next set: 300				Long
 
 [SPRITES]
 # id format: 10xxx
@@ -60,6 +71,9 @@ Resources\Enemies\Jason_Sideview_sprites.txt
 #14 BULLET
 Resources\Enemies\bullet_sprites.txt
 
+#109 Item
+Resources\Enemies\item_sprites.txt
+
 #100 HP1
 Resources\Enemies\HP1.txt
 #101 HP2
@@ -80,7 +94,7 @@ Resources\Enemies\HP8.txt
 Resources\Enemies\HP0.txt
 
 [ANIMATIONS]
-# id format: 5XX		Next available: 570
+# id format: 5XX		
 #1 ==== WORM =========
 Resources\Enemies\worm_ani.txt
 
@@ -119,6 +133,9 @@ Resources\Enemies\Jason_Sideview_ani.txt
 
 #14 ==== BULLET =========
 Resources\Enemies\bullet_ani.txt
+
+#109 ==== ITEM =========
+Resources\Enemies\item_ani.txt
 
 [OBJECTS]
 # type	x	y	ani_set_id1	ani_set_id2...

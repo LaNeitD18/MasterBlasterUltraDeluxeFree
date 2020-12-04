@@ -9,14 +9,14 @@ Bullet::Bullet()
 {
 }
 
-Bullet::Bullet(Point pos, Point v, int level)
+Bullet::Bullet(Point pos, Point v, int type)
 {
 
 	this->pos = pos;
 	this->v = v;
 
 	state = 0;
-	this->level = level;
+	this->type = type;
 
 	if (v.y < 0) {
 		rotation = M_PI_2;
@@ -28,6 +28,17 @@ Bullet::Bullet(Point pos, Point v, int level)
 		isFlipVertical = false;
 
 	SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(BULLET_ANIMATION_SET_NUMBER));
+
+	if (v.y == 0)
+		if (v.x < 0)
+			dir = BULLET_DIR_LEFT;
+		else
+			dir = BULLET_DIR_RIGHT;
+	else
+		if (v.y < 0)
+			dir = BULLET_DIR_UP;
+		else
+			dir = BULLET_DIR_DOWN;
 }
 
 Bullet::~Bullet()
@@ -36,25 +47,40 @@ Bullet::~Bullet()
 
 BoundingBox Bullet::GetBoundingBox()
 {
-	if (v.y == 0)
-		if (v.x < 0)
-			return BoundingBox(
-				pos.x + BULLET_OFFSET_LEFT,
-				pos.y + BULLET_OFFSET_UP,
-				pos.x + BULLET_OFFSET_RIGHT,
-				pos.y + BULLET_OFFSET_DOWN);
-		else
-			return BoundingBox(
-				pos.x - BULLET_OFFSET_RIGHT,
-				pos.y + BULLET_OFFSET_UP,
-				pos.x - BULLET_OFFSET_LEFT,
-				pos.y + BULLET_OFFSET_DOWN);
-	else
+	switch (dir)
+	{
+	case BULLET_DIR_LEFT:
+		return BoundingBox(
+			pos.x + BULLET_OFFSET_LEFT,
+			pos.y + BULLET_OFFSET_UP,
+			pos.x + BULLET_OFFSET_RIGHT,
+			pos.y + BULLET_OFFSET_DOWN);
+		break;
+	case BULLET_DIR_UP:
 		return BoundingBox(
 			pos.x + BULLET_OFFSET_UP,
 			pos.y + BULLET_OFFSET_LEFT,
 			pos.x + BULLET_OFFSET_DOWN,
 			pos.y + BULLET_OFFSET_RIGHT);
+		break;
+	case BULLET_DIR_RIGHT:
+		return BoundingBox(
+			pos.x - BULLET_OFFSET_RIGHT,
+			pos.y + BULLET_OFFSET_UP,
+			pos.x - BULLET_OFFSET_LEFT,
+			pos.y + BULLET_OFFSET_DOWN);
+		break;
+	case BULLET_DIR_DOWN:
+		return BoundingBox(
+			pos.x + BULLET_OFFSET_DOWN,
+			pos.y + BULLET_OFFSET_LEFT,
+			pos.x + BULLET_OFFSET_UP,
+			pos.y + BULLET_OFFSET_RIGHT);
+		break;
+	default:
+		return BoundingBox();
+		break;
+	}
 }
 
 void Bullet::Update()
@@ -82,7 +108,7 @@ void Bullet::SetAnimationSet(AnimationSet* aniSet)
 {
 	AnimatedGameObject::SetAnimationSet(aniSet);
 
-	switch (level)
+	switch (type)
 	{
 	case 1:
 		SetAnimationType(BULLET_ANI_NORM1);
@@ -90,19 +116,132 @@ void Bullet::SetAnimationSet(AnimationSet* aniSet)
 	case 2:
 		SetAnimationType(BULLET_ANI_NORM2);
 		break;
+	case 3:
+		SetAnimationType(BULLET_ANI_NORM3);
+		break;
+	case 4:
+		SetAnimationType(BULLET_ANI_NORM4);
+		break;
+	case 5:
+		SetAnimationType(BULLET_ANI_NORM5);
+		break;
+	case 6:
+		SetAnimationType(BULLET_ANI_NORM6);
+		break;
 	default:
 		//SetAnimationType(BULLET_ANI_NORM1);
 		DEBUG(throw 1);
-		DebugOut(L"Unknown bullet level: %d", level);
+		DebugOut(L"Unknown bullet level: %d", type);
 		break;
 	}
 }
 
-int Bullet::GetLevel() { return level; }
+int Bullet::GetLevel() { return type; }
 
+SophiaBullet::SophiaBullet(Point pos, Point v, int level) : PlayerBullet(pos, v, 2)
+{
+	this->level = level;
+}
+
+SophiaBullet::~SophiaBullet()
+{
+}
+
+int SophiaBullet::GetDamage(BulletDamageModifier modifier)
+{
+	switch (modifier)
+	{
+	case BULLET_MODIFIER_BREAKABLE_WALL:
+		if (level >= 2)
+			return 10;
+		else return 0;
+	case BULLET_MODIFIER_NONE:
+		return 10;
+	default:
+		DebugOut(L"Unkwown bullet modifier: %d", (int)modifier);
+		DEBUG(throw 1);
+		return 0;
+	}
+}
+
+JasonSideviewBullet::JasonSideviewBullet(Point pos, Point v) : TimedPlayerBullet(pos, v, 3)
+{
+	TTL = JASON_SIDEVIEW_BULLET_TIME_TO_LIVE;
+}
+
+JasonSideviewBullet::~JasonSideviewBullet()
+{
+}
+
+int JasonSideviewBullet::GetDamage(BulletDamageModifier modifier)
+{
+	switch (modifier)
+	{
+	case BULLET_MODIFIER_BREAKABLE_WALL:
+		return 0;
+	case BULLET_MODIFIER_NONE:
+		return 7;
+	default:
+		DebugOut(L"Unkwown bullet modifier: %d", (int)modifier);
+		DEBUG(throw 1);
+		return 0;
+	}
+}
+
+JasonOverheadBulletNorm::JasonOverheadBulletNorm(Point pos, Point v) : TimedPlayerBullet(pos, v, 1)
+{
+	TTL = JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE;
+}
+
+JasonOverheadBulletNorm::~JasonOverheadBulletNorm()
+{
+}
+
+int JasonOverheadBulletNorm::GetDamage(BulletDamageModifier modifier)
+{
+	// TODO: Implement this
+	DEBUG(throw 1);
+	return 0;
+}
+
+JasonOverheadBulletGrenade::JasonOverheadBulletGrenade(Point pos, Point v) : TimedPlayerBullet(pos, v, 6)
+{
+	TTL = JASON_OVERHEAD_GRENADE_TIME_TO_LIVE;
+}
+
+JasonOverheadBulletGrenade::~JasonOverheadBulletGrenade()
+{
+}
+
+int JasonOverheadBulletGrenade::GetDamage(BulletDamageModifier modifier)
+{
+	// TODO: Implement this
+	DEBUG(throw 1);
+
+	return 0;
+}
+
+TimedPlayerBullet::~TimedPlayerBullet()
+{
+}
+
+void TimedPlayerBullet::Update()
+{
+	TTL--;
+	if (TTL <= 0)
+		SetState(state | BULLET_STATE_EXPLODE);
+
+	PlayerBullet::Update();
+}
 
 #include "InteractableGroupInclude.h"
-#define CURRENT_CLASS Bullet
+#define CURRENT_CLASS PlayerBullet
+void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
+#undef CURRENT_CLASS
+
+#include "InteractableGroupInclude.h"
+#define CURRENT_CLASS EnemyBullet
 void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS

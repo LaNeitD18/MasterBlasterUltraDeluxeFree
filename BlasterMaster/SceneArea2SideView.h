@@ -16,7 +16,7 @@ protected:
 	//CMario *player;					// A play scene has to have player, right?  // No =)
 	
 	unordered_set<GameObject*> objects;
-	vector<GameObject*> toRemove;
+	unordered_set<GameObject*> toRemove;
 
 	//LeSon
 	vector<Environment*> environments;

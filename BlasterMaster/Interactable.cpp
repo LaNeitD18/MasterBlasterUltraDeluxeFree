@@ -327,7 +327,7 @@ void Interactable::Interact(JasonSideView * player, Env_Wall * wall)
 		Point v = player->GetSpeed();
 		if (bottom && v.y > JASON_JUMP_SPEED + JASON_GRAVITY) {
 			float damage = v.y / JASON_JUMP_SPEED;
-			damage = (damage * damage - 1.24) / 1.37;
+			damage = (damage * damage - 1.31) / 0.7;
 			damage *= JASON_MAX_HEALTH;
 			player->TakeDamage(round(damage));
 		}
@@ -359,7 +359,7 @@ void Interactable::Interact(Sophia* sophia, JasonSideView * jason)
 		//jason->sophia = sophia;
 		jason->isTouchingSophia = true;
 }
-void Interactable::Interact(Bullet* bullet, Env_Wall * wall)
+void Interactable::Interact(PlayerBullet* bullet, Env_Wall * wall)
 {
 	BoundingBox bulletBox = bullet->GetBoundingBox();
 	BoundingBox wallBox = wall->GetBoundingBox();
@@ -367,12 +367,12 @@ void Interactable::Interact(Bullet* bullet, Env_Wall * wall)
 	if (wallBox.SweptAABB(bulletBox, bullet->dx()) != -INFINITY)
 		bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
 }
-void Interactable::Interact(Bullet* bullet, Enemy* enemy) {
+void Interactable::Interact(PlayerBullet* bullet, Enemy* enemy) {
 	BoundingBox bulletBox = bullet->GetBoundingBox();
 	BoundingBox enemyBox = enemy->GetBoundingBox();
 	if (enemyBox.SweptAABB(bulletBox, bullet->dx() + enemy->dx()) != -INFINITY)
 	{
-		enemy->TakeDamage(10);
+		enemy->TakeDamage(bullet->GetDamage());
 		bullet->GetManager()->RemoveElement(bullet);
 	}
 }

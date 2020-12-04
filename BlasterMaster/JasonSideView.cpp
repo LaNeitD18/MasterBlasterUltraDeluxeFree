@@ -145,6 +145,9 @@ void JasonSideView::Update()
 				GoHalt();
 	}
 
+	if (input[INPUT_SHOOT] == KEY_STATE_ON_DOWN)
+		Shoot();
+
 	if (!(newState & JASON_STATE_AIRBORNE) &&
 		(input[INPUT_JUMP] == KEY_STATE_ON_DOWN) &&
 		!(newState & JASON_STATE_CRAWLING) &&
@@ -285,6 +288,23 @@ void JasonSideView::GoHalt()
 		v.x = 0;
 	if (v.x < 0 && wallRight)
 		v.x = 0;
+}
+
+void JasonSideView::Shoot()
+{
+	Point bulletV;
+	Point bulletOffset;
+	if (state & JASON_STATE_LOOKING_LEFT) {
+		bulletV = Point(-SOPHIA_BULLET_SPEED, 0);
+	}
+	else {
+		bulletV = Point(SOPHIA_BULLET_SPEED, 0);
+	}
+	Bullet* bullet = new JasonSideviewBullet(
+		pos,
+		bulletV);
+	bullet->SetManager(manager);
+	manager->AddElement(bullet);
 }
 
 #include "InteractableGroupInclude.h"

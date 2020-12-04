@@ -485,9 +485,9 @@ void Sophia::Shoot()
 	}
 	if (state & SOPHIA_STATE_LOOKED_UP)
 		bulletV = Point(0, -SOPHIA_BULLET_SPEED);
-	Bullet* bullet = new Bullet(
+	Bullet* bullet = new SophiaBullet(
 		pos + bulletOffset,
-		bulletV, 2);
+		bulletV, 1);
 	bullet->SetManager(manager);
 	manager->AddElement(bullet);
 }

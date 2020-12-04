@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Bullet.h"
 
 #define JASON_GRAVITY 0.066f
 #define JASON_ACCELERATION 0.033f
@@ -73,6 +74,7 @@ public:
 	void GoLeft();
 	void GoRight();
 	void GoHalt();
+	void Shoot();
 
 	JasonSideView();
 	JasonSideView(float, float);

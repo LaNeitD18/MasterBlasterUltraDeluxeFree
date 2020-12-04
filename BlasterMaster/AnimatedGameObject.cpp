@@ -51,7 +51,8 @@ void Enemy::TakeDamage(int damage)
 		// TODO: Generate HP items 75 percent
 		int random = rand() % 100 + 1;
 		if (random <= RATE_DISPLAY_POWER_ITEM) {
-			displayMessage("power");
+			//displayMessage("power");
+
 		}
 	}
 }
