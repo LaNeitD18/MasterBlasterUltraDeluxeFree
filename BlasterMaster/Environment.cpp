@@ -138,6 +138,16 @@ int Env_Outdoor::GetSectionToEnter()
 	return sectionToEnter;
 }
 
+Env_Ladder::Env_Ladder(float x, float y, float width, float height)
+{
+	this->width = width;
+	this->height = height;
+	box.l = x;
+	box.t = y;
+	box.r = x + width;
+	box.b = y + height;
+}
+
 void Env_Wall::Interact(Interactable * other) { other->Interact(this); }
 
 void Env_Spike::Interact(Interactable * other) { other->Interact(this); }
@@ -149,6 +159,8 @@ void Env_Portal::Interact(Interactable * other) { other->Interact(this); }
 void Env_Dungeon::Interact(Interactable * other) { other->Interact(this); }
 
 void Env_Outdoor::Interact(Interactable * other) { other->Interact(this); }
+
+void Env_Ladder::Interact(Interactable* other) { other->Interact(this); }
 #include "InteractableGroupInclude.h"
 #define CURRENT_CLASS Env_Wall
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
@@ -168,5 +180,8 @@ APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS
 #define CURRENT_CLASS Env_Outdoor
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
+#undef CURRENT_CLASS
+#define CURRENT_CLASS Env_Ladder
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS

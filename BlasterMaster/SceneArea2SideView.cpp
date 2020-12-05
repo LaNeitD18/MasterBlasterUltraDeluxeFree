@@ -481,6 +481,9 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 		}
 		env = new Env_Dungeon(x, y, width, height, gateDir, sectionToEnter);
 		break;
+	case ENVIRONMENT_TYPE_LADDER:
+		env = new Env_Ladder(x, y, width, height);
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid env type: %d\n", env_type);
 		return;

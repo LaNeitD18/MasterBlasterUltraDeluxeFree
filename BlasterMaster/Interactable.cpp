@@ -112,7 +112,7 @@ void Interactable::Interact(Player* player, Env_Lava* lava) {
 }
 
 void Interactable::Interact(Player* player, Env_Portal* portal) {
-	// implement interact with lava (take damage)
+	// implement interact with portal (section)
 	Input& input = *GameGlobal::GetInput();
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox portalBox = portal->GetBoundingBox();
@@ -173,7 +173,7 @@ void Interactable::Interact(Player* player, Env_Portal* portal) {
 }
 
 void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
-	// implement interact with lava (take damage)
+	// implement interact with dungeon (enter Scene overhead)
 	Input& input = *GameGlobal::GetInput();
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox dungeonBox = dungeon->GetBoundingBox();
@@ -204,7 +204,7 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 }
 
 void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
-	// implement interact with lava (take damage)
+	// implement interact with outdoor (return scene sideview)
 	Input& input = *GameGlobal::GetInput();
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox outdoorBox = outdoor->GetBoundingBox();
@@ -242,6 +242,16 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 			//Camera::GetInstance()->SetCameraLimitarea(limitArea);
 			
 		}
+	}
+}
+
+void Interactable::Interact(JasonSideView* player, Env_Ladder* ladder) {
+	// implement interact with ladder (way to dungeon)
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox ladderBox = ladder->GetBoundingBox();
+	if (playerBox.IsOverlap(ladderBox)) {
+		//TODO: implement animation jason Long
+		displayMessage("i want to win there");
 	}
 }
 
