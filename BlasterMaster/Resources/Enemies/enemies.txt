@@ -11,7 +11,7 @@
 9	Resources\sprites\insect_78_78.png		255	255	255
 10	Resources\sprites\orb_76_76.png			255	255	255
 11	Resources\sprites\orb2_72_72.png		255	255	255
-12	Resources\sprites\Jason_SideView.png		255	255	255
+12	Resources\sprites\Jason_SideView2.png	0	255	255
 13	Resources\sprites\Jason_Overhead.png		255	255	255
 14	Resources\sprites\Sophia2.png	254	255	255
 15	Resources\sprites\enemies.png	254	255	255

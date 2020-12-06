@@ -112,7 +112,6 @@ void Interactable::Interact(Player* player, Env_Lava* lava) {
 }
 
 void Interactable::Interact(Player* player, Env_Portal* portal) {
-	// implement interact with lava (take damage)
 	Input& input = *GameGlobal::GetInput();
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox portalBox = portal->GetBoundingBox();
@@ -230,7 +229,6 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 			JasonSideView* jason = new JasonSideView(startPoint.x, startPoint.y);
 			current_player->jason = jason;
 			jason->sophia = current_player;
-			jason->SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(JASON_SIDEVIEW_ANIMATION_SET_NUMBER));
 			jason->SetManager(current_player->GetManager());
 			jason->v.x = 0;
 			jason->v.y = -JASON_ENTER_VEHICLE_DISAPPEAR_SPEED;

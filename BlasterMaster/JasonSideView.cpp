@@ -5,23 +5,29 @@
 
 JasonSideView::JasonSideView()
 {
-	state = 0x1000;
+	state = 0;
 	pos = Point();
 
 	currentAnimation = NULL;
+	// set looking right
+	isFlipVertical = true;
 	HealthPoint = JASON_MAX_HEALTH;
 	sophia = NULL;
+
+	animationSet = GameGlobal::GetAnimationSetLibrary()->Get(JASON_SIDEVIEW_ANIMATION_SET_NUMBER);
 }
 JasonSideView::JasonSideView(float x, float y)
 {
-	state = 0x1000;
+	state = 0;
 	pos = Point(x, y);
 	
 	currentAnimation = NULL;
 	// set looking right
-	drawArguments.FlipVertical(true);
+	isFlipVertical = true;
 	HealthPoint = JASON_MAX_HEALTH;
 	sophia = NULL;
+
+	animationSet = GameGlobal::GetAnimationSetLibrary()->Get(JASON_SIDEVIEW_ANIMATION_SET_NUMBER);
 }
 
 JasonSideView::~JasonSideView()
@@ -295,13 +301,13 @@ void JasonSideView::Shoot()
 	Point bulletV;
 	Point bulletOffset;
 	if (state & JASON_STATE_LOOKING_LEFT) {
-		bulletV = Point(-SOPHIA_BULLET_SPEED, 0);
+		bulletV = Point(-JASON_BULLET_SPEED, 0);
 	}
 	else {
-		bulletV = Point(SOPHIA_BULLET_SPEED, 0);
+		bulletV = Point(JASON_BULLET_SPEED, 0);
 	}
 	Bullet* bullet = new JasonSideviewBullet(
-		pos,
+		GetBoundingBox().GetCenter(),
 		bulletV);
 	bullet->SetManager(manager);
 	manager->AddElement(bullet);
