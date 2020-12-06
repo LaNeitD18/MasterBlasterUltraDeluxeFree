@@ -20,3 +20,4 @@
 #include "MiniRedBullet.h"
 #include "Skull.h"
 #include "SkullBullet.h"
+#include "CannonBullet.h"

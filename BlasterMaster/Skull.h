@@ -6,7 +6,7 @@
 #define SKULL_BBOX_OFFSET_TOP     (-10.5 + 1.5)
 #define SKULL_BBOX_OFFSET_BOTTOM  (10.5 - 1)
 
-#define SKULL_SPEED_FLYING_X		0.3f
+#define SKULL_SPEED_FLYING_X		1.0f
 #define SKULL_SPEED_FLYING_Y		1.0f
 
 enum SkullState : int {

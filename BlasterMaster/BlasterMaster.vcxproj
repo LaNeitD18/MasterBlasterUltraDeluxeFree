@@ -23,6 +23,7 @@
     <ClInclude Include="Animations.h" />
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="CannonBullet.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cannon.h" />
@@ -96,6 +97,7 @@
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="CannonBullet.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cannon.cpp" />
