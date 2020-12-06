@@ -41,7 +41,7 @@ class Interactable;
 #pragma endregion
 
 // add new item
-#define INTERACTABLE_GROUP Player, Enemy, Env_Wall, Sophia, Env_Spike, Env_Lava, Env_Portal, AnimatedScene, Env_Dungeon, Env_Outdoor, \
+#define INTERACTABLE_GROUP Player, Enemy, Env_Wall, Sophia, Env_Spike, Env_Lava, Env_Portal, AnimatedScene, Env_Dungeon, Env_Outdoor, Env_Ladder, \
 							Worm, Floater, Dome, Jumper, Insect, \
 							JasonSideView, JasonOverhead, PlayerBullet, EnemyBullet \
 
@@ -95,15 +95,15 @@ public:
 	INTERACTABLE_MIRROR_DEF(Player, Env_Wall);
 	INTERACTABLE_MIRROR_DEF(Player, Env_Spike);
     INTERACTABLE_MIRROR_DEF(Player, Env_Lava);
-	INTERACTABLE_MIRROR_DEF(Player, Env_Portal);
+	INTERACTABLE_MIRROR_DEF(Sophia, Env_Portal);
+	INTERACTABLE_MIRROR_DEF(JasonSideView, Env_Portal);
+	INTERACTABLE_MIRROR_DEF(JasonOverhead, Env_Portal);
 	INTERACTABLE_MIRROR_DEF(Player, Env_Dungeon);
 	INTERACTABLE_MIRROR_DEF(Player, Env_Outdoor);
+	INTERACTABLE_MIRROR_DEF(JasonSideView, Env_Ladder);
     
 	// Enemies
-	INTERACTABLE_MIRROR_DEF(Worm, Env_Wall);
-	INTERACTABLE_MIRROR_DEF(Floater, Env_Wall);
-	INTERACTABLE_MIRROR_DEF(Dome, Env_Wall);
-	INTERACTABLE_MIRROR_DEF(Jumper, Env_Wall);
+	INTERACTABLE_MIRROR_DEF(Enemy, Env_Wall);
 	//INTERACTABLE_MIRROR_DEF(Insect, Env_Wall);
 
 	INTERACTABLE_MIRROR_DEF(PlayerBullet, Enemy);

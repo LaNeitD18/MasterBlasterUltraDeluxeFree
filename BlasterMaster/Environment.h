@@ -84,3 +84,11 @@ public:
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 	Env_Outdoor(float x, float y, float width, float height, GateDirection direction, int sectionToEnter);
 };
+
+class Env_Ladder : public Environment
+{
+public:
+	virtual void Interact(Interactable* other);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
+	Env_Ladder(float x, float y, float width, float height);
+};

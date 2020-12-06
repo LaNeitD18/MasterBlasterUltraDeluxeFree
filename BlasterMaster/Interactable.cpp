@@ -111,13 +111,155 @@ void Interactable::Interact(Player* player, Env_Lava* lava) {
 	}
 }
 
-void Interactable::Interact(Player* player, Env_Portal* portal) {
+//void Interactable::Interact(Player* player, Env_Portal* portal) {
+//	// implement interact with portal (section)
+//	Input& input = *GameGlobal::GetInput();
+//	BoundingBox playerBox = player->GetBoundingBox();
+//	BoundingBox portalBox = portal->GetBoundingBox();
+//	if (/*playerBox.IsOverlap(portalBox) &&*/ portalBox.IsInsideBox(playerBox.GetCenter())) {
+//		GateDirection portalDirection = portal->GetPortalDir();
+//		if (((input[VK_RIGHT] & KEY_STATE_DOWN) && portalDirection == RIGHT) ||
+//			((input[VK_LEFT] & KEY_STATE_DOWN) && portalDirection == LEFT) ||
+//			((input[VK_UP] & KEY_STATE_DOWN) && portalDirection == TOP) ||
+//			((input[VK_DOWN] & KEY_STATE_DOWN) && portalDirection == BOTTOM)) {
+//			//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
+//			Game::GetInstance()->GetCurrentScene()->SetFreeCamera(true);
+//			if (portalDirection == RIGHT) {
+//				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(1);
+//			}
+//			else if (portalDirection == LEFT) {
+//				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(0);
+//			}
+//			else if (portalDirection == TOP) {
+//				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(2);
+//			}
+//			else {
+//				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(3);
+//			}
+//			int sectionToEnter = portal->GetSectionToEnter();
+//			if (sectionToEnter == -1) {
+//				BoundingBox currentCameraLimit = Camera::GetInstance()->GetBound();
+//				if (portalDirection == RIGHT) {
+//					Camera::GetInstance()->SetCameraLimitarea(currentCameraLimit.l + 256, currentCameraLimit.t, currentCameraLimit.r + 256, currentCameraLimit.b);
+//				}
+//				else if (portalDirection == LEFT) {
+//					Camera::GetInstance()->SetCameraLimitarea(currentCameraLimit.l - 256, currentCameraLimit.t, currentCameraLimit.r - 256, currentCameraLimit.b);
+//				}
+//				else if (portalDirection == TOP) {
+//					Camera::GetInstance()->SetCameraLimitarea(currentCameraLimit.l, currentCameraLimit.t - 256, currentCameraLimit.r, currentCameraLimit.b - 256);
+//				}
+//				else {
+//					Camera::GetInstance()->SetCameraLimitarea(currentCameraLimit.l, currentCameraLimit.t + 256, currentCameraLimit.r, currentCameraLimit.b + 256);
+//				}
+//			}
+//			else {
+//				BoundingBox limitArea = NULL;
+//				if (dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene())) {
+//					limitArea = SceneArea2SideView::cameraLimitAreaOfSection[sectionToEnter];
+//					// section BF transition
+//					if (portal->GetBoundingBox().l == 1472 && portal->GetBoundingBox().t == 2960) {
+//						Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(50);
+//					}
+//					if (portal->GetBoundingBox().l == 1568 && portal->GetBoundingBox().t == 912) {
+//						Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(55);
+//					}
+//				}
+//				else if (dynamic_cast<SceneArea2Overhead*>(Game::GetInstance()->GetCurrentScene())) {
+//					limitArea = SceneArea2Overhead::cameraLimitAreaOfSection[sectionToEnter];
+//				}
+//				Camera::GetInstance()->SetCameraLimitarea(limitArea);
+//			}
+//			
+//			DebugOut(L"%d\n", portalDirection);
+//		}
+//	}
+//}
+
+void Interactable::Interact(Sophia* player, Env_Portal* portal) {
+	// implement interact with portal (section)
+	Input& input = *GameGlobal::GetInput();
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox portalBox = portal->GetBoundingBox();
+	// fix bug case when jason be current player while sophia interaction with portal
+	SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
+	Sophia* sophia = dynamic_cast<Sophia*>(scene->GetTarget());
+	bool isSophiaPlaying = sophia != NULL;
+	if (isSophiaPlaying /*&& playerBox.IsOverlap(portalBox)*/ && portalBox.IsInsideBox(playerBox.GetCenter())) {
+		GateDirection portalDirection = portal->GetPortalDir();
+		if ((/*(input[VK_RIGHT] & KEY_STATE_DOWN)*/ player->GetSpeed().x>0 && portalDirection == RIGHT) ||
+			(/*(input[VK_LEFT] & KEY_STATE_DOWN)*/ player->GetSpeed().x<0 && portalDirection == LEFT)) {
+			//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
+			Game::GetInstance()->GetCurrentScene()->SetFreeCamera(true);
+			if (portalDirection == RIGHT) {
+				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(1);
+			}
+			else if (portalDirection == LEFT) {
+				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(0);
+			}
+			int sectionToEnter = portal->GetSectionToEnter();
+			
+			BoundingBox limitArea = NULL;
+			limitArea = SceneArea2SideView::cameraLimitAreaOfSection[sectionToEnter];
+			// section BF transition
+			if (portal->GetBoundingBox().l == 1472 && portal->GetBoundingBox().t == 2960) {
+				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(50);
+			}
+			if (portal->GetBoundingBox().l == 1568 && portal->GetBoundingBox().t == 912) {
+				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(55);
+			}
+			Camera::GetInstance()->SetCameraLimitarea(limitArea);
+
+			DebugOut(L"%d\n", portalDirection);
+		}
+	}
+}
+
+void Interactable::Interact(JasonSideView* player, Env_Portal* portal) {
+	// implement interact with portal (section)
 	Input& input = *GameGlobal::GetInput();
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox portalBox = portal->GetBoundingBox();
 	if (/*playerBox.IsOverlap(portalBox) &&*/ portalBox.IsInsideBox(playerBox.GetCenter())) {
 		GateDirection portalDirection = portal->GetPortalDir();
-		if (((input[VK_RIGHT] & KEY_STATE_DOWN) && portalDirection == RIGHT) || ((input[VK_LEFT] & KEY_STATE_DOWN) && portalDirection == LEFT) || ((input[VK_UP] & KEY_STATE_DOWN) && portalDirection == TOP) || ((input[VK_DOWN] & KEY_STATE_DOWN) && portalDirection == BOTTOM)) {
+		if ((/*(input[VK_RIGHT] & KEY_STATE_DOWN)*/ player->GetSpeed().x > 0 && portalDirection == RIGHT) ||
+			(/*(input[VK_LEFT] & KEY_STATE_DOWN)*/ player->GetSpeed().x < 0 && portalDirection == LEFT)) {
+			//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
+			Game::GetInstance()->GetCurrentScene()->SetFreeCamera(true);
+			if (portalDirection == RIGHT) {
+				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(1);
+			}
+			else if (portalDirection == LEFT) {
+				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(0);
+			}
+			int sectionToEnter = portal->GetSectionToEnter();
+
+			BoundingBox limitArea = NULL;
+			limitArea = SceneArea2SideView::cameraLimitAreaOfSection[sectionToEnter];
+			// section BF transition
+			if (portal->GetBoundingBox().l == 1472 && portal->GetBoundingBox().t == 2960) {
+				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(50);
+			}
+			if (portal->GetBoundingBox().l == 1568 && portal->GetBoundingBox().t == 912) {
+				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(55);
+			}
+			Camera::GetInstance()->SetCameraLimitarea(limitArea);
+
+			DebugOut(L"%d\n", portalDirection);
+		}
+	}
+}
+
+void Interactable::Interact(JasonOverhead* player, Env_Portal* portal) {
+	// implement interact with portal (section)
+	Input& input = *GameGlobal::GetInput();
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox portalBox = portal->GetBoundingBox();
+	if (/*playerBox.IsOverlap(portalBox) &&*/ portalBox.IsInsideBox(playerBox.GetCenter())) {
+		GateDirection portalDirection = portal->GetPortalDir();
+		if (((input[VK_RIGHT] & KEY_STATE_DOWN) && portalDirection == RIGHT) ||
+			((input[VK_LEFT] & KEY_STATE_DOWN) && portalDirection == LEFT) ||
+			((input[VK_UP] & KEY_STATE_DOWN) && portalDirection == TOP) ||
+			((input[VK_DOWN] & KEY_STATE_DOWN) && portalDirection == BOTTOM)) {
 			//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
 			Game::GetInstance()->GetCurrentScene()->SetFreeCamera(true);
 			if (portalDirection == RIGHT) {
@@ -150,29 +292,17 @@ void Interactable::Interact(Player* player, Env_Portal* portal) {
 			}
 			else {
 				BoundingBox limitArea = NULL;
-				if (dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene())) {
-					limitArea = SceneArea2SideView::cameraLimitAreaOfSection[sectionToEnter];
-					// section BF transition
-					if (portal->GetBoundingBox().l == 1472 && portal->GetBoundingBox().t == 2960) {
-						Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(50);
-					}
-					if (portal->GetBoundingBox().l == 1568 && portal->GetBoundingBox().t == 912) {
-						Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(55);
-					}
-				}
-				else if (dynamic_cast<SceneArea2Overhead*>(Game::GetInstance()->GetCurrentScene())) {
-					limitArea = SceneArea2Overhead::cameraLimitAreaOfSection[sectionToEnter];
-				}
+				limitArea = SceneArea2Overhead::cameraLimitAreaOfSection[sectionToEnter];
 				Camera::GetInstance()->SetCameraLimitarea(limitArea);
 			}
-			
+
 			DebugOut(L"%d\n", portalDirection);
 		}
 	}
 }
 
 void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
-	// implement interact with lava (take damage)
+	// implement interact with dungeon (enter Scene overhead)
 	Input& input = *GameGlobal::GetInput();
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox dungeonBox = dungeon->GetBoundingBox();
@@ -203,7 +333,7 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 }
 
 void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
-	// implement interact with lava (take damage)
+	// implement interact with outdoor (return scene sideview)
 	Input& input = *GameGlobal::GetInput();
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox outdoorBox = outdoor->GetBoundingBox();
@@ -243,183 +373,58 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 	}
 }
 
+void Interactable::Interact(JasonSideView* player, Env_Ladder* ladder) {
+	// implement interact with ladder (way to dungeon)
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox ladderBox = ladder->GetBoundingBox();
+	if (playerBox.IsOverlap(ladderBox)) {
+		//TODO: implement animation jason Long
+		displayMessage("i want to win there");
+	}
+}
+
 
 #pragma region Tien
-void Interactable::Interact(Worm* worm, Env_Wall* wall) {
-	BoundingBox wormBox = worm->GetBoundingBox();
+void Interactable::Interact(Enemy* enemy, Env_Wall* wall) {
+	BoundingBox enemyBox = enemy->GetBoundingBox();
 	BoundingBox wallBox = wall->GetBoundingBox();
-	if (wormBox.IsOverlap(wallBox)) {
-		float overlapAreaX = min(wormBox.r, wallBox.r) - max(wormBox.l, wallBox.l);
-		float overlapAreaY = min(wormBox.b, wallBox.b) - max(wormBox.t, wallBox.t);
+	if (enemyBox.IsOverlap(wallBox)) {
+		float overlapAreaX = min(enemyBox.r, wallBox.r) - max(enemyBox.l, wallBox.l);
+		float overlapAreaY = min(enemyBox.b, wallBox.b) - max(enemyBox.t, wallBox.t);
 		if (overlapAreaX > overlapAreaY)
 		{
-			if (wormBox.GetCenter().y > wallBox.GetCenter().y) {
-				worm->wallTop = true;
+			if (enemyBox.GetCenter().y > wallBox.GetCenter().y) {
+				enemy->wallTop = true;
 				// Snap top (player pushed down)
-				Point pos = worm->GetPosition();
-				pos.y -= wormBox.t - wallBox.b;
-				worm->SetPosition(pos);
+				Point pos = enemy->GetPosition();
+				pos.y -= enemyBox.t - wallBox.b;
+				enemy->SetPosition(pos);
 			}
 			else
 			{
-				worm->wallBot = true;
+				enemy->wallBot = true;
 				// Snap bottom (player pushed up)
-				Point pos = worm->GetPosition();
-				pos.y += wallBox.t - wormBox.b;
-				worm->SetPosition(pos);
+				Point pos = enemy->GetPosition();
+				pos.y += wallBox.t - enemyBox.b;
+				enemy->SetPosition(pos);
 			}
 		}
 		else
 		{
-			if (wormBox.GetCenter().x < wallBox.GetCenter().x) {
-				worm->wallRight = true;
+			if (enemyBox.GetCenter().x < wallBox.GetCenter().x) {
+				enemy->wallRight = true;
 				// Snap right (player to left)
-				Point pos = worm->GetPosition();
-				pos.x -= wormBox.r - wallBox.l;
-				worm->SetPosition(pos);
+				Point pos = enemy->GetPosition();
+				pos.x -= enemyBox.r - wallBox.l;
+				enemy->SetPosition(pos);
 			}
 			else
 			{
-				worm->wallLeft = true;
+				enemy->wallLeft = true;
 				// Snap left (player to right)
-				Point pos = worm->GetPosition();
-				pos.x += wallBox.r - wormBox.l;
-				worm->SetPosition(pos);
-			}
-		}
-	}
-}
-
-void Interactable::Interact(Floater* floater, Env_Wall* wall) {
-	BoundingBox floaterBox = floater->GetBoundingBox();
-	BoundingBox wallBox = wall->GetBoundingBox();
-	if (floaterBox.IsOverlap(wallBox)) {
-		float overlapAreaX = min(floaterBox.r, wallBox.r) - max(floaterBox.l, wallBox.l);
-		float overlapAreaY = min(floaterBox.b, wallBox.b) - max(floaterBox.t, wallBox.t);
-		if (overlapAreaX > overlapAreaY)
-		{
-			if (floaterBox.GetCenter().y > wallBox.GetCenter().y) {
-				floater->wallTop = true;
-				// Snap top (player pushed down)
-				Point pos = floater->GetPosition();
-				pos.y -= floaterBox.t - wallBox.b;
-				floater->SetPosition(pos);
-			}
-			else
-			{
-				floater->wallBot = true;
-				// Snap bottom (player pushed up)
-				Point pos = floater->GetPosition();
-				pos.y += wallBox.t - floaterBox.b;
-				floater->SetPosition(pos);
-			}
-		}
-		else
-		{
-			if (floaterBox.GetCenter().x < wallBox.GetCenter().x) {
-				floater->wallRight = true;
-				// Snap right (player to left)
-				Point pos = floater->GetPosition();
-				pos.x -= floaterBox.r - wallBox.l;
-				floater->SetPosition(pos);
-			}
-			else
-			{
-				floater->wallLeft = true;
-				// Snap left (player to right)
-				Point pos = floater->GetPosition();
-				pos.x += wallBox.r - floaterBox.l;
-				floater->SetPosition(pos);
-			}
-		}
-	}
-}
-
-void Interactable::Interact(Dome* dome, Env_Wall* wall) {
-	BoundingBox domeBox = dome->GetBoundingBox();
-	BoundingBox wallBox = wall->GetBoundingBox();
-	if (domeBox.IsOverlap(wallBox)) {
-		float overlapAreaX = min(domeBox.r, wallBox.r) - max(domeBox.l, wallBox.l);
-		float overlapAreaY = min(domeBox.b, wallBox.b) - max(domeBox.t, wallBox.t);
-		if (overlapAreaX > overlapAreaY)
-		{
-			if (domeBox.GetCenter().y > wallBox.GetCenter().y) {
-				dome->wallTop = true;
-				// Snap top (player pushed down)
-				Point pos = dome->GetPosition();
-				pos.y -= domeBox.t - wallBox.b;
-				dome->SetPosition(pos);
-			}
-			else
-			{
-				dome->wallBot = true;
-				// Snap bottom (player pushed up)
-				Point pos = dome->GetPosition();
-				pos.y += wallBox.t - domeBox.b;
-				dome->SetPosition(pos);
-			}
-		}
-		else
-		{
-			if (domeBox.GetCenter().x < wallBox.GetCenter().x) {
-				dome->wallRight = true;
-				// Snap right (player to left)
-				Point pos = dome->GetPosition();
-				pos.x -= domeBox.r - wallBox.l;
-				dome->SetPosition(pos);
-			}
-			else
-			{
-				dome->wallLeft = true;
-				// Snap left (player to right)
-				Point pos = dome->GetPosition();
-				pos.x += wallBox.r - domeBox.l;
-				dome->SetPosition(pos);
-			}
-		}
-	}
-}
-
-void Interactable::Interact(Jumper* jumper, Env_Wall* wall) {
-	BoundingBox jumperBox = jumper->GetBoundingBox();
-	BoundingBox wallBox = wall->GetBoundingBox();
-	if (jumperBox.IsOverlap(wallBox)) {
-		float overlapAreaX = min(jumperBox.r, wallBox.r) - max(jumperBox.l, wallBox.l);
-		float overlapAreaY = min(jumperBox.b, wallBox.b) - max(jumperBox.t, wallBox.t);
-		if (overlapAreaX > overlapAreaY)
-		{
-			if (jumperBox.GetCenter().y > wallBox.GetCenter().y) {
-				jumper->wallTop = true;
-				// Snap top (player pushed down)
-				Point pos = jumper->GetPosition();
-				pos.y -= jumperBox.t - wallBox.b;
-				jumper->SetPosition(pos);
-			}
-			else
-			{
-				jumper->wallBot = true;
-				// Snap bottom (player pushed up)
-				Point pos = jumper->GetPosition();
-				pos.y += wallBox.t - jumperBox.b;
-				jumper->SetPosition(pos);
-			}
-		}
-		else
-		{
-			if (jumperBox.GetCenter().x < wallBox.GetCenter().x) {
-				jumper->wallRight = true;
-				// Snap right (player to left)
-				Point pos = jumper->GetPosition();
-				pos.x -= jumperBox.r - wallBox.l;
-				jumper->SetPosition(pos);
-			}
-			else
-			{
-				jumper->wallLeft = true;
-				// Snap left (player to right)
-				Point pos = jumper->GetPosition();
-				pos.x += wallBox.r - jumperBox.l;
-				jumper->SetPosition(pos);
+				Point pos = enemy->GetPosition();
+				pos.x += wallBox.r - enemyBox.l;
+				enemy->SetPosition(pos);
 			}
 		}
 	}
