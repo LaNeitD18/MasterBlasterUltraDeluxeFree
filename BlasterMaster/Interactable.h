@@ -95,7 +95,9 @@ public:
 	INTERACTABLE_MIRROR_DEF(Player, Env_Wall);
 	INTERACTABLE_MIRROR_DEF(Player, Env_Spike);
     INTERACTABLE_MIRROR_DEF(Player, Env_Lava);
-	INTERACTABLE_MIRROR_DEF(Player, Env_Portal);
+	INTERACTABLE_MIRROR_DEF(Sophia, Env_Portal);
+	INTERACTABLE_MIRROR_DEF(JasonSideView, Env_Portal);
+	INTERACTABLE_MIRROR_DEF(JasonOverhead, Env_Portal);
 	INTERACTABLE_MIRROR_DEF(Player, Env_Dungeon);
 	INTERACTABLE_MIRROR_DEF(Player, Env_Outdoor);
 	INTERACTABLE_MIRROR_DEF(JasonSideView, Env_Ladder);
