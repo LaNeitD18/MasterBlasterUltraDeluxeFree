@@ -468,7 +468,7 @@ void Sophia::GoHalt()
 
 	if (v.x > 0 && wallRight)
 		v.x = 0;
-	if (v.x < 0 && wallRight)
+	if (v.x < 0 && wallLeft)
 		v.x = 0;
 }
 

@@ -86,4 +86,5 @@ public:
 
 	Sophia* sophia;
 	bool isTouchingSophia;
+	Env_Ladder* targetLadder;
 };
