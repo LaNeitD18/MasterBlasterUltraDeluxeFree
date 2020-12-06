@@ -7,7 +7,7 @@ Orb::Orb() {
 Orb::Orb(float x, float y) {
 	SetState(ORB_STATE_WALKING);
 	pos = Point(x, y);
-	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 }
 
 BoundingBox Orb::GetBoundingBox()
@@ -15,12 +15,8 @@ BoundingBox Orb::GetBoundingBox()
 	float left = pos.x;
 	float top = pos.y;
 	float right = pos.x + ORB_BBOX_WIDTH;
-	float bottom;
-
-	if (state == ORB_STATE_DIE)
-		bottom = pos.y + ORB_BBOX_HEIGHT_DIE;
-	else
-		bottom = pos.y + ORB_BBOX_HEIGHT;
+	float bottom = pos.y + ORB_BBOX_HEIGHT;
+		
 	return BoundingBox(left, top, right, bottom);
 }
 
@@ -54,13 +50,13 @@ void Orb::SetState(int state)
 	GameObject::SetState(state);
 	switch (state)
 	{
-	case ORB_STATE_DIE:
-		pos.y += ORB_BBOX_HEIGHT - ORB_BBOX_HEIGHT_DIE + 1;
-		v.x = 0;
-		v.y = 0;
-		break;
 	case ORB_STATE_WALKING:
 		v.x = ORB_WALKING_SPEED;
 	}
 
 }
+
+#include "InteractableGroupInclude.h"
+#define CURRENT_CLASS Orb
+void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)

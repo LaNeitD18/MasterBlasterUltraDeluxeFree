@@ -18,3 +18,5 @@
 #include "Bullet.h"
 #include "Ship.h"
 #include "MiniRedBullet.h"
+#include "Skull.h"
+#include "SkullBullet.h"

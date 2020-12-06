@@ -1,24 +1,24 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
-1	Resources\sprites\worm_76_44.png		255	255	255
-2	Resources\sprites\jumper_68_104.png		255	255	255
+#1	Resources\sprites\worm_76_44.png		255	255	255
+#2	Resources\sprites\jumper_68_104.png		255	255	255
 3	Resources\sprites\teleporter_104_136.png	255	255	255
-4	Resources\sprites\cannon_109_108.png		255	255	255
-5	Resources\sprites\dome_76_72.png		255	255	255
+#4	Resources\sprites\cannon_109_108.png		255	255	255
+#5	Resources\sprites\dome_76_72.png		255	255	255
 6	Resources\sprites\eye_76_76.png			255	255	255
 7	Resources\sprites\mine_64_40.png		255	255	255
-8	Resources\sprites\floater2_76_68.png		255	255	255
-9	Resources\sprites\insect_78_78.png		255	255	255
-10	Resources\sprites\orb_76_76.png			255	255	255
-11	Resources\sprites\orb2_72_72.png		255	255	255
+#8	Resources\sprites\floater2_76_68.png		255	255	255
+#9	Resources\sprites\insect_78_78.png		255	255	255
+#10	Resources\sprites\orb_76_76.png			255	255	255
+#11	Resources\sprites\orb2_72_72.png		255	255	255
 12	Resources\sprites\Jason_SideView.png		255	255	255
 13	Resources\sprites\Jason_Overhead.png		255	255	255
 14	Resources\sprites\Sophia2.png	254	255	255
 15	Resources\sprites\enemies.png	254	255	255
 16	Resources\sprites\HP.png	255	255	255
 17	Resources\sprites\116445.png	0	57	115
-18	Resources\sprites\ItemObjects.png	250	255	255
-# next sprite: 10170
+18	Resources\sprites\ItemObjects.png	254	255	255
+# next sprite: 10172
 
 [SPRITES]
 # id format: 10xxx
@@ -65,7 +65,13 @@ Resources\Enemies\bullet_sprites.txt
 Resources\Enemies\ship_sprites.txt
 
 #19 MINI RED BULLET
-Resources\Enemies\mini_red_bullet_sprites.txt 
+Resources\Enemies\mini_red_bullet_sprites.txt
+
+#20 SKULL
+Resources\Enemies\skull_sprites.txt
+
+#100 SKULL BULLET
+Resources\Enemies\skull_bullet_sprites.txt
 
 #100 HP1
 Resources\Enemies\HP1.txt
@@ -87,7 +93,7 @@ Resources\Enemies\HP8.txt
 Resources\Enemies\HP0.txt
 
 [ANIMATIONS]
-# id format: 5XX		Next available: 578
+# id format: 5XX		Next available: 580
 #1 ==== WORM =========
 Resources\Enemies\worm_ani.txt
 
@@ -132,6 +138,12 @@ Resources\Enemies\ship_ani.txt
 
 #19 ==== MINI RED BULLET =========
 Resources\Enemies\mini_red_bullet_ani.txt
+
+#20 ==== SKULL =========
+Resources\Enemies\skull_ani.txt
+
+#100 ==== SKULL BULLET =========
+Resources\Enemies\skull_bullet_ani.txt
 
 [OBJECTS]
 # type	x	y	ani_set_id1	ani_set_id2...
@@ -183,14 +195,19 @@ Resources\Enemies\mini_red_bullet_ani.txt
 #9	1370	2555	9
 
 # ORB
-#10	700	300	10
+#10	210	2920	10
 #10	500	300	11
 
 # SHIP
-18	210	2920	18
+#18	210	2920	18
 
 # SOPHIA
 12	56	2940	12	13	14	15
+
+# SKULL
+20	210	2920	20
+20	1705	1915	20
+20	1910	1165	20
 
 [ENVIRONMENTS]
 # type	x	y	width	height	portaldirid	sectionToEnter

@@ -16,6 +16,9 @@
 #include "Insect.h"
 #include "Ship.h"
 #include "Cannon.h"
+#include "Orb.h"
+#include "Skull.h"
+#include "SkullBullet.h"
 
 using namespace std;
 
@@ -163,6 +166,8 @@ SceneArea2SideView::~SceneArea2SideView()
 #define OBJECT_TYPE_SOPHIA 12
 #define OBJECT_TYPE_JASON_SIDE_VIEW 13
 #define OBJECT_TYPE_SHIP 18
+#define OBJECT_TYPE_SKULL 20
+#define OBJECT_TYPE_SKULL_BULLET 100
 
 //LeSon
 #define ENVIRONMENT_TYPE_WALL 1
@@ -378,10 +383,16 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SHIP:
 		obj = new Ship(x, y);
 		break;
-	/*case OBJECT_TYPE_ORB:
+	case OBJECT_TYPE_ORB:
 		obj = new Orb(x, y);
 		break;
-	case OBJECT_TYPE_WALKER:
+	case OBJECT_TYPE_SKULL:
+		obj = new Skull(x, y);
+		break;
+	case OBJECT_TYPE_SKULL_BULLET:
+		obj = new SkullBullet(x, y);
+		break;
+	/*case OBJECT_TYPE_WALKER:
 		obj = new Walker(x, y);
 		break;*/
 	case OBJECT_TYPE_SOPHIA:
