@@ -794,7 +794,7 @@ void SceneArea2SideView::Update()
 			Game::GetInstance()->Init(L"Resources/scene.txt", 2);
 			return;
 		}
-		GameGlobal::SetHealthPointSideView(target->GetHP());
+		GameGlobal::SetCurrentHealthPoint(target->GetHP());
 		mCamera->FollowTarget();
 		mCamera->SnapToBoundary();
 

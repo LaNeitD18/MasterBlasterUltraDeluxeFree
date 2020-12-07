@@ -310,6 +310,16 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 	bool isJasonPlay = jasonPlay != NULL;
 	if (playerBox.IsOverlap(dungeonBox) && isJasonPlay) {
 		if (input[VK_DOWN] & KEY_STATE_DOWN) {
+			// set healthpoint sophia to global
+			SceneArea2SideView* scene_sideview = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
+			for (auto x : scene_sideview->GetObjects()) {
+				Sophia* sophia = dynamic_cast<Sophia*>(x);
+				if (sophia != NULL) {
+					GameGlobal::SetCurrentHealthPointSophia(sophia->GetHP());
+					break;
+				}
+			}
+			// jason setup
 			BoundingBox limitArea = SceneArea2Overhead::cameraLimitAreaOfSection[dungeon->GetSectionToEnter()];
 			Point startPoint = SceneArea2Overhead::startPointInSection[dungeon->GetSectionToEnter()];
 			//Game::GetInstance()->GetCurrentScene()->Release();
@@ -320,6 +330,8 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 				if (current_player != NULL &&
 					current_player->IsPrimaryPlayer()) {
 					scene->SetTarget(current_player);
+					// set hp based on jason sideview
+					current_player->SetHP(player->GetHP());
 					break;
 				}
 			}
@@ -353,6 +365,8 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 					scene->SetTarget(current_player);
 					//current_player->SetPosition(startPoint);
 					current_player->SetPosition(GameGlobal::GetLastPositionSophia());
+					// set hp based on sophia current hp
+					current_player->SetHP(GameGlobal::GetCurrentHealthPointSophia());
 					break;
 				}
 			}
@@ -366,10 +380,11 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 			current_player->GetManager()->AddElement(jason);
 			current_player->SetState(SOPHIA_STATE_LEFT_VEHICLE);
 			scene->SetTarget(jason);
+			// set hp based on jason SceneOverhead
+			jason->SetHP(player->GetHP());
 			//scene->GetTarget()->SetPosition(startPoint);
 			scene->GetCamera()->SetCameraLimitarea(limitArea);
 			//Camera::GetInstance()->SetCameraLimitarea(limitArea);
-			
 		}
 	}
 }
