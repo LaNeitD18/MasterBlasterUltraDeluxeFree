@@ -43,13 +43,14 @@ void MineBullet::Update()
 	DebugOut(L"vy %f", v.y);
 
 	SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
-	if (scene->GetTarget()->GetBoundingBox().IsInsideBox(pos)) {
-		if (wallBot || wallTop || wallLeft || wallRight) {
-			v = Point();
-			SetState(MINE_BULLET_STATE_EXPLODE);
+	if (scene != nullptr) {
+		if (scene->GetTarget()->GetBoundingBox().IsInsideBox(pos)) {
+			if (wallBot || wallTop || wallLeft || wallRight) {
+				v = Point();
+				SetState(MINE_BULLET_STATE_EXPLODE);
+			}
 		}
 	}
-
 	if (currentTime == 0 && state == MINE_BULLET_STATE_EXPLODE)
 		manager->RemoveElement(this);
 

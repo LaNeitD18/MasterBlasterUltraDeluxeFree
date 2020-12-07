@@ -84,7 +84,10 @@ void Skull::Update()
 	Enemy::Update();
 
 	SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
-	Point playerPos = scene->GetTarget()->GetPosition();
+	Point playerPos = Point();
+	if (scene != nullptr) {
+		playerPos = scene->GetTarget()->GetPosition();
+	}
 
 	if (state == SKULL_STATE_FLYING_X) {
 		FlyHorizontally(playerPos);

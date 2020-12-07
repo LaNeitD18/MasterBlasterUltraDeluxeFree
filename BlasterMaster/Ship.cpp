@@ -29,7 +29,10 @@ BoundingBox Ship::GetBoundingBox()
 void Ship::Shoot()
 {
 	SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
-	Point playerPos = scene->GetTarget()->GetPosition();
+	Point playerPos = Point();
+	if (scene != nullptr) {
+		playerPos = scene->GetTarget()->GetPosition();
+	}
 
 	if (playerPos.y > pos.y + SHIP_BBOX_OFFSET_BOTTOM) {
 		MiniRedBullet* bullet = new MiniRedBullet(pos, playerPos);

@@ -32,7 +32,10 @@ void Dome::Update()
 
 	// lay vi tri player
 	SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
-	Point playerPos = scene->GetTarget()->GetPosition();
+	Point playerPos = Point();
+	if (scene != nullptr) {
+		playerPos = scene->GetTarget()->GetPosition();
+	}
 
 	// xet neu player va dome gan nhau theo x
 	if (abs(pos.x - playerPos.x) <= 2) {

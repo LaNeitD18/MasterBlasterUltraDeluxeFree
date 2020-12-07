@@ -40,28 +40,29 @@ void SkullBullet::Update()
 	pos += dx();
 
 	SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
-
-	if (scene->GetTarget()->GetBoundingBox().IsInsideBox(pos)) {
-		v = Point(0, 0);
-		SetState(SKULL_BULLET_STATE_EXPLODE);
-		//DebugOut(L"Bomb\n");
-		// tai sao co luc bomb rot xuong dat nhung ko thay ani explode
-	}
-	else {
-		if (timeToExplode == 0) {
-			v.x = 0;
+	if (scene != nullptr) {
+		if (scene->GetTarget()->GetBoundingBox().IsInsideBox(pos)) {
+			v = Point(0, 0);
 			SetState(SKULL_BULLET_STATE_EXPLODE);
+			//DebugOut(L"Bomb\n");
+			// tai sao co luc bomb rot xuong dat nhung ko thay ani explode
 		}
 		else {
-			if (wallBot) {
-				v.y = 0;
+			if (timeToExplode == 0) {
+				v.x = 0;
+				SetState(SKULL_BULLET_STATE_EXPLODE);
 			}
 			else {
-				v.y = 1;
-			}
+				if (wallBot) {
+					v.y = 0;
+				}
+				else {
+					v.y = 1;
+				}
 
-			if ((v.x < 0 && wallLeft) || (v.x > 0 && wallRight)) {
-				v.x = -v.x;
+				if ((v.x < 0 && wallLeft) || (v.x > 0 && wallRight)) {
+					v.x = -v.x;
+				}
 			}
 		}
 	}

@@ -31,7 +31,10 @@ BoundingBox Floater::GetBoundingBox()
 void Floater::Shoot()
 {
 	SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
-	Point playerPos = scene->GetTarget()->GetPosition();
+	Point playerPos = Point();
+	if (scene != nullptr) {
+		playerPos = scene->GetTarget()->GetPosition();
+	}
 
 	if (playerPos.y > pos.y + FLOATER_BBOX_HEIGHT) {
 		MiniRedBullet* bullet = new MiniRedBullet(pos, playerPos);
