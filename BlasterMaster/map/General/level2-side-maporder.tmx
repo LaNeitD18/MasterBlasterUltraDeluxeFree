@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="192" height="192" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="720">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="192" height="192" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="721">
  <tileset firstgid="1" name="level2-side-tiless" tilewidth="16" tileheight="16" tilecount="0" columns="144">
   <image source="Map/General/level2-side-tiless.png" width="2304" height="16"/>
  </tileset>
@@ -637,6 +637,9 @@
   <object id="702" x="800" y="1168" width="32" height="16"/>
   <object id="715" x="1216" y="1424" width="32" height="16"/>
   <object id="716" x="1312" y="1424" width="32" height="16"/>
+  <object id="720" x="2336" y="704">
+   <point/>
+  </object>
  </objectgroup>
  <objectgroup id="12" name="ladder">
   <object id="535" x="1584" y="144" width="16" height="208"/>
