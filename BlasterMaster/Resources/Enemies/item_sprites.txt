@@ -1,3 +1,3 @@
 # id	left	top	right	bottom	texture_id
 # power
-10176	255	109	271	125	18
+20001	255	109	271	125	18

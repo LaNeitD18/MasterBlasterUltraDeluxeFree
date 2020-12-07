@@ -399,6 +399,18 @@ void Interactable::Interact(JasonSideView* player, Env_Ladder* ladder) {
 	}
 }
 
+#define POWER_GAIN 10
+
+void Interactable::Interact(Player* player, ItemPower* item) {
+	// implement interact between player and enemy (take damage)
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox itemBox = item->GetBoundingBox();
+	if (playerBox.IsOverlap(itemBox)) {
+		player->SetHP(player->GetHP() + POWER_GAIN);
+		item->GetManager()->RemoveElement(item);
+	}
+}
+
 
 #pragma region Tien
 void Interactable::Interact(Enemy* enemy, Env_Wall* wall) {

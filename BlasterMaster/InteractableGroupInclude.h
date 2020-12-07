@@ -22,3 +22,4 @@
 #include "SkullBullet.h"
 #include "CannonBullet.h"
 #include "MineBullet.h"
+#include "ItemPower.h"

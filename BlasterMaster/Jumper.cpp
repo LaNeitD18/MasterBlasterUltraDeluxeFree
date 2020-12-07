@@ -34,7 +34,6 @@ void Jumper::Jump()
 
 void Jumper::Walk()
 {
-	srand(time(NULL));
 
 	countDownTimeToJump--;
 	if (countDownTimeToJump == 0) {

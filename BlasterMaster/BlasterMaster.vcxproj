@@ -41,6 +41,7 @@
     <ClInclude Include="Insect.h" />
     <ClInclude Include="Interactable.h" />
     <ClInclude Include="InteractableGroupInclude.h" />
+    <ClInclude Include="ItemPower.h" />
     <ClInclude Include="JasonOverhead.h" />
     <ClInclude Include="JasonSideView.h" />
     <ClInclude Include="Jumper.h" />
@@ -114,6 +115,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Insect.cpp" />
     <ClCompile Include="Interactable.cpp" />
+    <ClCompile Include="ItemPower.cpp" />
     <ClCompile Include="JasonOverhead.cpp" />
     <ClCompile Include="JasonSideView.cpp" />
     <ClCompile Include="Jumper.cpp" />

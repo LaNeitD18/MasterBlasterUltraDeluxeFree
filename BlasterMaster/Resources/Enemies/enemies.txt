@@ -89,7 +89,7 @@ Resources\Enemies\cannon_bullet_sprites.txt
 
 #102 MINE BULLET
 Resources\Enemies\mine_bullet_sprites.txt
-#109 Item
+#201 Item
 Resources\Enemies\item_sprites.txt
 
 #100 HP1
@@ -169,7 +169,7 @@ Resources\Enemies\cannon_bullet_ani.txt
 
 #102 ==== MINE BULLET =========
 Resources\Enemies\mine_bullet_ani.txt
-#109 ==== ITEM =========
+#201 ==== ITEM =========
 Resources\Enemies\item_ani.txt
 
 [OBJECTS]

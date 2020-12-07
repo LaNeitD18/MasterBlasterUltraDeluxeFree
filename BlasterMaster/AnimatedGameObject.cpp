@@ -1,5 +1,6 @@
 #include "AnimatedGameObject.h"
 #include "Utils.h"
+#include "ItemPower.h"
 
 static D3DCOLOR invulnerableColor[2] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(0,255,255,255) };
 
@@ -52,7 +53,9 @@ void Enemy::TakeDamage(int damage)
 		int random = rand() % 100 + 1;
 		if (random <= RATE_DISPLAY_POWER_ITEM) {
 			//displayMessage("power");
-
+			ItemPower* item_power = new ItemPower(pos);
+			item_power->SetManager(manager);
+			manager->AddElement(item_power);
 		}
 	}
 }
