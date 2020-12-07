@@ -1,4 +1,5 @@
 #include "Jumper.h"
+#include "time.h"
 
 Jumper::Jumper() {
 	SetState(JUMPER_STATE_WALKING);
@@ -7,20 +8,61 @@ Jumper::Jumper() {
 Jumper::Jumper(float x, float y) {
 	SetState(JUMPER_STATE_WALKING);
 	pos = Point(x, y);
-	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
+
+	jumpRange = 0;
+	countDownTimeToJump = COUNTDOWN_TIME_TO_JUMP;
+	v.x = JUMPER_WALKING_SPEED;
 }
 
 BoundingBox Jumper::GetBoundingBox()
 {
-	float left = pos.x;
-	float top = pos.y;
-	float right = pos.x + JUMPER_BBOX_WIDTH;
-	float bottom;
-	if (state == JUMPER_STATE_DIE)
-		bottom = pos.y + JUMPER_BBOX_HEIGHT_DIE;
-	else
-		bottom = pos.y + JUMPER_BBOX_HEIGHT;
+	float left = pos.x + JUMPER_BBOX_OFFSET_LEFT;
+	float top = pos.y + JUMPER_BBOX_OFFSET_TOP;
+	float right = pos.x + JUMPER_BBOX_OFFSET_RIGHT;
+	float bottom = pos.y + JUMPER_BBOX_OFFSET_BOTTOM;
+
 	return BoundingBox(left, top, right, bottom);
+}
+
+void Jumper::Jump()
+{
+	if (jumpRange > 40) {
+		SetState(JUMPER_STATE_FALLING);
+	}
+}
+
+void Jumper::Walk()
+{
+	srand(time(NULL));
+
+	countDownTimeToJump--;
+	if (countDownTimeToJump == 0) {
+		countJump = rand() % 4 + 2;
+		SetState(JUMPER_STATE_JUMPING);
+	}
+
+	if (!wallBot) {
+		SetState(JUMPER_STATE_FALLING);
+	}
+}
+
+void Jumper::Fall()
+{
+	if (wallBot) {
+		jumpRange = 0;
+		/*countDownTimeToJump = COUNTDOWN_TIME_TO_JUMP;
+		SetState(JUMPER_STATE_WALKING);*/
+
+		countJump--;
+		if (countJump == 0) {
+			SetState(JUMPER_STATE_WALKING);
+			countDownTimeToJump = COUNTDOWN_TIME_TO_JUMP;
+		}
+		else {
+			SetState(JUMPER_STATE_JUMPING);
+		}
+	}
 }
 
 void Jumper::Update()
@@ -28,13 +70,24 @@ void Jumper::Update()
 	pos += dx();
 	Enemy::Update();
 
-	if (v.x < 0 && wallLeft) {
+	if (state == JUMPER_STATE_JUMPING) {
+		jumpRange += abs(dx().y);
+		Jump();
+	}
+	else if (state == JUMPER_STATE_WALKING) {
+		Walk();
+	}
+	else if (state == JUMPER_STATE_FALLING) {
+		Fall();
+	}
+
+	if (wallLeft || wallRight) {
+		pos.x -= dx().x * 2;
 		v.x = -v.x;
 	}
 
-	if (v.x > 0 && pos.x > 290) {
-		pos.x = 290; v.x = -v.x;
-	}
+	// reset wall collision
+	wallBot = wallLeft = wallRight = wallTop = false;
 }
 
 void Jumper::Render()
@@ -42,8 +95,14 @@ void Jumper::Render()
 	if (state == JUMPER_STATE_DIE) {
 		SetAnimationType(JUMPER_ANI_DIE);
 	}
-	else if (v.x > 0) SetAnimationType(JUMPER_ANI_WALKING_RIGHT);
-	//else if (v.x <= 0) SetAnimationType(JUMPER_ANI_WALKING_LEFT);
+	else SetAnimationType(JUMPER_ANI_WALK);
+
+	if (v.x > 0) {
+		isFlipVertical = false;
+	}
+	else if (v.x < 0) {
+		isFlipVertical = true;
+	}
 
 	AnimatedGameObject::Render();
 
@@ -56,16 +115,20 @@ void Jumper::SetState(int state)
 	switch (state)
 	{
 	case JUMPER_STATE_DIE:
-		pos.y += JUMPER_BBOX_HEIGHT - JUMPER_BBOX_HEIGHT_DIE + 1;
 		v.x = 0;
 		v.y = 0;
 		break;
 	case JUMPER_STATE_WALKING:
-		v.x = JUMPER_WALKING_SPEED;
+		v.y = 0;
+		break;
+	case JUMPER_STATE_JUMPING:
+		v.y = -JUMPER_JUMPING_SPEED_Y;
+		break;
+	case JUMPER_STATE_FALLING:
+		v.y = JUMPER_JUMPING_SPEED_Y;
+		break;
 	}
-
 }
-
 
 #include "InteractableGroupInclude.h"
 #define CURRENT_CLASS Jumper

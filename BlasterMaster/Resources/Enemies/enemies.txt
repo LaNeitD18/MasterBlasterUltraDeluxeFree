@@ -1,23 +1,24 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
-1	Resources\sprites\worm_76_44.png		255	255	255
-2	Resources\sprites\jumper_68_104.png		255	255	255
+#1	Resources\sprites\worm_76_44.png		255	255	255
+#2	Resources\sprites\jumper_68_104.png		255	255	255
 3	Resources\sprites\teleporter_104_136.png	255	255	255
-4	Resources\sprites\cannon_109_108.png		255	255	255
-5	Resources\sprites\dome_76_72.png		255	255	255
+#4	Resources\sprites\cannon_109_108.png		255	255	255
+#5	Resources\sprites\dome_76_72.png		255	255	255
 6	Resources\sprites\eye_76_76.png			255	255	255
-7	Resources\sprites\mine_64_40.png		255	255	255
-8	Resources\sprites\floater2_76_68.png		255	255	255
-9	Resources\sprites\insect_78_78.png		255	255	255
-10	Resources\sprites\orb_76_76.png			255	255	255
-11	Resources\sprites\orb2_72_72.png		255	255	255
+7	Resources\sprites\Mines.png		255	255	255
+#8	Resources\sprites\floater2_76_68.png		255	255	255
+#9	Resources\sprites\insect_78_78.png		255	255	255
+#10	Resources\sprites\orb_76_76.png			255	255	255
+#11	Resources\sprites\orb2_72_72.png		255	255	255
 12	Resources\sprites\Jason_SideView.png		255	255	255
 13	Resources\sprites\Jason_Overhead.png		255	255	255
 14	Resources\sprites\Sophia2.png	254	255	255
 15	Resources\sprites\enemies.png	254	255	255
 16	Resources\sprites\HP.png	255	255	255
 17	Resources\sprites\116445.png	0	57	115
-18	Resources\sprites\ItemObjects.png	255	255	255
+18	Resources\sprites\ItemObjects.png	254	255	255
+# next Tien's sprite: 10193
 # next sprite: 10177			Tien
 # next sprite: 20000			Son
 # next sprite: 30000			Long
@@ -62,15 +63,32 @@ Resources\Enemies\insect_sprites.txt
 #10+11 ORB
 Resources\Enemies\orb_sprites.txt
 
-#12 SOPHIA
+#12+13+14+15 SOPHIA
 Resources\Enemies\sophia_sprites.txt
 
-#13 JASON SIDEVIEW
+#16 JASON SIDEVIEW
 Resources\Enemies\Jason_Sideview_sprites.txt
 
-#14 BULLET
+#17 BULLET
 Resources\Enemies\bullet_sprites.txt
 
+#18 SHIP
+Resources\Enemies\ship_sprites.txt
+
+#19 MINI RED BULLET
+Resources\Enemies\mini_red_bullet_sprites.txt
+
+#20 SKULL
+Resources\Enemies\skull_sprites.txt
+
+#100 SKULL BULLET
+Resources\Enemies\skull_bullet_sprites.txt
+
+#101 CANNON BULLET
+Resources\Enemies\cannon_bullet_sprites.txt
+
+#102 MINE BULLET
+Resources\Enemies\mine_bullet_sprites.txt
 #109 Item
 Resources\Enemies\item_sprites.txt
 
@@ -94,7 +112,7 @@ Resources\Enemies\HP8.txt
 Resources\Enemies\HP0.txt
 
 [ANIMATIONS]
-# id format: 5XX		
+# id format: 5XX		Next Tien's ani: 1006
 #1 ==== WORM =========
 Resources\Enemies\worm_ani.txt
 
@@ -125,15 +143,32 @@ Resources\Enemies\insect_ani.txt
 #10+11 ==== ORB =========
 Resources\Enemies\orb_ani.txt
 
-#12 ==== SOPHIA =========
+#12+13+14+15 ==== SOPHIA =========
 Resources\Enemies\sophia_ani.txt
 
-#13 ==== JASON SIDEVIEW =========
+#16 ==== JASON SIDEVIEW =========
 Resources\Enemies\Jason_Sideview_ani.txt
 
-#14 ==== BULLET =========
+#17 ==== BULLET =========
 Resources\Enemies\bullet_ani.txt
 
+#18 ==== SHIP =========
+Resources\Enemies\ship_ani.txt
+
+#19 ==== MINI RED BULLET =========
+Resources\Enemies\mini_red_bullet_ani.txt
+
+#20 ==== SKULL =========
+Resources\Enemies\skull_ani.txt
+
+#100 ==== SKULL BULLET =========
+Resources\Enemies\skull_bullet_ani.txt
+
+#101 ==== CANNON BULLET =========
+Resources\Enemies\cannon_bullet_ani.txt
+
+#102 ==== MINE BULLET =========
+Resources\Enemies\mine_bullet_ani.txt
 #109 ==== ITEM =========
 Resources\Enemies\item_ani.txt
 
@@ -151,16 +186,16 @@ Resources\Enemies\item_ani.txt
 #1	2336	704	1
 
 # JUMPER
-#2	210	2965	2
+#2	1080	2785	2
 
 # TELEPORTER
 #3	700	500	3
 
 # CANNON
-#4	700	100	4
+4	210	2900	4
 
 # DOME
-5	150	2968	5
+#5	150	2968	5
 5	1350	2848	5
 #5	1175	1886	5
 #5	1230	1886	5
@@ -170,10 +205,10 @@ Resources\Enemies\item_ani.txt
 #6	520	450	6
 
 # MINE
-#7	600	200	7
+7	150	2972	7
 
 # FLOATER
-#8	210	2850	8
+8	210	2850	8
 #8	870	2905	8
 #8	925	2915	8
 #8	1137	2918	8
@@ -185,14 +220,22 @@ Resources\Enemies\item_ani.txt
 #8	2304	1716	8
 
 # INSECT
-9	1370	2555	9
+#9	1370	2555	9
 
 # ORB
-#10	700	300	10
+#10	210	2920	10
 #10	500	300	11
+
+# SHIP
+18	210	2920	18
 
 # SOPHIA
 12	56	2940	12	13	14	15
+
+# SKULL
+20	210	2920	20
+20	1705	1915	20
+#20	1910	1165	20
 
 [ENVIRONMENTS]
 # type	x	y	width	height	portaldirid	sectionToEnter

@@ -1,4 +1,4 @@
 # id	left	top	right	bottom	texture_id
 # idle
-10029	1	1	15	9	7
-10030	17	1	31	9	7
+10164	9	582	35	600	15
+10165	38	582	64	600	15

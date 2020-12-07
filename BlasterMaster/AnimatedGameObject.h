@@ -32,6 +32,7 @@ public:
 	virtual void Update();
 	int damageFrame;
 	Point direction;
+	bool isCollided; // true when enemy collide with player
 };
 
 

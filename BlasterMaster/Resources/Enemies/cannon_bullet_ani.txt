@@ -1,10 +1,11 @@
 # ani_id	sprite1_id	frames1	sprite2_id	frames2	...
-# fly
-507	10031	48
-# shoot
-577	10031	48	10032	12
+# normal
+1002	10186	12
+# explode
+1003	10187	12	10188	12
+#
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
-# FLOATER
-8	507	577
+# CANNON
+101	1002	1003

@@ -28,6 +28,15 @@
 
 class Dome : public Enemy
 {
+	void WalkRight();
+	void WalkLeft();
+	void WalkUp();
+	void WalkDown();
+
+	void JumpHorizontally();
+	void JumpVertically();
+
+	void SetStateByDirection();
 
 public:
 	Dome();
@@ -40,15 +49,5 @@ public:
 	virtual BoundingBox GetBoundingBox();
 	virtual void Update();
 	virtual void Render();
-
-	void WalkRight();
-	void WalkLeft();
-	void WalkUp();
-	void WalkDown();
-
-	void JumpHorizontally();
-	void JumpVertically();
-
-	void SetStateByDirection();
 };
 

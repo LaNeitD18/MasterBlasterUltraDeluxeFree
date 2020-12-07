@@ -323,6 +323,7 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
 	}
+	obj->SetManager(this);
 
 	//hihi
 	for (int i = 3; i < tokens.size(); i++)

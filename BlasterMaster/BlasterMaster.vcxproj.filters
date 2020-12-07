@@ -62,6 +62,12 @@
     <ClCompile Include="Worm.cpp" />
     <ClCompile Include="WormPod.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Ship.cpp" />
+    <ClCompile Include="MiniRedBullet.cpp" />
+    <ClCompile Include="Skull.cpp" />
+    <ClCompile Include="SkullBullet.cpp" />
+    <ClCompile Include="CannonBullet.cpp" />
+    <ClCompile Include="MineBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedGameObject.h" />
@@ -131,6 +137,12 @@
     <ClInclude Include="Worm.h" />
     <ClInclude Include="WormPod.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Ship.h" />
+    <ClInclude Include="MiniRedBullet.h" />
+    <ClInclude Include="Skull.h" />
+    <ClInclude Include="SkullBullet.h" />
+    <ClInclude Include="CannonBullet.h" />
+    <ClInclude Include="MineBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib.lib" />
