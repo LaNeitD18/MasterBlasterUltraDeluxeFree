@@ -14,9 +14,9 @@ Interactable::~Interactable()
 {
 }
 
-#define DAMAGE_OF_SPIKE 15
-#define DAMAGE_OF_ENEMY 10
-#define DAMAGE_OF_LAVA 15
+#define DAMAGE_OF_SPIKE 10
+#define DAMAGE_OF_ENEMY 5
+#define DAMAGE_OF_LAVA 20
 
 void Interactable::Interact(Player * player, Env_Wall * wall) {
 	BoundingBox playerBox = player->GetBoundingBox();
@@ -451,7 +451,13 @@ void Interactable::Interact(Player* player, Enemy* enemy) {
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox enemyBox = enemy->GetBoundingBox();
 	if (playerBox.IsOverlap(enemyBox)) {
-		player->TakeDamage(DAMAGE_OF_ENEMY);
+		JasonSideView* jasonPlay = dynamic_cast<JasonSideView*>(player);
+		bool isJasonPlay = jasonPlay != NULL;
+		int enemyDamage = DAMAGE_OF_ENEMY;
+		if (isJasonPlay) {
+			enemyDamage *= 2;
+		}
+		player->TakeDamage(enemyDamage);
 	}
 }
 #pragma endregion
