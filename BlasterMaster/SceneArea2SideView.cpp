@@ -19,6 +19,7 @@
 #include "Orb.h"
 #include "Skull.h"
 #include "SkullBullet.h"
+#include "Mine.h"
 
 using namespace std;
 
@@ -370,10 +371,10 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		break;
 	/*case OBJECT_TYPE_EYE:
 		obj = new Eye(x, y);
-		break;
+		break;*/
 	case OBJECT_TYPE_MINE:
 		obj = new Mine(x, y);
-		break;*/
+		break;
 	case OBJECT_TYPE_FLOATER:
 		obj = new Floater(x, y);
 		break;

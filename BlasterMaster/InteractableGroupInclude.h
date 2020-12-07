@@ -21,3 +21,4 @@
 #include "Skull.h"
 #include "SkullBullet.h"
 #include "CannonBullet.h"
+#include "MineBullet.h"

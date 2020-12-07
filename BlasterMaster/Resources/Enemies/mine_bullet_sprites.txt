@@ -1,0 +1,7 @@
+# id	left	top	right	bottom	texture_id
+# bullet
+10189	82	38	90	46	17
+# explode
+10190	140	101	148	109	17
+10191	149	97	165	113	17
+10192	166	97	182	113	17

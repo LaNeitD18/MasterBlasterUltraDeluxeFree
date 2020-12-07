@@ -290,6 +290,7 @@ void Interactable::Interact(Player* player, Enemy* enemy) {
 	BoundingBox enemyBox = enemy->GetBoundingBox();
 	if (playerBox.IsOverlap(enemyBox)) {
 		player->TakeDamage(DAMAGE_OF_ENEMY);
+		enemy->isCollided = true;
 	}
 }
 
@@ -409,7 +410,7 @@ void Interactable::Interact(Player* player, CannonBullet* bullet) {
 	BoundingBox playerBox = player->GetBoundingBox();
 	if (playerBox.SweptAABB(bulletBox, bullet->dx() + player->dx()) != -INFINITY)
 	{
-		// SKULL_BULLET_STATE_NORMAL = 100
+		// CANNON_BULLET_STATE_NORMAL = 100
 		if (bullet->GetState() == 100) {
 			player->TakeDamage(10);
 		}
@@ -456,6 +457,63 @@ void Interactable::Interact(Env_Wall* wall, CannonBullet* bullet) {
 				Point pos = bullet->GetPosition();
 				pos.x += wallBox.r - bulletBox.l;
 				bullet->SetPosition(pos);
+			}
+		}
+	}
+}
+
+void Interactable::Interact(Player* player, MineBullet* bullet) {
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox playerBox = player->GetBoundingBox();
+	if (playerBox.SweptAABB(bulletBox, bullet->dx() + player->dx()) != -INFINITY)
+	{
+		// MINE_BULLET_STATE_NORMAL = 100
+		if (bullet->GetState() == 100) {
+			player->TakeDamage(10);
+		}
+	}
+}
+
+void Interactable::Interact(Env_Wall* wall, MineBullet* bullet) {
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox wallBox = wall->GetBoundingBox();
+	if (bulletBox.IsOverlap(wallBox)) {
+		float overlapAreaX = min(bulletBox.r, wallBox.r) - max(bulletBox.l, wallBox.l);
+		float overlapAreaY = min(bulletBox.b, wallBox.b) - max(bulletBox.t, wallBox.t);
+		if (overlapAreaX > overlapAreaY)
+		{
+			if (bulletBox.GetCenter().y > wallBox.GetCenter().y) {
+				bullet->wallTop = true;
+				// Snap top (player pushed down)
+				Point pos = bullet->GetPosition();
+				pos.y -= bulletBox.t - wallBox.b;
+				//bullet->SetPosition(pos);
+			}
+			else
+			{
+				bullet->wallBot = true;
+				// Snap bottom (player pushed up)
+				Point pos = bullet->GetPosition();
+				pos.y += wallBox.t - bulletBox.b;
+				//bullet->SetPosition(pos);
+			}
+		}
+		else
+		{
+			if (bulletBox.GetCenter().x < wallBox.GetCenter().x) {
+				bullet->wallRight = true;
+				// Snap right (player to left)
+				Point pos = bullet->GetPosition();
+				pos.x -= bulletBox.r - wallBox.l;
+				//bullet->SetPosition(pos);
+			}
+			else
+			{
+				bullet->wallLeft = true;
+				// Snap left (player to right)
+				Point pos = bullet->GetPosition();
+				pos.x += wallBox.r - bulletBox.l;
+				//bullet->SetPosition(pos);
 			}
 		}
 	}

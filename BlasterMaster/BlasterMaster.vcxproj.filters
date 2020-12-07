@@ -67,6 +67,7 @@
     <ClCompile Include="Skull.cpp" />
     <ClCompile Include="SkullBullet.cpp" />
     <ClCompile Include="CannonBullet.cpp" />
+    <ClCompile Include="MineBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedGameObject.h" />
@@ -141,6 +142,7 @@
     <ClInclude Include="Skull.h" />
     <ClInclude Include="SkullBullet.h" />
     <ClInclude Include="CannonBullet.h" />
+    <ClInclude Include="MineBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib.lib" />

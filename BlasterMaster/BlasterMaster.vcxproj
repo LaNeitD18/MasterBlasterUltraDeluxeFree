@@ -72,6 +72,7 @@
     <ClInclude Include="MapReader\zlib.h" />
     <ClInclude Include="MapSegment.h" />
     <ClInclude Include="Mine.h" />
+    <ClInclude Include="MineBullet.h" />
     <ClInclude Include="MiniRedBullet.h" />
     <ClInclude Include="Orb.h" />
     <ClInclude Include="SceneArea2Overhead.h" />
@@ -140,6 +141,7 @@
     <ClCompile Include="MapReader\TmxUtil.cpp" />
     <ClCompile Include="MapSegment.cpp" />
     <ClCompile Include="Mine.cpp" />
+    <ClCompile Include="MineBullet.cpp" />
     <ClCompile Include="MiniRedBullet.cpp" />
     <ClCompile Include="Orb.cpp" />
     <ClCompile Include="SceneArea2Overhead.cpp" />
