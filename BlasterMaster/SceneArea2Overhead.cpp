@@ -20,7 +20,7 @@ BoundingBox SceneArea2Overhead::cameraLimitAreaOfSection[9] = {
 	// section 1
 	BoundingBox(0, 0, 528, 280),
 	// section 2
-	BoundingBox(0, 256, 526, 784),
+	BoundingBox(0, 256, 526, 782),
 	//section 3
 	BoundingBox(1280, 768, 1550, 1294),
 	// section 4
@@ -28,18 +28,18 @@ BoundingBox SceneArea2Overhead::cameraLimitAreaOfSection[9] = {
 	// section 1 for 2
 	BoundingBox(512,0,1040,528),
 	// section 2 for 2
-	BoundingBox(512,504,782,784)
+	BoundingBox(512,496,782,776)
 };
 
 Point SceneArea2Overhead::startPointInSection[5] = {
 	// section A
 	Point(75, 116),
 	// section B
-	Point(78, 368),
+	Point(74, 368),
 	//section C
-	Point(1406, 1136),
+	Point(1402, 1136),
 	// section D
-	Point(124, 1904)
+	Point(120, 1908)
 	// section E
 };
 
@@ -782,6 +782,7 @@ void SceneArea2Overhead::Release()
 
 Player * SceneArea2Overhead::GetTarget()
 {
+	if (this == nullptr) return NULL;
 	return target;
 }
 

@@ -41,13 +41,15 @@ class Interactable;
 #pragma endregion
 
 // add new item
-#define INTERACTABLE_GROUP Player, Enemy, Env_Wall, Sophia, Env_Spike, Env_Lava, Env_Portal, AnimatedScene, Env_Dungeon, Env_Outdoor, \
+#define INTERACTABLE_GROUP Player, Enemy, Env_Wall, Sophia, Env_Spike, Env_Lava, Env_Portal, AnimatedScene, Env_Dungeon, Env_Outdoor, Env_Ladder, \
 							Worm, Floater, Dome, Jumper, Insect, Ship, MiniRedBullet, SkullBullet, CannonBullet, MineBullet,\
-							JasonSideView, JasonOverhead, Bullet \
+							JasonSideView, JasonOverhead, Bullet, PlayerBullet, EnemyBullet \
 
 // Interactable
 #define ___CLASS(x) class x;
 APPLY_MACRO(___CLASS, INTERACTABLE_GROUP)
+
+class Bullet;
 // Interactable
 class Interactable
 	/** Implement visitor pattern for interacting with self
@@ -93,9 +95,12 @@ public:
 	INTERACTABLE_MIRROR_DEF(Player, Env_Wall);
 	INTERACTABLE_MIRROR_DEF(Player, Env_Spike);
     INTERACTABLE_MIRROR_DEF(Player, Env_Lava);
-	INTERACTABLE_MIRROR_DEF(Player, Env_Portal);
+	INTERACTABLE_MIRROR_DEF(Sophia, Env_Portal);
+	INTERACTABLE_MIRROR_DEF(JasonSideView, Env_Portal);
+	INTERACTABLE_MIRROR_DEF(JasonOverhead, Env_Portal);
 	INTERACTABLE_MIRROR_DEF(Player, Env_Dungeon);
 	INTERACTABLE_MIRROR_DEF(Player, Env_Outdoor);
+	INTERACTABLE_MIRROR_DEF(JasonSideView, Env_Ladder);
     
 	INTERACTABLE_MIRROR_DEF(Player, MiniRedBullet);
 	INTERACTABLE_MIRROR_DEF(Env_Wall, MiniRedBullet);
@@ -110,12 +115,12 @@ public:
 	INTERACTABLE_MIRROR_DEF(Enemy, Env_Portal);
 	//INTERACTABLE_MIRROR_DEF(Insect, Env_Wall);
 
-	INTERACTABLE_MIRROR_DEF(Bullet, Enemy);
+	INTERACTABLE_MIRROR_DEF(PlayerBullet, Enemy);
 
 	INTERACTABLE_MIRROR_DEF(Player, Enemy);
 	
 	// Bullet
-	INTERACTABLE_MIRROR_DEF(Bullet, Env_Wall);
+	INTERACTABLE_MIRROR_DEF(PlayerBullet, Env_Wall);
 #undef INTERACTABLE_MIRROR_DEF
 };
 

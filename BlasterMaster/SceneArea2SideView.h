@@ -16,7 +16,7 @@ protected:
 	//CMario *player;					// A play scene has to have player, right?  // No =)
 	
 	unordered_set<GameObject*> objects;
-	vector<GameObject*> toRemove;
+	unordered_set<GameObject*> toRemove;
 
 	//LeSon
 	vector<Environment*> environments;
@@ -67,6 +67,6 @@ public:
 	virtual void RemoveElement(GameObject *) override;
 
 	// just handle change in one scene
-	static BoundingBox cameraLimitAreaOfSection[15];
-	static Point startPointInSection[15];
+	static BoundingBox cameraLimitAreaOfSection[19];
+	static Point startPointInSection[19];
 };
