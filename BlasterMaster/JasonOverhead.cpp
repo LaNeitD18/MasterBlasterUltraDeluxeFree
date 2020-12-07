@@ -41,8 +41,11 @@ void JasonOverhead::Render()
 		SetAnimationType(JASONO_ANI_GO_UP);
 	else if (state == JASONO_STATE_GOING_DOWN)
 		SetAnimationType(JASONO_ANI_GO_DOWN);
-	else if (state == JASONO_STATE_DEAD || state == JASONO_STATE_DYING)
+	else if (state == JASONO_STATE_DEAD)
 		SetAnimationType(JASONO_ANI_DEAD);
+	else if (state == JASONO_STATE_DYING) {
+		SetAnimationType(JASONO_ANI_DYING);
+	}
 	else
 		SetAnimationType(JASONO_ANI_WALK);
 
@@ -80,18 +83,25 @@ void JasonOverhead::Render()
 	currentAnimation->Render(currentTime, previousFrame, drawArguments);
 	if (!moving)
 		return;
-	if(v.x != 0 || v.y != 0)
+	if(v.x != 0 || v.y != 0 || state == JASONO_STATE_DYING)
 		currentTime++;
 	if (currentTime >= currentAnimation->GetLoopDuration())
 	{
-		currentTime %= currentAnimation->GetLoopDuration();
-		previousFrame = 0;
+		if (currentAnimation == animationSet->at(JASONO_ANI_DYING))
+			SetAnimationType(JASONO_ANI_DEAD);
+		else if (currentAnimation == animationSet->at(JASONO_ANI_DEAD))
+			manager->RemoveElement(this);
+		else {
+			currentTime %= currentAnimation->GetLoopDuration();
+			previousFrame = 0;
+		}
 	}
 }
 
 void JasonOverhead::Update()
 {
 	pos += dx();
+	Player::Update();
 	Input& input = *GameGlobal::GetInput();
 
 	int newState = state;
@@ -150,17 +160,20 @@ void JasonOverhead::Update()
 		newState = JASONO_STATE_DYING;
 	}*/
 
-	Player::Update();
-
 	wallBot = wallLeft = wallRight = wallTop = false;
 
 	if (dead) {
+		v = Point();
 		DebugOut(L"Dead");
 		return;
 	}
 		
 	if (newState != state)
 		SetState(newState);
+
+	if (HealthPoint <= 0) {
+		SetState(JASONO_STATE_DYING);
+	}
 }
 
 void JasonOverhead::SetState(int newState)

@@ -44,7 +44,10 @@ void Worm::Fall()
 void Worm::Walk()
 {
 	SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
-	Point playerPos = scene->GetTarget()->GetPosition();
+	Point playerPos;
+	if (scene != nullptr) {
+		playerPos = scene->GetTarget()->GetPosition();
+	}
 	float speed = WORM_WALKING_SPEED;
 	//DebugOut(L"%fPX , %fPY \n", playerPos.x, playerPos.y);
 

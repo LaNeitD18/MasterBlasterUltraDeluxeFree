@@ -30,7 +30,8 @@ enum JasonOverheadAni {
 	JASONO_ANI_GO_UP = 0,
 	JASONO_ANI_WALK = 1,
 	JASONO_ANI_GO_DOWN = 2,
-	JASONO_ANI_DEAD = 3,
+	JASONO_ANI_DYING = 3,
+	JASONO_ANI_DEAD = 4,
 };
 
 class JasonOverhead :
