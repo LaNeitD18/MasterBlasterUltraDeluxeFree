@@ -963,6 +963,7 @@ void SceneArea2SideView::Release()
 
 Player* SceneArea2SideView::GetTarget()
 {
+	if (this == nullptr) return NULL;
 	return target;
 }
 

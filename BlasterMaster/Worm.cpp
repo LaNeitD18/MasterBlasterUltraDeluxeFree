@@ -44,24 +44,27 @@ void Worm::Fall()
 void Worm::Walk()
 {
 	SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
-	Point playerPos = scene->GetTarget()->GetPosition();
-	float speed = WORM_WALKING_SPEED;
-	//DebugOut(L"%fPX , %fPY \n", playerPos.x, playerPos.y);
+	Player* player = scene->GetTarget();
+	if (player != NULL) {
+		Point playerPos = player->GetPosition();
+		float speed = WORM_WALKING_SPEED;
+		//DebugOut(L"%fPX , %fPY \n", playerPos.x, playerPos.y);
 
-	if (wallLeft || wallRight) {
-		//v.x = -v.x;
-		SetState(WORM_STATE_JUMPING);
-	}
-	if (!wallBot) {
-		SetState(WORM_STATE_FALLING);
-	}
-	if (pos.x < playerPos.x - 16) {
-		direction.x = 1;
-		v.x = speed * direction.x;
-	}
-	if (pos.x > playerPos.x + 16) {
-		direction.x = -1;
-		v.x = speed * direction.x;
+		if (wallLeft || wallRight) {
+			//v.x = -v.x;
+			SetState(WORM_STATE_JUMPING);
+		}
+		if (!wallBot) {
+			SetState(WORM_STATE_FALLING);
+		}
+		if (pos.x < playerPos.x - 16) {
+			direction.x = 1;
+			v.x = speed * direction.x;
+		}
+		if (pos.x > playerPos.x + 16) {
+			direction.x = -1;
+			v.x = speed * direction.x;
+		}
 	}
 }
 

@@ -781,6 +781,7 @@ void SceneArea2Overhead::Release()
 
 Player * SceneArea2Overhead::GetTarget()
 {
+	if (this == nullptr) return NULL;
 	return target;
 }
 
