@@ -373,7 +373,6 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 			JasonSideView* jason = new JasonSideView(startPoint.x, startPoint.y);
 			current_player->jason = jason;
 			jason->sophia = current_player;
-			jason->SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(JASON_SIDEVIEW_ANIMATION_SET_NUMBER));
 			jason->SetManager(current_player->GetManager());
 			jason->v.x = 0;
 			jason->v.y = -JASON_ENTER_VEHICLE_DISAPPEAR_SPEED;
@@ -386,16 +385,6 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 			scene->GetCamera()->SetCameraLimitarea(limitArea);
 			//Camera::GetInstance()->SetCameraLimitarea(limitArea);
 		}
-	}
-}
-
-void Interactable::Interact(JasonSideView* player, Env_Ladder* ladder) {
-	// implement interact with ladder (way to dungeon)
-	BoundingBox playerBox = player->GetBoundingBox();
-	BoundingBox ladderBox = ladder->GetBoundingBox();
-	if (playerBox.IsOverlap(ladderBox)) {
-		//TODO: implement animation jason Long
-		displayMessage("i want to win there");
 	}
 }
 
@@ -806,6 +795,39 @@ void Interactable::Interact(PlayerBullet* bullet, Enemy* enemy) {
 	{
 		enemy->TakeDamage(bullet->GetDamage());
 		bullet->GetManager()->RemoveElement(bullet);
+	}
+}
+void Interactable::Interact(JasonSideView * player, Env_Ladder * ladder) {
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox ladderBox = ladder->GetBoundingBox();
+
+	if (playerBox.IsInsideBox(ladderBox))
+		player->targetLadder = ladder;
+
+	bool top, left, right, bottom;
+	Point move = player->dx();
+	top = left = right = bottom = false;
+	double offsetTime = ladderBox.SweptAABB(playerBox, move, top, left, bottom, right);
+
+	player->wallBot |= bottom;
+
+	if (bottom)
+		player->targetLadder = ladder;
+
+	if (offsetTime >= 0.0 && offsetTime <= 1.0) {
+		move = move - move * offsetTime;
+
+		if (bottom && move.y > 0) {
+			Point v = player->GetSpeed();
+			if (bottom && v.y > JASON_JUMP_SPEED + JASON_GRAVITY) {
+				float damage = v.y / JASON_JUMP_SPEED;
+				damage = (damage * damage - 1.31) / 0.7;
+				damage *= JASON_MAX_HEALTH;
+				player->TakeDamage(round(damage));
+			}
+			v.y -= move.y;
+			player->SetSpeed(v);
+		}
 	}
 }
 #pragma endregion

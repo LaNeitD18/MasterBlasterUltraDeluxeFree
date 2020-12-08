@@ -179,13 +179,14 @@ void Sophia::Update()
 		(input[INPUT_LEAVE_VEHICLE] == KEY_STATE_ON_DOWN))
 	{
 		newState |= SOPHIA_STATE_LEAVING_VEHICLE;
-		jason = new JasonSideView(pos.x, pos.y);
+		jason = new JasonSideView(pos.x + JASON_SPAWN_OFFSET_X, pos.y + JASON_SPAWN_OFFSET_Y);
 		jason->sophia = this;
-		jason->SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(JASON_SIDEVIEW_ANIMATION_SET_NUMBER));
 		jason->SetManager(manager);
-		jason->v.x = 0;
+		jason->v.x = v.x;
 		jason->v.y = -JASON_ENTER_VEHICLE_DISAPPEAR_SPEED;
 		manager->AddElement(jason);
+
+		v = Point();
 	}
 	//*
 	if (newState & SOPHIA_ANI_LEFT_VEHICLE)
@@ -467,7 +468,7 @@ void Sophia::GoHalt()
 
 	if (v.x > 0 && wallRight)
 		v.x = 0;
-	if (v.x < 0 && wallRight)
+	if (v.x < 0 && wallLeft)
 		v.x = 0;
 }
 

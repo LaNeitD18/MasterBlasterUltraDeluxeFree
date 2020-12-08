@@ -106,7 +106,7 @@ public:
 	virtual void Update();
 };
 
-#define JASON_SIDEVIEW_BULLET_TIME_TO_LIVE 300
+#define JASON_SIDEVIEW_BULLET_TIME_TO_LIVE 30
 class JasonSideviewBullet : public TimedPlayerBullet
 {
 public:
