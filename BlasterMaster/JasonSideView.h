@@ -5,9 +5,10 @@
 #define JASON_GRAVITY 0.066f
 #define JASON_ACCELERATION 0.033f
 #define JASON_WALKING_SPEED 0.66f
+#define JASON_CLIMBING_SPEED 0.3f
 #define JASON_CRAWLING_SPEED 0.166f
 #define JASON_JUMP_SPEED 2.05f
-#define JASON_ENTER_VEHICLE_JUMP_SPEED 1.45f
+#define JASON_TINY_JUMP_SPEED 1.45f
 #define JASON_ENTER_VEHICLE_DISAPPEAR_SPEED 1.0f
 // 0.064f
 
@@ -34,13 +35,14 @@ enum JasonSideViewState
 	JASON_STATE_CRAWLING		= 0x40,
 	JASON_STATE_LOOKING_LEFT	= 0x04,
 
-	JASON_STATE_CLIMBING		= 0x20,
+	JASON_STATE_CLIMB			= 0x20,
 	JASON_STATE_SWIMMING		= 0x10,
 
 	JASON_STATE_AIRBORNE		= 0x08,
 	JASON_STATE_DYING			= 0x02,
 	JASON_STATE_DEAD			= 0x80,
 	JASON_STATE_ENTERING_VEHICLE= 0x0200,
+	JASON_STATE_CLIMBING		= 0x0400,
 	//JASON_STATE_TAKING_DAMAGE = 0x0100,
 };
 
@@ -74,11 +76,17 @@ public:
 
 	virtual void SetState(int newState);
 	virtual void SetAnimationType(int ANI);
-
+private:
 	void GoLeft();
 	void GoRight();
 	void GoHalt();
 	void Shoot();
+
+	// These functions are only for ladders
+	void GoUp();
+	void GoDown();
+	////////////////////////////////////////
+public:
 
 	JasonSideView();
 	JasonSideView(float, float);

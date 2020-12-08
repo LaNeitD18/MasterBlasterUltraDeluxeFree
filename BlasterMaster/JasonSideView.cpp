@@ -2,6 +2,7 @@
 #include "GameGlobal.h"
 #include "Sophia.h"
 #include "Utils.h"
+#include "Environment.h"
 
 JasonSideView::JasonSideView()
 {
@@ -13,6 +14,7 @@ JasonSideView::JasonSideView()
 	isFlipVertical = true;
 	HealthPoint = JASON_MAX_HEALTH;
 	sophia = NULL;
+	targetLadder = NULL;
 
 	animationSet = GameGlobal::GetAnimationSetLibrary()->Get(JASON_SIDEVIEW_ANIMATION_SET_NUMBER);
 }
@@ -26,6 +28,7 @@ JasonSideView::JasonSideView(float x, float y)
 	isFlipVertical = true;
 	HealthPoint = JASON_MAX_HEALTH;
 	sophia = NULL;
+	targetLadder = NULL;
 
 	animationSet = GameGlobal::GetAnimationSetLibrary()->Get(JASON_SIDEVIEW_ANIMATION_SET_NUMBER);
 }
@@ -70,12 +73,18 @@ void JasonSideView::Render()
 	currentAnimation->Render(currentTime, previousFrame, drawArguments);
 	if (!moving)
 		return;
+	// For these animation type, only advance animation timer if jason is moving
 	if (currentAnimation == animationSet->at(JASON_ANI_WALK) ||
 		currentAnimation == animationSet->at(JASON_ANI_CRAWL))
 	{
 		if (state & JASON_STATE_WALKING)
 			currentTime++;
 	}
+	// For climbing animation, animation timer is advanced in the GoUp/Down function
+	else if (currentAnimation == animationSet->at(JASON_ANI_CLIMB))
+		if (state & JASON_STATE_CLIMBING)
+			currentTime++;
+		else;
 	else
 		currentTime++;
 	if (currentTime >= currentAnimation->GetLoopDuration())
@@ -102,7 +111,7 @@ void JasonSideView::Update()
 
 	Player::Update();
 
-	if (dead) 
+	if (dead)
 		return;
 
 	pos += dx();
@@ -124,7 +133,15 @@ void JasonSideView::Update()
 	if (!(newState & JASON_STATE_AIRBORNE) &&
 		(input[INPUT_DOWN] == KEY_STATE_ON_DOWN))
 	{
-		newState |= JASON_STATE_CRAWLING;
+		if (targetLadder == NULL)
+			newState |= JASON_STATE_CRAWLING;
+		else {
+			newState |= JASON_STATE_CLIMB;
+			// Push it down a little.
+			pos.y += JASON_CLIMBING_SPEED;
+			pos.x = targetLadder->GetBoundingBox().GetCenter().x;
+			v.x = 0;
+		}
 	}
 	else
 		if (!(newState & JASON_STATE_AIRBORNE) &&
@@ -133,33 +150,98 @@ void JasonSideView::Update()
 			newState &= ~JASON_STATE_CRAWLING;
 		}
 
-	if (!dead && !(state & JASON_STATE_ENTERING_VEHICLE)) {
-		if ((input[INPUT_LEFT] & KEY_STATE_DOWN) &&
-			(input[INPUT_RIGHT] & KEY_STATE_DOWN))
-			GoHalt();
-		else if (input[INPUT_LEFT] & KEY_STATE_DOWN) {
-			GoLeft();
-			newState |= JASON_STATE_LOOKING_LEFT;
-			isFlipVertical = false;
-		}
-		else if (input[INPUT_RIGHT] & KEY_STATE_DOWN) {
-			GoRight();
-			newState &= ~JASON_STATE_LOOKING_LEFT;
-			isFlipVertical = true;
-		}
-		else if (!(newState & JASON_STATE_AIRBORNE))
-				GoHalt();
+	if (targetLadder != NULL &&
+		!(newState & JASON_STATE_AIRBORNE) &&
+		(input[INPUT_UP] == KEY_STATE_ON_DOWN))
+	{
+		newState |= JASON_STATE_CLIMB;
+		// Push it up a little.
+		pos.y -= JASON_CLIMBING_SPEED;
+		pos.x = targetLadder->GetBoundingBox().GetCenter().x;
+		v.x = 0;
+	}
+	if (targetLadder == NULL ||
+		!targetLadder->GetBoundingBox().IsOverlap(this->GetBoundingBox())) {
+		newState &= ~JASON_STATE_CLIMB;
+		targetLadder = NULL;
 	}
 
-	if (input[INPUT_SHOOT] == KEY_STATE_ON_DOWN)
+	if ((state & JASON_STATE_CLIMB) &&
+		(!(newState & JASON_STATE_AIRBORNE)))
+	{
+		newState &= ~JASON_STATE_CLIMB;
+	}
+
+	// Movement
+	newState &= ~JASON_STATE_CLIMBING;
+	if (!dead && !(state & JASON_STATE_ENTERING_VEHICLE))
+	{
+		if (newState & JASON_STATE_CLIMB)
+		{
+			v.y = 0;
+
+			if ((input[INPUT_UP] & KEY_STATE_DOWN) &&
+				!(input[INPUT_DOWN] & KEY_STATE_DOWN)) {
+				GoUp();
+				newState |= JASON_STATE_CLIMBING;
+			}
+
+			if (!(input[INPUT_UP] & KEY_STATE_DOWN) &&
+				(input[INPUT_DOWN] & KEY_STATE_DOWN)) {
+				GoDown();
+				newState |= JASON_STATE_CLIMBING;
+			}
+			DEBUG(
+				if (targetLadder == NULL) {
+					DebugOut(L"Jason is not on ladder but is climbing. Is this intended?");
+					throw 1;
+				}
+			if (v.x != 0 || pos.x != targetLadder->GetBoundingBox().GetCenter().x) {
+				DebugOut(L"Jason is pushed off ladder. Is this intended?");
+				throw 1;
+			}
+			)
+		}
+		else
+		{
+			if ((input[INPUT_LEFT] & KEY_STATE_DOWN) &&
+				(input[INPUT_RIGHT] & KEY_STATE_DOWN))
+				GoHalt();
+			else if (input[INPUT_LEFT] & KEY_STATE_DOWN) {
+				GoLeft();
+				newState |= JASON_STATE_LOOKING_LEFT;
+				isFlipVertical = false;
+			}
+			else if (input[INPUT_RIGHT] & KEY_STATE_DOWN) {
+				GoRight();
+				newState &= ~JASON_STATE_LOOKING_LEFT;
+				isFlipVertical = true;
+			}
+			else if (!(newState & JASON_STATE_AIRBORNE))
+				GoHalt();
+		}
+	}
+
+	if ((input[INPUT_SHOOT] == KEY_STATE_ON_DOWN) &&
+		!dead &&
+		(!(state & JASON_STATE_CLIMB)))
 		Shoot();
 
-	if (!(newState & JASON_STATE_AIRBORNE) &&
+	if ((!(newState & JASON_STATE_AIRBORNE)) &&
 		(input[INPUT_JUMP] == KEY_STATE_ON_DOWN) &&
 		!(newState & JASON_STATE_CRAWLING) &&
 		!dead)
 	{
 		v.y = -JASON_JUMP_SPEED;
+		newState &= ~JASON_STATE_CLIMB;
+	}
+	if ((newState & JASON_STATE_CLIMB) &&
+		(input[INPUT_JUMP] == KEY_STATE_ON_DOWN) &&
+		!(newState & JASON_STATE_CRAWLING) &&
+		!dead)
+	{
+		v.y = -JASON_TINY_JUMP_SPEED;
+		newState &= ~JASON_STATE_CLIMB;
 	}
 
 	if (wallBot && v.y == 0 && v.x != 0)
@@ -189,7 +271,7 @@ void JasonSideView::Update()
 		newState |= JASON_STATE_AIRBORNE;
 		pos.x = sophia->pos.x;
 		v.x = 0;
-		v.y = -JASON_ENTER_VEHICLE_JUMP_SPEED;
+		v.y = -JASON_TINY_JUMP_SPEED;
 		sophia->SetState(sophia->GetState() | SOPHIA_STATE_ENTERING_VEHICLE);
 		sophia->SetAniByState(sophia->GetState());
 	}
@@ -226,7 +308,7 @@ void JasonSideView::SetState(int newState)
 	if (newState & JASON_STATE_SWIMMING)
 		newAni = JASON_ANI_SWIM;
 
-	if (newState & JASON_STATE_CLIMBING)
+	if (newState & JASON_STATE_CLIMB)
 		newAni = JASON_ANI_CLIMB;
 
 	// Top priority is lower
@@ -292,7 +374,7 @@ void JasonSideView::GoHalt()
 
 	if (v.x > 0 && wallRight)
 		v.x = 0;
-	if (v.x < 0 && wallRight)
+	if (v.x < 0 && wallLeft)
 		v.x = 0;
 }
 
@@ -311,6 +393,16 @@ void JasonSideView::Shoot()
 		bulletV);
 	bullet->SetManager(manager);
 	manager->AddElement(bullet);
+}
+
+void JasonSideView::GoUp()
+{
+	v.y = -JASON_CLIMBING_SPEED;
+}
+
+void JasonSideView::GoDown()
+{
+	v.y = JASON_CLIMBING_SPEED;
 }
 
 #include "InteractableGroupInclude.h"
