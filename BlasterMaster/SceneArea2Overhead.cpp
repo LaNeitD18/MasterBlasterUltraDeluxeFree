@@ -323,6 +323,7 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
 	}
+	obj->SetManager(this);
 
 	//hihi
 	for (int i = 3; i < tokens.size(); i++)
@@ -617,7 +618,7 @@ void SceneArea2Overhead::Update()
 			Game::GetInstance()->Init(L"Resources/scene.txt", 2);
 			return;
 		}
-		GameGlobal::SetHealthPointSideView(target->GetHP());
+		GameGlobal::SetCurrentHealthPoint(target->GetHP());
 		mCamera->FollowTarget();
 		mCamera->SnapToBoundary();
 
@@ -781,6 +782,7 @@ void SceneArea2Overhead::Release()
 
 Player * SceneArea2Overhead::GetTarget()
 {
+	if (this == nullptr) return NULL;
 	return target;
 }
 

@@ -39,8 +39,11 @@ public:
 	static AnimationSets* GetAnimationSetLibrary();
 	static void SetAnimationSetLibrary(AnimationSets* aniLib);
 
-	static int GetHealthPointSideView();
-	static void SetHealthPointSideView(int hp);
+	static int GetCurrentHealthPoint();
+	static void SetCurrentHealthPoint(int hp);
+
+	static int GetCurrentHealthPointSophia();
+	static void SetCurrentHealthPointSophia(int hp);
 
 	static int GetLivesToPlay();
 	static void SetLivesToPlay(int l);
@@ -62,8 +65,10 @@ private:
 
 	static Point lastPositionSophia;
 
-	static int HealthPointSideView;
+	static int HealthPoint;
 	static int livesToPlay;
+
+	static int SophiaHealthPoint;
 };
 
 #endif

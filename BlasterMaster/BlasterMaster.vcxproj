@@ -23,6 +23,7 @@
     <ClInclude Include="Animations.h" />
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="CannonBullet.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cannon.h" />
@@ -40,6 +41,7 @@
     <ClInclude Include="Insect.h" />
     <ClInclude Include="Interactable.h" />
     <ClInclude Include="InteractableGroupInclude.h" />
+    <ClInclude Include="ItemPower.h" />
     <ClInclude Include="JasonOverhead.h" />
     <ClInclude Include="JasonSideView.h" />
     <ClInclude Include="Jumper.h" />
@@ -71,12 +73,17 @@
     <ClInclude Include="MapReader\zlib.h" />
     <ClInclude Include="MapSegment.h" />
     <ClInclude Include="Mine.h" />
+    <ClInclude Include="MineBullet.h" />
+    <ClInclude Include="MiniRedBullet.h" />
     <ClInclude Include="Orb.h" />
     <ClInclude Include="SceneArea2Overhead.h" />
     <ClInclude Include="SceneArea2SideView.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneOpening.h" />
+    <ClInclude Include="Ship.h" />
+    <ClInclude Include="Skull.h" />
+    <ClInclude Include="SkullBullet.h" />
     <ClInclude Include="Sophia.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Teleporter.h" />
@@ -92,6 +99,7 @@
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="CannonBullet.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cannon.cpp" />
@@ -107,6 +115,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Insect.cpp" />
     <ClCompile Include="Interactable.cpp" />
+    <ClCompile Include="ItemPower.cpp" />
     <ClCompile Include="JasonOverhead.cpp" />
     <ClCompile Include="JasonSideView.cpp" />
     <ClCompile Include="Jumper.cpp" />
@@ -134,11 +143,16 @@
     <ClCompile Include="MapReader\TmxUtil.cpp" />
     <ClCompile Include="MapSegment.cpp" />
     <ClCompile Include="Mine.cpp" />
+    <ClCompile Include="MineBullet.cpp" />
+    <ClCompile Include="MiniRedBullet.cpp" />
     <ClCompile Include="Orb.cpp" />
     <ClCompile Include="SceneArea2Overhead.cpp" />
     <ClCompile Include="SceneArea2SideView.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="SceneOpening.cpp" />
+    <ClCompile Include="Ship.cpp" />
+    <ClCompile Include="Skull.cpp" />
+    <ClCompile Include="SkullBullet.cpp" />
     <ClCompile Include="Sophia.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Sprites.cpp" />

@@ -1,27 +1,25 @@
 #pragma once
 #include "AnimatedGameObject.h"
 
-#define MINE_WALKING_SPEED 0.00f;
+#define MINE_BBOX_OFFSET_LEFT	 (-7 + 1)
+#define MINE_BBOX_OFFSET_RIGHT	  (7 - 1)
+#define MINE_BBOX_OFFSET_TOP     (-4 + 1)
+#define MINE_BBOX_OFFSET_BOTTOM   (4 - 1)
 
-#define MINE_BBOX_WIDTH 16
-#define MINE_BBOX_HEIGHT 26
-#define MINE_BBOX_HEIGHT_DIE 16
+#define MINE_ANI_NORMAL 0
 
-#define MINE_STATE_WALKING 100
-#define MINE_STATE_DIE 200
-
-#define MINE_ANI_TELEPORT 0
-#define MINE_ANI_DIE 2
-
-class Mine : public AnimatedGameObject
+class Mine : public Enemy
 {
-	virtual BoundingBox GetBoundingBox();
-	virtual void Update();
-	virtual void Render();
-
 public:
 	Mine();
 	Mine(float x, float y);
 	virtual void SetState(int state);
+
+	virtual void Interact(Interactable* other);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
+
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
 };
 

@@ -1,48 +1,78 @@
 #include "Cannon.h"
+#include "CannonBullet.h"
 
 Cannon::Cannon() {
-	SetState(CANNON_STATE_WALKING);
+	SetState(CANNON_STATE_VERTICAL);
 }
 
 Cannon::Cannon(float x, float y) {
-	SetState(CANNON_STATE_WALKING);
+	SetState(CANNON_STATE_VERTICAL);
+	isVertical = true;
 	pos = Point(x, y);
-	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 }
 
 BoundingBox Cannon::GetBoundingBox()
 {
-	float left = pos.x;
-	float top = pos.y;
-	float right = pos.x + CANNON_BBOX_WIDTH;
-	float bottom;
+	float left = pos.x + CANNON_BBOX_OFFSET_LEFT;
+	float top = pos.y + CANNON_BBOX_OFFSET_TOP;
+	float right = pos.x + CANNON_BBOX_OFFSET_RIGHT;
+	float bottom = pos.y + CANNON_BBOX_OFFSET_BOTTOM;
 
-	if (state == CANNON_STATE_DIE)
-		bottom = pos.y + CANNON_BBOX_HEIGHT_DIE;
-	else
-		bottom = pos.y + CANNON_BBOX_HEIGHT;
 	return BoundingBox(left, top, right, bottom);
+}
+
+void Cannon::ShootHorizontally()
+{
+	Point leftV = Point(-1, 0);
+	CannonBullet* leftBullet = new CannonBullet(pos, leftV);
+	leftBullet->SetManager(manager);
+	manager->AddElement(leftBullet);
+
+	Point rightV = Point(1, 0);
+	CannonBullet* rightBullet = new CannonBullet(pos, rightV);
+	rightBullet->SetManager(manager);
+	manager->AddElement(rightBullet);
+}
+
+void Cannon::ShootVertically()
+{
+	Point topV = Point(0, -1);
+	CannonBullet* topBullet = new CannonBullet(pos, topV);
+	topBullet->SetManager(manager);
+	manager->AddElement(topBullet);
+
+	Point botV = Point(0, 1);
+	CannonBullet* bottomBullet = new CannonBullet(pos, botV);
+	bottomBullet->SetManager(manager);
+	manager->AddElement(bottomBullet);
 }
 
 void Cannon::Update()
 {
 	pos += dx();
 
-	if (v.x < 0 && pos.x < 0) {
-		pos.x = 0; v.x = -v.x;
+	// xai bien isVertical la vi no update ma chua setani thi da set state khac nen chi render dc moi 1 state
+	if (currentTime == 0 && state == CANNON_STATE_VERTICAL && isVertical == true) {
+		SetState(CANNON_STATE_HORIZONTAL);
+		ShootHorizontally();
 	}
-
-	if (v.x > 0 && pos.x > 290) {
-		pos.x = 290; v.x = -v.x;
+	else if (currentTime == 0 && state == CANNON_STATE_HORIZONTAL && isVertical == false) {
+		SetState(CANNON_STATE_VERTICAL);
+		ShootVertically();
 	}
 }
 
 void Cannon::Render()
 {
-	SetAnimationType(CANNON_ANI_TELEPORT);
-	/*if (state == TELEPORTER_STATE_DIE) {
-		ani = TELEPORTER_ANI_DIE;
-	}*/
+	if (state == CANNON_STATE_VERTICAL) {
+		SetAnimationType(CANNON_ANI_VERTICAL);
+		isVertical = true;
+	}
+	else if (state == CANNON_STATE_HORIZONTAL) {
+		SetAnimationType(CANNON_ANI_HORIZONTAL);
+		isVertical = false;
+	}
 
 	AnimatedGameObject::Render();
 
@@ -52,15 +82,9 @@ void Cannon::Render()
 void Cannon::SetState(int state)
 {
 	GameObject::SetState(state);
-	switch (state)
-	{
-	case CANNON_STATE_DIE:
-		pos.y += CANNON_BBOX_HEIGHT - CANNON_BBOX_HEIGHT_DIE + 1;
-		v.x = 0;
-		v.y = 0;
-		break;
-	case CANNON_STATE_WALKING:
-		v.x = CANNON_WALKING_SPEED;
-	}
-
 }
+
+#include "InteractableGroupInclude.h"
+#define CURRENT_CLASS Cannon
+void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)

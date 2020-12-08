@@ -14,9 +14,9 @@ Interactable::~Interactable()
 {
 }
 
-#define DAMAGE_OF_SPIKE 15
-#define DAMAGE_OF_ENEMY 10
-#define DAMAGE_OF_LAVA 15
+#define DAMAGE_OF_SPIKE 10
+#define DAMAGE_OF_ENEMY 5
+#define DAMAGE_OF_LAVA 20
 
 void Interactable::Interact(Player * player, Env_Wall * wall) {
 	BoundingBox playerBox = player->GetBoundingBox();
@@ -310,6 +310,16 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 	bool isJasonPlay = jasonPlay != NULL;
 	if (playerBox.IsOverlap(dungeonBox) && isJasonPlay) {
 		if (input[VK_DOWN] & KEY_STATE_DOWN) {
+			// set healthpoint sophia to global
+			SceneArea2SideView* scene_sideview = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
+			for (auto x : scene_sideview->GetObjects()) {
+				Sophia* sophia = dynamic_cast<Sophia*>(x);
+				if (sophia != NULL) {
+					GameGlobal::SetCurrentHealthPointSophia(sophia->GetHP());
+					break;
+				}
+			}
+			// jason setup
 			BoundingBox limitArea = SceneArea2Overhead::cameraLimitAreaOfSection[dungeon->GetSectionToEnter()];
 			Point startPoint = SceneArea2Overhead::startPointInSection[dungeon->GetSectionToEnter()];
 			//Game::GetInstance()->GetCurrentScene()->Release();
@@ -320,6 +330,8 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 				if (current_player != NULL &&
 					current_player->IsPrimaryPlayer()) {
 					scene->SetTarget(current_player);
+					// set hp based on jason sideview
+					current_player->SetHP(player->GetHP());
 					break;
 				}
 			}
@@ -353,6 +365,8 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 					scene->SetTarget(current_player);
 					//current_player->SetPosition(startPoint);
 					current_player->SetPosition(GameGlobal::GetLastPositionSophia());
+					// set hp based on sophia current hp
+					current_player->SetHP(GameGlobal::GetCurrentHealthPointSophia());
 					break;
 				}
 			}
@@ -365,13 +379,27 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 			current_player->GetManager()->AddElement(jason);
 			current_player->SetState(SOPHIA_STATE_LEFT_VEHICLE);
 			scene->SetTarget(jason);
+			// set hp based on jason SceneOverhead
+			jason->SetHP(player->GetHP());
 			//scene->GetTarget()->SetPosition(startPoint);
 			scene->GetCamera()->SetCameraLimitarea(limitArea);
 			//Camera::GetInstance()->SetCameraLimitarea(limitArea);
-			
 		}
 	}
 }
+
+#define POWER_GAIN 10
+
+void Interactable::Interact(Player* player, ItemPower* item) {
+	// implement interact between player and enemy (take damage)
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox itemBox = item->GetBoundingBox();
+	if (playerBox.IsOverlap(itemBox)) {
+		player->SetHP(player->GetHP() + POWER_GAIN);
+		item->GetManager()->RemoveElement(item);
+	}
+}
+
 
 #pragma region Tien
 void Interactable::Interact(Enemy* enemy, Env_Wall* wall) {
@@ -424,7 +452,273 @@ void Interactable::Interact(Player* player, Enemy* enemy) {
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox enemyBox = enemy->GetBoundingBox();
 	if (playerBox.IsOverlap(enemyBox)) {
+		JasonSideView* jasonPlay = dynamic_cast<JasonSideView*>(player);
+		bool isJasonPlay = jasonPlay != NULL;
+		int enemyDamage = DAMAGE_OF_ENEMY;
+		if (isJasonPlay) {
+			enemyDamage *= 2;
+		}
+		player->TakeDamage(enemyDamage);
 		player->TakeDamage(DAMAGE_OF_ENEMY);
+		enemy->isCollided = true;
+	}
+}
+
+void Interactable::Interact(Player* player, MiniRedBullet* bullet) {
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox playerBox = player->GetBoundingBox();
+	if (playerBox.SweptAABB(bulletBox, bullet->dx() + player->dx()) != -INFINITY)
+	{
+		player->TakeDamage(10);
+	}
+}
+
+void Interactable::Interact(Env_Wall* wall, MiniRedBullet* bullet) {
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox wallBox = wall->GetBoundingBox();
+	if (bulletBox.IsOverlap(wallBox)) {
+		float overlapAreaX = min(bulletBox.r, wallBox.r) - max(bulletBox.l, wallBox.l);
+		float overlapAreaY = min(bulletBox.b, wallBox.b) - max(bulletBox.t, wallBox.t);
+		if (overlapAreaX > overlapAreaY)
+		{
+			if (bulletBox.GetCenter().y > wallBox.GetCenter().y) {
+				bullet->wallTop = true;
+				// Snap top (player pushed down)
+				Point pos = bullet->GetPosition();
+				pos.y -= bulletBox.t - wallBox.b;
+				bullet->SetPosition(pos);
+			}
+			else
+			{
+				bullet->wallBot = true;
+				// Snap bottom (player pushed up)
+				Point pos = bullet->GetPosition();
+				pos.y += wallBox.t - bulletBox.b;
+				bullet->SetPosition(pos);
+			}
+		}
+		else
+		{
+			if (bulletBox.GetCenter().x < wallBox.GetCenter().x) {
+				bullet->wallRight = true;
+				// Snap right (player to left)
+				Point pos = bullet->GetPosition();
+				pos.x -= bulletBox.r - wallBox.l;
+				bullet->SetPosition(pos);
+			}
+			else
+			{
+				bullet->wallLeft = true;
+				// Snap left (player to right)
+				Point pos = bullet->GetPosition();
+				pos.x += wallBox.r - bulletBox.l;
+				bullet->SetPosition(pos);
+			}
+		}
+	}
+}
+
+void Interactable::Interact(Player* player, SkullBullet* bullet) {
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox playerBox = player->GetBoundingBox();
+	if (playerBox.SweptAABB(bulletBox, bullet->dx() + player->dx()) != -INFINITY)
+	{
+		// SKULL_BULLET_STATE_NORMAL = 100
+		if (bullet->GetState() == 100) {
+			player->TakeDamage(10);
+		}
+	}
+}
+
+void Interactable::Interact(Env_Wall* wall, SkullBullet* bullet) {
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox wallBox = wall->GetBoundingBox();
+	if (bulletBox.IsOverlap(wallBox)) {
+		float overlapAreaX = min(bulletBox.r, wallBox.r) - max(bulletBox.l, wallBox.l);
+		float overlapAreaY = min(bulletBox.b, wallBox.b) - max(bulletBox.t, wallBox.t);
+		if (overlapAreaX > overlapAreaY)
+		{
+			if (bulletBox.GetCenter().y > wallBox.GetCenter().y) {
+				bullet->wallTop = true;
+				// Snap top (player pushed down)
+				Point pos = bullet->GetPosition();
+				pos.y -= bulletBox.t - wallBox.b;
+				bullet->SetPosition(pos);
+			}
+			else
+			{
+				bullet->wallBot = true;
+				// Snap bottom (player pushed up)
+				Point pos = bullet->GetPosition();
+				pos.y += wallBox.t - bulletBox.b;
+				bullet->SetPosition(pos);
+			}
+		}
+		else
+		{
+			if (bulletBox.GetCenter().x < wallBox.GetCenter().x) {
+				bullet->wallRight = true;
+				// Snap right (player to left)
+				Point pos = bullet->GetPosition();
+				pos.x -= bulletBox.r - wallBox.l;
+				bullet->SetPosition(pos);
+			}
+			else
+			{
+				bullet->wallLeft = true;
+				// Snap left (player to right)
+				Point pos = bullet->GetPosition();
+				pos.x += wallBox.r - bulletBox.l;
+				bullet->SetPosition(pos);
+			}
+		}
+	}
+}
+
+void Interactable::Interact(Player* player, CannonBullet* bullet) {
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox playerBox = player->GetBoundingBox();
+	if (playerBox.SweptAABB(bulletBox, bullet->dx() + player->dx()) != -INFINITY)
+	{
+		// CANNON_BULLET_STATE_NORMAL = 100
+		if (bullet->GetState() == 100) {
+			player->TakeDamage(10);
+		}
+	}
+}
+
+void Interactable::Interact(Env_Wall* wall, CannonBullet* bullet) {
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox wallBox = wall->GetBoundingBox();
+	if (bulletBox.IsOverlap(wallBox)) {
+		float overlapAreaX = min(bulletBox.r, wallBox.r) - max(bulletBox.l, wallBox.l);
+		float overlapAreaY = min(bulletBox.b, wallBox.b) - max(bulletBox.t, wallBox.t);
+		if (overlapAreaX > overlapAreaY)
+		{
+			if (bulletBox.GetCenter().y > wallBox.GetCenter().y) {
+				bullet->wallTop = true;
+				// Snap top (player pushed down)
+				Point pos = bullet->GetPosition();
+				pos.y -= bulletBox.t - wallBox.b;
+				bullet->SetPosition(pos);
+			}
+			else
+			{
+				bullet->wallBot = true;
+				// Snap bottom (player pushed up)
+				Point pos = bullet->GetPosition();
+				pos.y += wallBox.t - bulletBox.b;
+				bullet->SetPosition(pos);
+			}
+		}
+		else
+		{
+			if (bulletBox.GetCenter().x < wallBox.GetCenter().x) {
+				bullet->wallRight = true;
+				// Snap right (player to left)
+				Point pos = bullet->GetPosition();
+				pos.x -= bulletBox.r - wallBox.l;
+				bullet->SetPosition(pos);
+			}
+			else
+			{
+				bullet->wallLeft = true;
+				// Snap left (player to right)
+				Point pos = bullet->GetPosition();
+				pos.x += wallBox.r - bulletBox.l;
+				bullet->SetPosition(pos);
+			}
+		}
+	}
+}
+
+void Interactable::Interact(Player* player, MineBullet* bullet) {
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox playerBox = player->GetBoundingBox();
+	if (playerBox.SweptAABB(bulletBox, bullet->dx() + player->dx()) != -INFINITY)
+	{
+		// MINE_BULLET_STATE_NORMAL = 100
+		if (bullet->GetState() == 100) {
+			player->TakeDamage(10);
+		}
+	}
+}
+
+void Interactable::Interact(Env_Wall* wall, MineBullet* bullet) {
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox wallBox = wall->GetBoundingBox();
+	if (bulletBox.IsOverlap(wallBox)) {
+		float overlapAreaX = min(bulletBox.r, wallBox.r) - max(bulletBox.l, wallBox.l);
+		float overlapAreaY = min(bulletBox.b, wallBox.b) - max(bulletBox.t, wallBox.t);
+		if (overlapAreaX > overlapAreaY)
+		{
+			if (bulletBox.GetCenter().y > wallBox.GetCenter().y) {
+				bullet->wallTop = true;
+				// Snap top (player pushed down)
+				Point pos = bullet->GetPosition();
+				pos.y -= bulletBox.t - wallBox.b;
+				//bullet->SetPosition(pos);
+			}
+			else
+			{
+				bullet->wallBot = true;
+				// Snap bottom (player pushed up)
+				Point pos = bullet->GetPosition();
+				pos.y += wallBox.t - bulletBox.b;
+				//bullet->SetPosition(pos);
+			}
+		}
+		else
+		{
+			if (bulletBox.GetCenter().x < wallBox.GetCenter().x) {
+				bullet->wallRight = true;
+				// Snap right (player to left)
+				Point pos = bullet->GetPosition();
+				pos.x -= bulletBox.r - wallBox.l;
+				//bullet->SetPosition(pos);
+			}
+			else
+			{
+				bullet->wallLeft = true;
+				// Snap left (player to right)
+				Point pos = bullet->GetPosition();
+				pos.x += wallBox.r - bulletBox.l;
+				//bullet->SetPosition(pos);
+			}
+		}
+	}
+}
+
+
+void Interactable::Interact(Enemy* enemy, Env_Portal* portal) {
+	BoundingBox enemyBox = enemy->GetBoundingBox();
+	BoundingBox portalBox = portal->GetBoundingBox();
+	
+	if (enemyBox.IsOverlap(portalBox)) {
+		float overlapAreaX = min(enemyBox.r, portalBox.r) - max(enemyBox.l, portalBox.l);
+		float overlapAreaY = min(enemyBox.b, portalBox.b) - max(enemyBox.t, portalBox.t);
+		if (overlapAreaX > overlapAreaY)
+		{
+			
+		}
+		else
+		{
+			if (enemyBox.GetCenter().x < portalBox.GetCenter().x) {
+				enemy->wallRight = true;
+				// Snap right (player to left)
+				Point pos = enemy->GetPosition();
+				pos.x -= enemyBox.r - portalBox.l;
+				enemy->SetPosition(pos);
+			}
+			else
+			{
+				enemy->wallLeft = true;
+				// Snap left (player to right)
+				Point pos = enemy->GetPosition();
+				pos.x += portalBox.r - enemyBox.l;
+				enemy->SetPosition(pos);
+			}
+		}
 	}
 }
 #pragma endregion

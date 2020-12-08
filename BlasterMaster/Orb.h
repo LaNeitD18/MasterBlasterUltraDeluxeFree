@@ -8,12 +8,10 @@
 #define ORB_BBOX_HEIGHT_DIE 16
 
 #define ORB_STATE_WALKING 100
-#define ORB_STATE_DIE 200
 
 #define ORB_ANI_IDLE 0
-#define ORB_ANI_DIE 2
 
-class Orb : public AnimatedGameObject
+class Orb : public Enemy
 {
 	virtual BoundingBox GetBoundingBox();
 	virtual void Update();
@@ -23,5 +21,8 @@ public:
 	Orb();
 	Orb(float x, float y);
 	virtual void SetState(int state);
+
+	virtual void Interact(Interactable* other);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 };
 

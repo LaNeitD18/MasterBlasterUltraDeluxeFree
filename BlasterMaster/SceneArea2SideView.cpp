@@ -14,6 +14,12 @@
 #include "Dome.h"
 #include "Floater.h"
 #include "Insect.h"
+#include "Ship.h"
+#include "Cannon.h"
+#include "Orb.h"
+#include "Skull.h"
+#include "SkullBullet.h"
+#include "Mine.h"
 
 using namespace std;
 
@@ -30,13 +36,13 @@ BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[19] = {
 	// section E
 	BoundingBox(2560, 1792, 3086, 2072),
 	//section F
-	BoundingBox(1536, 32, 2062, 1814),
+	BoundingBox(1536, 0, 2062, 1814),
 	// section G
 	BoundingBox(2048, 512, 2574, 792),
 	// section H
-	BoundingBox(2048, 32, 2574, 312),
+	BoundingBox(2048, 0, 2574, 280),
 	// section I
-	BoundingBox(2560, 32, 3086, 568),
+	BoundingBox(2560, 0, 3086, 568),
 	// section J
 	BoundingBox(2048, 256, 2574, 536),
 	// section K
@@ -180,6 +186,9 @@ SceneArea2SideView::~SceneArea2SideView()
 #define OBJECT_TYPE_WALKER 11
 #define OBJECT_TYPE_SOPHIA 12
 #define OBJECT_TYPE_JASON_SIDE_VIEW 13
+#define OBJECT_TYPE_SHIP 18
+#define OBJECT_TYPE_SKULL 20
+#define OBJECT_TYPE_SKULL_BULLET 100
 
 //LeSon
 #define ENVIRONMENT_TYPE_WALL 1
@@ -373,29 +382,38 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		break;
 	/*case OBJECT_TYPE_TELEPORTER:
 		obj = new Teleporter(x, y);
-		break;
+		break;*/
 	case OBJECT_TYPE_CANNON:
 		obj = new Cannon(x, y);
-		break;*/
+		break;
 	case OBJECT_TYPE_DOME:
 		obj = new Dome(x, y);
 		break;
 	/*case OBJECT_TYPE_EYE:
 		obj = new Eye(x, y);
-		break;
+		break;*/
 	case OBJECT_TYPE_MINE:
 		obj = new Mine(x, y);
-		break;*/
+		break;
 	case OBJECT_TYPE_FLOATER:
 		obj = new Floater(x, y);
 		break;
 	case OBJECT_TYPE_INSECT:
 		obj = new Insect(x, y);
 		break;
-	/*case OBJECT_TYPE_ORB:
+	case OBJECT_TYPE_SHIP:
+		obj = new Ship(x, y);
+		break;
+	case OBJECT_TYPE_ORB:
 		obj = new Orb(x, y);
 		break;
-	case OBJECT_TYPE_WALKER:
+	case OBJECT_TYPE_SKULL:
+		obj = new Skull(x, y);
+		break;
+	case OBJECT_TYPE_SKULL_BULLET:
+		obj = new SkullBullet(x, y);
+		break;
+	/*case OBJECT_TYPE_WALKER:
 		obj = new Walker(x, y);
 		break;*/
 	case OBJECT_TYPE_SOPHIA:
@@ -794,7 +812,7 @@ void SceneArea2SideView::Update()
 			Game::GetInstance()->Init(L"Resources/scene.txt", 2);
 			return;
 		}
-		GameGlobal::SetHealthPointSideView(target->GetHP());
+		GameGlobal::SetCurrentHealthPoint(target->GetHP());
 		mCamera->FollowTarget();
 		mCamera->SnapToBoundary();
 
@@ -963,6 +981,7 @@ void SceneArea2SideView::Release()
 
 Player* SceneArea2SideView::GetTarget()
 {
+	if (this == nullptr) return NULL;
 	return target;
 }
 

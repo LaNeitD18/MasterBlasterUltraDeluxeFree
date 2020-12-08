@@ -122,7 +122,7 @@ void Insect::SetState(int state)
 		break;
 	case INSECT_STATE_FALLING:
 		v.x = 0;
-		v.y = 5;
+		v.y = 2.5;
 		break;
 	}
 }

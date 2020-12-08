@@ -1,0 +1,4 @@
+# id	left	top	right	bottom	texture_id
+# idle
+10170	42	527	60	548	15
+10171	62	527	80	548	15
