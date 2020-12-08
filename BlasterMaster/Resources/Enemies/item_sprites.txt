@@ -1,3 +1,6 @@
 # id	left	top	right	bottom	texture_id
 # power
 20001	255	109	271	125	18
+
+# hover
+20002	105	109	121	125	18
