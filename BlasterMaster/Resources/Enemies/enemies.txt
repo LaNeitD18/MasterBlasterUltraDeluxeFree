@@ -2,7 +2,7 @@
 [TEXTURES]
 #1	Resources\sprites\worm_76_44.png		255	255	255
 #2	Resources\sprites\jumper_68_104.png		255	255	255
-3	Resources\sprites\teleporter_104_136.png	255	255	255
+3	Resources\sprites\Teleporters.png	254	255	255
 #4	Resources\sprites\cannon_109_108.png		255	255	255
 #5	Resources\sprites\dome_76_72.png		255	255	255
 6	Resources\sprites\eye_76_76.png			255	255	255
@@ -208,7 +208,7 @@ Resources\Enemies\item_ani.txt
 #7	150	2972	7
 
 # FLOATER
-8	210	2850	8
+#8	210	2850	8
 #8	870	2905	8
 #8	925	2915	8
 #8	1137	2918	8
@@ -227,13 +227,13 @@ Resources\Enemies\item_ani.txt
 #10	500	300	11
 
 # SHIP
-18	210	2920	18
+#18	210	2920	18
 
 # SOPHIA
 12	56	2940	12	13	14	15
 
 # SKULL
-20	210	2920	20
+#20	210	2920	20
 #20	1705	1915	20
 #20	1910	1165	20
 

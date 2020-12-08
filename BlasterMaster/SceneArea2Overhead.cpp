@@ -13,6 +13,8 @@
 #include "Jumper.h"
 #include "Dome.h"
 #include "Floater.h"
+#include "Teleporter.h"
+#include "Cannon.h"
 
 using namespace std;
 
@@ -283,14 +285,8 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	case OBJECT_TYPE_WORM:
-		obj = new Worm(x, y);
-		break;
 	case OBJECT_TYPE_JASON_OVERHEAD:
 		obj = new JasonOverhead(x, y);
-		break;
-	/*case OBJECT_TYPE_JUMPER:
-		obj = new Jumper(x, y);
 		break;
 	case OBJECT_TYPE_TELEPORTER:
 		obj = new Teleporter(x, y);
@@ -298,7 +294,7 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_CANNON:
 		obj = new Cannon(x, y);
 		break;
-	case OBJECT_TYPE_DOME:
+	/*case OBJECT_TYPE_DOME:
 		obj = new Dome(x, y);
 		break;
 	case OBJECT_TYPE_EYE:

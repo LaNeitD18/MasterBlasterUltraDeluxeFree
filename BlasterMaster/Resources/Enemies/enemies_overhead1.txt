@@ -1,22 +1,38 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
 1	Resources\sprites\Jason_Overhead.png		255	255	255
-# next sprite: 10155
+3	Resources\sprites\Teleporters.png	254	255	255
+17	Resources\sprites\116445.png	0	57	115
 
 [SPRITES]
 # id format: 5XX
 #1 JASON OVERHEAD
 Resources\Enemies\Jason_Overhead_sprites.txt
 
+#3 TELEPORTER
+Resources\Enemies\teleporter_sprites.txt
+
+#101 CANNON BULLET
+Resources\Enemies\cannon_bullet_sprites.txt
+
 [ANIMATIONS]
 # id format: 5XX
 #1 ==== JASON OVERHEAD =========
 Resources\Enemies\Jason_Overhead_ani.txt
+
+#3 ==== TELPORTER =========
+Resources\Enemies\teleporter_ani.txt
+
+#101 ==== CANNON BULLET =========
+Resources\Enemies\cannon_bullet_ani.txt
 [OBJECTS]
 # type	x	y	ani_set_id1	ani_set_id2...
 
 # JASONO
 12	128	1904	1
+
+# TELEPORTER
+3	345	1625	3
 
 [ENVIRONMENTS]
 # type	x	y	width	height	portaldirid	sectionToEnter
