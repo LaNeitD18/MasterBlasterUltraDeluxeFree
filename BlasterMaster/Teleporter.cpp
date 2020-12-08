@@ -1,25 +1,22 @@
 #include "Teleporter.h"
 
 Teleporter::Teleporter() {
-	SetState(TELEPORTER_STATE_WALKING);
+	SetState(TELEPORTER_STATE_TELEPORT);
 }
 
 Teleporter::Teleporter(float x, float y) {
-	SetState(TELEPORTER_STATE_WALKING);
+	SetState(TELEPORTER_STATE_TELEPORT);
 	pos = Point(x, y);
-	drawArguments.SetScale(D3DXVECTOR2(0.25, 0.25));
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 }
 
 BoundingBox Teleporter::GetBoundingBox()
 {
-	float left = pos.x;
-	float top = pos.y;
-	float right = pos.x + TELEPORTER_BBOX_WIDTH;
-	float bottom;
-	if (state == TELEPORTER_STATE_DIE)
-		bottom = pos.y + TELEPORTER_BBOX_HEIGHT_DIE;
-	else
-		bottom = pos.y + TELEPORTER_BBOX_HEIGHT;
+	float left = pos.x + TELEPORTER_BBOX_OFFSET_LEFT;
+	float top = pos.y + TELEPORTER_BBOX_OFFSET_TOP;
+	float right = pos.x + TELEPORTER_BBOX_OFFSET_RIGHT;
+	float bottom = pos.y + TELEPORTER_BBOX_OFFSET_BOTTOM;
+
 	return BoundingBox(left, top, right, bottom);
 }
 
@@ -28,21 +25,16 @@ void Teleporter::Update()
 	pos += dx();
 	Enemy::Update();
 
-	if (v.x < 0 && pos.x < 0) {
-		pos.x = 0; v.x = -v.x;
-	}
-
-	if (v.x > 0 && pos.x > 290) {
-		pos.x = 290; v.x = -v.x;
-	}
 }
 
 void Teleporter::Render()
 {
-	SetAnimationType(TELEPORTER_ANI_TELEPORT);
-	/*if (state == TELEPORTER_STATE_DIE) {
-		ani = TELEPORTER_ANI_DIE;
-	}*/
+	if (state == TELEPORTER_STATE_TELEPORT) {
+		SetAnimationType(TELEPORTER_ANI_TELEPORT);
+	}
+	else if (state == TELEPORTER_STATE_PROTECT) {
+		SetAnimationType(TELEPORTER_ANI_PROTECT);
+	}
 
 	AnimatedGameObject::Render();
 
@@ -54,13 +46,17 @@ void Teleporter::SetState(int state)
 	GameObject::SetState(state);
 	switch (state)
 	{
-	case TELEPORTER_STATE_DIE:
-		pos.y += TELEPORTER_BBOX_HEIGHT - TELEPORTER_BBOX_HEIGHT_DIE + 1;
+	case TELEPORTER_STATE_TELEPORT:
 		v.x = 0;
 		v.y = 0;
 		break;
-	case TELEPORTER_STATE_WALKING:
-		v.x = TELEPORTER_WALKING_SPEED;
+	case TELEPORTER_STATE_PROTECT:
+		v.x = 0;
+		break;
 	}
-
 }
+
+#include "InteractableGroupInclude.h"
+#define CURRENT_CLASS Teleporter
+void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
