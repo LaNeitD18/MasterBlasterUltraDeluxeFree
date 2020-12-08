@@ -71,6 +71,7 @@
     <ClCompile Include="ItemPower.cpp" />
     <ClCompile Include="SceneOver.cpp" />
     <ClCompile Include="ItemHover.cpp" />
+    <ClCompile Include="InteractableDoubleDispatch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedGameObject.h" />

@@ -404,9 +404,3 @@ void JasonSideView::GoDown()
 {
 	v.y = JASON_CLIMBING_SPEED;
 }
-
-#include "InteractableGroupInclude.h"
-#define CURRENT_CLASS JasonSideView
-void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
-APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
-#undef CURRENT_CLASS

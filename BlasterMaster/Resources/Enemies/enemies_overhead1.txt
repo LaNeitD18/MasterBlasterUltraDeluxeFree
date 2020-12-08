@@ -1,6 +1,7 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
 1	Resources\sprites\Jason_Overhead.png		255	255	255
+17	Resources\sprites\116445.png	0	57	115
 # next sprite: 10155
 
 [SPRITES]
@@ -8,10 +9,17 @@
 #1 JASON OVERHEAD
 Resources\Enemies\Jason_Overhead_sprites.txt
 
+#17 BULLET
+Resources\Enemies\bullet_sprites.txt
+
 [ANIMATIONS]
 # id format: 5XX
 #1 ==== JASON OVERHEAD =========
 Resources\Enemies\Jason_Overhead_ani.txt
+
+#17 ==== BULLET =========
+Resources\Enemies\bullet_ani.txt
+
 [OBJECTS]
 # type	x	y	ani_set_id1	ani_set_id2...
 
