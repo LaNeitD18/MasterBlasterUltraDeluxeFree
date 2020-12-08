@@ -9,6 +9,12 @@ JasonOverhead::JasonOverhead()
 
 	currentAnimation = NULL;
 	HealthPoint = JASONO_MAX_HEALTH;
+
+	/*
+	bulletPower = JASONO_MAX_BULLET_POWER;
+	/*/
+	bulletPower = 0;
+	//*/
 }
 JasonOverhead::JasonOverhead(float x, float y)
 {
@@ -20,10 +26,22 @@ JasonOverhead::JasonOverhead(float x, float y)
 	// set looking right
 	//drawArguments.FlipVertical(true);
 	HealthPoint = JASONO_MAX_HEALTH;
+
+	/*
+	bulletPower = JASONO_MAX_BULLET_POWER;
+	/*/
+	bulletPower = 0;
+	//*/
 }
 
 JasonOverhead::~JasonOverhead()
 {
+}
+
+void JasonOverhead::TakeDamage(int damage)
+{
+	Player::TakeDamage(damage);
+	bulletPower -= JASONO_POWER_MIN_STEP;
 }
 
 BoundingBox JasonOverhead::GetBoundingBox()
@@ -128,16 +146,21 @@ void JasonOverhead::Update()
 			newState = JASONO_STATE_LOOKING_LEFT;
 			isFlipVertical = true;
 		}
-		else if (input[VK_UP] & KEY_STATE_DOWN) {
+		else if (input[INPUT_UP] & KEY_STATE_DOWN) {
 			GoUp();
 			newState = JASONO_STATE_GOING_UP;
 		}
-		else if (input[VK_DOWN] & KEY_STATE_DOWN) {
+		else if (input[INPUT_DOWN] & KEY_STATE_DOWN) {
 			GoDown();
 			newState = JASONO_STATE_GOING_DOWN;
 		}
 		else {
 			v.x = v.y = 0;
+		}
+
+		if (input[INPUT_SHOOT] == KEY_STATE_ON_DOWN)
+		{
+			ShootNorm();
 		}
 	}
 
@@ -176,6 +199,8 @@ void JasonOverhead::Update()
 	if (HealthPoint <= 0 && state != JASONO_STATE_DEAD) {
 		SetState(JASONO_STATE_DYING);
 	}
+	
+	
 }
 
 void JasonOverhead::SetState(int newState)
@@ -273,6 +298,38 @@ void JasonOverhead::GoHalt()
 		v.x = 0;
 	if (v.x < 0 && wallRight)
 		v.x = 0;
+}
+
+void JasonOverhead::ShootNorm()
+{
+	Point v;
+	if (state & JASONO_STATE_GOING_UP)
+		v = Point(0, -1);
+
+	if (state & JASONO_STATE_GOING_DOWN)
+		v = Point(0, 1);
+
+	if (state & JASONO_STATE_LOOKING_LEFT) {
+		if (isFlipVertical)
+			v = Point(1, 0);
+		else v = Point(-1, 0);
+	}
+
+	if (bulletPower >= JASONO_SINE_BULLET_POWER_THRESHOLD)
+	{
+		// Sine bullet
+	}
+	else
+	{
+		JasonOverheadBulletNorm* bullet = new JasonOverheadBulletNorm(GetBoundingBox().GetCenter(), v);
+		manager->AddElement(bullet);
+		bullet->SetManager(manager);
+	}
+}
+
+// Note: button 'x'
+void JasonOverhead::ShootGrenade()
+{
 }
 
 #include "InteractableGroupInclude.h"

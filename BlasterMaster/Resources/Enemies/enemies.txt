@@ -20,11 +20,11 @@
 18	Resources\sprites\ItemObjects.png	254	255	255
 # next Tien's sprite: 10193
 # next sprite: 10177			Tien
-# next sprite: 20000			Son
+# next sprite: 20001			Son
 # next sprite: 30000			Long
 
 # Next animation: 1000			Tien
-# Next animation: 2000			Son
+# Next animation: 2001			Son
 # Next animation: 3000			Long
 
 # Next set: 100				Tien

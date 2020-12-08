@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Bullet.h"
 
 #define JASONO_WALKING_SPEED 0.66f
 #define JASONO_ACCELERATION 0.033f
@@ -12,17 +13,21 @@
 #define JASONO_BBOX_OFFSET_TOP		-16 + 2
 #define JASONO_BBOX_OFFSET_BOTTOM	 16 - 1
 
+#define JASONO_MAX_BULLET_POWER 80
+#define JASONO_SINE_BULLET_POWER_THRESHOLD 60
+#define JASONO_POWER_MIN_STEP 10
+
 enum JasonOverheadState
 {
 	JASONO_STATE_IDLE = 0,	// 
 	JASONO_STATE_WALKING = 1,	// moving and touching ground
 
-	JASONO_STATE_LOOKING_LEFT = 2,
-	JASONO_STATE_GOING_UP = 3,
-	JASONO_STATE_GOING_DOWN = 4,
+	JASONO_STATE_LOOKING_LEFT = 0x02,
+	JASONO_STATE_GOING_UP = 0x04,
+	JASONO_STATE_GOING_DOWN = 0x08,
 
-	JASONO_STATE_DYING = 5,
-	JASONO_STATE_DEAD = 6,
+	JASONO_STATE_DYING = 0x10,
+	JASONO_STATE_DEAD = 0x20,
 	//JASON_STATE_TAKING_DAMAGE = 0x0100,
 };	
 
@@ -42,7 +47,6 @@ class JasonOverhead :
 	Animation* currentAnimation;
 	bool moving = true;
 	bool isFlipVertical = false;
-	
 public:
 	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
@@ -59,9 +63,14 @@ public:
 	void GoUp();
 	void GoDown();
 	void GoHalt();
+	void ShootNorm();
+	void ShootGrenade();
 
 	JasonOverhead();
 	JasonOverhead(float, float);
 	virtual ~JasonOverhead();
+
+	int bulletPower;
+	virtual void TakeDamage(int damage);
 };
 
