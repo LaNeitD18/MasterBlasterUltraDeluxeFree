@@ -115,6 +115,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Insect.cpp" />
     <ClCompile Include="Interactable.cpp" />
+    <ClCompile Include="InteractableDoubleDispatch.cpp" />
     <ClCompile Include="ItemPower.cpp" />
     <ClCompile Include="JasonOverhead.cpp" />
     <ClCompile Include="JasonSideView.cpp" />

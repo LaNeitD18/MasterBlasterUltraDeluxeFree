@@ -251,18 +251,6 @@ void TimedPlayerBullet::Update()
 	PlayerBullet::Update();
 }
 
-#include "InteractableGroupInclude.h"
-#define CURRENT_CLASS PlayerBullet
-void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
-APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
-#undef CURRENT_CLASS
-
-#include "InteractableGroupInclude.h"
-#define CURRENT_CLASS EnemyBullet
-void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
-APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
-#undef CURRENT_CLASS
-
 JasonOverheadBulletGrenadeFragment::JasonOverheadBulletGrenadeFragment(Point pos, int damage)
 	: PlayerBullet(pos, Point(), 7)
 {

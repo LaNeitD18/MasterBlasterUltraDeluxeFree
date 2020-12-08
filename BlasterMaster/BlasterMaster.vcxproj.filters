@@ -69,6 +69,7 @@
     <ClCompile Include="CannonBullet.cpp" />
     <ClCompile Include="MineBullet.cpp" />
     <ClCompile Include="ItemPower.cpp" />
+    <ClCompile Include="InteractableDoubleDispatch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedGameObject.h" />

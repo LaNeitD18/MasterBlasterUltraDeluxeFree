@@ -146,8 +146,3 @@ void Worm::SetState(int state)
 		break;
 	}
 }
-
-#include "InteractableGroupInclude.h"
-#define CURRENT_CLASS Worm
-APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
-#undef CURRENT_CLASS

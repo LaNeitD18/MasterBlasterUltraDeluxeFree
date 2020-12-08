@@ -37,7 +37,7 @@ public:
 	Worm(float x, float y);
 	virtual void SetState(int state);
 
-	virtual void Interact(Interactable* other) { other->Interact(this); }
+	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 
 	virtual BoundingBox GetBoundingBox();

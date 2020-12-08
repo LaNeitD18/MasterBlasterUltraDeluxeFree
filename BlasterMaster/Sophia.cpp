@@ -3,7 +3,6 @@
 #include "JasonSideView.h"
 #include "Bullet.h"
 
-void Sophia::Interact(Interactable * other) { other->Interact(this); }
 
 BoundingBox Sophia::GetBoundingBox()
 {
@@ -592,8 +591,3 @@ void Sophia::TakeDamage(int damage)
 		!(state & SOPHIA_STATE_LEAVING_VEHICLE))
 		Player::TakeDamage(damage);
 }
-
-#include "InteractableGroupInclude.h"
-#define CURRENT_CLASS Sophia
-APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
-#undef CURRENT_CLASS
