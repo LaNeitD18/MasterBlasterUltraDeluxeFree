@@ -23,3 +23,4 @@
 #include "CannonBullet.h"
 #include "MineBullet.h"
 #include "ItemPower.h"
+#include "ItemHover.h"

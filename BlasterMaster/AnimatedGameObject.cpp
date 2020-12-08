@@ -1,6 +1,7 @@
 #include "AnimatedGameObject.h"
 #include "Utils.h"
 #include "ItemPower.h"
+#include "ItemHover.h"
 
 static D3DCOLOR invulnerableColor[2] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(0,255,255,255) };
 
@@ -39,7 +40,8 @@ void AnimatedGameObject::SetAnimationType(int ANI)
 	}
 }
 
-#define RATE_DISPLAY_POWER_ITEM 75
+#define RATE_DISPLAY_POWER_ITEM 70
+#define RATE_DISPLAY_HOVER_ITEM 10
 
 void Enemy::TakeDamage(int damage)
 {
@@ -51,11 +53,17 @@ void Enemy::TakeDamage(int damage)
 		manager->RemoveElement(this);
 		// TODO: Generate HP items 75 percent
 		int random = rand() % 100 + 1;
-		if (random <= RATE_DISPLAY_POWER_ITEM) {
-			//displayMessage("power");
-			ItemPower* item_power = new ItemPower(pos);
-			item_power->SetManager(manager);
-			manager->AddElement(item_power);
+		//if (random <= RATE_DISPLAY_POWER_ITEM) {
+		//	//displayMessage("power");
+		//	ItemPower* item_power = new ItemPower(pos);
+		//	item_power->SetManager(manager);
+		//	manager->AddElement(item_power);
+		//}
+		//else
+		if (random <= RATE_DISPLAY_POWER_ITEM + RATE_DISPLAY_HOVER_ITEM) {
+			ItemHover* item_hover = new ItemHover(pos);
+			item_hover->SetManager(manager);
+			manager->AddElement(item_hover);
 		}
 	}
 }

@@ -1,7 +1,6 @@
 #include "ItemPower.h"
 #include "GameGlobal.h"
 #include "Utils.h"
-#include "SceneArea2SideView.h"
 #include "Game.h"
 #include "Camera.h"
 

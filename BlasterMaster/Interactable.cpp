@@ -391,11 +391,22 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 #define POWER_GAIN 10
 
 void Interactable::Interact(Player* player, ItemPower* item) {
-	// implement interact between player and enemy (take damage)
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox itemBox = item->GetBoundingBox();
 	if (playerBox.IsOverlap(itemBox)) {
 		player->SetHP(player->GetHP() + POWER_GAIN);
+		item->GetManager()->RemoveElement(item);
+	}
+}
+
+#define HOVER_GAIN 10
+
+void Interactable::Interact(Player* player, ItemHover* item) {
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox itemBox = item->GetBoundingBox();
+	if (playerBox.IsOverlap(itemBox)) {
+		//TODO: setup hover for sophia
+		displayMessage("i want to get this");
 		item->GetManager()->RemoveElement(item);
 	}
 }
