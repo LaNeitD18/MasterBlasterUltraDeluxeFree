@@ -1,9 +1,11 @@
 # ani_id	sprite1_id	frames1	sprite2_id	frames2	...
-# walk
-502	10007	48	10008	3	10009	3	10010	3	10011	3	10012	3	10013	3	10014	48
+# teleport
+502	10007	8
+# protect
+1006	10007	8	10008	48
 #
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
 # TELEPORTER
-3	502
+3	502	1006

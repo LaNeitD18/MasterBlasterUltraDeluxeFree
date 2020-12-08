@@ -71,7 +71,6 @@ void Floater::Update()
 			SetState(FLOATER_STATE_SHOOTING);
 		}
 		else {
-			srand(time(NULL));
 			jumpingTurn = rand() % 1 + 3;
 			timeToShoot = 180;
 		}

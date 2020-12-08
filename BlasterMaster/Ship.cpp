@@ -63,7 +63,6 @@ void Ship::Update()
 			timeToShoot = 30;
 		}
 		else {
-			srand(time(NULL));
 			jumpingTurn = rand() % 1 + 4;
 			timeToShoot = 180;
 		}

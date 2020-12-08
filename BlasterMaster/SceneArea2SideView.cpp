@@ -20,6 +20,7 @@
 #include "Skull.h"
 #include "SkullBullet.h"
 #include "Mine.h"
+#include "Teleporter.h"
 
 using namespace std;
 
@@ -380,9 +381,9 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_JUMPER:
 		obj = new Jumper(x, y);
 		break;
-	/*case OBJECT_TYPE_TELEPORTER:
+	case OBJECT_TYPE_TELEPORTER:
 		obj = new Teleporter(x, y);
-		break;*/
+		break;
 	case OBJECT_TYPE_CANNON:
 		obj = new Cannon(x, y);
 		break;
