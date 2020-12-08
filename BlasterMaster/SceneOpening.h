@@ -22,9 +22,6 @@ private:
 
 	Point screenSize;
 
-	// time before render tale
-	int count = 50;
-
 public:
 	SceneOpening(int id, LPCWSTR filePath, Game* game, Point screenSize);
 	virtual ~SceneOpening();
@@ -33,6 +30,12 @@ public:
 	virtual void Update();
 	virtual void Render();
 	virtual void Release();
+
+	// state for entering sophia
+	int enterState; // title with tale = 0, entering sophia = 1, enter = 2
+
+	// time before render tale
+	int count = 50;
 };
 
 #define TITLE_SPEED 0.00f;
@@ -89,3 +92,22 @@ public:
 	SceneBox(float x, float y);
 	virtual void SetState(int state);
 };
+
+#define ENTER_SPEED 0.01f;
+
+#define ENTER_BBOX_WIDTH 800
+#define ENTER_BBOX_HEIGHT 600
+
+#define ENTER_NORMAL 0
+
+class SceneEnter : public AnimatedScene
+{
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
+public:
+	SceneEnter();
+	SceneEnter(float x, float y);
+	virtual void SetState(int state);
+};
+

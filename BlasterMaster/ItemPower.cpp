@@ -35,7 +35,6 @@ BoundingBox ItemPower::GetBoundingBox()
 
 #define POINT_START_FLASH 500
 #define POINT_FINISH_FLASH 800
-#define ITEM_SPRITE_DURATION_OF_FLASH 10
 
 void ItemPower::Update()
 {
