@@ -88,14 +88,16 @@ void JasonOverhead::Render()
 	if (currentTime >= currentAnimation->GetLoopDuration())
 	{
 		if (currentAnimation == animationSet->at(JASONO_ANI_DYING))
-			SetAnimationType(JASONO_ANI_DEAD);
-		else if (currentAnimation == animationSet->at(JASONO_ANI_DEAD))
-			manager->RemoveElement(this);
+			SetState(JASONO_STATE_DEAD);
+		/*else if (currentAnimation == animationSet->at(JASONO_ANI_DEAD))
+			manager->RemoveElement(this);*/
 		else {
 			currentTime %= currentAnimation->GetLoopDuration();
 			previousFrame = 0;
 		}
 	}
+	else if (currentTime == 0 && state == JASONO_STATE_DEAD)
+		manager->RemoveElement(this);
 }
 
 void JasonOverhead::Update()
@@ -171,7 +173,7 @@ void JasonOverhead::Update()
 	if (newState != state)
 		SetState(newState);
 
-	if (HealthPoint <= 0) {
+	if (HealthPoint <= 0 && state != JASONO_STATE_DEAD) {
 		SetState(JASONO_STATE_DYING);
 	}
 }

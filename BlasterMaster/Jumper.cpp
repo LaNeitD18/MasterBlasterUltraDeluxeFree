@@ -34,7 +34,6 @@ void Jumper::Jump()
 
 void Jumper::Walk()
 {
-
 	countDownTimeToJump--;
 	if (countDownTimeToJump == 0) {
 		countJump = rand() % 4 + 2;

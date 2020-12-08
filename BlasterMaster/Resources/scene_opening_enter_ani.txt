@@ -1,9 +1,10 @@
 # ani_id	sprite1_id	frames1	sprite2_id	frames2	...
 # idle 
-503	10015	10	10016	10	10017	10	10018	10
+20103	20040	10	20041	10	20042	10	20043	10	20044	10	20045	10	20046	10	20047	10	20048	10	20049	50
+
 #
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
-# CANNON
-4	503
+# tale scene
+3	20103
