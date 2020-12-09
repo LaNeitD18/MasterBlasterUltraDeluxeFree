@@ -32,10 +32,10 @@ void Teleporter::SetDirectionX()
 	SceneArea2Overhead* scene = dynamic_cast<SceneArea2Overhead*>(Game::GetInstance()->GetCurrentScene());
 	if (scene != nullptr) {
 		Point playerPos = scene->GetTarget()->GetPosition();
-		if (pos.x > playerPos.x + 50) {
+		if (pos.x > playerPos.x + PLAYER_ZONE_WIDTH) {
 			direction.x = -1;
 		}
-		else if (pos.x < playerPos.x - 50) {
+		else if (pos.x < playerPos.x - PLAYER_ZONE_WIDTH) {
 			direction.x = 1;
 		}
 		else {
@@ -55,10 +55,10 @@ void Teleporter::SetDirectionY()
 	SceneArea2Overhead* scene = dynamic_cast<SceneArea2Overhead*>(Game::GetInstance()->GetCurrentScene());
 	if (scene != nullptr) {
 		Point playerPos = scene->GetTarget()->GetPosition();
-		if (pos.y > playerPos.y + 50) {
+		if (pos.y > playerPos.y + PLAYER_ZONE_HEIGHT) {
 			direction.y = -1;
 		}
-		else if (pos.y < playerPos.y - 50) {
+		else if (pos.y < playerPos.y - PLAYER_ZONE_HEIGHT) {
 			direction.y = 1;
 		}
 		else {

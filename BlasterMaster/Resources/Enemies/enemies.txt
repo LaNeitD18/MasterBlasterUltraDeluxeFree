@@ -188,9 +188,6 @@ Resources\Enemies\item_ani.txt
 # JUMPER
 #2	1080	2785	2
 
-# TELEPORTER
-3	150	2972	3
-
 # CANNON
 #4	210	2900	4
 
