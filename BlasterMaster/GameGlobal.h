@@ -51,6 +51,11 @@ public:
 	static Point GetLastPositionSophia();
 	static void SetLastPositionSophia(Point pos);
 
+	static Point GetReturnPoint();
+	static void SetReturnPoint(Point pos);
+	static BoundingBox GetReturnBoundingBox();
+	static void SetReturnBoundingBox(BoundingBox section);
+
 	static bool isGameRunning; //trang thai xem game co dang chay khong
 
 private:
@@ -69,6 +74,9 @@ private:
 	static int livesToPlay;
 
 	static int SophiaHealthPoint;
+
+	static Point pointReturn;
+	static BoundingBox boundingReturn;
 };
 
 #endif

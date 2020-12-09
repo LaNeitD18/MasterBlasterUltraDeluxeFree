@@ -53,12 +53,14 @@ class Env_Portal : public Environment
 {
 	GateDirection dir;
 	int sectionToEnter;
+	int sectionLocation;
 public:
 	GateDirection GetPortalDir();
 	int GetSectionToEnter();
+	int GetSectionLocation();
 	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
-	Env_Portal(float x, float y, float width, float height, GateDirection direction, int sectionToEnter);
+	Env_Portal(float x, float y, float width, float height, GateDirection direction, int sectionToEnter, int sectionLOcation);
 };
 
 class Env_Dungeon : public Environment

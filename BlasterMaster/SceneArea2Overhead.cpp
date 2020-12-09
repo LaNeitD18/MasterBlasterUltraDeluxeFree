@@ -53,6 +53,7 @@ SceneArea2Overhead::SceneArea2Overhead(int id, LPCWSTR filePath, Game *game, Poi
 	this->directionEnterPortal = -1;
 	this->frameToTransition = 0;
 	LoadLivesLeftDisplay(textureLib, spriteLib);
+	this->liveShow = 1;
 	this->count = 0;
 }
 
@@ -73,7 +74,7 @@ void SceneArea2Overhead::LoadContent()
 		mMap->GetHeight() - GameGlobal::GetHeight() / 2 + 32);*/
 
 	// set limit area of section 1
-	mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[0]);
+	mCamera->SetCameraLimitarea(GameGlobal::GetReturnBoundingBox());
 	mMap->SetCamera(mCamera);
 	foreMap->SetCamera(mCamera);
 
@@ -288,6 +289,7 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_JASON_OVERHEAD:
 		obj = new JasonOverhead(x, y);
+		obj->SetPosition(GameGlobal::GetReturnPoint());
 		break;
 	/*case OBJECT_TYPE_JUMPER:
 		obj = new Jumper(x, y);
@@ -355,9 +357,13 @@ void SceneArea2Overhead::_ParseSection_ENVIRONMENT(string line)
 
 	int dirId = -1;
 	int sectionToEnter = -1;
-	if (tokens.size() == 7) {
+	int sectionLocation = -1;
+	if (tokens.size() >= 7) {
 		dirId = atoi(tokens[5].c_str());
 		sectionToEnter = atoi(tokens[6].c_str());
+		if (tokens.size() == 8) {
+			sectionLocation = atoi(tokens[7].c_str());
+		}
 	}
 
 	GateDirection gateDir;
@@ -388,7 +394,7 @@ void SceneArea2Overhead::_ParseSection_ENVIRONMENT(string line)
 		else {
 			gateDir = BOTTOM;
 		}
-		env = new Env_Portal(x, y, width, height, gateDir, sectionToEnter);
+		env = new Env_Portal(x, y, width, height, gateDir, sectionToEnter, sectionLocation);
 		break;
 	case ENVIRONMENT_TYPE_OUTDOOR:
 		if (dirId == 0) {
@@ -614,8 +620,9 @@ void SceneArea2Overhead::Update()
 			if (currentLivesPlay == 0) {// change later for continue game
 				GameGlobal::SetLivesToPlay(2);
 			}
+			//TODO: set again start pos when return play
 			this->Release();
-			Game::GetInstance()->Init(L"Resources/scene.txt", 2);
+			Game::GetInstance()->Init(L"Resources/scene.txt", 3);
 			return;
 		}
 		GameGlobal::SetCurrentHealthPoint(target->GetHP());
@@ -741,22 +748,22 @@ void SceneArea2Overhead::Update()
 void SceneArea2Overhead::Render()
 {
 	// LeSon
-	/*int currentLivesPlay = GameGlobal::GetLivesToPlay();
-	if (count < DURATION_OF_LIVESHOW && currentLivesPlay >= 0)
+	int currentLivesPlay = GameGlobal::GetLivesToPlay();
+	if (count < DURATION_OF_LIVESHOW && currentLivesPlay >= 0 && liveShow == true)
 	{
 		DebugOut(L"count: %d\n", count);
 		displayLivesLeft(currentLivesPlay);
 		count++;
 	}
 	else
-	{*/
+	{
 		count = DURATION_OF_LIVESHOW + 1;
 		mMap->Draw();
 		for (auto object : objects)
 			object->Render();
 		foreMap->Draw();
 		healthBar->Draw();
-	//}
+	}
 }
 
 /*
