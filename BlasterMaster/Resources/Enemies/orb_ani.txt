@@ -1,15 +1,13 @@
 # ani_id	sprite1_id	frames1	sprite2_id	frames2	...
 
-# orb1 idle
+# fly
 509	10035	2	10036	2	10037	2	10038	2	10039	2
 
-# orb2 idle
-#510	10043	6	10044	6	10045	6	10046	6	10047	6	10048	6	10049	6	10050	6
+# explode
+510	10190	12	10191	12	10192	12
 
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
 # ORB1
-10	509
-# ORB2
-#11	510
+10	509	510

@@ -1,22 +1,24 @@
 #pragma once
 #include "AnimatedGameObject.h"
 
-#define ORB_WALKING_SPEED 0.00f;
+#define ORB_BBOX_OFFSET_LEFT	  (-9 + 1)
+#define ORB_BBOX_OFFSET_RIGHT	  (9 - 1)
+#define ORB_BBOX_OFFSET_TOP       (-9 + 1)
+#define ORB_BBOX_OFFSET_BOTTOM    (9 - 1)
 
-#define ORB_BBOX_WIDTH 16
-#define ORB_BBOX_HEIGHT 26
-#define ORB_BBOX_HEIGHT_DIE 16
+enum OrbState : int {
+	ORB_STATE_FLYING		= 100,
+	ORB_STATE_EXPLODE		= 101
+};
 
-#define ORB_STATE_WALKING 100
-
-#define ORB_ANI_IDLE 0
+enum OrbAni : int {
+	ORB_ANI_FLY		= 0,
+	ORB_ANI_EXPLODE	= 1
+};
 
 class Orb : public Enemy
 {
-	virtual BoundingBox GetBoundingBox();
-	virtual void Update();
-	virtual void Render();
-
+	int initialTime;
 public:
 	Orb();
 	Orb(float x, float y);
@@ -24,5 +26,9 @@ public:
 
 	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
+
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
 };
 
