@@ -41,7 +41,8 @@ JasonOverhead::~JasonOverhead()
 void JasonOverhead::TakeDamage(int damage)
 {
 	Player::TakeDamage(damage);
-	bulletPower -= JASONO_POWER_MIN_STEP;
+	if (damage > 0)
+		bulletPower -= JASONO_POWER_MIN_STEP;
 }
 
 void JasonOverhead::AddElement(Bullet * bullet)
