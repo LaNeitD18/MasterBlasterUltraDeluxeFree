@@ -1,5 +1,6 @@
 #pragma once
 #include "AnimatedGameObject.h"
+#include "Manager.h"
 
 // Note: define for shooting left
 #define BULLET_OFFSET_RIGHT 3
@@ -119,7 +120,7 @@ public:
 };
 
 #define JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE 300
-class JasonOverheadBulletNorm : public TimedPlayerBullet
+class JasonOverheadBulletNorm : public TimedPlayerBullet, Managed<Bullet>
 {
 public:
 	JasonOverheadBulletNorm(Point pos, Point v);

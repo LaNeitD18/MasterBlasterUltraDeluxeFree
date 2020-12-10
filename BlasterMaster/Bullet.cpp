@@ -200,6 +200,7 @@ JasonOverheadBulletNorm::JasonOverheadBulletNorm(Point pos, Point v) : TimedPlay
 
 JasonOverheadBulletNorm::~JasonOverheadBulletNorm()
 {
+	Managed<Bullet>::manager->RemoveElement(this);
 }
 
 int JasonOverheadBulletNorm::GetDamage(BulletDamageModifier modifier)

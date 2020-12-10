@@ -44,6 +44,16 @@ void JasonOverhead::TakeDamage(int damage)
 	bulletPower -= JASONO_POWER_MIN_STEP;
 }
 
+void JasonOverhead::AddElement(Bullet * bullet)
+{
+	bullets.insert(bullet);
+}
+
+void JasonOverhead::RemoveElement(Bullet * bullet)
+{
+	bullets.erase(bullet);
+}
+
 BoundingBox JasonOverhead::GetBoundingBox()
 {
 	return BoundingBox(
@@ -321,9 +331,13 @@ void JasonOverhead::ShootNorm()
 	}
 	else
 	{
-		JasonOverheadBulletNorm* bullet = new JasonOverheadBulletNorm(GetBoundingBox().GetCenter(), v);
-		manager->AddElement(bullet);
-		bullet->SetManager(manager);
+		if (bullets.size() < 2) {
+			JasonOverheadBulletNorm* bullet = new JasonOverheadBulletNorm(GetBoundingBox().GetCenter(), v);
+			((Manager<GameObject>*)manager)->AddElement(bullet);
+			((Managed<GameObject>*)bullet)->SetManager(manager);
+			((Managed<Bullet>*)bullet)->SetManager(this);
+			AddElement(bullet);
+		}
 	}
 }
 
