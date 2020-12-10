@@ -29,7 +29,7 @@
     <ClInclude Include="Cannon.h" />
     <ClInclude Include="Dome.h" />
     <ClInclude Include="DrawArguments.h" />
-    <ClInclude Include="Eye.h" />
+    <ClInclude Include="Eyeball.h" />
     <ClInclude Include="Floater.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameGlobal.h" />
@@ -104,7 +104,7 @@
     <ClCompile Include="Cannon.cpp" />
     <ClCompile Include="Dome.cpp" />
     <ClCompile Include="DrawArguments.cpp" />
-    <ClCompile Include="Eye.cpp" />
+    <ClCompile Include="Eyeball.cpp" />
     <ClCompile Include="Floater.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameGlobal.cpp" />

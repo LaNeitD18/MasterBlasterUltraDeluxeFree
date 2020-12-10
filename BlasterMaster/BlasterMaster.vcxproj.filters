@@ -9,7 +9,6 @@
     <ClCompile Include="Cannon.cpp" />
     <ClCompile Include="Dome.cpp" />
     <ClCompile Include="DrawArguments.cpp" />
-    <ClCompile Include="Eye.cpp" />
     <ClCompile Include="Floater.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameGlobal.cpp" />
@@ -68,6 +67,7 @@
     <ClCompile Include="SkullBullet.cpp" />
     <ClCompile Include="CannonBullet.cpp" />
     <ClCompile Include="MineBullet.cpp" />
+    <ClCompile Include="Eyeball.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedGameObject.h" />
@@ -78,7 +78,6 @@
     <ClInclude Include="Cannon.h" />
     <ClInclude Include="Dome.h" />
     <ClInclude Include="DrawArguments.h" />
-    <ClInclude Include="Eye.h" />
     <ClInclude Include="Floater.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameGlobal.h" />
@@ -143,6 +142,7 @@
     <ClInclude Include="SkullBullet.h" />
     <ClInclude Include="CannonBullet.h" />
     <ClInclude Include="MineBullet.h" />
+    <ClInclude Include="Eyeball.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib.lib" />

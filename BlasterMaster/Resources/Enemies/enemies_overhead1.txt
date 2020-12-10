@@ -2,6 +2,7 @@
 [TEXTURES]
 1	Resources\sprites\Jason_Overhead.png		255	255	255
 3	Resources\sprites\Teleporters.png	254	255	255
+15	Resources\sprites\enemies.png	254	255	255
 17	Resources\sprites\116445.png	0	57	115
 
 [SPRITES]
@@ -11,6 +12,9 @@ Resources\Enemies\Jason_Overhead_sprites.txt
 
 #3 TELEPORTER
 Resources\Enemies\teleporter_sprites.txt
+
+#6 EYE
+Resources\Enemies\eye_sprites.txt
 
 #101 CANNON BULLET
 Resources\Enemies\cannon_bullet_sprites.txt
@@ -23,6 +27,9 @@ Resources\Enemies\Jason_Overhead_ani.txt
 #3 ==== TELPORTER =========
 Resources\Enemies\teleporter_ani.txt
 
+#6 ==== EYE =========
+Resources\Enemies\eye_ani.txt
+
 #101 ==== CANNON BULLET =========
 Resources\Enemies\cannon_bullet_ani.txt
 [OBJECTS]
@@ -33,6 +40,9 @@ Resources\Enemies\cannon_bullet_ani.txt
 
 # TELEPORTER
 3	345	1625	3
+
+# EYEBALL
+6	325	1860	6
 
 [ENVIRONMENTS]
 # type	x	y	width	height	portaldirid	sectionToEnter
