@@ -62,6 +62,8 @@ public:
 	void SetTarget(Player* player);
 	unordered_set<GameObject*> GetObjects();
 
+	bool liveShow;
+
 	// Inherited via Manager
 	virtual void AddElement(GameObject *) override;
 	virtual void RemoveElement(GameObject *) override;

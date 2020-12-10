@@ -211,6 +211,17 @@ void Interactable::Interact(Sophia* player, Env_Portal* portal) {
 
 			DebugOut(L"%d\n", portalDirection);
 		}
+		// implement interact with portal to set return point
+		else if((player->GetSpeed().x <= 0 && portalDirection == RIGHT) ||
+			(player->GetSpeed().x >= 0 && portalDirection == LEFT)) {
+			if (portal->GetPortalDir() == LEFT) {
+				GameGlobal::SetReturnPoint(Point(portal->GetBoundingBox().r, portal->GetBoundingBox().t - 6));
+			}
+			else if (portal->GetPortalDir() == RIGHT) {
+				GameGlobal::SetReturnPoint(Point(portal->GetBoundingBox().l, portal->GetBoundingBox().t - 6));
+			}
+			GameGlobal::SetReturnBoundingBox(Camera::GetInstance()->GetCameraLimitarea());
+		}
 	}
 }
 
@@ -245,6 +256,12 @@ void Interactable::Interact(JasonSideView* player, Env_Portal* portal) {
 			Camera::GetInstance()->SetCameraLimitarea(limitArea);
 
 			DebugOut(L"%d\n", portalDirection);
+		}
+		// implement interact with portal to set return point
+		else if ((player->GetSpeed().x <= 0 && portalDirection == RIGHT) ||
+			(player->GetSpeed().x >= 0 && portalDirection == LEFT)) {
+			GameGlobal::SetReturnPoint(portal->GetBoundingBox().GetCenter());
+			GameGlobal::SetReturnBoundingBox(Camera::GetInstance()->GetCameraLimitarea());
 		}
 	}
 }
@@ -298,6 +315,14 @@ void Interactable::Interact(JasonOverhead* player, Env_Portal* portal) {
 
 			DebugOut(L"%d\n", portalDirection);
 		}
+		// implement interact with portal to set return point
+		else if ((player->GetSpeed().x <= 0 && portalDirection == RIGHT) ||
+			(player->GetSpeed().x >=0 && portalDirection == LEFT) ||
+			(player->GetSpeed().y >= 0 && portalDirection == TOP) ||
+			(player->GetSpeed().y <= 0 && portalDirection == BOTTOM)) {
+			GameGlobal::SetReturnPoint(portal->GetBoundingBox().GetCenter());
+			GameGlobal::SetReturnBoundingBox(Camera::GetInstance()->GetCameraLimitarea());
+		}
 	}
 }
 
@@ -337,6 +362,8 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 			}
 			scene->GetTarget()->SetPosition(startPoint);
 			scene->GetCamera()->SetCameraLimitarea(limitArea);
+			GameGlobal::SetReturnBoundingBox(limitArea);
+			scene->liveShow = 0;
 			//Camera::GetInstance()->SetCameraLimitarea(limitArea);
 			Sophia* sophia = dynamic_cast<Sophia*>(jasonPlay->sophia); // sophia null
 			GameGlobal::SetLastPositionSophia(sophia->GetPosition());
@@ -383,6 +410,7 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 			jason->SetHP(player->GetHP());
 			//scene->GetTarget()->SetPosition(startPoint);
 			scene->GetCamera()->SetCameraLimitarea(limitArea);
+			GameGlobal::SetReturnBoundingBox(limitArea);
 			//Camera::GetInstance()->SetCameraLimitarea(limitArea);
 		}
 	}
@@ -391,11 +419,22 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 #define POWER_GAIN 10
 
 void Interactable::Interact(Player* player, ItemPower* item) {
-	// implement interact between player and enemy (take damage)
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox itemBox = item->GetBoundingBox();
 	if (playerBox.IsOverlap(itemBox)) {
 		player->SetHP(player->GetHP() + POWER_GAIN);
+		item->GetManager()->RemoveElement(item);
+	}
+}
+
+#define HOVER_GAIN 10
+
+void Interactable::Interact(Player* player, ItemHover* item) {
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox itemBox = item->GetBoundingBox();
+	if (playerBox.IsOverlap(itemBox)) {
+		//TODO: setup hover for sophia
+		displayMessage("i want to get this");
 		item->GetManager()->RemoveElement(item);
 	}
 }

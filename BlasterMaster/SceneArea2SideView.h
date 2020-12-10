@@ -69,4 +69,5 @@ public:
 	// just handle change in one scene
 	static BoundingBox cameraLimitAreaOfSection[19];
 	static Point startPointInSection[19];
+
 };

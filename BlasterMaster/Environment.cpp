@@ -82,7 +82,12 @@ int Env_Portal::GetSectionToEnter()
 	return sectionToEnter;
 }
 
-Env_Portal::Env_Portal(float x, float y, float width, float height, GateDirection direction, int sectionToEnter)
+int Env_Portal::GetSectionLocation()
+{
+	return sectionLocation;
+}
+
+Env_Portal::Env_Portal(float x, float y, float width, float height, GateDirection direction, int sectionToEnter, int sectionLocation)
 {
 	this->width = width;
 	this->height = height;
@@ -92,6 +97,7 @@ Env_Portal::Env_Portal(float x, float y, float width, float height, GateDirectio
 	box.b = y + height;
 	this->dir = direction;
 	this->sectionToEnter = sectionToEnter;
+	this->sectionLocation = sectionLocation;
 }
 
 int Env_Dungeon::GetSectionToEnter()

@@ -1,3 +1,21 @@
 # id	left	top	right	bottom	texture_id
 # power
 20001	255	109	271	125	18
+
+# hover
+20002	105	109	121	125	18
+
+# gun item
+20003	5	60	21	76	18
+
+# homing missile
+20004	105	59	121	75	18
+
+# multiwars
+20005	205	109	221	125	18
+
+#thunderbreak
+20006	155	109	171	125	18
+
+# crusher beam
+20007	100	8	125	25	18

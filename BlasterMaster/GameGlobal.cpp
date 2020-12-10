@@ -1,4 +1,5 @@
 #include "GameGlobal.h"
+#include "SceneArea2SideView.h"
 
 HINSTANCE GameGlobal::mHInstance = NULL;
 HWND GameGlobal::mHwnd = NULL;
@@ -17,6 +18,8 @@ Point GameGlobal::lastPositionSophia = Point(0, 0);
 int GameGlobal::HealthPoint = 80;
 int GameGlobal::SophiaHealthPoint = 100;
 int GameGlobal::livesToPlay = 2;
+Point GameGlobal::pointReturn = Point(56, 2955);
+BoundingBox GameGlobal::boundingReturn = BoundingBox(0, 2814, 1038, 3094);
 
 GameGlobal::GameGlobal()
 {
@@ -123,4 +126,24 @@ Point GameGlobal::GetLastPositionSophia()
 void GameGlobal::SetLastPositionSophia(Point pos)
 {
 	lastPositionSophia = pos;
+}
+
+Point GameGlobal::GetReturnPoint()
+{
+	return pointReturn;
+}
+
+void GameGlobal::SetReturnPoint(Point pos)
+{
+	pointReturn = pos;
+}
+
+BoundingBox GameGlobal::GetReturnBoundingBox()
+{
+	return boundingReturn;
+}
+
+void GameGlobal::SetReturnBoundingBox(BoundingBox bbox)
+{
+	boundingReturn = bbox;
 }

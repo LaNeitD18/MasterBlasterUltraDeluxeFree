@@ -24,6 +24,8 @@
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="CannonBullet.h" />
+    <ClInclude Include="ItemHover.h" />
+    <ClInclude Include="SceneOver.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cannon.h" />
@@ -100,6 +102,8 @@
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="CannonBullet.cpp" />
+    <ClCompile Include="ItemHover.cpp" />
+    <ClCompile Include="SceneOver.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cannon.cpp" />

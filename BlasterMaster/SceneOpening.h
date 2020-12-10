@@ -93,6 +93,17 @@ public:
 	virtual void SetState(int state);
 };
 
+class SceneBox1 : public AnimatedScene
+{
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
+public:
+	SceneBox1();
+	SceneBox1(float x, float y);
+	virtual void SetState(int state);
+};
+
 #define ENTER_SPEED 0.01f;
 
 #define ENTER_BBOX_WIDTH 800
