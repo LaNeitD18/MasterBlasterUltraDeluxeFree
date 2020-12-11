@@ -18,6 +18,7 @@
 16	Resources\sprites\HP.png	255	255	255
 17	Resources\sprites\116445.png	0	57	115
 18	Resources\sprites\ItemObjects.png	254	255	255
+
 # next Tien's sprite: 10193
 # next sprite: 10177			Tien
 # next sprite: 20001			Son

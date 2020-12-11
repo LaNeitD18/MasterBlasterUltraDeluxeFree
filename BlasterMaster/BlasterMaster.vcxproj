@@ -22,6 +22,7 @@
     <ClInclude Include="AnimatedGameObject.h" />
     <ClInclude Include="Animations.h" />
     <ClInclude Include="BoundingBox.h" />
+    <ClInclude Include="Breakable_Tree.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="CannonBullet.h" />
     <ClInclude Include="ItemHover.h" />
@@ -100,6 +101,7 @@
     <ClCompile Include="AnimatedGameObject.cpp" />
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
+    <ClCompile Include="Breakable_Tree.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="CannonBullet.cpp" />
     <ClCompile Include="ItemHover.cpp" />

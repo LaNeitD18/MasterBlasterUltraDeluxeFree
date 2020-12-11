@@ -427,15 +427,55 @@ void Interactable::Interact(Player* player, ItemPower* item) {
 	}
 }
 
-#define HOVER_GAIN 10
-
 void Interactable::Interact(Player* player, ItemHover* item) {
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox itemBox = item->GetBoundingBox();
 	if (playerBox.IsOverlap(itemBox)) {
 		//TODO: setup hover for sophia
-		displayMessage("i want to get this");
+		//displayMessage("i want to get this");
 		item->GetManager()->RemoveElement(item);
+	}
+}
+
+void Interactable::Interact(Player* player, Breakable_Tree* tree) {
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox treeBox = tree->GetBoundingBoxJason();
+	//if (playerBox.IsOverlap(treeBox)) {
+		bool top, left, right, bottom;
+		Point move = player->dx();
+		top = left = right = bottom = false;
+		double offsetTime = treeBox.SweptAABB(playerBox, move, top, left, bottom, right);
+
+		player->wallTop |= top;
+		player->wallRight |= right;
+		player->wallLeft |= left;
+		player->wallBot |= bottom;
+
+		if (offsetTime >= 0.0 && offsetTime <= 1.0)
+			move = move - move * offsetTime;
+		else
+			return;
+
+		if (top || bottom) {
+			Point v = player->GetSpeed();
+			v.y -= move.y;
+			player->SetSpeed(v);
+		}
+		if (left || right) {
+			Point v = player->GetSpeed();
+			v.x -= move.x;
+			player->SetSpeed(v);
+		}
+	//}
+}
+
+void Interactable::Interact(PlayerBullet* bullet, Breakable_Tree* tree) {
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox treeBox = tree->GetBoundingBox();
+	if (bulletBox.IsOverlap(treeBox)) {
+		if (treeBox.SweptAABB(bulletBox, bullet->dx()) != -INFINITY)
+			bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
+		tree->SetIsOut(true);
 	}
 }
 

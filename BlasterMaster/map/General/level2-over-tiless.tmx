@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="378">
- <tileset firstgid="1" name="level2-over-tiless" tilewidth="16" tileheight="16" tilecount="0" columns="59">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="410">
+ <tileset firstgid="1" name="level2-over-tiless" tilewidth="16" tileheight="16" tilecount="59" columns="59">
   <image source="Map/General/level2-over-tiless.png" width="944" height="16"/>
  </tileset>
  <layer id="1" name="background" width="128" height="128">
@@ -332,5 +332,70 @@
   <object id="353" x="1392" y="1120" width="16" height="8"/>
   <object id="354" x="1392" y="1144" width="16" height="8"/>
   <object id="355" x="1408" y="1128" width="8" height="16"/>
+ </objectgroup>
+ <objectgroup id="10" name="breakable_tree">
+  <object id="379" x="568" y="1864">
+   <point/>
+  </object>
+  <object id="380" x="568" y="1960">
+   <point/>
+  </object>
+  <object id="381" x="600" y="1896">
+   <point/>
+  </object>
+  <object id="382" x="600" y="1832">
+   <point/>
+  </object>
+  <object id="383" x="632" y="1928">
+   <point/>
+  </object>
+  <object id="384" x="664" y="1928">
+   <point/>
+  </object>
+  <object id="385" x="664" y="1864">
+   <point/>
+  </object>
+  <object id="386" x="696" y="1960">
+   <point/>
+  </object>
+  <object id="387" x="696" y="1864">
+   <point/>
+  </object>
+  <object id="388" x="1064" y="952">
+   <point/>
+  </object>
+  <object id="389" x="1064" y="856">
+   <point/>
+  </object>
+  <object id="392" x="1096" y="920">
+   <point/>
+  </object>
+  <object id="393" x="1096" y="824">
+   <point/>
+  </object>
+  <object id="394" x="1128" y="888">
+   <point/>
+  </object>
+  <object id="395" x="1128" y="824">
+   <point/>
+  </object>
+  <object id="396" x="1160" y="888">
+   <point/>
+  </object>
+  <object id="397" x="1160" y="852">
+   <point/>
+  </object>
+  <object id="398" x="1192" y="920">
+   <point/>
+  </object>
+  <object id="399" x="1192" y="952">
+   <point/>
+  </object>
+  <object id="400" x="1192" y="824">
+   <point/>
+  </object>
+  <object id="401" x="1192" y="852">
+   <point/>
+  </object>
  </objectgroup>
 </map>
