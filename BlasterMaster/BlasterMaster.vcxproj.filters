@@ -73,6 +73,7 @@
     <ClCompile Include="ItemHover.cpp" />
     <ClCompile Include="InteractableDoubleDispatch.cpp" />
     <ClCompile Include="Breakable_Tree.cpp" />
+    <ClCompile Include="SceneBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedGameObject.h" />
@@ -152,6 +153,7 @@
     <ClInclude Include="SceneOver.h" />
     <ClInclude Include="ItemHover.h" />
     <ClInclude Include="Breakable_Tree.h" />
+    <ClInclude Include="SceneBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib.lib" />

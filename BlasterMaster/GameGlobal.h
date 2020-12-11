@@ -51,6 +51,9 @@ public:
 	static Point GetLastPositionSophia();
 	static void SetLastPositionSophia(Point pos);
 
+	static int GetSpecialBulletType();
+	static void SetSpecialBulletType(int type);
+
 	static Point GetReturnPoint();
 	static void SetReturnPoint(Point pos);
 	static BoundingBox GetReturnBoundingBox();
@@ -74,6 +77,8 @@ private:
 	static int livesToPlay;
 
 	static int SophiaHealthPoint;
+
+	static int SpecialBulletType;
 
 	static Point pointReturn;
 	static BoundingBox boundingReturn;

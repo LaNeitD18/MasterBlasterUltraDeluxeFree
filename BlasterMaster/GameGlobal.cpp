@@ -13,6 +13,7 @@ bool GameGlobal::isGameRunning = true;
 IDirect3DSurface9* GameGlobal::backSurface = nullptr;
 Input* GameGlobal::input = NULL;
 AnimationSets* GameGlobal::mAniLib = NULL;
+int GameGlobal::SpecialBulletType = 1;
 Point GameGlobal::lastPositionSophia = Point(0, 0);
 // temporary hp, set later for sophia jason
 int GameGlobal::HealthPoint = 80;
@@ -126,6 +127,16 @@ Point GameGlobal::GetLastPositionSophia()
 void GameGlobal::SetLastPositionSophia(Point pos)
 {
 	lastPositionSophia = pos;
+}
+
+int GameGlobal::GetSpecialBulletType()
+{
+	return SpecialBulletType;
+}
+
+void GameGlobal::SetSpecialBulletType(int type)
+{
+	SpecialBulletType = type;
 }
 
 Point GameGlobal::GetReturnPoint()

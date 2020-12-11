@@ -117,6 +117,7 @@ SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Poi
 	this->directionEnterPortal = -1;
 	this->frameToTransition = 0;
 	LoadLivesLeftDisplay(textureLib, spriteLib);
+	this->bulletState = 0;
 	this->count = 0;
 }
 
@@ -126,6 +127,7 @@ void SceneArea2SideView::LoadContent()
 	foreMap = new GameMap("Map/General/level2-side-fores.tmx", textureLib, spriteLib);
 
 	healthBar = new HealthBar(textureLib, spriteLib);
+	bulletscene = new SceneBullet(textureLib, spriteLib);
 
 	// camera setup
 	mCamera = new Camera(Point(GameGlobal::GetWidth(), GameGlobal::GetHeight()));
@@ -155,6 +157,8 @@ SceneArea2SideView::~SceneArea2SideView()
 	delete foreMap;
 	healthBar->Release();
 	delete healthBar;
+	bulletscene->Release();
+	delete bulletscene;
 }
 
 /*
@@ -772,174 +776,190 @@ void SceneArea2SideView::JumpCheckpoint()
 
 void SceneArea2SideView::Update()
 {
-	// Quick & dirty
-	if (count < DURATION_OF_LIVESHOW) {
-		return;
-	}
-
-	GameGlobal::SetAnimationSetLibrary(animationSetLib);
-
-	// Remove all things that need to remove last frame
-	for (auto obj : toRemove)
-	{
-		objects.erase(obj);
-		delete obj;
-	}
-	toRemove.clear();
-
 	input->Update();
-	// update onscreen objects
-	vector<GameObject*> onScreenObj;
-	for (auto x : objects) {
-		if (x->GetBoundingBox().IsOverlap(mCamera->GetBound())) {
-			onScreenObj.push_back(x);
-		}
-	}
-
-	Camera::setCameraInstance(mCamera);
-	if (!isCameraFree) {
-		target = NULL;
-		for (auto x : objects) {
-			Player* current_player = dynamic_cast<Player*>(x);
-			if (current_player != NULL && 
-				current_player->IsPrimaryPlayer()) {
-				mCamera->SetTarget(current_player);
-				target = current_player;
-			}
-		}
-		if (target == NULL)
-		{
-			int currentLivesPlay = GameGlobal::GetLivesToPlay();
-			GameGlobal::SetLivesToPlay(currentLivesPlay - 1);
-			count = 0;
-			if (currentLivesPlay == 0) {// change later for continue game
-				GameGlobal::SetLivesToPlay(2);
-			}
-			//TODO: set again start pos when return play
-			this->Release();
-			Game::GetInstance()->Init(L"Resources/scene.txt", 2);
+	if (!bulletState) {
+		// Quick & dirty
+		if (count < DURATION_OF_LIVESHOW) {
 			return;
 		}
-		GameGlobal::SetCurrentHealthPoint(target->GetHP());
-		mCamera->FollowTarget();
-		mCamera->SnapToBoundary();
 
-		//LeSon
-		for (auto x : onScreenObj) {
-			for (auto y : environments) {
-				x->Interact((Interactable*)y);
+		GameGlobal::SetAnimationSetLibrary(animationSetLib);
+
+		// Remove all things that need to remove last frame
+		for (auto obj : toRemove)
+		{
+			objects.erase(obj);
+			delete obj;
+		}
+		toRemove.clear();
+
+		// update onscreen objects
+		vector<GameObject*> onScreenObj;
+		for (auto x : objects) {
+			if (x->GetBoundingBox().IsOverlap(mCamera->GetBound())) {
+				onScreenObj.push_back(x);
 			}
 		}
 
-		for (auto object : onScreenObj)
-		{
-			object->Update();
-		}
+		Camera::setCameraInstance(mCamera);
+		if (!isCameraFree) {
+			target = NULL;
+			for (auto x : objects) {
+				Player* current_player = dynamic_cast<Player*>(x);
+				if (current_player != NULL &&
+					current_player->IsPrimaryPlayer()) {
+					mCamera->SetTarget(current_player);
+					target = current_player;
+				}
+			}
+			if (target == NULL)
+			{
+				int currentLivesPlay = GameGlobal::GetLivesToPlay();
+				GameGlobal::SetLivesToPlay(currentLivesPlay - 1);
+				count = 0;
+				if (currentLivesPlay == 0) {// change later for continue game
+					GameGlobal::SetLivesToPlay(2);
+				}
+				//TODO: set again start pos when return play
+				this->Release();
+				Game::GetInstance()->Init(L"Resources/scene.txt", 2);
+				return;
+			}
+			GameGlobal::SetCurrentHealthPoint(target->GetHP());
+			mCamera->FollowTarget();
+			mCamera->SnapToBoundary();
 
-		// Long
-		for (int i = 0; i < onScreenObj.size(); i++)
-			for (int j = i + 1; j < onScreenObj.size(); j++)
-				onScreenObj[i]->Interact(onScreenObj[j]);
-
-		// temporary global set hp for both sophia jason
-	}
-	else {
-		// update enemies when change section
-		for (auto x : onScreenObj) {
-			bool isPlayer = dynamic_cast<Player*>(x) != NULL;
-			if (!isPlayer) {
+			//LeSon
+			for (auto x : onScreenObj) {
 				for (auto y : environments) {
 					x->Interact((Interactable*)y);
 				}
-				x->Update();
 			}
-		}
 
-		if (directionEnterPortal == 1) {
-			mCamera->SetPosition(mCamera->GetPosition() + Point(2, 0));
-			target->SetPosition(target->GetPosition() + Point(0.2, 0));
+			for (auto object : onScreenObj)
+			{
+				object->Update();
+			}
+
+			// Long
+			for (int i = 0; i < onScreenObj.size(); i++)
+				for (int j = i + 1; j < onScreenObj.size(); j++)
+					onScreenObj[i]->Interact(onScreenObj[j]);
+
+			// temporary global set hp for both sophia jason
 		}
-		else if (directionEnterPortal == 0) {
-			mCamera->SetPosition(mCamera->GetPosition() + Point(-2, 0));
-			target->SetPosition(target->GetPosition() - Point(0.2, 0));
-		}
-		// section BF transitions
-		else if (directionEnterPortal == 50) {
-			mCamera->SetPosition(mCamera->GetPosition() + Point(2, 0));
-			target->SetPosition(target->GetPosition() + Point(0.2, 0));
-		}
-		else if (directionEnterPortal == 55) {
-			mCamera->SetPosition(mCamera->GetPosition() + Point(-2, 0));
-			target->SetPosition(target->GetPosition() - Point(0.2, 0));
-		}
-		frameToTransition++;
-		//DebugOut(L"Frame to transition: %d", frameToTransition);
-		if (frameToTransition >= FRAME_PORTAL_TRANSITIONS) {
+		else {
+			// update enemies when change section
+			for (auto x : onScreenObj) {
+				bool isPlayer = dynamic_cast<Player*>(x) != NULL;
+				if (!isPlayer) {
+					for (auto y : environments) {
+						x->Interact((Interactable*)y);
+					}
+					x->Update();
+				}
+			}
+
 			if (directionEnterPortal == 1) {
-				target->SetPosition(target->GetPosition() + Point(DISTANCE_JASON_PORTAL, 0));
+				mCamera->SetPosition(mCamera->GetPosition() + Point(2, 0));
+				target->SetPosition(target->GetPosition() + Point(0.2, 0));
 			}
 			else if (directionEnterPortal == 0) {
-				target->SetPosition(target->GetPosition() - Point(DISTANCE_JASON_PORTAL, 0));
+				mCamera->SetPosition(mCamera->GetPosition() + Point(-2, 0));
+				target->SetPosition(target->GetPosition() - Point(0.2, 0));
 			}
 			// section BF transitions
 			else if (directionEnterPortal == 50) {
-				target->SetPosition(Point(1586, 906));
+				mCamera->SetPosition(mCamera->GetPosition() + Point(2, 0));
+				target->SetPosition(target->GetPosition() + Point(0.2, 0));
 			}
 			else if (directionEnterPortal == 55) {
-				target->SetPosition(Point(1488, 2954));
+				mCamera->SetPosition(mCamera->GetPosition() + Point(-2, 0));
+				target->SetPosition(target->GetPosition() - Point(0.2, 0));
 			}
-			isCameraFree = false;
-			directionEnterPortal = -1;
-			frameToTransition = 0;
+			frameToTransition++;
+			//DebugOut(L"Frame to transition: %d", frameToTransition);
+			if (frameToTransition >= FRAME_PORTAL_TRANSITIONS) {
+				if (directionEnterPortal == 1) {
+					target->SetPosition(target->GetPosition() + Point(DISTANCE_JASON_PORTAL, 0));
+				}
+				else if (directionEnterPortal == 0) {
+					target->SetPosition(target->GetPosition() - Point(DISTANCE_JASON_PORTAL, 0));
+				}
+				// section BF transitions
+				else if (directionEnterPortal == 50) {
+					target->SetPosition(Point(1586, 906));
+				}
+				else if (directionEnterPortal == 55) {
+					target->SetPosition(Point(1488, 2954));
+				}
+				isCameraFree = false;
+				directionEnterPortal = -1;
+				frameToTransition = 0;
+			}
 		}
+
+		// enter to switch scene
+		if ((*input)[VK_TAB] & KEY_STATE_DOWN) {
+			//Game::GetInstance()->SwitchScene(3);
+			this->Release();
+			Game::GetInstance()->Init(L"Resources/scene.txt", 3);
+			return;
+		}
+
+		JumpCheckpoint();
+
+		//if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
+		//{
+		//	if (mCamera->GetPosition().x - mCamera->GetWidth() / 2 <= 0) {
+		//		return;
+		//	} // LeSon
+		//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
+		//	mCamera->SetPosition(mCamera->GetPosition() + Point(-8, 0));
+		//}
+		//if ((*input)[VK_RIGHT] & KEY_STATE_DOWN)
+		//{
+		//	if (mCamera->GetPosition().x + mCamera->GetWidth() / 2 >= mMap->GetWidth() + 8) {
+		//		return;
+		//	}// LeSon
+		//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
+		//	mCamera->SetPosition(mCamera->GetPosition() + Point(8, 0));
+		//}
+		//if ((*input)[VK_UP] & KEY_STATE_DOWN)
+		//{
+		//	if (mCamera->GetPosition().y - mCamera->GetHeight() / 2 <= 0) return; // LeSon
+		//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
+		//	mCamera->SetPosition(mCamera->GetPosition() + Point(0, -8));
+		//}
+		//if ((*input)[VK_DOWN] & KEY_STATE_DOWN)
+		//{
+		//	if (mCamera->GetPosition().y + mCamera->GetHeight() / 2 >= mMap->GetHeight() + 32) return; // LeSon
+		//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
+		//	mCamera->SetPosition(mCamera->GetPosition() + Point(0, 8));
+		//}
+
+		// Update camera to follow mario
+		Point pos;
+		/*
+		pos.x -= game->GetScreenWidth() / 2;
+		pos.y -= game->GetScreenHeight() / 2;
+		//*/
+		game->SetCamPos(pos);
 	}
+}
 
-	// enter to switch scene
-	if ((*input)[VK_TAB] & KEY_STATE_DOWN) {
-		//Game::GetInstance()->SwitchScene(3);
-		this->Release();
-		Game::GetInstance()->Init(L"Resources/scene.txt", 3);
-		return;
+void SceneArea2SideView::displayBulletState(){
+	Input& input = *GameGlobal::GetInput();
+	if (input[VK_RETURN] & KEY_STATE_DOWN) {
+		bulletState = true;
 	}
+}
 
-	JumpCheckpoint();
-
-	//if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
-	//{
-	//	if (mCamera->GetPosition().x - mCamera->GetWidth() / 2 <= 0) {
-	//		return;
-	//	} // LeSon
-	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-	//	mCamera->SetPosition(mCamera->GetPosition() + Point(-8, 0));
-	//}
-	//if ((*input)[VK_RIGHT] & KEY_STATE_DOWN)
-	//{
-	//	if (mCamera->GetPosition().x + mCamera->GetWidth() / 2 >= mMap->GetWidth() + 8) {
-	//		return;
-	//	}// LeSon
-	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-	//	mCamera->SetPosition(mCamera->GetPosition() + Point(8, 0));
-	//}
-	//if ((*input)[VK_UP] & KEY_STATE_DOWN)
-	//{
-	//	if (mCamera->GetPosition().y - mCamera->GetHeight() / 2 <= 0) return; // LeSon
-	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-	//	mCamera->SetPosition(mCamera->GetPosition() + Point(0, -8));
-	//}
-	//if ((*input)[VK_DOWN] & KEY_STATE_DOWN)
-	//{
-	//	if (mCamera->GetPosition().y + mCamera->GetHeight() / 2 >= mMap->GetHeight() + 32) return; // LeSon
-	//	// sau nay doi lai la thay doi vi tri nhan vat, camera se setPosition theo vi tri nhan vat
-	//	mCamera->SetPosition(mCamera->GetPosition() + Point(0, 8));
-	//}
-
-	// Update camera to follow mario
-	Point pos;
-	/*
-	pos.x -= game->GetScreenWidth() / 2;
-	pos.y -= game->GetScreenHeight() / 2;
-	//*/
-	game->SetCamPos(pos);
+void SceneArea2SideView::backToGame() {
+	Input& input = *GameGlobal::GetInput();
+	if (input[VK_BACK] & KEY_STATE_DOWN) {
+		bulletState = false;
+	}
 }
 
 void SceneArea2SideView::Render()
@@ -954,15 +974,22 @@ void SceneArea2SideView::Render()
 	}
 	else
 	{
+		if (!bulletState) {
+			displayBulletState();
+		}
+		else {
+			backToGame();
+		}
 		count = DURATION_OF_LIVESHOW + 1;
 		mMap->Draw();
 		for (auto object : objects)
 			object->Render();
 		foreMap->Draw();
 		healthBar->Draw();
+		if (bulletState) {
+			bulletscene->Draw();
+		}
 	}
-	
-
 	
 }
 
@@ -983,6 +1010,7 @@ void SceneArea2SideView::Release()
 	Scene::Release();
 
 	healthBar->Release();
+	bulletscene->Release();
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
