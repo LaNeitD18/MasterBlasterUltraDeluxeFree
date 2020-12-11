@@ -348,6 +348,7 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	float x = atof(tokens[1].c_str());
 	float y = atof(tokens[2].c_str());
 
+	int type; // orb type
 
 	GameObject *obj = NULL;
 
@@ -406,7 +407,10 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		obj = new Ship(x, y);
 		break;
 	case OBJECT_TYPE_ORB:
-		obj = new Orb(x, y);
+		type = atoi(tokens[1].c_str());
+		x = atof(tokens[2].c_str());
+		y = atof(tokens[3].c_str());
+		obj = new Orb(x, y, type);
 		break;
 	case OBJECT_TYPE_SKULL:
 		obj = new Skull(x, y);
@@ -430,6 +434,8 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 
 	for (int i = 3; i < tokens.size(); i++)
 	{
+		if (i == 3 && object_type == OBJECT_TYPE_ORB)	continue;
+
 		int ani_set_id = atoi(tokens[i].c_str());
 		AnimationSet *ani_set = animationSetLib->Get(ani_set_id);
 

@@ -220,7 +220,7 @@ Resources\Enemies\item_ani.txt
 #9	1370	2555	9
 
 # ORB
-10	210	2900	10
+10	2	210	2920	10
 #10	500	300	11
 
 # SOPHIA
