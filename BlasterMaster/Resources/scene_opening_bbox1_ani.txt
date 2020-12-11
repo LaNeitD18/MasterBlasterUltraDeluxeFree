@@ -1,12 +1,9 @@
 # ani_id	sprite1_id	frames1	sprite2_id	frames2	...
-# power
-2001	20001	10
-
-# hover
-2002	20002	10
+# idle 
+20998	20997	10
+#
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
-# ITEMS
-201	2001
-202	2002
+# bbox
+101	20998

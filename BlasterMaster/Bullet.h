@@ -1,5 +1,6 @@
 #pragma once
 #include "AnimatedGameObject.h"
+#include "Manager.h"
 
 // Note: define for shooting left
 #define BULLET_OFFSET_RIGHT 3
@@ -18,13 +19,14 @@ enum BulletFlag : int {
 };
 
 enum BulletAni :int {
-	BULLET_ANI_NORM1		= 0,		// fireball shape
-	BULLET_ANI_NORM2		= 1,		// enlongated fireball shape
-	BULLET_ANI_NORM3		= 2,		// orb small
-	BULLET_ANI_NORM4		= 3,		// orb medium
-	BULLET_ANI_NORM5		= 4,		// orb large
-	BULLET_ANI_NORM6		= 5,		// grenade
-	BULLET_ANI_EXPLODE		= 6
+	BULLET_ANI_ROUND_FIREBALL	= 0,		// fireball shape
+	BULLET_ANI_LONG_FIREBALL	= 1,		// enlongated fireball shape
+	BULLET_ANI_ORB_SMALL		= 2,		// orb small
+	BULLET_ANI_ORB_MEDIUM		= 3,		// orb medium
+	BULLET_ANI_ORB_LARGE		= 4,		// orb large
+	BULLET_ANI_GRENADE			= 5,		// grenade
+	BULLET_ANI_EXPLODE			= 6,
+	BULLET_ANI_GRENADE_FRAG		= 7			// grenade fragment
 };
 
 enum BulletDamageModifier : int {
@@ -106,7 +108,7 @@ public:
 	virtual void Update();
 };
 
-#define JASON_SIDEVIEW_BULLET_TIME_TO_LIVE 300
+#define JASON_SIDEVIEW_BULLET_TIME_TO_LIVE 30
 class JasonSideviewBullet : public TimedPlayerBullet
 {
 public:
@@ -118,7 +120,7 @@ public:
 };
 
 #define JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE 300
-class JasonOverheadBulletNorm : public TimedPlayerBullet
+class JasonOverheadBulletNorm : public TimedPlayerBullet, Managed<Bullet>
 {
 public:
 	JasonOverheadBulletNorm(Point pos, Point v);
@@ -128,12 +130,31 @@ public:
 	virtual int GetDamage(BulletDamageModifier modifier) override;
 };
 
-#define JASON_OVERHEAD_GRENADE_TIME_TO_LIVE 30
+#define JASON_OVERHEAD_GRENADE_TIME_TO_LIVE 10
+
 class JasonOverheadBulletGrenade : public TimedPlayerBullet
 {
 public:
 	JasonOverheadBulletGrenade(Point pos, Point v);
 	virtual ~JasonOverheadBulletGrenade();
+
+	// Inherited via TimedPlayerBullet
+	virtual int GetDamage(BulletDamageModifier modifier) override;
+
+	virtual BoundingBox GetBoundingBox();
+	virtual void Render();
+};
+
+#define JASON_OVERHEAD_GRENADE_FRAGMENT_BBOX_LEFT 10
+#define JASON_OVERHEAD_GRENADE_FRAGMENT_BBOX_TOP 10
+#define JASON_OVERHEAD_GRENADE_FRAGMENT_BBOX_RIGHT 10
+#define JASON_OVERHEAD_GRENADE_FRAGMENT_BBOX_BOTTOM 10
+class JasonOverheadBulletGrenadeFragment : public PlayerBullet
+{
+	int damage;
+public:
+	JasonOverheadBulletGrenadeFragment(Point pos, int damage);
+	virtual ~JasonOverheadBulletGrenadeFragment();
 
 	// Inherited via TimedPlayerBullet
 	virtual int GetDamage(BulletDamageModifier modifier) override;

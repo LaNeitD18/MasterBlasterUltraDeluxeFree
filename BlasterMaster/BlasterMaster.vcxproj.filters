@@ -68,6 +68,11 @@
     <ClCompile Include="CannonBullet.cpp" />
     <ClCompile Include="MineBullet.cpp" />
     <ClCompile Include="Eyeball.cpp" />
+    <ClCompile Include="ItemPower.cpp" />
+    <ClCompile Include="SceneOver.cpp" />
+    <ClCompile Include="ItemHover.cpp" />
+    <ClCompile Include="InteractableDoubleDispatch.cpp" />
+    <ClCompile Include="Breakable_Tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedGameObject.h" />
@@ -143,6 +148,10 @@
     <ClInclude Include="CannonBullet.h" />
     <ClInclude Include="MineBullet.h" />
     <ClInclude Include="Eyeball.h" />
+    <ClInclude Include="ItemPower.h" />
+    <ClInclude Include="SceneOver.h" />
+    <ClInclude Include="ItemHover.h" />
+    <ClInclude Include="Breakable_Tree.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib.lib" />

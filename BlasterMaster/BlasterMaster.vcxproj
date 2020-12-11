@@ -22,8 +22,11 @@
     <ClInclude Include="AnimatedGameObject.h" />
     <ClInclude Include="Animations.h" />
     <ClInclude Include="BoundingBox.h" />
+    <ClInclude Include="Breakable_Tree.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="CannonBullet.h" />
+    <ClInclude Include="ItemHover.h" />
+    <ClInclude Include="SceneOver.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cannon.h" />
@@ -41,6 +44,7 @@
     <ClInclude Include="Insect.h" />
     <ClInclude Include="Interactable.h" />
     <ClInclude Include="InteractableGroupInclude.h" />
+    <ClInclude Include="ItemPower.h" />
     <ClInclude Include="JasonOverhead.h" />
     <ClInclude Include="JasonSideView.h" />
     <ClInclude Include="Jumper.h" />
@@ -97,8 +101,11 @@
     <ClCompile Include="AnimatedGameObject.cpp" />
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
+    <ClCompile Include="Breakable_Tree.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="CannonBullet.cpp" />
+    <ClCompile Include="ItemHover.cpp" />
+    <ClCompile Include="SceneOver.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cannon.cpp" />
@@ -114,6 +121,8 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Insect.cpp" />
     <ClCompile Include="Interactable.cpp" />
+    <ClCompile Include="InteractableDoubleDispatch.cpp" />
+    <ClCompile Include="ItemPower.cpp" />
     <ClCompile Include="JasonOverhead.cpp" />
     <ClCompile Include="JasonSideView.cpp" />
     <ClCompile Include="Jumper.cpp" />
@@ -180,28 +189,28 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">

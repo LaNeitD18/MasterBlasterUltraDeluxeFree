@@ -1,4 +1,5 @@
 #include "GameGlobal.h"
+#include "SceneArea2SideView.h"
 
 HINSTANCE GameGlobal::mHInstance = NULL;
 HWND GameGlobal::mHwnd = NULL;
@@ -14,8 +15,11 @@ Input* GameGlobal::input = NULL;
 AnimationSets* GameGlobal::mAniLib = NULL;
 Point GameGlobal::lastPositionSophia = Point(0, 0);
 // temporary hp, set later for sophia jason
-int GameGlobal::HealthPointSideView = 80;
+int GameGlobal::HealthPoint = 80;
+int GameGlobal::SophiaHealthPoint = 100;
 int GameGlobal::livesToPlay = 2;
+Point GameGlobal::pointReturn = Point(56, 2955);
+BoundingBox GameGlobal::boundingReturn = BoundingBox(0, 2814, 1038, 3094);
 
 GameGlobal::GameGlobal()
 {
@@ -102,9 +106,13 @@ AnimationSets * GameGlobal::GetAnimationSetLibrary() { return mAniLib; }
 
 void GameGlobal::SetAnimationSetLibrary(AnimationSets * aniLib) { mAniLib = aniLib; }
 
-int GameGlobal::GetHealthPointSideView() { return HealthPointSideView; }
+int GameGlobal::GetCurrentHealthPoint() { return HealthPoint; }
 
-void GameGlobal::SetHealthPointSideView(int hp) { HealthPointSideView = hp; }
+void GameGlobal::SetCurrentHealthPoint(int hp) { HealthPoint = hp; }
+
+int GameGlobal::GetCurrentHealthPointSophia() { return SophiaHealthPoint; }
+
+void GameGlobal::SetCurrentHealthPointSophia(int hp) { SophiaHealthPoint = hp; }
 
 int GameGlobal::GetLivesToPlay() { return livesToPlay; }
 
@@ -118,4 +126,24 @@ Point GameGlobal::GetLastPositionSophia()
 void GameGlobal::SetLastPositionSophia(Point pos)
 {
 	lastPositionSophia = pos;
+}
+
+Point GameGlobal::GetReturnPoint()
+{
+	return pointReturn;
+}
+
+void GameGlobal::SetReturnPoint(Point pos)
+{
+	pointReturn = pos;
+}
+
+BoundingBox GameGlobal::GetReturnBoundingBox()
+{
+	return boundingReturn;
+}
+
+void GameGlobal::SetReturnBoundingBox(BoundingBox bbox)
+{
+	boundingReturn = bbox;
 }

@@ -14,9 +14,9 @@ Interactable::~Interactable()
 {
 }
 
-#define DAMAGE_OF_SPIKE 15
-#define DAMAGE_OF_ENEMY 10
-#define DAMAGE_OF_LAVA 15
+#define DAMAGE_OF_SPIKE 10
+#define DAMAGE_OF_ENEMY 5
+#define DAMAGE_OF_LAVA 20
 
 void Interactable::Interact(Player * player, Env_Wall * wall) {
 	BoundingBox playerBox = player->GetBoundingBox();
@@ -211,6 +211,17 @@ void Interactable::Interact(Sophia* player, Env_Portal* portal) {
 
 			DebugOut(L"%d\n", portalDirection);
 		}
+		// implement interact with portal to set return point
+		else if((player->GetSpeed().x <= 0 && portalDirection == RIGHT) ||
+			(player->GetSpeed().x >= 0 && portalDirection == LEFT)) {
+			if (portal->GetPortalDir() == LEFT) {
+				GameGlobal::SetReturnPoint(Point(portal->GetBoundingBox().r, portal->GetBoundingBox().t - 6));
+			}
+			else if (portal->GetPortalDir() == RIGHT) {
+				GameGlobal::SetReturnPoint(Point(portal->GetBoundingBox().l, portal->GetBoundingBox().t - 6));
+			}
+			GameGlobal::SetReturnBoundingBox(Camera::GetInstance()->GetCameraLimitarea());
+		}
 	}
 }
 
@@ -245,6 +256,12 @@ void Interactable::Interact(JasonSideView* player, Env_Portal* portal) {
 			Camera::GetInstance()->SetCameraLimitarea(limitArea);
 
 			DebugOut(L"%d\n", portalDirection);
+		}
+		// implement interact with portal to set return point
+		else if ((player->GetSpeed().x <= 0 && portalDirection == RIGHT) ||
+			(player->GetSpeed().x >= 0 && portalDirection == LEFT)) {
+			GameGlobal::SetReturnPoint(portal->GetBoundingBox().GetCenter());
+			GameGlobal::SetReturnBoundingBox(Camera::GetInstance()->GetCameraLimitarea());
 		}
 	}
 }
@@ -298,6 +315,14 @@ void Interactable::Interact(JasonOverhead* player, Env_Portal* portal) {
 
 			DebugOut(L"%d\n", portalDirection);
 		}
+		// implement interact with portal to set return point
+		else if ((player->GetSpeed().x <= 0 && portalDirection == RIGHT) ||
+			(player->GetSpeed().x >=0 && portalDirection == LEFT) ||
+			(player->GetSpeed().y >= 0 && portalDirection == TOP) ||
+			(player->GetSpeed().y <= 0 && portalDirection == BOTTOM)) {
+			GameGlobal::SetReturnPoint(portal->GetBoundingBox().GetCenter());
+			GameGlobal::SetReturnBoundingBox(Camera::GetInstance()->GetCameraLimitarea());
+		}
 	}
 }
 
@@ -310,6 +335,16 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 	bool isJasonPlay = jasonPlay != NULL;
 	if (playerBox.IsOverlap(dungeonBox) && isJasonPlay) {
 		if (input[VK_DOWN] & KEY_STATE_DOWN) {
+			// set healthpoint sophia to global
+			SceneArea2SideView* scene_sideview = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
+			for (auto x : scene_sideview->GetObjects()) {
+				Sophia* sophia = dynamic_cast<Sophia*>(x);
+				if (sophia != NULL) {
+					GameGlobal::SetCurrentHealthPointSophia(sophia->GetHP());
+					break;
+				}
+			}
+			// jason setup
 			BoundingBox limitArea = SceneArea2Overhead::cameraLimitAreaOfSection[dungeon->GetSectionToEnter()];
 			Point startPoint = SceneArea2Overhead::startPointInSection[dungeon->GetSectionToEnter()];
 			//Game::GetInstance()->GetCurrentScene()->Release();
@@ -320,11 +355,15 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 				if (current_player != NULL &&
 					current_player->IsPrimaryPlayer()) {
 					scene->SetTarget(current_player);
+					// set hp based on jason sideview
+					current_player->SetHP(player->GetHP());
 					break;
 				}
 			}
 			scene->GetTarget()->SetPosition(startPoint);
 			scene->GetCamera()->SetCameraLimitarea(limitArea);
+			GameGlobal::SetReturnBoundingBox(limitArea);
+			scene->liveShow = 0;
 			//Camera::GetInstance()->SetCameraLimitarea(limitArea);
 			Sophia* sophia = dynamic_cast<Sophia*>(jasonPlay->sophia); // sophia null
 			GameGlobal::SetLastPositionSophia(sophia->GetPosition());
@@ -353,34 +392,90 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 					scene->SetTarget(current_player);
 					//current_player->SetPosition(startPoint);
 					current_player->SetPosition(GameGlobal::GetLastPositionSophia());
+					// set hp based on sophia current hp
+					current_player->SetHP(GameGlobal::GetCurrentHealthPointSophia());
 					break;
 				}
 			}
 			JasonSideView* jason = new JasonSideView(startPoint.x, startPoint.y);
 			current_player->jason = jason;
 			jason->sophia = current_player;
-			jason->SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(JASON_SIDEVIEW_ANIMATION_SET_NUMBER));
 			jason->SetManager(current_player->GetManager());
 			jason->v.x = 0;
 			jason->v.y = -JASON_ENTER_VEHICLE_DISAPPEAR_SPEED;
 			current_player->GetManager()->AddElement(jason);
 			current_player->SetState(SOPHIA_STATE_LEFT_VEHICLE);
 			scene->SetTarget(jason);
+			// set hp based on jason SceneOverhead
+			jason->SetHP(player->GetHP());
 			//scene->GetTarget()->SetPosition(startPoint);
 			scene->GetCamera()->SetCameraLimitarea(limitArea);
+			GameGlobal::SetReturnBoundingBox(limitArea);
 			//Camera::GetInstance()->SetCameraLimitarea(limitArea);
-			
 		}
 	}
 }
 
-void Interactable::Interact(JasonSideView* player, Env_Ladder* ladder) {
-	// implement interact with ladder (way to dungeon)
+#define POWER_GAIN 10
+
+void Interactable::Interact(Player* player, ItemPower* item) {
 	BoundingBox playerBox = player->GetBoundingBox();
-	BoundingBox ladderBox = ladder->GetBoundingBox();
-	if (playerBox.IsOverlap(ladderBox)) {
-		//TODO: implement animation jason Long
-		displayMessage("i want to win there");
+	BoundingBox itemBox = item->GetBoundingBox();
+	if (playerBox.IsOverlap(itemBox)) {
+		player->SetHP(player->GetHP() + POWER_GAIN);
+		item->GetManager()->RemoveElement(item);
+	}
+}
+
+void Interactable::Interact(Player* player, ItemHover* item) {
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox itemBox = item->GetBoundingBox();
+	if (playerBox.IsOverlap(itemBox)) {
+		//TODO: setup hover for sophia
+		//displayMessage("i want to get this");
+		item->GetManager()->RemoveElement(item);
+	}
+}
+
+void Interactable::Interact(Player* player, Breakable_Tree* tree) {
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox treeBox = tree->GetBoundingBoxJason();
+	//if (playerBox.IsOverlap(treeBox)) {
+		bool top, left, right, bottom;
+		Point move = player->dx();
+		top = left = right = bottom = false;
+		double offsetTime = treeBox.SweptAABB(playerBox, move, top, left, bottom, right);
+
+		player->wallTop |= top;
+		player->wallRight |= right;
+		player->wallLeft |= left;
+		player->wallBot |= bottom;
+
+		if (offsetTime >= 0.0 && offsetTime <= 1.0)
+			move = move - move * offsetTime;
+		else
+			return;
+
+		if (top || bottom) {
+			Point v = player->GetSpeed();
+			v.y -= move.y;
+			player->SetSpeed(v);
+		}
+		if (left || right) {
+			Point v = player->GetSpeed();
+			v.x -= move.x;
+			player->SetSpeed(v);
+		}
+	//}
+}
+
+void Interactable::Interact(PlayerBullet* bullet, Breakable_Tree* tree) {
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox treeBox = tree->GetBoundingBox();
+	if (bulletBox.IsOverlap(treeBox)) {
+		if (treeBox.SweptAABB(bulletBox, bullet->dx()) != -INFINITY)
+			bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
+		tree->SetIsOut(true);
 	}
 }
 
@@ -436,6 +531,13 @@ void Interactable::Interact(Player* player, Enemy* enemy) {
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox enemyBox = enemy->GetBoundingBox();
 	if (playerBox.IsOverlap(enemyBox)) {
+		JasonSideView* jasonPlay = dynamic_cast<JasonSideView*>(player);
+		bool isJasonPlay = jasonPlay != NULL;
+		int enemyDamage = DAMAGE_OF_ENEMY;
+		if (isJasonPlay) {
+			enemyDamage *= 2;
+		}
+		player->TakeDamage(enemyDamage);
 		player->TakeDamage(DAMAGE_OF_ENEMY);
 		enemy->isCollided = true;
 	}
@@ -772,6 +874,39 @@ void Interactable::Interact(PlayerBullet* bullet, Enemy* enemy) {
 	{
 		enemy->TakeDamage(bullet->GetDamage());
 		bullet->GetManager()->RemoveElement(bullet);
+	}
+}
+void Interactable::Interact(JasonSideView * player, Env_Ladder * ladder) {
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox ladderBox = ladder->GetBoundingBox();
+
+	if (playerBox.IsInsideBox(ladderBox))
+		player->targetLadder = ladder;
+
+	bool top, left, right, bottom;
+	Point move = player->dx();
+	top = left = right = bottom = false;
+	double offsetTime = ladderBox.SweptAABB(playerBox, move, top, left, bottom, right);
+
+	player->wallBot |= bottom;
+
+	if (bottom)
+		player->targetLadder = ladder;
+
+	if (offsetTime >= 0.0 && offsetTime <= 1.0) {
+		move = move - move * offsetTime;
+
+		if (bottom && move.y > 0) {
+			Point v = player->GetSpeed();
+			if (bottom && v.y > JASON_JUMP_SPEED + JASON_GRAVITY) {
+				float damage = v.y / JASON_JUMP_SPEED;
+				damage = (damage * damage - 1.31) / 0.7;
+				damage *= JASON_MAX_HEALTH;
+				player->TakeDamage(round(damage));
+			}
+			v.y -= move.y;
+			player->SetSpeed(v);
+		}
 	}
 }
 #pragma endregion

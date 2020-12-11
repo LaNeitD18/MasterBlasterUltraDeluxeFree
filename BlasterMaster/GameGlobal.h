@@ -39,14 +39,22 @@ public:
 	static AnimationSets* GetAnimationSetLibrary();
 	static void SetAnimationSetLibrary(AnimationSets* aniLib);
 
-	static int GetHealthPointSideView();
-	static void SetHealthPointSideView(int hp);
+	static int GetCurrentHealthPoint();
+	static void SetCurrentHealthPoint(int hp);
+
+	static int GetCurrentHealthPointSophia();
+	static void SetCurrentHealthPointSophia(int hp);
 
 	static int GetLivesToPlay();
 	static void SetLivesToPlay(int l);
 
 	static Point GetLastPositionSophia();
 	static void SetLastPositionSophia(Point pos);
+
+	static Point GetReturnPoint();
+	static void SetReturnPoint(Point pos);
+	static BoundingBox GetReturnBoundingBox();
+	static void SetReturnBoundingBox(BoundingBox section);
 
 	static bool isGameRunning; //trang thai xem game co dang chay khong
 
@@ -62,8 +70,13 @@ private:
 
 	static Point lastPositionSophia;
 
-	static int HealthPointSideView;
+	static int HealthPoint;
 	static int livesToPlay;
+
+	static int SophiaHealthPoint;
+
+	static Point pointReturn;
+	static BoundingBox boundingReturn;
 };
 
 #endif

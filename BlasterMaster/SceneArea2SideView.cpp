@@ -70,41 +70,41 @@ Point SceneArea2SideView::startPointInSection[19] = {
 	// section A
 	Point(56, 2955),
 	// section B
-	Point(1076, 2955),
+	Point(1086, 2955),
 	//section C
-	Point(1584, 1932),
+	Point(1594, 1932),
 	// section D
-	Point(2096, 1932),
+	Point(2106, 1932),
 	// section E
-	Point(2608, 1932),
+	Point(2618, 1932),
 	//section F
-	Point(2000, 1164),
+	Point(1990, 1164),
 	// section G
-	Point(2096, 652),
+	Point(2106, 652),
 	// section H
-	Point(2096, 140),
+	Point(2106, 140),
 	// section I
-	Point(2608, 140),
+	Point(2618, 140),
 	// section J
-	Point(2512,396),
+	Point(2502,396),
 	// section K
-	Point(1488, 1164),
+	Point(1478, 1164),
 	// dungeon 1
-	Point(3008,1932),
+	Point(3018,1932),
 	// dungeon 2
-	Point(2432,716),
+	Point(2442,716),
 	// dungeon 3
-	Point(1600,140),
+	Point(1610,140),
 	// dungeon 4
-	Point(2112,428),
+	Point(2122,428),
 	// section L
-	Point(1488, 1674),
+	Point(1478, 1674),
 	// section M
-	Point(720, 1674),
+	Point(710, 1674),
 	// section N
-	Point(816,1158),
+	Point(826,1158),
 	//section O
-	Point(1328,1418)
+	Point(1338,1418)
 };
 
 SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath, game)
@@ -136,8 +136,8 @@ void SceneArea2SideView::LoadContent()
 	/*mCamera->SetPosition(GameGlobal::GetWidth() / 2,
 		mMap->GetHeight() - GameGlobal::GetHeight() / 2 + 32);*/
 	
-	// set limit area of section 1
-	mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[0]);
+	// set limit area of section, begin with section 1
+	mCamera->SetCameraLimitarea(GameGlobal::GetReturnBoundingBox());
 	mMap->SetCamera(mCamera);
 	foreMap->SetCamera(mCamera);
 	//mMap->Draw();
@@ -423,6 +423,8 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		break;*/
 	case OBJECT_TYPE_SOPHIA:
 		obj = new Sophia(x, y);
+		// set return point
+		obj->SetPosition(GameGlobal::GetReturnPoint());
 		break;
 	case OBJECT_TYPE_JASON_SIDE_VIEW:
 		break;
@@ -462,9 +464,13 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 
 	int dirId = -1;
 	int sectionToEnter = -1;
-	if (tokens.size() == 7) {
+	int sectionLocation = -1;
+	if (tokens.size() >= 7) {
 		dirId = atoi(tokens[5].c_str());
 		sectionToEnter = atoi(tokens[6].c_str());
+		if (tokens.size() == 8) {
+			sectionLocation = atoi(tokens[7].c_str());
+		}
 	}
 
 	GateDirection gateDir;
@@ -495,7 +501,7 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 		else if (dirId == 3) {
 			gateDir = BOTTOM;
 		}
-		env = new Env_Portal(x, y, width, height, gateDir, sectionToEnter);
+		env = new Env_Portal(x, y, width, height, gateDir, sectionToEnter, sectionLocation);
 		break;
 	case ENVIRONMENT_TYPE_DUNGEON:
 		if (dirId == 0) {
@@ -815,11 +821,12 @@ void SceneArea2SideView::Update()
 			if (currentLivesPlay == 0) {// change later for continue game
 				GameGlobal::SetLivesToPlay(2);
 			}
+			//TODO: set again start pos when return play
 			this->Release();
 			Game::GetInstance()->Init(L"Resources/scene.txt", 2);
 			return;
 		}
-		GameGlobal::SetHealthPointSideView(target->GetHP());
+		GameGlobal::SetCurrentHealthPoint(target->GetHP());
 		mCamera->FollowTarget();
 		mCamera->SnapToBoundary();
 

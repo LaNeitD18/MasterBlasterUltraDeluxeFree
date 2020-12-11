@@ -146,8 +146,3 @@ void Orb::SetState(int state)
 		break;
 	}
 }
-
-#include "InteractableGroupInclude.h"
-#define CURRENT_CLASS Orb
-void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
-APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)

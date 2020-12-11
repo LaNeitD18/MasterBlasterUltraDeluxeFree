@@ -18,6 +18,7 @@ SceneOpening::SceneOpening(int id, LPCWSTR filePath, Game *game, Point screenSiz
 	LoadContent();
 	this->screenSize = screenSize;
 	this->count = 0;
+	this->enterState = 0;
 
 	GameGlobal::SetAnimationSetLibrary(animationSetLib);
 }
@@ -46,6 +47,8 @@ SceneOpening::~SceneOpening()
 
 #define OBJECT_TYPE_TITLE 1
 #define OBJECT_TYPE_TALE 2
+#define OBJECT_TYPE_ENTER_SOPHIA 3
+#define OBJECT_TYPE_BOX1 101
 #define MAX_SCENE_LINE 1024
 
 static D3DCOLOR titleColor[4] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,0,255,255),D3DCOLOR_ARGB(255,255,0,255),D3DCOLOR_ARGB(255,255,255,0) };
@@ -152,16 +155,17 @@ void SceneOpening::Init()
 void SceneOpening::Update()
 {
 	input->Update();
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		objects[i]->Update();
-	}
 
-	if ((*input)[VK_RETURN] & KEY_STATE_DOWN) {
+	if (enterState == 2) {
 		//Game::GetInstance()->SwitchScene(2);
 		this->Release();
 		Game::GetInstance()->Init(L"Resources/scene.txt", 2);
 		return;
+	}
+
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		objects[i]->Update();
 	}
 
 	// Update camera to follow mario
@@ -175,20 +179,33 @@ void SceneOpening::Update()
 
 #define DURATION_OF_TITLE 500
 #define DURATION_OF_TALE 1590
+#define DURATION_OF_ENTER_SOPHIA 300
 
 void SceneOpening::Render()
 {
 	// LeSon
-	objects[0]->Render(); // bbox color
-	if (count < DURATION_OF_TITLE) {
-		objects[1]->Render(); // title drawing
-		count++;
+	objects[4]->Render(); // original
+	if (enterState == 0) {
+		objects[0]->Render(); // bbox color flash
+		if (count < DURATION_OF_TITLE) {
+			objects[1]->Render(); // title drawing
+			count++;
+		}
+		else {
+			objects[2]->Render(); // tale next
+			count++;
+			if (count > DURATION_OF_TALE) {
+				count = 0;
+			}
+		}
 	}
-	else {
-		objects[2]->Render();
-		count++;
-		if (count > DURATION_OF_TALE) {
-			count = 0;
+	else if (enterState == 1) {
+		if (count < DURATION_OF_ENTER_SOPHIA) {
+			objects[3]->Render();
+			count++;
+		}
+		else {
+			enterState = 2;
 		}
 	}
 }
@@ -350,6 +367,12 @@ void SceneOpening::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BOX:
 		obj = new SceneBox(x, y);
 		break;
+	case OBJECT_TYPE_ENTER_SOPHIA:
+		obj = new SceneEnter(x, y);
+		break;
+	case OBJECT_TYPE_BOX1:
+		obj = new SceneBox1(x, y);
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -387,7 +410,12 @@ BoundingBox SceneOpeningTitle::GetBoundingBox()
 void SceneOpeningTitle::Update()
 {
 	Input& input = *GameGlobal::GetInput();
+	SceneOpening* scene = dynamic_cast<SceneOpening*>(Game::GetInstance()->GetCurrentScene());
 	// enter to switch scene
+	if ((input[VK_RETURN] & KEY_STATE_DOWN) && scene->enterState == 0) {
+		scene->count = 0;
+		scene->enterState = 1;
+	}
 }
 
 void SceneOpeningTitle::Render()
@@ -432,6 +460,7 @@ BoundingBox SceneTale::GetBoundingBox()
 void SceneTale::Update()
 {
 	Input& input = *GameGlobal::GetInput();
+	SceneOpening* scene = dynamic_cast<SceneOpening*>(Game::GetInstance()->GetCurrentScene());
 	// enter to switch scene
 }
 
@@ -504,6 +533,96 @@ SceneBox::SceneBox(float x, float y)
 }
 
 void SceneBox::SetState(int state)
+{
+	GameObject::SetState(state);
+	switch (state)
+	{
+	case BOX_NORMAL:
+		v.x = BOX_SPEED;
+	}
+}
+
+BoundingBox SceneEnter::GetBoundingBox()
+{
+	return BoundingBox();
+}
+
+void SceneEnter::Update()
+{
+	Input& input = *GameGlobal::GetInput();
+	SceneOpening* scene = dynamic_cast<SceneOpening*>(Game::GetInstance()->GetCurrentScene());
+	// enter to switch scene
+}
+
+void SceneEnter::Render()
+{
+	SetAnimationType(ENTER_NORMAL);
+	/*if (state == TELEPORTER_STATE_DIE) {
+		ani = TELEPORTER_ANI_DIE;
+	}*/
+
+	AnimatedGameObject::Render();
+
+	//RenderBoundingBox();
+}
+
+SceneEnter::SceneEnter()
+{
+	SetState(ENTER_NORMAL);
+}
+
+SceneEnter::SceneEnter(float x, float y)
+{
+	SetState(ENTER_NORMAL);
+	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
+}
+
+void SceneEnter::SetState(int state)
+{
+	GameObject::SetState(state);
+	switch (state)
+	{
+	case ENTER_NORMAL:
+		v.x = ENTER_SPEED;
+	}
+}
+
+BoundingBox SceneBox1::GetBoundingBox()
+{
+	return BoundingBox();
+}
+
+void SceneBox1::Update()
+{
+	drawArguments.SetColor(titleColor[(rand() % 4)]);
+}
+
+void SceneBox1::Render()
+{
+	SetAnimationType(BOX_NORMAL);
+	/*if (state == TELEPORTER_STATE_DIE) {
+		ani = TELEPORTER_ANI_DIE;
+	}*/
+
+	AnimatedGameObject::Render();
+
+	//RenderBoundingBox();
+}
+
+SceneBox1::SceneBox1()
+{
+	SetState(BOX_NORMAL);
+}
+
+SceneBox1::SceneBox1(float x, float y)
+{
+	SetState(BOX_NORMAL);
+	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
+}
+
+void SceneBox1::SetState(int state)
 {
 	GameObject::SetState(state);
 	switch (state)

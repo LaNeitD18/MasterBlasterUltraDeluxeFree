@@ -2,8 +2,9 @@
 [TEXTURES]
 1	Resources\sprites\Blaster_Master-title.png	255	255	255
 2	Resources\sprites\Tale_Cutscene.png	255	255	255
-#3	Resources\sprites\EnterCutscene.png	255	255	255
+3	Resources\sprites\EnterCutscene.png	255	255	255
 100	Resources\bbox.png	255	255	255
+101	Resources\bbox1.png	255	255	255
 # next sprite
 
 [SPRITES]
@@ -15,10 +16,13 @@ Resources\scene_opening_title_sprites.txt
 Resources\scene_opening_tale_sprites.txt
 
 #3 sophia enter
-#Resources\scene_opening_enter_sprites.txt
+Resources\scene_opening_enter_sprites.txt
 
 #100 box
 Resources\scene_opening_bbox_sprites.txt
+
+#101 box1
+Resources\scene_opening_bbox1_sprites.txt
 
 [ANIMATIONS]
 # id format: 201xx
@@ -29,10 +33,13 @@ Resources\scene_opening_title_ani.txt
 Resources\scene_opening_tale_ani.txt
 
 #3 ==== sophia =========
-#Resources\scene_opening_enter_ani.txt
+Resources\scene_opening_enter_ani.txt
 
 #100 == box ==
 Resources\scene_opening_bbox_ani.txt
+
+#101 == box1 ==
+Resources\scene_opening_bbox1_ani.txt
 
 [OBJECTS]
 # type	x	y	ani_set_id1	ani_set_id2...
@@ -47,4 +54,7 @@ Resources\scene_opening_bbox_ani.txt
 2	-8	-20	2
 
 # sophia
-#3	700	500	3
+3	-8	-20	3
+
+#box1
+101	0	0	101
