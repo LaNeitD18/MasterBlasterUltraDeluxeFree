@@ -840,12 +840,18 @@ void Interactable::Interact(JasonSideView * player, Env_Ladder * ladder) {
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox ladderBox = ladder->GetBoundingBox();
 
-	if (playerBox.IsInsideBox(ladderBox))
+	// Bug is hidden =)																																																				Author: Long
+	BoundingBox ladderBoxBigger = ladder->GetBoundingBox();
+	ladderBoxBigger.t -= JASON_BBOX_OFFSET_BOTTOM - JASON_BBOX_OFFSET_TOP_NORMAL - JASON_CLIMBING_SPEED;
+	if (playerBox.IsInsideBox(ladderBoxBigger)) {
 		player->targetLadder = ladder;
+		return;
+	}
 
 	bool top, left, right, bottom;
 	Point move = player->dx();
 	top = left = right = bottom = false;
+
 	double offsetTime = ladderBox.SweptAABB(playerBox, move, top, left, bottom, right);
 
 	player->wallBot |= bottom;
