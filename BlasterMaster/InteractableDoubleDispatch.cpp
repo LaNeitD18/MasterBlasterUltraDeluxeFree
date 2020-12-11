@@ -111,6 +111,11 @@ void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS
 
+#define CURRENT_CLASS Breakable_Tree
+void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
+#undef CURRENT_CLASS
+
 void Env_Wall::Interact(Interactable * other) { other->Interact(this); }
 
 void Env_Spike::Interact(Interactable * other) { other->Interact(this); }

@@ -179,7 +179,7 @@ void SceneOpening::Update()
 
 #define DURATION_OF_TITLE 500
 #define DURATION_OF_TALE 1590
-#define DURATION_OF_ENTER_SOPHIA 310
+#define DURATION_OF_ENTER_SOPHIA 300
 
 void SceneOpening::Render()
 {
@@ -412,9 +412,9 @@ void SceneOpeningTitle::Update()
 	Input& input = *GameGlobal::GetInput();
 	SceneOpening* scene = dynamic_cast<SceneOpening*>(Game::GetInstance()->GetCurrentScene());
 	// enter to switch scene
-	if ((input[VK_RETURN] & KEY_STATE_DOWN)) {
-		scene->enterState = 1;
+	if ((input[VK_RETURN] & KEY_STATE_DOWN) && scene->enterState == 0) {
 		scene->count = 0;
+		scene->enterState = 1;
 	}
 }
 

@@ -41,7 +41,7 @@ class Interactable;
 #pragma endregion
 
 // add new item
-#define INTERACTABLE_GROUP Player, Enemy, Env_Wall, Sophia, Env_Spike, Env_Lava, Env_Portal, AnimatedScene, Env_Dungeon, Env_Outdoor, Env_Ladder, ItemPower, ItemHover, \
+#define INTERACTABLE_GROUP Player, Enemy, Env_Wall, Sophia, Env_Spike, Env_Lava, Env_Portal, AnimatedScene, Env_Dungeon, Env_Outdoor, Env_Ladder, ItemPower, ItemHover, Breakable_Tree, \
 							Worm, Floater, Dome, Jumper, Insect, Ship, MiniRedBullet, SkullBullet, CannonBullet, MineBullet, Teleporter, \
 							JasonSideView, JasonOverhead, Bullet, PlayerBullet, EnemyBullet \
 
@@ -102,6 +102,8 @@ public:
 	INTERACTABLE_MIRROR_DEF(Player, Env_Dungeon);
 	INTERACTABLE_MIRROR_DEF(Player, Env_Outdoor);
 	INTERACTABLE_MIRROR_DEF(JasonSideView, Env_Ladder);
+	INTERACTABLE_MIRROR_DEF(Player, Breakable_Tree);
+	INTERACTABLE_MIRROR_DEF(PlayerBullet, Breakable_Tree);
 	// items
 	INTERACTABLE_MIRROR_DEF(Player, ItemPower);
 	INTERACTABLE_MIRROR_DEF(Player, ItemHover);

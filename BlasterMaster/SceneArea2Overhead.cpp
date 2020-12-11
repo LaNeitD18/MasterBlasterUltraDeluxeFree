@@ -13,6 +13,7 @@
 #include "Jumper.h"
 #include "Dome.h"
 #include "Floater.h"
+#include "Breakable_Tree.h"
 
 using namespace std;
 
@@ -122,6 +123,7 @@ SceneArea2Overhead::~SceneArea2Overhead()
 #define OBJECT_TYPE_ORB 10
 #define OBJECT_TYPE_WALKER 11
 #define OBJECT_TYPE_JASON_OVERHEAD 12
+#define OBJECT_TYPE_BREAKABLE_TREE 298
 
 //LeSon
 #define ENVIRONMENT_TYPE_WALL 1
@@ -290,6 +292,9 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_JASON_OVERHEAD:
 		obj = new JasonOverhead(x, y);
 		obj->SetPosition(GameGlobal::GetReturnPoint());
+		break;
+	case OBJECT_TYPE_BREAKABLE_TREE:
+		obj = new Breakable_Tree(x, y);
 		break;
 	/*case OBJECT_TYPE_JUMPER:
 		obj = new Jumper(x, y);
