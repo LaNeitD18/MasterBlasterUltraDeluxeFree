@@ -116,7 +116,6 @@ void Worm::Render()
 			isFlipVertical = true;
 		}
 	}
-	DebugOut(L"%fvx \n", v.x);
 	AnimatedGameObject::Render();
 
 	//RenderBoundingBox();

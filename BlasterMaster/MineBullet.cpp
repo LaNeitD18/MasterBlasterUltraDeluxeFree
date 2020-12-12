@@ -40,7 +40,6 @@ void MineBullet::Update()
 		v.x -= 0.001;
 	}
 	v.y += 0.02;
-	DebugOut(L"vy %f", v.y);
 
 	SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
 	if (scene != nullptr) {

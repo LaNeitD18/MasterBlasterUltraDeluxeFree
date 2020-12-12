@@ -796,8 +796,13 @@ void SceneArea2SideView::Update()
 	input->Update();
 	// update onscreen objects
 	vector<GameObject*> onScreenObj;
-	for (auto x : objects) {
+	/*for (auto x : objects) {
 		if (x->GetBoundingBox().IsOverlap(mCamera->GetBound())) {
+			onScreenObj.push_back(x);
+		}
+	}*/
+	for (auto x : objects) {
+		if (mCamera->GetBound().IsInsideBox(x->GetPosition())) {
 			onScreenObj.push_back(x);
 		}
 	}

@@ -50,12 +50,8 @@ void DrawArguments::FlipHorizontal(bool flag)
 	//DebugOut(L"%dhor\n", mIsFlipHorizontal);
 	if (mIsFlipHorizontal != flag)
 	{
-		DebugOut(L"%dflag \n", flag);
-		DebugOut(L"%dhor\n", mIsFlipHorizontal);
 		mIsFlipHorizontal = flag;
 		mScale = D3DXVECTOR2(mScale.x, -mScale.y);
-		DebugOut(L"ZZZ\n");
-		DebugOut(L"%dhor\n", mIsFlipHorizontal);
 	}
 }
 

@@ -54,12 +54,12 @@ void Dome::Update()
 	}
 	// TH phong theo chieu ngang
 	else if (abs(pos.y - playerPos.y) <= 2) {
-		if (wallLeft) {
+		if (wallLeft && playerPos.x - 10 > pos.x) {
 			direction.x = 1;
 			wallLeft = false;
 			SetState(DOME_STATE_JUMPING_HORIZONTAL);
 		}
-		if (wallRight) {
+		if (wallRight && playerPos.x + 10 < pos.x) {
 			direction.x = -1;
 			wallRight = false;
 			SetState(DOME_STATE_JUMPING_HORIZONTAL);
