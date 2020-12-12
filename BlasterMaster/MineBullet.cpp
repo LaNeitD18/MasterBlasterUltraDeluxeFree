@@ -45,7 +45,7 @@ void MineBullet::Update()
 	if (scene != nullptr) {
 		if (scene->GetTarget()->GetBoundingBox().IsInsideBox(pos)) {
 			if (wallBot || wallTop || wallLeft || wallRight) {
-				v = Point();
+				v = Point(0, 0);
 				SetState(MINE_BULLET_STATE_EXPLODE);
 			}
 		}

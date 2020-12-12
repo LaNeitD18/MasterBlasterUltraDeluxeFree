@@ -796,16 +796,20 @@ void SceneArea2SideView::Update()
 	input->Update();
 	// update onscreen objects
 	vector<GameObject*> onScreenObj;
-	/*for (auto x : objects) {
-		if (x->GetBoundingBox().IsOverlap(mCamera->GetBound())) {
-			onScreenObj.push_back(x);
-		}
-	}*/
 	for (auto x : objects) {
-		if (mCamera->GetBound().IsInsideBox(x->GetPosition())) {
-			onScreenObj.push_back(x);
+		bool isSkull = dynamic_cast<Skull*>(x) != NULL;
+		if (isSkull) {
+			if (mCamera->GetBound().IsInsideBox(x->GetPosition())) {
+				onScreenObj.push_back(x);
+			}
 		}
+		else {
+			if (x->GetBoundingBox().IsOverlap(mCamera->GetBound())) {
+				onScreenObj.push_back(x);
+			}
+		}		
 	}
+
 
 	Camera::setCameraInstance(mCamera);
 	if (!isCameraFree) {
