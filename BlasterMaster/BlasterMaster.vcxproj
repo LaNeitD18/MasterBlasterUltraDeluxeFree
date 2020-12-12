@@ -33,7 +33,7 @@
     <ClInclude Include="Cannon.h" />
     <ClInclude Include="Dome.h" />
     <ClInclude Include="DrawArguments.h" />
-    <ClInclude Include="Eye.h" />
+    <ClInclude Include="Eyeball.h" />
     <ClInclude Include="Floater.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameGlobal.h" />
@@ -113,7 +113,7 @@
     <ClCompile Include="Cannon.cpp" />
     <ClCompile Include="Dome.cpp" />
     <ClCompile Include="DrawArguments.cpp" />
-    <ClCompile Include="Eye.cpp" />
+    <ClCompile Include="Eyeball.cpp" />
     <ClCompile Include="Floater.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameGlobal.cpp" />
@@ -185,21 +185,21 @@
     <ProjectGuid>{533D688C-6537-4709-86AC-209DCF90001C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>BlasterMaster</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>

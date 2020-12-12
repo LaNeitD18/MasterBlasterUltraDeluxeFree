@@ -13,6 +13,9 @@
 #include "Jumper.h"
 #include "Dome.h"
 #include "Floater.h"
+#include "Teleporter.h"
+#include "Cannon.h"
+#include "Eyeball.h"
 #include "Breakable_Tree.h"
 
 using namespace std;
@@ -286,9 +289,6 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	case OBJECT_TYPE_WORM:
-		obj = new Worm(x, y);
-		break;
 	case OBJECT_TYPE_JASON_OVERHEAD:
 		obj = new JasonOverhead(x, y);
 		obj->SetPosition(GameGlobal::GetReturnPoint());
@@ -296,34 +296,16 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BREAKABLE_TREE:
 		obj = new Breakable_Tree(x, y);
 		break;
-	/*case OBJECT_TYPE_JUMPER:
-		obj = new Jumper(x, y);
-		break;
 	case OBJECT_TYPE_TELEPORTER:
 		obj = new Teleporter(x, y);
 		break;
 	case OBJECT_TYPE_CANNON:
 		obj = new Cannon(x, y);
 		break;
-	case OBJECT_TYPE_DOME:
-		obj = new Dome(x, y);
-		break;
 	case OBJECT_TYPE_EYE:
-		obj = new Eye(x, y);
+		obj = new Eyeball(x, y);
 		break;
-	case OBJECT_TYPE_MINE:
-		obj = new Mine(x, y);
-		break;
-	case OBJECT_TYPE_FLOATER:
-		obj = new Floater(x, y);
-		break;
-	case OBJECT_TYPE_INSECT:
-		obj = new Insect(x, y);
-		break;
-	case OBJECT_TYPE_ORB:
-		obj = new Orb(x, y);
-		break;
-	case OBJECT_TYPE_WALKER:
+	/*case OBJECT_TYPE_WALKER:
 		obj = new Walker(x, y);
 		break;*/
 	default:
