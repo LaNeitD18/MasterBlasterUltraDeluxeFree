@@ -39,12 +39,6 @@ Resources\Enemies\worm_sprites.txt
 #2 JUMPER
 Resources\Enemies\jumper_sprites.txt
 
-#3 TELEPORTER
-Resources\Enemies\teleporter_sprites.txt
-
-#4 CANNON
-Resources\Enemies\cannon_sprites.txt
-
 #5 DOME
 Resources\Enemies\dome_sprites.txt
 
@@ -118,12 +112,6 @@ Resources\Enemies\worm_ani.txt
 
 #2 ==== JUMPER =========
 Resources\Enemies\jumper_ani.txt
-
-#3 ==== TELPORTER =========
-Resources\Enemies\teleporter_ani.txt
-
-#4 ==== CANNON =========
-Resources\Enemies\cannon_ani.txt
 
 #5 ==== DOME =========
 Resources\Enemies\dome_ani.txt
