@@ -215,10 +215,10 @@ void Interactable::Interact(Sophia* player, Env_Portal* portal) {
 		else if((player->GetSpeed().x <= 0 && portalDirection == RIGHT) ||
 			(player->GetSpeed().x >= 0 && portalDirection == LEFT)) {
 			if (portal->GetPortalDir() == LEFT) {
-				GameGlobal::SetReturnPoint(Point(portal->GetBoundingBox().r, portal->GetBoundingBox().t - 6));
+				GameGlobal::SetReturnPoint(Point(portal->GetBoundingBox().r, portal->GetBoundingBox().t - 4));
 			}
 			else if (portal->GetPortalDir() == RIGHT) {
-				GameGlobal::SetReturnPoint(Point(portal->GetBoundingBox().l, portal->GetBoundingBox().t - 6));
+				GameGlobal::SetReturnPoint(Point(portal->GetBoundingBox().l, portal->GetBoundingBox().t - 4));
 			}
 			GameGlobal::SetReturnBoundingBox(Camera::GetInstance()->GetCameraLimitarea());
 		}
@@ -469,7 +469,7 @@ void Interactable::Interact(Player* player, Breakable_Tree* tree) {
 	//}
 }
 
-void Interactable::Interact(PlayerBullet* bullet, Breakable_Tree* tree) {
+void Interactable::Interact(JasonOverheadBulletNorm* bullet, Breakable_Tree* tree) {
 	BoundingBox bulletBox = bullet->GetBoundingBox();
 	BoundingBox treeBox = tree->GetBoundingBox();
 	if (bulletBox.IsOverlap(treeBox)) {
