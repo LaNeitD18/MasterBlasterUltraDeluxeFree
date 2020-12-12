@@ -3,7 +3,7 @@
 #include "Bullet.h"
 #include <unordered_set>
 
-#define JASONO_WALKING_SPEED 0.66f
+#define JASONO_WALKING_SPEED 0.6f
 #define JASONO_ACCELERATION 0.033f
 #define JASONO_MAX_HEALTH 100
 
@@ -15,6 +15,9 @@
 #define JASONO_MAX_BULLET_POWER 80
 #define JASONO_SINE_BULLET_POWER_THRESHOLD 60
 #define JASONO_POWER_MIN_STEP 10
+
+#define JASONO_BULLET_SPEED 2.0f
+#define JASONO_GRENADE_SPEED 3.0f
 
 enum JasonOverheadState
 {

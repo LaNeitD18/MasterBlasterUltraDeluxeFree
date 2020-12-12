@@ -119,11 +119,13 @@ public:
 	virtual int GetDamage(BulletDamageModifier modifier) override;
 };
 
-#define JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE 300
+#define JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE_RANGE_MIN 50
+#define JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE_RANGE_MAX 90
 class JasonOverheadBulletNorm : public TimedPlayerBullet, Managed<Bullet>
 {
 public:
-	JasonOverheadBulletNorm(Point pos, Point v);
+	// float power: value between 0..1 for MIN_POWER to MAX_POWER
+	JasonOverheadBulletNorm(Point pos, Point v, float power);
 	virtual ~JasonOverheadBulletNorm();
 
 	// Inherited via TimedPlayerBullet
@@ -132,30 +134,38 @@ public:
 
 #define JASON_OVERHEAD_GRENADE_TIME_TO_LIVE 10
 
-class JasonOverheadBulletGrenade : public TimedPlayerBullet
+class JasonOverheadBulletGrenade : public TimedPlayerBullet, Managed<Bullet>
 {
+	float power;
 public:
-	JasonOverheadBulletGrenade(Point pos, Point v);
+	JasonOverheadBulletGrenade(Point pos, Point v, float power);
 	virtual ~JasonOverheadBulletGrenade();
 
 	// Inherited via TimedPlayerBullet
 	virtual int GetDamage(BulletDamageModifier modifier) override;
 
-	virtual BoundingBox GetBoundingBox();
-	virtual void Render();
+	virtual BoundingBox GetBoundingBox() override;
+	virtual void Update() override;
 };
 
 #define JASON_OVERHEAD_GRENADE_FRAGMENT_BBOX_LEFT 10
 #define JASON_OVERHEAD_GRENADE_FRAGMENT_BBOX_TOP 10
 #define JASON_OVERHEAD_GRENADE_FRAGMENT_BBOX_RIGHT 10
 #define JASON_OVERHEAD_GRENADE_FRAGMENT_BBOX_BOTTOM 10
-class JasonOverheadBulletGrenadeFragment : public PlayerBullet
+#define JASON_OVERHEAD_GRENADE_FRAGMENT_VARIANCE_RANGE 10
+#define JASON_OVERHEAD_GRENADE_FRAGMENT_TTL_MAX 30
+#define JASON_OVERHEAD_GRENADE_FRAGMENT_TTL_MIN 20
+class JasonOverheadBulletGrenadeFragment : public TimedPlayerBullet
 {
 	int damage;
+	Point initialPos;
 public:
-	JasonOverheadBulletGrenadeFragment(Point pos, int damage);
+	// float power: value between 0..1 for MIN_POWER to MAX_POWER
+	JasonOverheadBulletGrenadeFragment(Point pos, float power);
 	virtual ~JasonOverheadBulletGrenadeFragment();
 
 	// Inherited via TimedPlayerBullet
 	virtual int GetDamage(BulletDamageModifier modifier) override;
+
+	virtual void Update() override;
 };
