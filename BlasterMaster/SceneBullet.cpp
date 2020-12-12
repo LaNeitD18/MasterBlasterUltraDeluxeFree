@@ -82,9 +82,9 @@ void SceneBullet::Draw()
 	base->Draw(drawArguments_scene);
 
 	//int bullet1 = GameGlobal::GetCurrenBullet1();
-	int bullet1 = 50;
-	int bullet2 = 35;
-	int bullet3 = 54;
+	int bullet1 = GameGlobal::GetNumberSpecialBullet1();
+	int bullet2 = GameGlobal::GetNumberSpecialBullet2();
+	int bullet3 = GameGlobal::GetNumberSpecialBullet3();
 	if (bullet1 >= 99) {
 		bullet1 = 99;
 	}
