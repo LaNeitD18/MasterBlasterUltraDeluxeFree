@@ -88,6 +88,7 @@
     <ClInclude Include="Skull.h" />
     <ClInclude Include="SkullBullet.h" />
     <ClInclude Include="Sophia.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Teleporter.h" />
     <ClInclude Include="Textures.h" />
@@ -162,6 +163,7 @@
     <ClCompile Include="SkullBullet.cpp" />
     <ClCompile Include="Sophia.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Teleporter.cpp" />
     <ClCompile Include="Textures.cpp" />

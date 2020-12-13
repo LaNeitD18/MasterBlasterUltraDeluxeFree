@@ -22,6 +22,8 @@
 #include "Mine.h"
 #include "Teleporter.h"
 
+#include "Sound.h"
+
 using namespace std;
 
 // temporary set limit area for section, but not handle switch SceneOverhead, thinking of dividing into several SceneOverhead for easy win hihi
@@ -120,6 +122,16 @@ SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Poi
 	this->count = 0;
 }
 
+void SceneArea2SideView::LoadSound() 
+{
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/man1.wav", "area2");
+	Sound::getInstance()->play("area2", true, 0);
+
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/sophia_shoot.wav", "sophiaShoot");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/sophia_explosion.wav", "sophiaExplosion");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/jason_sideview_shoot.wav", "jasonSideviewShoot");
+}
+
 void SceneArea2SideView::LoadContent()
 {
 	mMap = new GameMap("Map/General/level2-side-maporder.tmx", textureLib, spriteLib);
@@ -141,7 +153,7 @@ void SceneArea2SideView::LoadContent()
 	mMap->SetCamera(mCamera);
 	foreMap->SetCamera(mCamera);
 	//mMap->Draw();
-	
+	LoadSound();
 }
 
 SceneArea2SideView::~SceneArea2SideView()

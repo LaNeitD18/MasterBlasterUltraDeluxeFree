@@ -27,6 +27,7 @@ protected:
 	HealthBar* healthBar;
 
 	void LoadContent();
+	void LoadSound();
 
 	// camera
 	Camera *mCamera;

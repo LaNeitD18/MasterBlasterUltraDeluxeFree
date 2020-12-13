@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "JasonSideView.h"
 #include "Bullet.h"
+#include "Sound.h"
 
 
 BoundingBox Sophia::GetBoundingBox()
@@ -191,13 +192,16 @@ void Sophia::Update()
 	if (newState & SOPHIA_ANI_LEFT_VEHICLE)
 		StartAnimationType(SOPHIA_ANI_LEFT_VEHICLE);
 	//*/
-	if (input[INPUT_SHOOT] == KEY_STATE_ON_DOWN)
+	if (input[INPUT_SHOOT] == KEY_STATE_ON_DOWN) {
 		Shoot();
+		Sound::getInstance()->play("sophiaShoot", false, 1);
+	}
 
 	if (HealthPoint <= 0)
 	{
 		newState |= SOPHIA_STATE_DYING;
 		// newState |= SOPHIA_STATE_DEAD;
+		Sound::getInstance()->play("sophiaExplosion", false, 1);
 	}
 
 	if (prevState != newState)
