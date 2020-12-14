@@ -227,7 +227,7 @@ void JasonSideView::Update()
 		!dead &&
 		(!(state & JASON_STATE_CLIMB))) {
 		Shoot();
-		Sound::getInstance()->play("jasonSideviewShoot", false, 1);
+		Sound::getInstance()->play("jason_sideview_shoot", false, 1);
 	}
 		
 

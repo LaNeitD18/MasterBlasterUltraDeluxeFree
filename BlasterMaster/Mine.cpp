@@ -31,7 +31,7 @@ void Mine::Update()
 	Enemy::Update();
 	Point bulletV = Point(-0.2, -1);
 
-	if (isCollided) {
+	if (isCollided || HealthPoint <= 0) {
 		int numberOfBullet = rand() % 5;
 
 		for (int i = 0; i < numberOfBullet; i++) {

@@ -21,6 +21,7 @@ class MiniRedBullet : public AnimatedGameObject
 public:
 	MiniRedBullet();
 	MiniRedBullet(Point pos, Point playerPos);
+	virtual void SetState(int state);
 
 	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);

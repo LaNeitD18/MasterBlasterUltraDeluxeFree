@@ -124,12 +124,34 @@ SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Poi
 
 void SceneArea2SideView::LoadSound() 
 {
-	Sound::getInstance()->loadSound((char*)"Resources/sounds/man1.wav", "area2");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/area2.wav", "area2");
 	Sound::getInstance()->play("area2", true, 0);
 
-	Sound::getInstance()->loadSound((char*)"Resources/sounds/sophia_shoot.wav", "sophiaShoot");
-	Sound::getInstance()->loadSound((char*)"Resources/sounds/sophia_explosion.wav", "sophiaExplosion");
-	Sound::getInstance()->loadSound((char*)"Resources/sounds/jason_sideview_shoot.wav", "jasonSideviewShoot");
+	// sophia sound
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/sophia_fall_ground.wav", "sophia_fall_ground");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/jump.wav", "sophia_jump");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/sophia_shoot.wav", "sophia_shoot");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/sophia_explosion.wav", "sophia_explosion");
+
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/jason_sideview_shoot.wav", "jason_sideview_shoot");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/bullet_explosion.wav", "bullet_explosion");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/swap_player.wav", "swap_player");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/item.wav", "item");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/scene_change.wav", "scene_change");
+
+	// enemies
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/worm_moving.wav", "worm_moving");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/insect_fly_down.wav", "insect_fly_down");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/jump.wav", "jumper_jump");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/skull_bomb.wav", "skull_bomb");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/mine.wav", "mine");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/dome_jump.wav", "dome_jump");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/teleport.wav", "teleport");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/teleporter_shoot.wav", "teleporter_shoot");
+
+	Sound::getInstance()->setVolume(85, "");
+	Sound::getInstance()->setVolume(80, "area2");
+	Sound::getInstance()->setVolume(90, "sophia_explosion");
 }
 
 void SceneArea2SideView::LoadContent()

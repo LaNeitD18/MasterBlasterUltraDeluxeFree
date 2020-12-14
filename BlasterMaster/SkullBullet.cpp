@@ -3,6 +3,7 @@
 #include "Utils.h"
 #include "SceneArea2SideView.h"
 #include "Game.h"
+#include "Sound.h"
 
 SkullBullet::SkullBullet()
 {
@@ -67,8 +68,10 @@ void SkullBullet::Update()
 		}
 	}
 
-	if (currentTime == 0 && state == SKULL_BULLET_STATE_EXPLODE)
+	if (currentTime == 0 && state == SKULL_BULLET_STATE_EXPLODE) {
+		Sound::getInstance()->play("bullet_explosion", false, 1);
 		manager->RemoveElement(this);
+	}
 
 	timeToExplode--;
 	wallBot = wallLeft = wallRight = wallTop = false;

@@ -2,6 +2,7 @@
 #include "Utils.h"
 #include "SceneArea2SideView.h"
 #include "Game.h"
+#include "Sound.h"
 
 Dome::Dome() {
 	SetState(DOME_STATE_WALKING_LEFT);
@@ -252,10 +253,12 @@ void Dome::SetState(int state)
 		DebugOut(L"down\n");
 		break;
 	case DOME_STATE_JUMPING_VERTICAL:
+		Sound::getInstance()->play("dome_jump", false, 1);
 		v.x = 0;
 		v.y = speedY * 5 * direction.y;
 		break;
 	case DOME_STATE_JUMPING_HORIZONTAL:
+		Sound::getInstance()->play("dome_jump", false, 1);
 		v.x = speedX * 5 * direction.x;
 		v.y = 0;
 		break;

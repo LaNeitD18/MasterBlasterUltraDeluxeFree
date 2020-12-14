@@ -194,14 +194,14 @@ void Sophia::Update()
 	//*/
 	if (input[INPUT_SHOOT] == KEY_STATE_ON_DOWN) {
 		Shoot();
-		Sound::getInstance()->play("sophiaShoot", false, 1);
+		Sound::getInstance()->play("sophia_shoot", false, 1);
 	}
 
 	if (HealthPoint <= 0)
 	{
 		newState |= SOPHIA_STATE_DYING;
 		// newState |= SOPHIA_STATE_DEAD;
-		Sound::getInstance()->play("sophiaExplosion", false, 1);
+		Sound::getInstance()->play("sophia_explosion", false, 1);
 	}
 
 	if (prevState != newState)

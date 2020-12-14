@@ -1,4 +1,5 @@
 #include "Insect.h"
+#include "Sound.h"
 
 Insect::Insect() {
 	SetState(INSECT_STATE_FLYING_UP);
@@ -113,10 +114,12 @@ void Insect::SetState(int state)
 		v.y = 0;
 		break;
 	case INSECT_STATE_FLYING_UP:
+		Sound::getInstance()->stop("insect_fly_down");
 		v.x = speedX * direction.x;
 		v.y = INSECT_FLYING_SPEED_Y_UP;
 		break;
 	case INSECT_STATE_FLYING_DOWN:
+		Sound::getInstance()->play("insect_fly_down", false, 1);
 		v.x = speedX * direction.x;
 		v.y = INSECT_FLYING_SPEED_Y_DOWN;
 		break;

@@ -150,8 +150,6 @@ void Sound::loadSound(char* fileName, std::string name)
 
 	wavData = new unsigned char[waveHeaderStruct.dataSize];
 
-
-
 	fread(wavData, waveHeaderStruct.dataSize, 1, filePtr);
 
 	error = fclose(filePtr);
@@ -227,7 +225,7 @@ void Sound::stop(std::string name)
 
 void Sound::setVolume(float percentage, std::string name)
 {
-	volume = percentage;
+	//volume = percentage;
 	if (name == "")
 	{
 		long volumne = (percentage) / 100 * (-DSBVOLUME_MIN) + DSBVOLUME_MIN;
