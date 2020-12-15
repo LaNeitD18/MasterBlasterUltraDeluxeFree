@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="AnimatedGameObject.h" />
     <ClInclude Include="Animations.h" />
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Breakable_Tree.h" />
     <ClInclude Include="Bullet.h" />
@@ -89,6 +90,7 @@
     <ClInclude Include="Skull.h" />
     <ClInclude Include="SkullBullet.h" />
     <ClInclude Include="Sophia.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Teleporter.h" />
     <ClInclude Include="Textures.h" />
@@ -101,6 +103,7 @@
   <ItemGroup>
     <ClCompile Include="AnimatedGameObject.cpp" />
     <ClCompile Include="Animations.cpp" />
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Breakable_Tree.cpp" />
     <ClCompile Include="Bullet.cpp" />
@@ -164,6 +167,7 @@
     <ClCompile Include="SkullBullet.cpp" />
     <ClCompile Include="Sophia.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Teleporter.cpp" />
     <ClCompile Include="Textures.cpp" />

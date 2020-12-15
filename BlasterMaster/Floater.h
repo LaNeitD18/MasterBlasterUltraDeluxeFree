@@ -25,7 +25,7 @@ enum FloaterAni : int {
 class Floater : public Enemy
 {
 	int timeToShoot;
-	int jumpingTurn;
+	int shootTurn;
 	void Shoot();
 public:
 	Floater();

@@ -22,6 +22,8 @@
 #include "Mine.h"
 #include "Teleporter.h"
 
+#include "Sound.h"
+
 using namespace std;
 
 // temporary set limit area for section, but not handle switch SceneOverhead, thinking of dividing into several SceneOverhead for easy win hihi
@@ -121,6 +123,38 @@ SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Poi
 	this->count = 0;
 }
 
+void SceneArea2SideView::LoadSound() 
+{
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/area2.wav", "area2");
+	Sound::getInstance()->play("area2", true, 0);
+
+	// sophia sound
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/sophia_fall_ground.wav", "sophia_fall_ground");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/jump.wav", "sophia_jump");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/sophia_shoot.wav", "sophia_shoot");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/sophia_explosion.wav", "sophia_explosion");
+
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/jason_sideview_shoot.wav", "jason_sideview_shoot");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/bullet_explosion.wav", "bullet_explosion");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/swap_player.wav", "swap_player");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/item.wav", "item");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/scene_change.wav", "scene_change");
+
+	// enemies
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/worm_moving.wav", "worm_moving");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/insect_fly_down.wav", "insect_fly_down");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/jump.wav", "jumper_jump");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/skull_bomb.wav", "skull_bomb");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/mine.wav", "mine");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/dome_jump.wav", "dome_jump");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/teleport.wav", "teleport");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/teleporter_shoot.wav", "teleporter_shoot");
+
+	Sound::getInstance()->setVolume(85, "");
+	Sound::getInstance()->setVolume(90, "area2");
+	Sound::getInstance()->setVolume(90, "sophia_explosion");
+}
+
 void SceneArea2SideView::LoadContent()
 {
 	mMap = new GameMap("Map/General/level2-side-maporder.tmx", textureLib, spriteLib);
@@ -143,7 +177,7 @@ void SceneArea2SideView::LoadContent()
 	mMap->SetCamera(mCamera);
 	foreMap->SetCamera(mCamera);
 	//mMap->Draw();
-	
+	LoadSound();
 }
 
 SceneArea2SideView::~SceneArea2SideView()
@@ -801,6 +835,27 @@ void SceneArea2SideView::Update()
 
 		// update onscreen objects
 		vector<GameObject*> onScreenObj;
+	input->Update();
+	// update onscreen objects
+	vector<GameObject*> onScreenObj;
+	for (auto x : objects) {
+		bool isSkull = dynamic_cast<Skull*>(x) != NULL;
+		if (isSkull) {
+			if (mCamera->GetBound().IsInsideBox(x->GetPosition())) {
+				onScreenObj.push_back(x);
+			}
+		}
+		else {
+			if (x->GetBoundingBox().IsOverlap(mCamera->GetBound())) {
+				onScreenObj.push_back(x);
+			}
+		}		
+	}
+
+
+	Camera::setCameraInstance(mCamera);
+	if (!isCameraFree) {
+		target = NULL;
 		for (auto x : objects) {
 			if (x->GetBoundingBox().IsOverlap(mCamera->GetBound())) {
 				onScreenObj.push_back(x);

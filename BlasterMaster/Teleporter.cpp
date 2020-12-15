@@ -3,13 +3,14 @@
 #include "Game.h"
 #include "SceneArea2Overhead.h"
 #include "CannonBullet.h"
+#include "Sound.h"
 
 Teleporter::Teleporter() {
 	SetState(TELEPORTER_STATE_ATTACK);
 }
 
 Teleporter::Teleporter(float x, float y) {
-	SetState(TELEPORTER_STATE_ATTACK);
+	SetState(TELEPORTER_STATE_PROTECT);
 	pos = Point(x, y);
 	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 	timeToTeleport = 50;
@@ -150,28 +151,32 @@ void Teleporter::Update()
 
 	if (timeToTeleport == 0) {
 		if (state == TELEPORTER_STATE_TELEPORT_X) {
+			DebugOut(L"1");
 			TeleportHorizontally();
 		}
 		else if (state == TELEPORTER_STATE_TELEPORT_Y) {
+			DebugOut(L"2");
 			TeleportVertically();
 		}
 	}
 
-	if (currentTime == 0) {
-		if (state == TELEPORTER_STATE_ATTACK) {
-			SetState(TELEPORTER_STATE_TELEPORT_X);
-		}
-		else if (state == TELEPORTER_STATE_PROTECT) {
-			SetState(TELEPORTER_STATE_ATTACK);
-		}
-	}
-
 	if ((teleportTurn == 4 || teleportTurn == 8) && timeToTeleport == 50) {
+		Sound::getInstance()->play("teleporter_shoot", false, 1);
 		Shoot();
 	}
 
 	if (teleportTurn == 8) {
 		SetState(TELEPORTER_STATE_PROTECT);
+	}
+
+	if (currentTime == 0) {
+		if (state == TELEPORTER_STATE_PROTECT) {
+			Sound::getInstance()->play("teleport", false, 1);
+			SetState(TELEPORTER_STATE_TELEPORT_X);
+		}
+		/*else if (state == TELEPORTER_STATE_PROTECT) {
+			SetState(TELEPORTER_STATE_ATTACK);
+		}*/
 	}
 
 	if(timeToTeleport > 0)

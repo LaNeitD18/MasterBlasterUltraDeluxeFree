@@ -3,6 +3,7 @@
 #include "GameGlobal.h"
 #include "Game.h"
 #include "SceneArea2SideView.h"
+#include "Sound.h"
 
 Worm::Worm() {
 	SetState(WORM_STATE_FALLING);
@@ -90,6 +91,9 @@ void Worm::Update()
 	}
 	else if (state == WORM_STATE_WALKING) {
 		Walk();
+		if (currentTime == 0) {
+			Sound::getInstance()->play("worm_moving", false, 1);
+		}
 	}
 	else if (state == WORM_STATE_JUMPING) {
 		jumpRange += abs(dx().y);
@@ -116,7 +120,6 @@ void Worm::Render()
 			isFlipVertical = true;
 		}
 	}
-	DebugOut(L"%fvx \n", v.x);
 	AnimatedGameObject::Render();
 
 	//RenderBoundingBox();
@@ -141,6 +144,7 @@ void Worm::SetState(int state)
 		v.y = WORM_FALLING_SPEED_Y;
 		break;
 	case WORM_STATE_JUMPING:
+		Sound::getInstance()->stop("worm_moving");
 		v.y = -WORM_JUMPING_SPEED_Y;
 		v.x = 0;
 		break;

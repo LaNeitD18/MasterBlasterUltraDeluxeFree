@@ -30,6 +30,7 @@ protected:
 	SceneBullet* bulletscene;
 
 	void LoadContent();
+	void LoadSound();
 
 	// camera
 	Camera *mCamera;

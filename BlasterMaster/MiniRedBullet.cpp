@@ -4,6 +4,8 @@
 #include "GameGlobal.h"
 #include "SceneArea2SideView.h"
 #include "Game.h"
+#include "Sound.h"
+#include "GameObject.h"
 
 MiniRedBullet::MiniRedBullet()
 {
@@ -42,6 +44,7 @@ void MiniRedBullet::Update()
 	if (wallBot || wallLeft || wallRight) {
 		v = Point(0, 0);
 		SetState(MINI_BULLET_STATE_EXPLODE);
+		
 	}
 
 	if (!Camera::GetInstance()->GetBound().IsInsideBox(pos))
@@ -49,7 +52,10 @@ void MiniRedBullet::Update()
 		manager->RemoveElement(this);
 
 	if (currentTime == 0 && state == MINI_BULLET_STATE_EXPLODE)
+	{
+		Sound::getInstance()->play("bullet_explosion", false, 1);
 		manager->RemoveElement(this);
+	}
 }
 
 void MiniRedBullet::Render()
@@ -61,4 +67,14 @@ void MiniRedBullet::Render()
 		SetAnimationType(MINI_BULLET_ANI_EXPLODE);
 
 	AnimatedGameObject::Render();
+}
+
+void MiniRedBullet::SetState(int state)
+{
+	GameObject::SetState(state);
+	switch (state) {
+	case MINI_BULLET_STATE_EXPLODE:
+		
+		break;
+	}
 }

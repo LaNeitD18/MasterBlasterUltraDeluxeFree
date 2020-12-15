@@ -40,13 +40,12 @@ void MineBullet::Update()
 		v.x -= 0.001;
 	}
 	v.y += 0.02;
-	DebugOut(L"vy %f", v.y);
 
 	SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
 	if (scene != nullptr) {
 		if (scene->GetTarget()->GetBoundingBox().IsInsideBox(pos)) {
 			if (wallBot || wallTop || wallLeft || wallRight) {
-				v = Point();
+				v = Point(0, 0);
 				SetState(MINE_BULLET_STATE_EXPLODE);
 			}
 		}

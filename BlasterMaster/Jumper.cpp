@@ -1,5 +1,6 @@
 #include "Jumper.h"
 #include "time.h"
+#include "Sound.h"
 
 Jumper::Jumper() {
 	SetState(JUMPER_STATE_WALKING);
@@ -120,6 +121,7 @@ void Jumper::SetState(int state)
 		v.y = 0;
 		break;
 	case JUMPER_STATE_JUMPING:
+		Sound::getInstance()->play("jumper_jump", false, 1);
 		v.y = -JUMPER_JUMPING_SPEED_Y;
 		break;
 	case JUMPER_STATE_FALLING:

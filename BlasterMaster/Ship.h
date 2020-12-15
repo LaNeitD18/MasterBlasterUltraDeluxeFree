@@ -15,7 +15,7 @@
 class Ship : public Enemy
 {
 	int timeToShoot;
-	int jumpingTurn;
+	int shootTurn;
 	void Shoot();
 public:
 	Ship();
