@@ -260,8 +260,8 @@ void Interactable::Interact(JasonSideView* player, Env_Portal* portal) {
 		// implement interact with portal to set return point
 		else if ((player->GetSpeed().x <= 0 && portalDirection == RIGHT) ||
 			(player->GetSpeed().x >= 0 && portalDirection == LEFT)) {
-			GameGlobal::SetReturnPoint(portal->GetBoundingBox().GetCenter());
-			GameGlobal::SetReturnBoundingBox(Camera::GetInstance()->GetCameraLimitarea());
+			/*GameGlobal::SetReturnPoint(portal->GetBoundingBox().GetCenter());
+			GameGlobal::SetReturnBoundingBox(Camera::GetInstance()->GetCameraLimitarea());*/
 		}
 	}
 }
