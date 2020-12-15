@@ -1,0 +1,9 @@
+# ani_id	sprite1_id	frames1	sprite2_id	frames2	...
+# body ani
+4001	40001	12	40002	12	40003	12	40004	12
+#
+# id	ani1	ani2	ani3
+#
+[ANIMATION_SETS]
+# DOME
+400	4001

@@ -18,6 +18,7 @@
 16	Resources\sprites\HP.png	255	255	255
 17	Resources\sprites\116445.png	0	57	115
 18	Resources\sprites\ItemObjects.png	254	255	255
+19	Resources\sprites\bosses.png	255	255	255
 # next Tien's sprite: 10193
 # next sprite: 10177			Tien
 # next sprite: 20000			Son
@@ -85,6 +86,9 @@ Resources\Enemies\cannon_bullet_sprites.txt
 Resources\Enemies\mine_bullet_sprites.txt
 #109 Item
 Resources\Enemies\item_sprites.txt
+
+#400 BOSS
+Resources\Enemies\boss_sprites.txt
 
 #100 HP1
 Resources\Enemies\HP1.txt
@@ -160,6 +164,9 @@ Resources\Enemies\mine_bullet_ani.txt
 #109 ==== ITEM =========
 Resources\Enemies\item_ani.txt
 
+#109 ==== BOSS =========
+Resources\Enemies\boss_ani.txt
+
 [OBJECTS]
 # type	x	y	ani_set_id1	ani_set_id2...
 
@@ -204,7 +211,7 @@ Resources\Enemies\item_ani.txt
 #4	210	2900	4
 
 # DOME
-5	285	2970	5
+5	285	2970	400
 5	300	2855	5
 5	1315	2970	5
 5	1420	2970	5

@@ -150,7 +150,7 @@ void SceneArea2SideView::LoadSound()
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/teleporter_shoot.wav", "teleporter_shoot");
 
 	Sound::getInstance()->setVolume(85, "");
-	Sound::getInstance()->setVolume(80, "area2");
+	Sound::getInstance()->setVolume(90, "area2");
 	Sound::getInstance()->setVolume(90, "sophia_explosion");
 }
 

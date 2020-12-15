@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "MineBullet.h"
 #include "time.h"
+#include "Sound.h"
 
 Mine::Mine() {
 	
@@ -42,6 +43,10 @@ void Mine::Update()
 		}
 
 		manager->RemoveElement(this);
+	}
+
+	if (currentTime == 0 ) {
+		Sound::getInstance()->play("mine", false, 1);
 	}
 }
 
