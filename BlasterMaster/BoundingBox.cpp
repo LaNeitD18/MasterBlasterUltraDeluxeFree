@@ -204,11 +204,11 @@ double BoundingBox::SweptAABB(BoundingBox movingBox, Point v,
 			//if (result1 != 4) DebugOut(L"Diff: %d , 4\n", result1);
 		}
 	}
-	//*/
+	/*/
 	DEBUG(
 	if (!(((left || right) ^ (top || bottom)) && ((left ^ right) || (top ^ bottom))))
 		DebugOut(L"%d %d %d %d\n", left, right, top, bottom);
-	)
+	)//*/
 
 	return entryTime;
 }

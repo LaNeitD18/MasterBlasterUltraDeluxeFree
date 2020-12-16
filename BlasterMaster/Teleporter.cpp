@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "SceneArea2Overhead.h"
 #include "CannonBullet.h"
+#include "Player.h"
 
 Teleporter::Teleporter() {
 	SetState(TELEPORTER_STATE_ATTACK);

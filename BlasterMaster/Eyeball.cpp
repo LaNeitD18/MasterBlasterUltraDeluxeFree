@@ -3,6 +3,7 @@
 #include "SceneArea2Overhead.h"
 #include "Game.h"
 #include "CannonBullet.h"
+#include "Player.h"
 
 Eyeball::Eyeball() {
 	SetState(EYEBALL_STATE_FLYING);
