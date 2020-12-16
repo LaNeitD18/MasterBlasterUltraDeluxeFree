@@ -3,6 +3,7 @@
 #include "GameGlobal.h"
 #include "Game.h"
 #include "SceneArea2SideView.h"
+#include "Player.h"
 
 Worm::Worm() {
 	SetState(WORM_STATE_FALLING);

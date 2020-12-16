@@ -141,7 +141,7 @@ double BoundingBox::SweptAABB(BoundingBox movingBox, Point v,
 			bottom = true;
 			//if (result1 != 4) DebugOut(L"Diff: %d , 4\n", result1);
 		}
-		else if (movingBox.t - b == 40)
+		else if (movingBox.t - b == 0)
 		{
 			top = true;
 			//if (result1 != 2) DebugOut(L"Diff: %d , 2\n", result1);

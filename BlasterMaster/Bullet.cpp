@@ -157,6 +157,7 @@ SophiaBullet::SophiaBullet(Point pos, Point v, int level) : PlayerBullet(pos, v,
 
 SophiaBullet::~SophiaBullet()
 {
+	Managed<Bullet>::manager->RemoveElement(this);
 }
 
 int SophiaBullet::GetDamage(BulletDamageModifier modifier)
@@ -184,6 +185,7 @@ JasonSideviewBullet::JasonSideviewBullet(Point pos, Point v)
 
 JasonSideviewBullet::~JasonSideviewBullet()
 {
+	Managed<Bullet>::manager->RemoveElement(this);
 }
 
 int JasonSideviewBullet::GetDamage(BulletDamageModifier modifier)

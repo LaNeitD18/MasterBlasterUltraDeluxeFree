@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "SkullBullet.h"
 #include "Camera.h"
+#include "Player.h"
 
 Skull::Skull() {
 	SetState(SKULL_STATE_INIT);

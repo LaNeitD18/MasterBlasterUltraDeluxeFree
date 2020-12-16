@@ -473,6 +473,9 @@ void Sophia::GoHalt()
 
 void Sophia::Shoot()
 {
+	if (bullets.size() >= 3)
+		return;
+
 	Point bulletV;
 	Point bulletOffset;
 	if (state & SOPHIA_STATE_LOOKING_LEFT) {
@@ -485,11 +488,14 @@ void Sophia::Shoot()
 	}
 	if (state & SOPHIA_STATE_LOOKED_UP)
 		bulletV = Point(0, -SOPHIA_BULLET_SPEED);
-	Bullet* bullet = new SophiaBullet(
+	SophiaBullet* bullet = new SophiaBullet(
 		pos + bulletOffset,
 		bulletV, 1);
-	bullet->SetManager(manager);
-	manager->AddElement(bullet);
+
+	Managed<GameObject>::manager->AddElement(bullet);
+	((Managed<GameObject>*)bullet)->SetManager(Managed<GameObject>::manager);
+	((Managed<Bullet>*)bullet)->SetManager(this);
+	AddElement(bullet);
 }
 
 bool Sophia::IsPrimaryPlayer()

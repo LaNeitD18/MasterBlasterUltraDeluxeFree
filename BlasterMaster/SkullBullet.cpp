@@ -3,6 +3,7 @@
 #include "Utils.h"
 #include "SceneArea2SideView.h"
 #include "Game.h"
+#include "Player.h"
 
 SkullBullet::SkullBullet()
 {

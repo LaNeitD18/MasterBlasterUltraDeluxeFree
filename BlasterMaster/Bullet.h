@@ -85,7 +85,7 @@ public:
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 };
 
-class SophiaBullet : public PlayerBullet
+class SophiaBullet : public PlayerBullet, public Managed<Bullet>
 {
 	int level;
 public:
@@ -109,7 +109,7 @@ public:
 };
 
 #define JASON_SIDEVIEW_BULLET_TIME_TO_LIVE 30
-class JasonSideviewBullet : public TimedPlayerBullet
+class JasonSideviewBullet : public TimedPlayerBullet, public Managed<Bullet>
 {
 public:
 	JasonSideviewBullet(Point pos, Point v);

@@ -3,6 +3,7 @@
 #include "SceneArea2SideView.h"
 #include "Game.h"
 #include "MiniRedBullet.h"
+#include "Player.h"
 
 Ship::Ship() {
 	SetState(SHIP_STATE_FLYING);

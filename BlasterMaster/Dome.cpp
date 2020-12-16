@@ -2,6 +2,7 @@
 #include "Utils.h"
 #include "SceneArea2SideView.h"
 #include "Game.h"
+#include "Player.h"
 
 Dome::Dome() {
 	SetState(DOME_STATE_WALKING_LEFT);
