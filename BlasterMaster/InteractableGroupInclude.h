@@ -3,7 +3,7 @@
 #include "Sophia.h"
 #include "Environment.h"
 #include "Dome.h"
-#include "Eye.h"
+#include "Eyeball.h"
 #include "Floater.h"
 #include "Insect.h"
 #include "JasonSideView.h"

@@ -1,6 +1,8 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
 1	Resources\sprites\Jason_Overhead.png		255	255	255
+3	Resources\sprites\Teleporters.png	254	255	255
+15	Resources\sprites\enemies.png	254	255	255
 17	Resources\sprites\116445.png	0	57	115
 298	Resources\sprites\tileset.png	255	255	255
 # next sprite: 10155
@@ -10,6 +12,14 @@
 #1 JASON OVERHEAD
 Resources\Enemies\Jason_Overhead_sprites.txt
 
+#3 TELEPORTER
+Resources\Enemies\teleporter_sprites.txt
+
+#6 EYE
+Resources\Enemies\eye_sprites.txt
+
+#101 CANNON BULLET
+Resources\Enemies\cannon_bullet_sprites.txt
 #17 BULLET
 Resources\Enemies\bullet_sprites.txt
 
@@ -21,6 +31,14 @@ Resources\Enemies\tileset_sprites.txt
 #1 ==== JASON OVERHEAD =========
 Resources\Enemies\Jason_Overhead_ani.txt
 
+#3 ==== TELPORTER =========
+Resources\Enemies\teleporter_ani.txt
+
+#6 ==== EYE =========
+Resources\Enemies\eye_ani.txt
+
+#101 ==== CANNON BULLET =========
+Resources\Enemies\cannon_bullet_ani.txt
 #17 ==== BULLET =========
 Resources\Enemies\bullet_ani.txt
 
@@ -278,6 +296,12 @@ Resources\Enemies\tileset_ani.txt
 # JASONO
 12	128	1904	1
 
+# TELEPORTER
+3	345	1625	3
+
+# EYEBALL
+6	325	1860	6
+
 [ENVIRONMENTS]
 # type	x	y	width	height	portaldirid	sectionToEnter
 1	32	2000	1488	16
@@ -290,7 +314,7 @@ Resources\Enemies\tileset_ani.txt
 1	1248	736	64	1264
 1	1504	736	16	1264
 1	32	208	448	64
-1	544	464	448	32
+1	544	464	448	64
 1	32	720	1984	64
 1	32	976	1216	64
 1	32	1232	1472	64

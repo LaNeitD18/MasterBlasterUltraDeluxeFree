@@ -132,6 +132,9 @@ public:
 	JasonOverheadBulletNorm(Point pos, Point v, float power);
 	virtual ~JasonOverheadBulletNorm();
 
+	virtual void Interact(Interactable* other);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
+
 	// Inherited via TimedPlayerBullet
 	virtual int GetDamage(BulletDamageModifier modifier) override;
 };

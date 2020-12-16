@@ -33,6 +33,7 @@ protected:
 
 	std::unordered_map<int, Sprite*>		livesLeftDisplay;
 
+	bool bulletState;
 	int count = 50;
 
 public: 

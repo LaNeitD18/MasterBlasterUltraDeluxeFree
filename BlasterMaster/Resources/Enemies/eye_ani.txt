@@ -1,9 +1,11 @@
 # ani_id	sprite1_id	frames1	sprite2_id	frames2	...
-# idle 
-505	10021	12	10022	12	10023	12	10024	12	10025	12	10026	12	10027	12	10028	12
+# open eye
+505	10021	12	10023	12
+# close eye
+506	10022	24
 #
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
 # EYE
-6	505
+6	505	506

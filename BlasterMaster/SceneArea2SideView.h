@@ -7,6 +7,8 @@
 #include "HealthBar.h"
 #include "Manager.h"
 #include <unordered_set>
+#include "SceneBullet.h"
+#include "SceneBullet.h"
 
 class Game;
 
@@ -25,6 +27,7 @@ protected:
 	GameMap* foreMap;
 
 	HealthBar* healthBar;
+	SceneBullet* bulletscene;
 
 	void LoadContent();
 
@@ -47,6 +50,8 @@ private:
 
 	//LeSon
 	void JumpCheckpoint();
+	void displayBulletState();
+	void backToGame();
 
 public: 
 	SceneArea2SideView(int id, LPCWSTR filePath, Game* game, Point screenSize);
