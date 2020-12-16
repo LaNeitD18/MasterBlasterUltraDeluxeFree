@@ -32,6 +32,7 @@ enum BulletAni :int {
 enum BulletDamageModifier : int {
 	BULLET_MODIFIER_NONE				= 0,
 	BULLET_MODIFIER_BREAKABLE_WALL		= 1,
+	BULLET_MODIFIER_BREAKABLE_ROCK		= 3,
 	BULLET_MODIFIER_JASON_VULNERABLE	= 2,
 };
 
@@ -121,8 +122,11 @@ public:
 
 #define JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE_RANGE_MIN 50
 #define JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE_RANGE_MAX 90
+#define JASON_OVERHEAD_BULLET_NORM_DAMAGE_RANGE_MIN 7
+#define JASON_OVERHEAD_BULLET_NORM_DAMAGE_RANGE_MAX 12
 class JasonOverheadBulletNorm : public TimedPlayerBullet, Managed<Bullet>
 {
+	int damage;
 public:
 	// float power: value between 0..1 for MIN_POWER to MAX_POWER
 	JasonOverheadBulletNorm(Point pos, Point v, float power);

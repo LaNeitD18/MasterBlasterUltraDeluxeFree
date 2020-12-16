@@ -208,6 +208,8 @@ JasonOverheadBulletNorm::JasonOverheadBulletNorm(Point pos, Point v, float power
 {
 	TTL = JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE_RANGE_MIN * (1 - power)
 		+ JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE_RANGE_MAX * power;
+	damage = JASON_OVERHEAD_BULLET_NORM_DAMAGE_RANGE_MIN * (1 - power)
+		+ JASON_OVERHEAD_BULLET_NORM_DAMAGE_RANGE_MAX * power;
 }
 
 JasonOverheadBulletNorm::~JasonOverheadBulletNorm()
@@ -217,9 +219,7 @@ JasonOverheadBulletNorm::~JasonOverheadBulletNorm()
 
 int JasonOverheadBulletNorm::GetDamage(BulletDamageModifier modifier)
 {
-	// TODO: Implement this
-	DEBUG(throw 1);
-	return 0;
+	return damage;
 }
 
 JasonOverheadBulletGrenade::JasonOverheadBulletGrenade
