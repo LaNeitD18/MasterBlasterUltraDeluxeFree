@@ -296,7 +296,7 @@ JasonOverheadBulletGrenadeFragment::~JasonOverheadBulletGrenadeFragment()
 
 int JasonOverheadBulletGrenadeFragment::GetDamage(BulletDamageModifier modifier)
 {
-	return 10;
+	return damage;
 }
 
 void JasonOverheadBulletGrenadeFragment::Update()
