@@ -14,7 +14,7 @@ Floater::Floater(float x, float y) {
 	pos = Point(x, y);
 	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 	timeToShoot = 0;
-	jumpingTurn = 0;
+	shootTurn = 0;
 	v.x = -FLOATER_FLYING_SPEED_X;
 	v.y = FLOATER_FLYING_SPEED_Y;
 }
@@ -68,11 +68,11 @@ void Floater::Update()
 	}
 
 	if (timeToShoot == 0) {
-		if (jumpingTurn != 0) {
+		if (shootTurn != 0) {
 			SetState(FLOATER_STATE_SHOOTING);
 		}
 		else {
-			jumpingTurn = rand() % 1 + 3;
+			shootTurn = rand() % 2 + 1;
 			timeToShoot = 180;
 		}
 	}
@@ -80,7 +80,7 @@ void Floater::Update()
 	if (state == FLOATER_STATE_SHOOTING) {
 		Shoot();
 		SetState(FLOATER_STATE_FLYING);
-		jumpingTurn--;
+		shootTurn--;
 		timeToShoot = 30;
 	}
 	timeToShoot--;

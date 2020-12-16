@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "MineBullet.h"
 #include "time.h"
+#include "Sound.h"
 
 Mine::Mine() {
 	
@@ -31,7 +32,7 @@ void Mine::Update()
 	Enemy::Update();
 	Point bulletV = Point(-0.2, -1);
 
-	if (isCollided) {
+	if (isCollided || HealthPoint <= 0) {
 		int numberOfBullet = rand() % 5;
 
 		for (int i = 0; i < numberOfBullet; i++) {
@@ -42,6 +43,10 @@ void Mine::Update()
 		}
 
 		manager->RemoveElement(this);
+	}
+
+	if (currentTime == 0 ) {
+		Sound::getInstance()->play("mine", false, 1);
 	}
 }
 

@@ -5,6 +5,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+#define JASONO_BULLET_GRENADE_DAMAGE 5
+
 Bullet::Bullet()
 {
 }
@@ -287,7 +289,7 @@ JasonOverheadBulletGrenadeFragment::JasonOverheadBulletGrenadeFragment
 	initialPos = pos;
 	TTL = JASON_OVERHEAD_GRENADE_FRAGMENT_TTL_MIN * (1 - power)
 		+ JASON_OVERHEAD_GRENADE_FRAGMENT_TTL_MAX * power;
-	this->damage = 1;
+	this->damage = JASONO_BULLET_GRENADE_DAMAGE;
 }
 
 JasonOverheadBulletGrenadeFragment::~JasonOverheadBulletGrenadeFragment()

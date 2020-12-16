@@ -3,6 +3,7 @@
 #include "Sophia.h"
 #include "Utils.h"
 #include "Environment.h"
+#include "Sound.h"
 
 JasonSideView::JasonSideView()
 {
@@ -224,8 +225,11 @@ void JasonSideView::Update()
 
 	if ((input[INPUT_SHOOT] == KEY_STATE_ON_DOWN) &&
 		!dead &&
-		(!(state & JASON_STATE_CLIMB)))
+		(!(state & JASON_STATE_CLIMB))) {
 		Shoot();
+		Sound::getInstance()->play("jason_sideview_shoot", false, 1);
+	}
+		
 
 	if ((!(newState & JASON_STATE_AIRBORNE)) &&
 		(input[INPUT_JUMP] == KEY_STATE_ON_DOWN) &&

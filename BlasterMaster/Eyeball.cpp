@@ -3,6 +3,7 @@
 #include "SceneArea2Overhead.h"
 #include "Game.h"
 #include "CannonBullet.h"
+#include "Sound.h"
 #include "Player.h"
 
 Eyeball::Eyeball() {
@@ -71,6 +72,7 @@ void Eyeball::Update()
 
 	if (currentTime == 0) {
 		if (state == EYEBALL_STATE_START_FLYING) {
+			Sound::getInstance()->play("teleporter_shoot", false, 1);
 			SetState(EYEBALL_STATE_FLYING);
 			Shoot();
 		}

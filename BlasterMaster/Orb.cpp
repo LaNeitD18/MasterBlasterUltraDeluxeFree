@@ -53,8 +53,8 @@ void Orb::UpdateOrbType1()
 		float module = sqrt(pow(playerPos.x - pos.x, 2) + pow(playerPos.y - pos.y, 2));
 		Point distance = (playerPos - pos);
 
-		v.x = distance.x / module * 0.5;
-		v.y = distance.y / module * 0.5;
+		v.x = distance.x / module;
+		v.y = distance.y / module;
 	}
 
 	if (isCollided) {

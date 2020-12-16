@@ -14,7 +14,7 @@ Ship::Ship(float x, float y) {
 	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 	SetState(SHIP_STATE_FLYING);
 	timeToShoot = 0;
-	jumpingTurn = 0;
+	shootTurn = 0;
 }
 
 BoundingBox Ship::GetBoundingBox()
@@ -35,7 +35,7 @@ void Ship::Shoot()
 		playerPos = scene->GetTarget()->GetPosition();
 	}
 
-	if (playerPos.y > pos.y + SHIP_BBOX_OFFSET_BOTTOM) {
+	if (playerPos.y > pos.y + (SHIP_BBOX_OFFSET_BOTTOM * 4)) {
 		MiniRedBullet* bullet = new MiniRedBullet(pos, playerPos);
 		bullet->SetManager(manager);
 		manager->AddElement(bullet);
@@ -58,14 +58,14 @@ void Ship::Update()
 	// bắn hết lượt cuối thì reset số lượt và time, lần đầu khởi tạo thì cũng coi như vừa bắn xong lần cuối
 	if (timeToShoot == 0) {
 		// nếu còn lượt thì bắn, trừ lượt và đặt lại time cho viên tiếp theo
-		if (jumpingTurn != 0) {
+		if (shootTurn != 0) {
 			Shoot();
-			jumpingTurn--;
+			shootTurn--;
 			timeToShoot = 30;
 		}
 		else {
-			jumpingTurn = rand() % 1 + 4;
-			timeToShoot = 180;
+			shootTurn = rand() % 1 + 4;
+			timeToShoot = 250;
 		}
 	}
 	timeToShoot--;
@@ -86,8 +86,6 @@ void Ship::Render()
 	}
 
 	AnimatedGameObject::Render();
-
-	//RenderBoundingBox();
 }
 
 void Ship::SetState(int state)

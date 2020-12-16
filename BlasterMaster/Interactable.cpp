@@ -873,7 +873,11 @@ void Interactable::Interact(PlayerBullet* bullet, Enemy* enemy) {
 	if (enemyBox.SweptAABB(bulletBox, bullet->dx() + enemy->dx()) != -INFINITY)
 	{
 		enemy->TakeDamage(bullet->GetDamage());
-		bullet->GetManager()->RemoveElement(bullet);
+		//DebugOut(L"Damage %d,",bullet->GetDamage());
+		bool isGrenadeBullet = dynamic_cast<JasonOverheadBulletGrenadeFragment*>(bullet) != NULL || dynamic_cast<JasonOverheadBulletGrenade*>(bullet) != NULL;
+		if (!isGrenadeBullet) {
+			bullet->GetManager()->RemoveElement(bullet);
+		}
 	}
 }
 void Interactable::Interact(JasonSideView * player, Env_Ladder * ladder) {

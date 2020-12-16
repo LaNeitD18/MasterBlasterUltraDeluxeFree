@@ -3,6 +3,7 @@
 #include "Utils.h"
 #include "SceneArea2SideView.h"
 #include "Game.h"
+#include "Sound.h"
 
 CannonBullet::CannonBullet()
 {
@@ -36,6 +37,7 @@ void CannonBullet::Update()
 	if (wallBot || wallTop || wallLeft || wallRight) {
 		v = Point();
 		SetState(CANNON_BULLET_STATE_EXPLODE);
+		Sound::getInstance()->play("bullet_explosion", false, 1);
 	}
 
 	if (currentTime == 0 && state == CANNON_BULLET_STATE_EXPLODE) {

@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "SkullBullet.h"
 #include "Camera.h"
+#include "Sound.h"
 #include "Player.h"
 
 Skull::Skull() {
@@ -163,6 +164,7 @@ void Skull::SetState(int state)
 		v.y = -SKULL_SPEED_FLYING_Y;
 		break;
 	case SKULL_STATE_BOMBING:
+		Sound::getInstance()->play("skull_bomb", false, 1);
 		v.x = 0;
 		v.y = 0;
 		break;
