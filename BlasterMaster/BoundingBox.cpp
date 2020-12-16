@@ -157,7 +157,7 @@ double BoundingBox::SweptAABB(BoundingBox movingBox, Point v,
 			//if (result1 != 1) DebugOut(L"Diff: %d , 1\n", result1);
 		}
 	}
-	else
+	if (xEntry < yEntry)
 	{
 		if (movingBox.r - l == 0)
 		{
@@ -178,6 +178,29 @@ double BoundingBox::SweptAABB(BoundingBox movingBox, Point v,
 		{
 			bottom = true;
 			//if (result1 != 4) DebugOut(L"Diff: %d , 4\n", result1);
+		}
+	}
+	if (xEntry == -INFINITY && yEntry == -INFINITY)
+	{
+		if (movingBox.b - t == 0)
+		{
+			bottom = true;
+			//if (result1 != 4) DebugOut(L"Diff: %d , 4\n", result1);
+		}
+		if (movingBox.t - b == 0)
+		{
+			top = true;
+			//if (result1 != 2) DebugOut(L"Diff: %d , 2\n", result1);
+		}
+		if (movingBox.r - l == 0)
+		{
+			right = true;
+			//if (result1 != 1) DebugOut(L"Diff: %d , 1\n", result1);
+		}
+		if (movingBox.l - r == 0)
+		{
+			left = true;
+			//if (result1 != 3) DebugOut(L"Diff: %d , 3\n", result1);
 		}
 	}
 	//*/
