@@ -2,6 +2,7 @@
 #include "SceneArea2SideView.h"
 #include "Game.h"
 #include "MiniRedBullet.h"
+#include "Player.h"
 #include <time.h>
 
 Floater::Floater() {

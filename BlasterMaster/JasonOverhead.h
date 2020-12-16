@@ -1,7 +1,6 @@
 #pragma once
-#include "GameObject.h"
+#include "Player.h"
 #include "Bullet.h"
-#include <unordered_set>
 
 #define JASONO_WALKING_SPEED 0.6f
 #define JASONO_ACCELERATION 0.033f
@@ -42,14 +41,13 @@ enum JasonOverheadAni {
 };
 
 class JasonOverhead :
-    public Player, Manager<Bullet>
+    public Player
 {
 	int previousFrame;
 	int currentTime;
 	Animation* currentAnimation;
 	bool moving = true;
 	bool isFlipVertical = false;
-	unordered_set<Bullet*> bullets;
 public:
 	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
@@ -75,9 +73,5 @@ public:
 
 	int bulletPower;
 	virtual void TakeDamage(int damage);
-
-	// Inherited via Manager
-	virtual void AddElement(Bullet *) override;
-	virtual void RemoveElement(Bullet *) override;
 };
 

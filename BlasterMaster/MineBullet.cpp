@@ -4,6 +4,7 @@
 #include "SceneArea2SideView.h"
 #include "Game.h"
 #include "Camera.h"
+#include "Player.h"
 
 MineBullet::MineBullet()
 {

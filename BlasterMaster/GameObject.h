@@ -17,8 +17,6 @@
 using namespace std;
 
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
-#define DURATION_OF_INVULNERABILITY 100
-#define SPRITE_DURATION_OF_INVULNERABILTY 10
 
 class GameObject : public Interactable, public Managed<GameObject>
 {
@@ -79,25 +77,4 @@ public:
 
 	int GetHP();
 	void SetHP(int healthpoint);
-};
-
-#define INPUT_JUMP				'X'
-#define INPUT_LEFT				VK_LEFT
-#define INPUT_RIGHT				VK_RIGHT
-#define INPUT_UP				VK_UP
-#define INPUT_DOWN				VK_DOWN
-#define INPUT_LEAVE_VEHICLE		VK_SHIFT
-#define INPUT_SHOOT				'Z'
-
-class Player : public GameObject
-{
-public:
-	int invulnerableFrame;
-	virtual void TakeDamage(int damage);
-	virtual void Update() override;
-
-	virtual bool IsPrimaryPlayer();
-
-	virtual ~Player() {}
-	Player() {}
 };

@@ -76,6 +76,7 @@
     <ClCompile Include="SceneBullet.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedGameObject.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="SceneBullet.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib.lib" />

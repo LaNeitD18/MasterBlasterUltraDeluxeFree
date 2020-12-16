@@ -50,16 +50,6 @@ void JasonOverhead::TakeDamage(int damage)
 	Player::TakeDamage(damage);
 }
 
-void JasonOverhead::AddElement(Bullet * bullet)
-{
-	bullets.insert(bullet);
-}
-
-void JasonOverhead::RemoveElement(Bullet * bullet)
-{
-	bullets.erase(bullet);
-}
-
 BoundingBox JasonOverhead::GetBoundingBox()
 {
 	return BoundingBox(

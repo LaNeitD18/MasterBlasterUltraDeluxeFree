@@ -294,6 +294,7 @@ void JasonSideView::Update()
 
 	//sophia = NULL;
 	isTouchingSophia = false;
+	targetLadder = NULL;
 
 	if (newState != state)
 		SetState(newState);
@@ -384,6 +385,9 @@ void JasonSideView::GoHalt()
 
 void JasonSideView::Shoot()
 {
+	if (bullets.size() >= 2)
+		return;
+
 	Point bulletV;
 	Point bulletOffset;
 	if (state & JASON_STATE_LOOKING_LEFT) {
@@ -392,11 +396,14 @@ void JasonSideView::Shoot()
 	else {
 		bulletV = Point(JASON_BULLET_SPEED, 0);
 	}
-	Bullet* bullet = new JasonSideviewBullet(
+	JasonSideviewBullet* bullet = new JasonSideviewBullet(
 		GetBoundingBox().GetCenter(),
 		bulletV);
-	bullet->SetManager(manager);
-	manager->AddElement(bullet);
+
+	Managed<GameObject>::manager->AddElement(bullet);
+	((Managed<GameObject>*)bullet)->SetManager(Managed<GameObject>::manager);
+	((Managed<Bullet>*)bullet)->SetManager(this);
+	AddElement(bullet);
 }
 
 void JasonSideView::GoUp()

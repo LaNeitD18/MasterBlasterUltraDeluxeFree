@@ -28,6 +28,7 @@
     <ClInclude Include="CannonBullet.h" />
     <ClInclude Include="ItemHover.h" />
     <ClInclude Include="SceneBullet.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="SceneOver.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Camera.h" />
@@ -110,6 +111,7 @@
     <ClCompile Include="CannonBullet.cpp" />
     <ClCompile Include="ItemHover.cpp" />
     <ClCompile Include="SceneBullet.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneOver.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="Camera.cpp" />

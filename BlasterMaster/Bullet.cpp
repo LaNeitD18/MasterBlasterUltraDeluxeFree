@@ -157,6 +157,7 @@ SophiaBullet::SophiaBullet(Point pos, Point v, int level) : PlayerBullet(pos, v,
 
 SophiaBullet::~SophiaBullet()
 {
+	Managed<Bullet>::manager->RemoveElement(this);
 }
 
 int SophiaBullet::GetDamage(BulletDamageModifier modifier)
@@ -184,6 +185,7 @@ JasonSideviewBullet::JasonSideviewBullet(Point pos, Point v)
 
 JasonSideviewBullet::~JasonSideviewBullet()
 {
+	Managed<Bullet>::manager->RemoveElement(this);
 }
 
 int JasonSideviewBullet::GetDamage(BulletDamageModifier modifier)
@@ -206,6 +208,8 @@ JasonOverheadBulletNorm::JasonOverheadBulletNorm(Point pos, Point v, float power
 {
 	TTL = JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE_RANGE_MIN * (1 - power)
 		+ JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE_RANGE_MAX * power;
+	damage = JASON_OVERHEAD_BULLET_NORM_DAMAGE_RANGE_MIN * (1 - power)
+		+ JASON_OVERHEAD_BULLET_NORM_DAMAGE_RANGE_MAX * power;
 }
 
 JasonOverheadBulletNorm::~JasonOverheadBulletNorm()
@@ -215,9 +219,7 @@ JasonOverheadBulletNorm::~JasonOverheadBulletNorm()
 
 int JasonOverheadBulletNorm::GetDamage(BulletDamageModifier modifier)
 {
-	// TODO: Implement this
-	DEBUG(throw 1);
-	return 0;
+	return damage;
 }
 
 JasonOverheadBulletGrenade::JasonOverheadBulletGrenade
@@ -294,7 +296,7 @@ JasonOverheadBulletGrenadeFragment::~JasonOverheadBulletGrenadeFragment()
 
 int JasonOverheadBulletGrenadeFragment::GetDamage(BulletDamageModifier modifier)
 {
-	return 10;
+	return damage;
 }
 
 void JasonOverheadBulletGrenadeFragment::Update()
