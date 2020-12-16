@@ -873,7 +873,7 @@ void Interactable::Interact(PlayerBullet* bullet, Enemy* enemy) {
 	if (enemyBox.SweptAABB(bulletBox, bullet->dx() + enemy->dx()) != -INFINITY)
 	{
 		enemy->TakeDamage(bullet->GetDamage());
-		bullet->GetManager()->RemoveElement(bullet);
+		//bullet->GetManager()->RemoveElement(bullet);
 	}
 }
 void Interactable::Interact(JasonSideView * player, Env_Ladder * ladder) {

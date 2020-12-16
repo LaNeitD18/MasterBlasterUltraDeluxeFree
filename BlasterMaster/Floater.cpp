@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "MiniRedBullet.h"
 #include <time.h>
+#include "Bullet.h"
 
 Floater::Floater() {
 	SetState(FLOATER_STATE_FLYING);
@@ -30,18 +31,25 @@ BoundingBox Floater::GetBoundingBox()
 
 void Floater::Shoot()
 {
-	SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
-	Point playerPos = Point();
-	if (scene != nullptr) {
-		playerPos = scene->GetTarget()->GetPosition();
-	}
+	//SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
+	//Point playerPos = Point();
+	//if (scene != nullptr) {
+	//	playerPos = scene->GetTarget()->GetPosition();
+	//}
 
-	if (playerPos.y > pos.y + FLOATER_BBOX_HEIGHT) {
-		MiniRedBullet* bullet = new MiniRedBullet(pos, playerPos);
-		bullet->SetManager(manager);
-		manager->AddElement(bullet);
-		//DebugOut(L"pos %f \n", playerPos.x);
-	}
+	//if (playerPos.y > pos.y + FLOATER_BBOX_HEIGHT) {
+	//	MiniRedBullet* bullet = new MiniRedBullet(pos, playerPos);
+	//	bullet->SetManager(manager);
+	//	manager->AddElement(bullet);
+	//	//DebugOut(L"pos %f \n", playerPos.x);
+	//}
+	Point thunderPos = pos + Point(0, 50);
+	int thunderDirX = rand() % 2;
+	if (thunderDirX == 0)	thunderDirX = -1;
+	ThunderBullet* bullet = new ThunderBullet(thunderPos, 0, thunderDirX, D3DCOLOR(0));
+	bullet->SetManager(manager);
+	manager->AddElement(bullet);
+	// nho sua lai ban 2 vien o duoi
 
 	if (currentTime == 0) {
 		SetState(FLOATER_STATE_FLYING);
@@ -71,7 +79,7 @@ void Floater::Update()
 			SetState(FLOATER_STATE_SHOOTING);
 		}
 		else {
-			shootTurn = rand() % 2 + 1;
+			shootTurn = rand() % 1 + 1;
 			timeToShoot = 180;
 		}
 	}
