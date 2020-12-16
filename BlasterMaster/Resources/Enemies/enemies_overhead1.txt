@@ -5,6 +5,7 @@
 15	Resources\sprites\enemies.png	254	255	255
 17	Resources\sprites\116445.png	0	57	115
 298	Resources\sprites\tileset.png	255	255	255
+18	Resources\sprites\ItemObjects.png	254	255	255
 # next sprite: 10155
 
 [SPRITES]
@@ -29,6 +30,9 @@ Resources\Enemies\bullet_sprites.txt
 #298 Tile after break
 Resources\Enemies\tileset_sprites.txt
 
+#201 Item
+Resources\Enemies\item_sprites.txt
+
 [ANIMATIONS]
 # id format: 5XX
 #1 ==== JASON OVERHEAD =========
@@ -50,6 +54,9 @@ Resources\Enemies\bullet_ani.txt
 
 #298 ==== TILE after break wall or tree =========
 Resources\Enemies\tileset_ani.txt
+
+#201 ==== ITEM =========
+Resources\Enemies\item_ani.txt
 
 [OBJECTS]
 # type	x	y	ani_set_id1	ani_set_id2...

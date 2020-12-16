@@ -1,5 +1,6 @@
 #include "Cannon.h"
 #include "CannonBullet.h"
+#include "Utils.h"
 
 Cannon::Cannon() {
 	SetState(CANNON_STATE_VERTICAL);

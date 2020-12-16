@@ -4,6 +4,7 @@
 #include "SceneArea2Overhead.h"
 #include "CannonBullet.h"
 #include "Sound.h"
+#include "Player.h"
 
 Teleporter::Teleporter() {
 	SetState(TELEPORTER_STATE_ATTACK);

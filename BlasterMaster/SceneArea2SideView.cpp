@@ -835,79 +835,70 @@ void SceneArea2SideView::Update()
 
 		// update onscreen objects
 		vector<GameObject*> onScreenObj;
-	input->Update();
-	// update onscreen objects
-	vector<GameObject*> onScreenObj;
-	for (auto x : objects) {
-		bool isSkull = dynamic_cast<Skull*>(x) != NULL;
-		if (isSkull) {
-			if (mCamera->GetBound().IsInsideBox(x->GetPosition())) {
-				onScreenObj.push_back(x);
-			}
-		}
-		else {
-			if (x->GetBoundingBox().IsOverlap(mCamera->GetBound())) {
-				onScreenObj.push_back(x);
-			}
-		}		
-	}
-
-
-	Camera::setCameraInstance(mCamera);
-	if (!isCameraFree) {
-		target = NULL;
 		for (auto x : objects) {
-			if (x->GetBoundingBox().IsOverlap(mCamera->GetBound())) {
-				onScreenObj.push_back(x);
+			bool isSkull = dynamic_cast<Skull*>(x) != NULL;
+			if (isSkull) {
+				if (mCamera->GetBound().IsInsideBox(x->GetPosition())) {
+					onScreenObj.push_back(x);
+				}
 			}
+			else {
+				if (x->GetBoundingBox().IsOverlap(mCamera->GetBound())) {
+					onScreenObj.push_back(x);
+				}
+			}		
 		}
+
 
 		Camera::setCameraInstance(mCamera);
 		if (!isCameraFree) {
 			target = NULL;
-			for (auto x : objects) {
-				Player* current_player = dynamic_cast<Player*>(x);
-				if (current_player != NULL &&
-					current_player->IsPrimaryPlayer()) {
-					mCamera->SetTarget(current_player);
-					target = current_player;
+			if (!isCameraFree) {
+				target = NULL;
+				for (auto x : objects) {
+					Player* current_player = dynamic_cast<Player*>(x);
+					if (current_player != NULL &&
+						current_player->IsPrimaryPlayer()) {
+						mCamera->SetTarget(current_player);
+						target = current_player;
+					}
 				}
-			}
-			if (target == NULL)
-			{
-				int currentLivesPlay = GameGlobal::GetLivesToPlay();
-				GameGlobal::SetLivesToPlay(currentLivesPlay - 1);
-				count = 0;
-				if (currentLivesPlay == 0) {// change later for continue game
-					GameGlobal::SetLivesToPlay(2);
+				if (target == NULL)
+				{
+					int currentLivesPlay = GameGlobal::GetLivesToPlay();
+					GameGlobal::SetLivesToPlay(currentLivesPlay - 1);
+					count = 0;
+					if (currentLivesPlay == 0) {// change later for continue game
+						GameGlobal::SetLivesToPlay(2);
+					}
+					//TODO: set again start pos when return play
+					this->Release();
+					Game::GetInstance()->Init(L"Resources/scene.txt", 2);
+					return;
 				}
-				//TODO: set again start pos when return play
-				this->Release();
-				Game::GetInstance()->Init(L"Resources/scene.txt", 2);
-				return;
-			}
-			GameGlobal::SetCurrentHealthPoint(target->GetHP());
-			mCamera->FollowTarget();
-			mCamera->SnapToBoundary();
+				GameGlobal::SetCurrentHealthPoint(target->GetHP());
+				mCamera->FollowTarget();
+				mCamera->SnapToBoundary();
 
-			//LeSon
-			for (auto x : onScreenObj) {
-				for (auto y : environments) {
-					x->Interact((Interactable*)y);
+				//LeSon
+				for (auto x : onScreenObj) {
+					for (auto y : environments) {
+						x->Interact((Interactable*)y);
+					}
 				}
+
+				for (auto object : onScreenObj)
+				{
+					object->Update();
+				}
+
+				// Long
+				for (int i = 0; i < onScreenObj.size(); i++)
+					for (int j = i + 1; j < onScreenObj.size(); j++)
+						onScreenObj[i]->Interact(onScreenObj[j]);
+
+				// temporary global set hp for both sophia jason
 			}
-
-			for (auto object : onScreenObj)
-			{
-				object->Update();
-			}
-
-			// Long
-			for (int i = 0; i < onScreenObj.size(); i++)
-				for (int j = i + 1; j < onScreenObj.size(); j++)
-					onScreenObj[i]->Interact(onScreenObj[j]);
-
-			// temporary global set hp for both sophia jason
 		}
 		else {
 			// update enemies when change section

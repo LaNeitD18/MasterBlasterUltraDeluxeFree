@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "CannonBullet.h"
 #include "Sound.h"
+#include "Player.h"
 
 Eyeball::Eyeball() {
 	SetState(EYEBALL_STATE_FLYING);

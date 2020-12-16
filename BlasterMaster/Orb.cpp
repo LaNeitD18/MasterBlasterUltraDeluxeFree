@@ -3,6 +3,7 @@
 #include "SceneArea2SideView.h"
 #include "Game.h"
 #include "Camera.h"
+#include "Player.h"
 
 Orb::Orb() {
 	SetState(ORB_STATE_FLYING_TYPE_1);
