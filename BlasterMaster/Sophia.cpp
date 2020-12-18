@@ -183,7 +183,7 @@ void Sophia::Update()
 		jason->sophia = this;
 		jason->SetManager(manager);
 		jason->v.x = v.x;
-		jason->v.y = -JASON_ENTER_VEHICLE_DISAPPEAR_SPEED;
+		jason->v.y = -JASON_TINY_JUMP_SPEED;
 		manager->AddElement(jason);
 
 		v = Point();

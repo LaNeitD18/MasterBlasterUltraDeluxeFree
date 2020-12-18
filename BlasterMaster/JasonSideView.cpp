@@ -134,7 +134,8 @@ void JasonSideView::Update()
 	if (!(newState & JASON_STATE_AIRBORNE) &&
 		(input[INPUT_DOWN] == KEY_STATE_ON_DOWN))
 	{
-		if (targetLadder == NULL)
+		if (targetLadder == NULL ||
+			targetLadder->GetBoundingBox().t < GetBoundingBox().b)
 			newState |= JASON_STATE_CRAWLING;
 		else {
 			newState |= JASON_STATE_CLIMB;
@@ -153,7 +154,8 @@ void JasonSideView::Update()
 
 	if (targetLadder != NULL &&
 		!(newState & JASON_STATE_AIRBORNE) &&
-		(input[INPUT_UP] == KEY_STATE_ON_DOWN))
+		(input[INPUT_UP] == KEY_STATE_ON_DOWN) &&
+		targetLadder->GetBoundingBox().b <= GetBoundingBox().b)
 	{
 		newState |= JASON_STATE_CLIMB;
 		// Push it up a little.

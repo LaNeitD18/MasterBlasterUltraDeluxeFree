@@ -802,6 +802,9 @@ void SceneArea2Overhead::AddElement(GameObject* obj)
 
 void SceneArea2Overhead::RemoveElement(GameObject * obj)
 {
+	for (int i = 0; i < toRemove.size(); i++)
+		if (toRemove[i] == obj)
+			return;
 	toRemove.push_back(obj);
 }
 

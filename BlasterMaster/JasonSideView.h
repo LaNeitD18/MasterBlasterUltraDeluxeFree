@@ -26,7 +26,7 @@
 #define JASON_BULLET_SPEED 3.0f
 
 #define JASON_SPAWN_OFFSET_X 0
-#define JASON_SPAWN_OFFSET_Y -8
+#define JASON_SPAWN_OFFSET_Y 0
 
 enum JasonSideViewState
 {

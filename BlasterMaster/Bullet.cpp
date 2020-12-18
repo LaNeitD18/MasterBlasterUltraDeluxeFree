@@ -5,7 +5,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#define JASONO_BULLET_GRENADE_DAMAGE 5
+#define JASONO_BULLET_GRENADE_DAMAGE 1
 
 Bullet::Bullet()
 {
@@ -308,7 +308,7 @@ void JasonOverheadBulletGrenadeFragment::Update()
 	int deltaY = rand() % 21 - 10;
 	pos = initialPos + Point(deltaX, deltaY);
 
-	if (state & BULLET_STATE_EXPLODE) {
+	if (TTL <= 0) {
 		manager->RemoveElement(this);
 	}
 }

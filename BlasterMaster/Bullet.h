@@ -15,7 +15,7 @@ enum BulletLevel :int {
 };
 
 enum BulletFlag : int {
-	BULLET_STATE_EXPLODE	= 0x0001
+	BULLET_STATE_EXPLODE	= 0x0001,
 };
 
 enum BulletAni :int {

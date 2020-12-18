@@ -1,3 +1,4 @@
+#include "Sound.h"
 #include "Interactable.h"
 #include "InteractableGroupInclude.h"
 #include "SceneArea2SideView.h"
@@ -876,7 +877,7 @@ void Interactable::Interact(PlayerBullet* bullet, Enemy* enemy) {
 		//DebugOut(L"Damage %d,",bullet->GetDamage());
 		bool isGrenadeBullet = dynamic_cast<JasonOverheadBulletGrenadeFragment*>(bullet) != NULL || dynamic_cast<JasonOverheadBulletGrenade*>(bullet) != NULL;
 		if (!isGrenadeBullet) {
-			bullet->GetManager()->RemoveElement(bullet);
+			bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
 		}
 	}
 }

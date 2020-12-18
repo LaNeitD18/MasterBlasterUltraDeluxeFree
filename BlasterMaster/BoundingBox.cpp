@@ -210,6 +210,9 @@ double BoundingBox::SweptAABB(BoundingBox movingBox, Point v,
 		DebugOut(L"%d %d %d %d\n", left, right, top, bottom);
 	)//*/
 
+	if (entryTime == -INFINITY)
+		entryTime = -1000000;
+
 	return entryTime;
 }
 
