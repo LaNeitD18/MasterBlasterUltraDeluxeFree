@@ -21,3 +21,17 @@ public:
 	virtual void Render();
 };
 
+#define BOSS_ARM_TIME_TO_REACH_TARGET_LOCATION 2
+class BossArm : public Enemy
+{
+	BossArm();
+	BossArm(float x, float y);
+
+	virtual void Interact(Interactable* other);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
+
+	virtual BoundingBox GetBoundingBox();
+
+	virtual void Update();
+	Point targetLocation;
+};

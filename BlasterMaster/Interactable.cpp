@@ -473,9 +473,9 @@ void Interactable::Interact(Player* player, Breakable_Tree* tree) {
 void Interactable::Interact(JasonOverheadBulletNorm* bullet, Breakable_Tree* tree) {
 	BoundingBox bulletBox = bullet->GetBoundingBox();
 	BoundingBox treeBox = tree->GetBoundingBox();
-	if (bulletBox.IsOverlap(treeBox)) {
-		if (treeBox.SweptAABB(bulletBox, bullet->dx()) != -INFINITY)
-			bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
+	
+	if (treeBox.SweptAABB(bulletBox, bullet->dx()) != -INFINITY) {
+		bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
 		tree->SetIsOut(true);
 	}
 }
