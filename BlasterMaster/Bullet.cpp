@@ -81,9 +81,9 @@ BoundingBox Bullet::GetBoundingBox()
 		break;
 	case BULLET_DIR_DOWN:
 		return BoundingBox(
-			pos.x + BULLET_OFFSET_DOWN,
+			pos.x - BULLET_OFFSET_DOWN,
 			pos.y + BULLET_OFFSET_LEFT,
-			pos.x + BULLET_OFFSET_UP,
+			pos.x - BULLET_OFFSET_UP,
 			pos.y + BULLET_OFFSET_RIGHT);
 		break;
 	default:

@@ -258,12 +258,6 @@ void JasonSideView::Update()
 		newState &= ~JASON_STATE_WALKING;
 	}
 
-	if (v.x < 0)
-		newState |= JASON_STATE_LOOKING_LEFT;
-
-	if (v.x > 0)
-		newState &= ~JASON_STATE_LOOKING_LEFT;
-
 	if (HealthPoint <= 0)
 	{
 		newState |= JASON_STATE_DYING;

@@ -18,6 +18,8 @@
 #include "Eyeball.h"
 #include "Breakable_Tree.h"
 
+#include "QuadTree.h"
+
 using namespace std;
 
 BoundingBox SceneArea2Overhead::cameraLimitAreaOfSection[9] = {
@@ -617,11 +619,23 @@ void SceneArea2Overhead::Update()
 		mCamera->SnapToBoundary();
 
 		//LeSon
+		/*/
 		for (auto x : onScreenObj) {
 			for (auto y : environments) {
 				x->Interact((Interactable*)y);
 			}
 		}
+		/*/
+		// Quad Tree, by Long
+		QuadTree quadTree;
+		for (auto y : environments) {
+			quadTree.InsertToTree(y, y->GetBoundingBox());
+		}
+		for (auto x : onScreenObj) {
+			// If there are any non-proximity-based interaction, detect & handle here
+			quadTree.InsertAndInteract(x, x->GetBoundingBox());
+		}
+		//*/
 
 		for (auto object : onScreenObj)
 		{
@@ -629,9 +643,11 @@ void SceneArea2Overhead::Update()
 		}
 
 		// Long
+		/*
 		for (int i = 0; i < onScreenObj.size(); i++)
 			for (int j = i + 1; j < onScreenObj.size(); j++)
 				onScreenObj[i]->Interact(onScreenObj[j]);
+		//*/
 
 		// temporary global set hp for both sophia jason
 	}

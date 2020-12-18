@@ -46,3 +46,10 @@ void Boss::SetState(int state)
 	GameObject::SetState(state);
 
 }
+
+void BossArm::Update()
+{
+	Enemy::Update();
+	v = (targetLocation - pos) * 0.5f;
+	HealthPoint = MAXINT / 2;
+}
