@@ -176,3 +176,25 @@ public:
 
 	virtual void Update() override;
 };
+
+#define THUNDER_BBOX_OFFSET_LEFT	   -16 + 1
+#define THUNDER_BBOX_OFFSET_RIGHT		16 - 1
+#define THUNDER_BBOX_OFFSET_TOP		   -32 + 1
+#define THUNDER_BBOX_OFFSET_BOTTOM		32 - 1
+
+class ThunderBullet : public PlayerBullet
+{
+	int dirX;
+	bool isCreateAnotherThunder;
+
+	void SetRandomColor();
+public:
+	int numberOfThunder;
+	ThunderBullet(Point pos, int numberOfThunder, int dirX, D3DCOLOR color);
+	//virtual void SetState(int state);
+
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
+	virtual int GetDamage(BulletDamageModifier modifier) override;
+};

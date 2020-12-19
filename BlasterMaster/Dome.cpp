@@ -233,25 +233,25 @@ void Dome::SetState(int state)
 		direction.x = -1;
 		v.x = speedX * direction.x;
 		v.y = 0;
-		DebugOut(L"left\n");
+		//DebugOut(L"left\n");
 		break;
 	case DOME_STATE_WALKING_RIGHT:
 		direction.x = 1;
 		v.x = speedX * direction.x;
 		v.y = 0;
-		DebugOut(L"right\n");
+		//DebugOut(L"right\n");
 		break;
 	case DOME_STATE_WALKING_UP:
 		direction.y = -1;
 		v.x = 0;
 		v.y = speedY * direction.y;
-		DebugOut(L"up\n");
+		//DebugOut(L"up\n");
 		break;
 	case DOME_STATE_WALKING_DOWN:
 		direction.y = 1;
 		v.x = 0;
 		v.y = speedY * direction.y;
-		DebugOut(L"down\n");
+		//DebugOut(L"down\n");
 		break;
 	case DOME_STATE_JUMPING_VERTICAL:
 		Sound::getInstance()->play("dome_jump", false, 1);

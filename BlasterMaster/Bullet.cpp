@@ -312,3 +312,87 @@ void JasonOverheadBulletGrenadeFragment::Update()
 		manager->RemoveElement(this);
 	}
 }
+
+ThunderBullet::ThunderBullet(Point pos, int numberOfThunder, int dirX, D3DCOLOR color) : PlayerBullet(pos, Point(), 0)
+{
+	this->pos = pos;
+	SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(131));
+	this->numberOfThunder = numberOfThunder + 1;
+	isCreateAnotherThunder = false;
+	this->dirX = dirX;
+	
+	if (this->numberOfThunder == 1) {
+		SetRandomColor();
+	}
+	else {
+		this->drawArguments.SetColor(color);
+	}
+	
+	
+	int randFlip = rand() % 2;
+	if (randFlip == 0) {
+		isFlipVertical = false;
+	}
+	else {
+		isFlipVertical = true;
+	}
+
+	int aniType = rand() % 6;
+	SetAnimationType(aniType);
+}
+
+BoundingBox ThunderBullet::GetBoundingBox()
+{
+	float left = pos.x + THUNDER_BBOX_OFFSET_LEFT;
+	float top = pos.y + THUNDER_BBOX_OFFSET_TOP;
+	float right = pos.x + THUNDER_BBOX_OFFSET_RIGHT;
+	float bottom = pos.y + THUNDER_BBOX_OFFSET_BOTTOM;
+
+	return BoundingBox(left, top, right, bottom);
+}
+
+void ThunderBullet::SetRandomColor()
+{
+	int randColor = rand() % 3;
+	switch (randColor)
+	{
+	case 0:
+		this->drawArguments.SetColor(D3DCOLOR_ARGB(255, 255, 100, 100));
+		break;
+	case 1:
+		this->drawArguments.SetColor(D3DCOLOR_ARGB(255, 100, 255, 100));
+		break;
+	case 2:
+		this->drawArguments.SetColor(D3DCOLOR_ARGB(255, 100, 100, 255));
+		break;
+	default:
+		break;
+	}
+}
+
+void ThunderBullet::Update()
+{
+	if (numberOfThunder <= 2 && currentTime == 10 && !isCreateAnotherThunder) {
+		SetRandomColor();
+		Point thunderPos = this->pos + Point(4*dirX, 32);
+		ThunderBullet* bullet = new ThunderBullet(thunderPos, numberOfThunder, dirX, drawArguments.GetColor());
+		bullet->SetManager(manager);
+		manager->AddElement(bullet);
+		isCreateAnotherThunder = true;
+		DebugOut(L"num %d, curT %d\n", numberOfThunder, currentTime);
+	}
+		
+	if (this->currentTime == 19) {
+		manager->RemoveElement(this);
+	}
+}
+
+void ThunderBullet::Render()
+{
+	AnimatedGameObject::Render();
+}
+
+int ThunderBullet::GetDamage(BulletDamageModifier modifier)
+{
+	return 0;
+}

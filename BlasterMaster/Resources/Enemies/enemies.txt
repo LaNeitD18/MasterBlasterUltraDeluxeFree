@@ -19,6 +19,7 @@
 17	Resources\sprites\116445.png	0	57	115
 18	Resources\sprites\ItemObjects.png	254	255	255
 19	Resources\sprites\bosses.png	255	255	255
+20	Resources\sprites\thunder.png	255	255	255
 # next Tien's sprite: 10193
 # next sprite: 10177			Tien
 # next sprite: 20000			Son
@@ -86,6 +87,9 @@ Resources\Enemies\cannon_bullet_sprites.txt
 Resources\Enemies\mine_bullet_sprites.txt
 #109 Item
 Resources\Enemies\item_sprites.txt
+
+#131 THUNDER
+Resources\Enemies\thunder_bullet_sprites.txt
 
 #400 BOSS
 Resources\Enemies\boss_sprites.txt
@@ -164,7 +168,10 @@ Resources\Enemies\mine_bullet_ani.txt
 #109 ==== ITEM =========
 Resources\Enemies\item_ani.txt
 
-#109 ==== BOSS =========
+#131 ==== THUNDER =========
+Resources\Enemies\thunder_bullet_ani.txt
+
+#400 ==== BOSS =========
 Resources\Enemies\boss_ani.txt
 
 [OBJECTS]
@@ -211,7 +218,8 @@ Resources\Enemies\boss_ani.txt
 #4	210	2900	4
 
 # DOME
-5	285	2970	5
+#5	285	2970	5
+5	285	2970	131
 5	300	2855	5
 5	1315	2970	5
 5	1420	2970	5
@@ -243,8 +251,8 @@ Resources\Enemies\boss_ani.txt
 8	870	2905	8
 8	925	2915	8
 8	1137	2918	8
-8	1180	2935	8
-8	1218	2920	8
+#8	1180	2935	8
+#8	1218	2920	8
 8	1660	1045	8
 8	1650	935	8
 8	2750	70	8
