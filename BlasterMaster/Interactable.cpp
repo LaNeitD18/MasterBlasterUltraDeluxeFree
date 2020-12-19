@@ -485,7 +485,7 @@ void Interactable::Interact(JasonOverheadBulletNorm* bullet, Breakable_Tree* tre
 void Interactable::Interact(Enemy* enemy, Env_Wall* wall) {
 	BoundingBox enemyBox = enemy->GetBoundingBox();
 	BoundingBox wallBox = wall->GetBoundingBox();
-	//*
+	/* TODO: convert to SweptAABB. This Currently breaks Dome & Floater
 	bool top, left, right, bottom;
 	Point move = enemy->dx();
 	top = left = right = bottom = false;
@@ -511,7 +511,7 @@ void Interactable::Interact(Enemy* enemy, Env_Wall* wall) {
 		v.x -= move.x;
 		enemy->SetSpeed(v);
 	}
-	/*
+	/*/
 	if (enemyBox.IsOverlap(wallBox)) {
 		float overlapAreaX = min(enemyBox.r, wallBox.r) - max(enemyBox.l, wallBox.l);
 		float overlapAreaY = min(enemyBox.b, wallBox.b) - max(enemyBox.t, wallBox.t);
