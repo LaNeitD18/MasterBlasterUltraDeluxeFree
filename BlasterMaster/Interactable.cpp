@@ -485,6 +485,33 @@ void Interactable::Interact(JasonOverheadBulletNorm* bullet, Breakable_Tree* tre
 void Interactable::Interact(Enemy* enemy, Env_Wall* wall) {
 	BoundingBox enemyBox = enemy->GetBoundingBox();
 	BoundingBox wallBox = wall->GetBoundingBox();
+	//*
+	bool top, left, right, bottom;
+	Point move = enemy->dx();
+	top = left = right = bottom = false;
+	double offsetTime = wallBox.SweptAABB(enemyBox, move, top, left, bottom, right);
+
+	enemy->wallTop |= top;
+	enemy->wallRight |= right;
+	enemy->wallLeft |= left;
+	enemy->wallBot |= bottom;
+
+	if (offsetTime >= 0.0 && offsetTime <= 1.0)
+		move = move - move * offsetTime;
+	else
+		return;
+
+	if (top || bottom) {
+		Point v = enemy->GetSpeed();
+		v.y -= move.y;
+		enemy->SetSpeed(v);
+	}
+	if (left || right) {
+		Point v = enemy->GetSpeed();
+		v.x -= move.x;
+		enemy->SetSpeed(v);
+	}
+	/*
 	if (enemyBox.IsOverlap(wallBox)) {
 		float overlapAreaX = min(enemyBox.r, wallBox.r) - max(enemyBox.l, wallBox.l);
 		float overlapAreaY = min(enemyBox.b, wallBox.b) - max(enemyBox.t, wallBox.t);
@@ -525,6 +552,7 @@ void Interactable::Interact(Enemy* enemy, Env_Wall* wall) {
 			}
 		}
 	}
+	//*/
 }
 
 void Interactable::Interact(Player* player, Enemy* enemy) {
@@ -920,6 +948,8 @@ void Interactable::Interact(JasonSideView * player, Env_Ladder * ladder) {
 		}
 	}
 }
+void Interactable::Interact(Boss * , Env_Wall * ) {}
+void Interactable::Interact(BossArm * , Env_Wall * ) {}
 #pragma endregion
 
 #undef DAMAGE_OF_SPIKE
