@@ -1,9 +1,15 @@
 # ani_id	sprite1_id	frames1	sprite2_id	frames2	...
 # body ani
 4001	40001	12	40002	12	40003	12	40004	12
+# arm ani
+3000	40005	10
+# claw ani
+3001	40006	10
 #
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
-# DOME
+# BOSS
 400	4001
+# BOSS ARM
+300	3000	3001

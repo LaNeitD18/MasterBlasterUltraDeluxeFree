@@ -127,6 +127,10 @@ public:
 	
 	// Bullet
 	INTERACTABLE_MIRROR_DEF(PlayerBullet, Env_Wall);
+
+	// Boss (temp, for test)
+	INTERACTABLE_MIRROR_DEF(Boss, Env_Wall);
+	INTERACTABLE_MIRROR_DEF(BossArm, Env_Wall);
 #undef INTERACTABLE_MIRROR_DEF
 };
 

@@ -21,6 +21,7 @@
 #include "SkullBullet.h"
 #include "Mine.h"
 #include "Teleporter.h"
+#include "Boss.h"
 
 #include "Sound.h"
 #include "QuadTree.h"
@@ -230,6 +231,7 @@ SceneArea2SideView::~SceneArea2SideView()
 #define OBJECT_TYPE_SHIP 18
 #define OBJECT_TYPE_SKULL 20
 #define OBJECT_TYPE_SKULL_BULLET 100
+#define OBJECT_TYPE_BOSS 21
 
 //LeSon
 #define ENVIRONMENT_TYPE_WALL 1
@@ -468,6 +470,9 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_JASON_SIDE_VIEW:
 		break;
+	case OBJECT_TYPE_BOSS:
+		obj = new Boss(x, y);
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -483,7 +488,7 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 
 		obj->SetAnimationSet(ani_set);
 	}
-	objects.insert(obj);
+	AddElement(obj);
 }
 //LeSon
 void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)

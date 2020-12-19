@@ -26,11 +26,11 @@
 
 # Next animation: 1000			Tien
 # Next animation: 2000			Son
-# Next animation: 3000			Long
+# Next animation: 3002			Long
 
 # Next set: 100				Tien
 # Next set: 200				Son
-# Next set: 300				Long
+# Next set: 301				Long
 
 [SPRITES]
 # id format: 10xxx
@@ -211,7 +211,7 @@ Resources\Enemies\boss_ani.txt
 #4	210	2900	4
 
 # DOME
-5	285	2970	400
+5	285	2970	5
 5	300	2855	5
 5	1315	2970	5
 5	1420	2970	5
@@ -293,6 +293,9 @@ Resources\Enemies\boss_ani.txt
 20	1960	1915	20
 20	1910	655	20
 20	1660	525	20
+
+# BOSS
+21	285	2940	400
 
 [ENVIRONMENTS]
 # type	x	y	width	height	portaldirid	sectionToEnter
