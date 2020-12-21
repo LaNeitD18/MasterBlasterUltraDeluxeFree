@@ -156,6 +156,13 @@ void SceneOpening::Update()
 {
 	input->Update();
 
+	// test continue game
+	if ((*input)[VK_BACK] && KEY_STATE_DOWN) {
+		this->Release();
+		Game::GetInstance()->Init(L"Resources/scene.txt", 4);
+		return;
+	}
+
 	if (enterState == 2) {
 		//Game::GetInstance()->SwitchScene(2);
 		this->Release();
