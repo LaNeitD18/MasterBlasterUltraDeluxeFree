@@ -56,6 +56,8 @@ Bullet::~Bullet()
 
 BoundingBox Bullet::GetBoundingBox()
 {
+	if (state & BULLET_STATE_EXPLODE)
+		return BoundingBox();
 	switch (dir)
 	{
 	case BULLET_DIR_LEFT:

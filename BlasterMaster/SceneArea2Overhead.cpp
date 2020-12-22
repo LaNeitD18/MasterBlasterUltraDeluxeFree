@@ -624,7 +624,7 @@ void SceneArea2Overhead::Update()
 		mCamera->SnapToBoundary();
 
 		//LeSon
-		/*/
+		//*/
 		for (auto x : onScreenObj) {
 			for (auto y : environments) {
 				x->Interact((Interactable*)y);
@@ -637,8 +637,13 @@ void SceneArea2Overhead::Update()
 			quadTree.InsertToTree(y, y->GetBoundingBox());
 		}
 		for (auto x : onScreenObj) {
-			// If there are any non-proximity-based interaction, detect & handle here
-			quadTree.InsertAndInteract(x, x->GetBoundingBox());
+			if (dynamic_cast<Breakable_Tree*>(x) != NULL) {
+				quadTree.InsertAndInteract(x, dynamic_cast<Breakable_Tree*>(x)->GetBoundingBoxJason());
+			}
+			else {
+				// If there are any non-proximity-based interaction, detect & handle here
+				quadTree.InsertAndInteract(x, x->GetBoundingBox());
+			}
 		}
 		//*/
 
@@ -648,7 +653,7 @@ void SceneArea2Overhead::Update()
 		}
 
 		// Long
-		/*
+		//*
 		for (int i = 0; i < onScreenObj.size(); i++)
 			for (int j = i + 1; j < onScreenObj.size(); j++)
 				onScreenObj[i]->Interact(onScreenObj[j]);
