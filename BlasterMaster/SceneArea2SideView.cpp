@@ -22,6 +22,7 @@
 #include "Mine.h"
 #include "Teleporter.h"
 #include "Boss.h"
+#include "Bullet.h"
 
 #include "Sound.h"
 #include "QuadTree.h"
@@ -901,8 +902,12 @@ void SceneArea2SideView::Update()
 					quadTree.InsertToTree(y, y->GetBoundingBox());
 				}
 				for (auto x : onScreenObj) {
-					// If there are any non-proximity-based interaction, detect & handle here
-					quadTree.InsertAndInteract(x, x->GetBoundingBox());
+					if (dynamic_cast<HomingBullet*>(x) != NULL)
+						// non-proximity-based interaction
+						quadTree.InsertAndInteract(x, x->GetBoundingBox(), false);
+					else
+						// proximity-based interaction
+						quadTree.InsertAndInteract(x, x->GetBoundingBox());
 				}
 				//*/
 

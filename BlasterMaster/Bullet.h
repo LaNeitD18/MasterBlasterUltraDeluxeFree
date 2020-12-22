@@ -25,8 +25,9 @@ enum BulletAni :int {
 	BULLET_ANI_ORB_MEDIUM		= 3,		// orb medium
 	BULLET_ANI_ORB_LARGE		= 4,		// orb large
 	BULLET_ANI_GRENADE			= 5,		// grenade
-	BULLET_ANI_EXPLODE			= 6,
-	BULLET_ANI_GRENADE_FRAG		= 7			// grenade fragment
+	BULLET_ANI_ROCKET			= 6,		// rocket
+	BULLET_ANI_EXPLODE			= 7,
+	BULLET_ANI_GRENADE_FRAG		= 8			// grenade fragment
 };
 
 enum BulletDamageModifier : int {
@@ -199,4 +200,28 @@ public:
 	virtual void Update();
 	virtual void Render();
 	virtual int GetDamage(BulletDamageModifier modifier) override;
+};
+
+#define ROCKET_BULLET_DAMAGE			15
+#define ROCKET_ROTATIOn_SPEED			0.1f
+#define ROCKET_SPEED					1.0f
+class RocketBullet : public PlayerBullet 
+{
+public:
+	RocketBullet(Point pos, Point v);
+	virtual ~RocketBullet();
+
+	virtual int GetDamage(BulletDamageModifier modifier) override;
+};
+class HomingBullet : public RocketBullet
+{
+public:
+	HomingBullet(Point pos, Point v);
+	virtual ~HomingBullet();
+
+	bool isTargetAvailable;
+	GameObject* target;
+	GameObject* proposedTarget;
+
+	virtual void Update();
 };
