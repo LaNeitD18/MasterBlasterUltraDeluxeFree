@@ -78,6 +78,7 @@
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="QuadTree.cpp" />
+    <ClCompile Include="SceneBoss.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedGameObject.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Boss.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="QuadTree.h" />
+    <ClInclude Include="SceneBoss.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib.lib" />

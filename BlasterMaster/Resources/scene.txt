@@ -6,3 +6,4 @@ start	1
 2	Resources\Enemies\enemies.txt
 3	Resources\Enemies\enemies_overhead1.txt
 4	Resources\scene_over.txt
+5	Resources\scene_boss.txt
