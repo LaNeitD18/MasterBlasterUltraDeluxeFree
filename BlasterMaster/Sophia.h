@@ -105,6 +105,7 @@ public:
 	void GoRight();
 	void GoHalt();
 	void Shoot();
+	void ShootThunder();
 
 	virtual bool IsPrimaryPlayer() override;
 

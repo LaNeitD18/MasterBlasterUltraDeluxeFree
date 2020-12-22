@@ -374,7 +374,7 @@ void ThunderBullet::SetRandomColor()
 
 void ThunderBullet::Update()
 {
-	if (numberOfThunder <= 2 && currentTime == 10 && !isCreateAnotherThunder) {
+	if (numberOfThunder <= 2 && currentTime == 5 && !isCreateAnotherThunder) {
 		SetRandomColor();
 		Point thunderPos = this->pos + Point(4*dirX, 32);
 		ThunderBullet* bullet = new ThunderBullet(thunderPos, numberOfThunder, dirX, drawArguments.GetColor());
@@ -384,7 +384,7 @@ void ThunderBullet::Update()
 		DebugOut(L"num %d, curT %d\n", numberOfThunder, currentTime);
 	}
 		
-	if (this->currentTime == 19) {
+	if (this->currentTime == 9) {
 		manager->RemoveElement(this);
 	}
 }
@@ -396,5 +396,7 @@ void ThunderBullet::Render()
 
 int ThunderBullet::GetDamage(BulletDamageModifier modifier)
 {
-	return 0;
+	if (currentTime == 0)
+		return THUNGER_BULLET_DAMAGE;
+	else return 0;
 }

@@ -182,6 +182,8 @@ public:
 #define THUNDER_BBOX_OFFSET_TOP		   -32 + 1
 #define THUNDER_BBOX_OFFSET_BOTTOM		32 - 1
 
+#define THUNGER_BULLET_DAMAGE			15
+
 class ThunderBullet : public PlayerBullet
 {
 	int dirX;
