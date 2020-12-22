@@ -197,6 +197,18 @@ void Sophia::Update()
 		Sound::getInstance()->play("sophia_shoot", false, 1);
 	}
 
+	if (input[INPUT_SHOOT_SPECIAL] == KEY_STATE_ON_DOWN)
+	{
+		switch ((GameGlobal::GetSpecialBulletType()))
+		{
+		case 2:
+			ShootThunder();
+			break;
+		default:
+			break;
+		} 
+	}
+
 	if (HealthPoint <= 0)
 	{
 		newState |= SOPHIA_STATE_DYING;
@@ -500,6 +512,18 @@ void Sophia::Shoot()
 	((Managed<GameObject>*)bullet)->SetManager(Managed<GameObject>::manager);
 	((Managed<Bullet>*)bullet)->SetManager(this);
 	AddElement(bullet);
+}
+
+void Sophia::ShootThunder()
+{
+	Point thunderPos = pos + Point(0, 50);
+	int thunderDirX = rand() % 2;
+	if (thunderDirX == 0)	thunderDirX = -1;
+	ThunderBullet* bullet = new ThunderBullet(thunderPos, 0, thunderDirX, D3DCOLOR(0));
+	bullet->SetManager(manager);
+	manager->AddElement(bullet);
+
+	GameGlobal::SetSpecialNumberBullet2(GameGlobal::GetNumberSpecialBullet2() - 1);
 }
 
 bool Sophia::IsPrimaryPlayer()
