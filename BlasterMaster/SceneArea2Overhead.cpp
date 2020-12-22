@@ -608,6 +608,11 @@ void SceneArea2Overhead::Update()
 			count = 0;
 			if (currentLivesPlay == 0) {// change later for continue game
 				GameGlobal::SetLivesToPlay(2);
+				GameGlobal::SetReturnPoint(Point(56, 2955));
+				GameGlobal::SetReturnBoundingBox(BoundingBox(0, 2814, 1038, 3094));
+				this->Release();
+				Game::GetInstance()->Init(L"Resources/scene.txt", 4);
+				return;
 			}
 			//TODO: set again start pos when return play
 			this->Release();
