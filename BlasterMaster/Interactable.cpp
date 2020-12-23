@@ -566,8 +566,10 @@ void Interactable::Interact(Player* player, Enemy* enemy) {
 		if (isJasonPlay) {
 			enemyDamage *= 2;
 		}
+		else if (dynamic_cast<Boss*>(enemy) != NULL || dynamic_cast<BossArm*>(enemy) != NULL || dynamic_cast<BossClaw*>(enemy) != NULL) {
+			enemyDamage *= 2;
+		}
 		player->TakeDamage(enemyDamage);
-		player->TakeDamage(DAMAGE_OF_ENEMY);
 		enemy->isCollided = true;
 	}
 }
@@ -958,7 +960,50 @@ void Interactable::Interact(JasonSideView * player, Env_Ladder * ladder) {
 		}
 	}
 }
-void Interactable::Interact(Boss * , Env_Wall * ) {}
+void Interactable::Interact(Boss* boss , Env_Wall* wall ) {
+	BoundingBox playerBox = boss->GetBoundingBox();
+	BoundingBox wallBox = wall->GetBoundingBox();
+	if (playerBox.IsOverlap(wallBox)) {
+		float overlapAreaX = min(playerBox.r, wallBox.r) - max(playerBox.l, wallBox.l);
+		float overlapAreaY = min(playerBox.b, wallBox.b) - max(playerBox.t, wallBox.t);
+		if (overlapAreaX > overlapAreaY)
+		{
+			if (playerBox.GetCenter().y > wallBox.GetCenter().y) {
+				boss->wallTop = true;
+				// Snap top (player pushed down)
+				Point pos = boss->GetPosition();
+				pos.y -= playerBox.t - wallBox.b;
+				boss->SetPosition(pos);
+			}
+			else
+			{
+				boss->wallBot = true;
+				// Snap bottom (player pushed up)
+				Point pos = boss->GetPosition();
+				pos.y += wallBox.t - playerBox.b;
+				boss->SetPosition(pos);
+			}
+		}
+		else
+		{
+			if (playerBox.GetCenter().x < wallBox.GetCenter().x) {
+				boss->wallRight = true;
+				// Snap right (player to left)
+				Point pos = boss->GetPosition();
+				pos.x -= playerBox.r - wallBox.l;
+				boss->SetPosition(pos);
+			}
+			else
+			{
+				boss->wallLeft = true;
+				// Snap left (player to right)
+				Point pos = boss->GetPosition();
+				pos.x += wallBox.r - playerBox.l;
+				boss->SetPosition(pos);
+			}
+		}
+	}
+}
 void Interactable::Interact(BossArm * , Env_Wall * ) {}
 #pragma endregion
 

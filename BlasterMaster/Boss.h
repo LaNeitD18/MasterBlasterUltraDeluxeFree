@@ -3,6 +3,8 @@
 #include "Manager.h"
 #include <vector>
 
+#define BOSS_MOVING_SPEED	0.1f
+
 #define BODY_BBOX_OFFSET_LEFT	   -30
 #define BODY_BBOX_OFFSET_RIGHT		30
 #define BODY_BBOX_OFFSET_TOP	   -33

@@ -14,6 +14,7 @@ Boss::Boss() {
 	leftArmTargetDirectionEnum = 0;
 	rightArmTargetDirectionEnum = 1;
 	HealthPoint = BOSS_HEALTHPOINT;
+	v = Point(0.1, 0.06);
 }
 
 Boss::Boss(float x, float y) {
@@ -23,6 +24,7 @@ Boss::Boss(float x, float y) {
 	rightArmTargetDirectionEnum = 1;
 	//SetState();
 	HealthPoint = BOSS_HEALTHPOINT;
+	v = Point(0.1, 0.06);
 }
 
 Boss::~Boss()
@@ -46,8 +48,23 @@ BoundingBox Boss::GetBoundingBox()
 
 void Boss::Update()
 {
-	//pos += dx();
+	pos += dx();
 	Enemy::Update();
+
+	// when interact wall
+	if (wallLeft) {
+		v.x = BOSS_MOVING_SPEED;
+	}
+	else if (wallRight) {
+		v.x = -BOSS_MOVING_SPEED;
+	}
+	
+	if (wallTop) {
+		v.y = BOSS_MOVING_SPEED;
+	}
+	else if (pos.y > 110) {
+		v.y = -BOSS_MOVING_SPEED;
+	}
 
 	leftArmShoulder = Point(pos.x - BOSS_SHOULDER_OFFSET_X, pos.y + BOSS_SHOULDER_OFFSET_Y);
 	rightArmShoulder = Point(pos.x + BOSS_SHOULDER_OFFSET_X, pos.y + BOSS_SHOULDER_OFFSET_Y);
@@ -108,8 +125,6 @@ void Boss::Update()
 		rightArm[i]->UpdateOverloaded();
 	}
 
-
-	v = Point();
 	// reset wall collision
 	wallBot = wallLeft = wallRight = wallTop = false;
 }
