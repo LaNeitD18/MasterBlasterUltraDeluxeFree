@@ -204,32 +204,6 @@ public:
 	virtual int GetDamage(BulletDamageModifier modifier) override;
 };
 
-#define MULTIWARHEAD_BBOX_OFFSET_LEFT	   -8 + 1
-#define MULTIWARHEAD_BBOX_OFFSET_RIGHT		8 - 1
-#define MULTIWARHEAD_BBOX_OFFSET_TOP	   -4 + 1
-#define MULTIWARHEAD_BBOX_OFFSET_BOTTOM		4 - 1
-
-#define MULTIWARHEAD_INITIAL_SPEED_X		2.0f
-#define MULTIWARHEAD_INITIAL_SPEED_Y		0
-#define MULTIWARHEAD_ACCELERATION			0.01f
-
-#define MULTIWARHEAD_BULLET_DAMAGE			15
-#define MULTIWARHEAD_ANISET_ID				132
-
-class MultiwarheadMissile : public PlayerBullet
-{
-	int index;
-	int dirX;
-public:
-	MultiwarheadMissile(Point pos, int dirX, int index);
-	//virtual void SetState(int state);
-
-	virtual BoundingBox GetBoundingBox();
-	virtual void Update();
-	virtual void Render();
-	virtual int GetDamage(BulletDamageModifier modifier) override;
-};
-
 #define ROCKET_BULLET_DAMAGE			15
 #define ROCKET_ROTATIOn_SPEED			0.03f
 #define ROCKET_SPEED					1.0f
@@ -252,4 +226,30 @@ public:
 	GameObject* proposedTarget;
 
 	virtual void Update();
+};
+
+#define MULTIWARHEAD_BBOX_OFFSET_LEFT	   -8 + 1
+#define MULTIWARHEAD_BBOX_OFFSET_RIGHT		8 - 1
+#define MULTIWARHEAD_BBOX_OFFSET_TOP	   -4 + 1
+#define MULTIWARHEAD_BBOX_OFFSET_BOTTOM		4 - 1
+
+#define MULTIWARHEAD_INITIAL_SPEED_X		2.0f
+#define MULTIWARHEAD_INITIAL_SPEED_Y		1.0f
+#define MULTIWARHEAD_ACCELERATION			0.01f
+
+#define MULTIWARHEAD_BULLET_DAMAGE			15
+#define MULTIWARHEAD_ANISET_ID				132
+
+class MultiwarheadMissile : public RocketBullet
+{
+	int index;
+	int dirX;
+public:
+	MultiwarheadMissile(Point pos, int dirX, int index);
+	//virtual void SetState(int state);
+
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
+	virtual int GetDamage(BulletDamageModifier modifier) override;
 };

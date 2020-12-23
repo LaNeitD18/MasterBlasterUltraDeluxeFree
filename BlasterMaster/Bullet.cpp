@@ -405,13 +405,27 @@ int ThunderBullet::GetDamage(BulletDamageModifier modifier)
 }
 
 // Multiwarhead Missile
-MultiwarheadMissile::MultiwarheadMissile(Point pos, int dirX, int index) : PlayerBullet(pos, Point(), 0)
+MultiwarheadMissile::MultiwarheadMissile(Point pos, int dirX, int index) : RocketBullet(pos, Point())
 {
 	this->pos = pos;
 	this->dirX = dirX;
 	this->index = index;
-	this->v = Point(MULTIWARHEAD_INITIAL_SPEED_X * dirX, MULTIWARHEAD_INITIAL_SPEED_Y);
-	SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(MULTIWARHEAD_ANISET_ID));
+	
+	switch (index) {
+	case 1:
+		this->v = Point(MULTIWARHEAD_INITIAL_SPEED_X * dirX, MULTIWARHEAD_INITIAL_SPEED_Y * 0);
+		break;
+	case 2:
+		this->v = Point(MULTIWARHEAD_INITIAL_SPEED_X * dirX, -MULTIWARHEAD_INITIAL_SPEED_Y);
+		break;
+	case 3:
+		this->v = Point(MULTIWARHEAD_INITIAL_SPEED_X * dirX, MULTIWARHEAD_INITIAL_SPEED_Y);
+		break;
+	default:
+		break;
+	}
+
+	//SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(MULTIWARHEAD_ANISET_ID));
 }
 
 BoundingBox MultiwarheadMissile::GetBoundingBox()
@@ -430,10 +444,10 @@ void MultiwarheadMissile::Update()
 
 	switch (index) {
 	case 2:
-		v.y -= MULTIWARHEAD_ACCELERATION;
+		v.y += MULTIWARHEAD_ACCELERATION;
 		break;
 	case 3:
-		v.y += MULTIWARHEAD_ACCELERATION;
+		v.y -= MULTIWARHEAD_ACCELERATION;
 		break;
 	default:
 		break;

@@ -4,6 +4,8 @@
 #include "Bullet.h"
 #include "Sound.h"
 #include "Utils.h"
+#include "SceneArea2SideView.h"
+#include "Game.h"
 
 
 BoundingBox Sophia::GetBoundingBox()
@@ -533,25 +535,41 @@ void Sophia::ShootThunder()
 	GameGlobal::SetSpecialNumberBullet2(GameGlobal::GetNumberSpecialBullet2() - 1);
 }
 
+bool Sophia::IsShootingMultiwarhead()
+{
+	unordered_set<GameObject*> objects;
+	SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
+	if (scene != nullptr) {
+		objects = scene->GetObjects();
+		for (auto x : objects) {
+			if (dynamic_cast<MultiwarheadMissile*>(x) != NULL)
+				return true;
+		}
+		return false;
+	}
+}
+
 void Sophia::ShootMultiwarheadMissile()
 {
-	int dirX;
-	if (state & SOPHIA_STATE_LOOKING_LEFT) {
-		dirX = -1;
-	}
-	else {
-		dirX = 1;
-	}
+	if(!IsShootingMultiwarhead()) {
+		int dirX;
+		if (state & SOPHIA_STATE_LOOKING_LEFT) {
+			dirX = -1;
+		}
+		else {
+			dirX = 1;
+		}
 
-	for (int i = 1; i <= 3; i++) {
-		int numberOfMissile = GameGlobal::GetNumberSpecialBullet3();
-		if (numberOfMissile > 0) {
-			Point multiwarheadPos = pos;
-			MultiwarheadMissile* bullet = new MultiwarheadMissile(multiwarheadPos, dirX, i);
-			bullet->SetManager(manager);
-			manager->AddElement(bullet);
+		for (int i = 1; i <= 3; i++) {
+			int numberOfMissile = GameGlobal::GetNumberSpecialBullet3();
+			if (numberOfMissile > 0) {
+				Point multiwarheadPos = pos;
+				MultiwarheadMissile* bullet = new MultiwarheadMissile(multiwarheadPos, dirX, i);
+				bullet->SetManager(manager);
+				manager->AddElement(bullet);
 
-			GameGlobal::SetSpecialNumberBullet3(GameGlobal::GetNumberSpecialBullet3() - 1);
+				GameGlobal::SetSpecialNumberBullet3(GameGlobal::GetNumberSpecialBullet3() - 1);
+			}
 		}
 	}
 }

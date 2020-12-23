@@ -1,6 +1,6 @@
 # ani_id	sprite1_id	frames1	sprite2_id	frames2	...
 # normal
-1307	10307	10	10308	10
+1307	10307	5	10308	10
 #
 # id	ani1	ani2	ani3
 #
