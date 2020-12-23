@@ -56,7 +56,7 @@ void Scene::SetDirectionEnter(int dir)
 
 void Scene::LoadLivesLeftDisplay(TextureLibrary* texLib, SpriteLibrary* spriteLib)
 {
-	if (id != 2 && id != 3) // scene 2 sideview and 3 overhead
+	if (id != 2 && id != 3 && id != 5) // scene 2 sideview and 3 overhead
 	{
 		return;
 	}

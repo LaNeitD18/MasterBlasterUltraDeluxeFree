@@ -1,7 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include "Interactable.h"
-#include "GameObject.h"
+#include "Player.h"
 #include "GameGlobal.h"
 
 #define SOPHIA_WALKING_SPEED 1.0f
@@ -105,6 +105,7 @@ public:
 	void GoRight();
 	void GoHalt();
 	void Shoot();
+	void ShootThunder();
 
 	virtual bool IsPrimaryPlayer() override;
 

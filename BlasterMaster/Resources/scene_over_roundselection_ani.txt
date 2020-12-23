@@ -1,0 +1,10 @@
+# ani_id	sprite1_id	frames1	sprite2_id	frames2	...
+# idle 
+20102	20002	16	20003	16	20004	16	20005	16
+
+#
+# id	ani1	ani2	ani3
+#
+[ANIMATION_SETS]
+# tale scene
+2	20102

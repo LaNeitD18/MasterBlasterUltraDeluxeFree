@@ -45,6 +45,8 @@ void AnimatedGameObject::SetAnimationType(int ANI)
 
 void Enemy::TakeDamage(int damage)
 {
+	if (damage <= 0)
+		return;
 	HealthPoint -= damage;
 	damageFrame = DURATION_OF_DAMAGE_FLASH;
 	if (HealthPoint <= 0) {

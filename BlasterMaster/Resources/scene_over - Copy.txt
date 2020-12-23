@@ -1,0 +1,28 @@
+# id	file_path	transparent_color_r	g	b
+[TEXTURES]
+1	Resources\sprites\gameoverscene.png	255	255	255
+2	Resources\sprites\roundselection.png	254	255	255
+# next sprite
+
+[SPRITES]
+# id format: 200xx
+#1 scene over
+Resources\scene_over_continue_sprites.txt
+
+#2 selection
+Resources\scene_over_roundselection_sprites.txt
+
+[ANIMATIONS]
+# id format: 201xx
+#1 ==== scene over =========
+Resources\scene_over_continue_ani.txt
+
+#1 ==== selection =========
+Resources\scene_over_roundselection_ani.txt
+
+[OBJECTS]
+# type	x	y	ani_set_id1	ani_set_id2...
+
+# title
+1	0	0	1
+2	-55	-40	2

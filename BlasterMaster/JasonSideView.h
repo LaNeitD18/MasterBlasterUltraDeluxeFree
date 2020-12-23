@@ -1,6 +1,7 @@
 #pragma once
-#include "GameObject.h"
+#include "Player.h"
 #include "Bullet.h"
+#include "Manager.h"
 
 #define JASON_GRAVITY 0.066f
 #define JASON_ACCELERATION 0.033f
@@ -25,7 +26,7 @@
 #define JASON_BULLET_SPEED 3.0f
 
 #define JASON_SPAWN_OFFSET_X 0
-#define JASON_SPAWN_OFFSET_Y -8
+#define JASON_SPAWN_OFFSET_Y 0
 
 enum JasonSideViewState
 {

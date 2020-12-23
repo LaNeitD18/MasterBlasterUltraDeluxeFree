@@ -5,6 +5,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+#define JASONO_BULLET_GRENADE_DAMAGE 1
+
 Bullet::Bullet()
 {
 }
@@ -17,7 +19,7 @@ Bullet::Bullet(Point pos, Point v, int type)
 
 	state = 0;
 	this->type = type;
-
+	/*
 	if (v.y < 0) {
 		rotation = M_PI_2;
 		isFlipVertical = false;
@@ -31,6 +33,8 @@ Bullet::Bullet(Point pos, Point v, int type)
 		isFlipVertical = true;
 	else
 		isFlipVertical = false;
+	//*/
+	isFlipVertical = true;
 
 	SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(BULLET_ANIMATION_SET_NUMBER));
 
@@ -52,6 +56,8 @@ Bullet::~Bullet()
 
 BoundingBox Bullet::GetBoundingBox()
 {
+	if (state & BULLET_STATE_EXPLODE)
+		return BoundingBox();
 	switch (dir)
 	{
 	case BULLET_DIR_LEFT:
@@ -77,9 +83,9 @@ BoundingBox Bullet::GetBoundingBox()
 		break;
 	case BULLET_DIR_DOWN:
 		return BoundingBox(
-			pos.x + BULLET_OFFSET_DOWN,
+			pos.x - BULLET_OFFSET_DOWN,
 			pos.y + BULLET_OFFSET_LEFT,
-			pos.x + BULLET_OFFSET_UP,
+			pos.x - BULLET_OFFSET_UP,
 			pos.y + BULLET_OFFSET_RIGHT);
 		break;
 	default:
@@ -91,6 +97,8 @@ BoundingBox Bullet::GetBoundingBox()
 void Bullet::Update()
 {
 	pos += dx();
+
+	rotation = atan2(v.y, v.x);
 
 	if (state & BULLET_STATE_EXPLODE)
 		v = Point();
@@ -133,6 +141,9 @@ void Bullet::SetAnimationSet(AnimationSet* aniSet)
 	case 5:
 		SetAnimationType(BULLET_ANI_GRENADE);
 		break;
+	case 7:
+		SetAnimationType(BULLET_ANI_GRENADE_FRAG);
+		break;
 	default:
 		//SetAnimationType(BULLET_ANI_NORM1);
 		DEBUG(throw 1);
@@ -150,6 +161,7 @@ SophiaBullet::SophiaBullet(Point pos, Point v, int level) : PlayerBullet(pos, v,
 
 SophiaBullet::~SophiaBullet()
 {
+	Managed<Bullet>::manager->RemoveElement(this);
 }
 
 int SophiaBullet::GetDamage(BulletDamageModifier modifier)
@@ -169,13 +181,15 @@ int SophiaBullet::GetDamage(BulletDamageModifier modifier)
 	}
 }
 
-JasonSideviewBullet::JasonSideviewBullet(Point pos, Point v) : TimedPlayerBullet(pos, v, BULLET_ANI_ORB_SMALL)
+JasonSideviewBullet::JasonSideviewBullet(Point pos, Point v)
+	: TimedPlayerBullet(pos, v, BULLET_ANI_ORB_SMALL)
 {
 	TTL = JASON_SIDEVIEW_BULLET_TIME_TO_LIVE;
 }
 
 JasonSideviewBullet::~JasonSideviewBullet()
 {
+	Managed<Bullet>::manager->RemoveElement(this);
 }
 
 int JasonSideviewBullet::GetDamage(BulletDamageModifier modifier)
@@ -193,9 +207,13 @@ int JasonSideviewBullet::GetDamage(BulletDamageModifier modifier)
 	}
 }
 
-JasonOverheadBulletNorm::JasonOverheadBulletNorm(Point pos, Point v) : TimedPlayerBullet(pos, v, BULLET_ANI_ROUND_FIREBALL)
+JasonOverheadBulletNorm::JasonOverheadBulletNorm(Point pos, Point v, float power) 
+	: TimedPlayerBullet(pos, v, BULLET_ANI_ROUND_FIREBALL)
 {
-	TTL = JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE;
+	TTL = JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE_RANGE_MIN * (1 - power)
+		+ JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE_RANGE_MAX * power;
+	damage = JASON_OVERHEAD_BULLET_NORM_DAMAGE_RANGE_MIN * (1 - power)
+		+ JASON_OVERHEAD_BULLET_NORM_DAMAGE_RANGE_MAX * power;
 }
 
 JasonOverheadBulletNorm::~JasonOverheadBulletNorm()
@@ -205,14 +223,15 @@ JasonOverheadBulletNorm::~JasonOverheadBulletNorm()
 
 int JasonOverheadBulletNorm::GetDamage(BulletDamageModifier modifier)
 {
-	// TODO: Implement this
-	DEBUG(throw 1);
-	return 0;
+	return damage;
 }
 
-JasonOverheadBulletGrenade::JasonOverheadBulletGrenade(Point pos, Point v) : TimedPlayerBullet(pos, v, BULLET_ANI_GRENADE)
+JasonOverheadBulletGrenade::JasonOverheadBulletGrenade
+	(Point pos, Point v, float power)
+	: TimedPlayerBullet(pos, v, BULLET_ANI_GRENADE)
 {
 	TTL = JASON_OVERHEAD_GRENADE_TIME_TO_LIVE;
+	this->power = power;
 }
 
 JasonOverheadBulletGrenade::~JasonOverheadBulletGrenade()
@@ -227,16 +246,28 @@ int JasonOverheadBulletGrenade::GetDamage(BulletDamageModifier modifier)
 
 BoundingBox JasonOverheadBulletGrenade::GetBoundingBox()
 {
-	return BoundingBox();
+	return BoundingBox(pos.x, pos.y, pos.x, pos.y);
 }
 
-void JasonOverheadBulletGrenade::Render()
+void JasonOverheadBulletGrenade::Update()
 {
-	AnimatedGameObject::Render();
-	if (currentTime == 0 && state == BULLET_STATE_EXPLODE) {
+	TimedPlayerBullet::Update();
+	if (state & BULLET_STATE_EXPLODE) {
+		Managed<Bullet>::manager->RemoveElement(this);
+		Managed<GameObject>::manager->RemoveElement(this);
 
-		manager->RemoveElement(this);
+		JasonOverheadBulletGrenadeFragment* frag =
+			new JasonOverheadBulletGrenadeFragment(pos, power);
+		Managed<GameObject>::manager->AddElement(frag);
+		frag->SetManager(Managed<GameObject>::manager);
+
+		frag = new JasonOverheadBulletGrenadeFragment(pos, power);
+		Managed<GameObject>::manager->AddElement(frag);
+		frag->SetManager(Managed<GameObject>::manager);
+
+		return;
 	}
+	rotation = 0;
 }
 
 TimedPlayerBullet::~TimedPlayerBullet()
@@ -246,16 +277,21 @@ TimedPlayerBullet::~TimedPlayerBullet()
 void TimedPlayerBullet::Update()
 {
 	TTL--;
-	if (TTL <= 0)
+	if (TTL <= 0) {
 		SetState(state | BULLET_STATE_EXPLODE);
+	}
 
 	PlayerBullet::Update();
 }
 
-JasonOverheadBulletGrenadeFragment::JasonOverheadBulletGrenadeFragment(Point pos, int damage)
-	: PlayerBullet(pos, Point(), 7)
+JasonOverheadBulletGrenadeFragment::JasonOverheadBulletGrenadeFragment
+	(Point pos, float power)
+	: TimedPlayerBullet(pos, Point(), BULLET_ANI_GRENADE_FRAG)
 {
-	this->damage = damage;
+	initialPos = pos;
+	TTL = JASON_OVERHEAD_GRENADE_FRAGMENT_TTL_MIN * (1 - power)
+		+ JASON_OVERHEAD_GRENADE_FRAGMENT_TTL_MAX * power;
+	this->damage = JASONO_BULLET_GRENADE_DAMAGE;
 }
 
 JasonOverheadBulletGrenadeFragment::~JasonOverheadBulletGrenadeFragment()
@@ -264,7 +300,19 @@ JasonOverheadBulletGrenadeFragment::~JasonOverheadBulletGrenadeFragment()
 
 int JasonOverheadBulletGrenadeFragment::GetDamage(BulletDamageModifier modifier)
 {
-	return 10;
+	return damage;
+}
+
+void JasonOverheadBulletGrenadeFragment::Update()
+{
+	TimedPlayerBullet::Update();
+	int deltaX = rand() % 21 - 10;
+	int deltaY = rand() % 21 - 10;
+	pos = initialPos + Point(deltaX, deltaY);
+
+	if (TTL <= 0) {
+		manager->RemoveElement(this);
+	}
 }
 
 ThunderBullet::ThunderBullet(Point pos, int numberOfThunder, int dirX, D3DCOLOR color) : PlayerBullet(pos, Point(), 0)
@@ -326,7 +374,7 @@ void ThunderBullet::SetRandomColor()
 
 void ThunderBullet::Update()
 {
-	if (numberOfThunder <= 2 && currentTime == 10 && !isCreateAnotherThunder) {
+	if (numberOfThunder <= 2 && currentTime == 5 && !isCreateAnotherThunder) {
 		SetRandomColor();
 		Point thunderPos = this->pos + Point(4*dirX, 32);
 		ThunderBullet* bullet = new ThunderBullet(thunderPos, numberOfThunder, dirX, drawArguments.GetColor());
@@ -336,7 +384,7 @@ void ThunderBullet::Update()
 		DebugOut(L"num %d, curT %d\n", numberOfThunder, currentTime);
 	}
 		
-	if (this->currentTime == 19) {
+	if (this->currentTime == 9) {
 		manager->RemoveElement(this);
 	}
 }
@@ -348,5 +396,7 @@ void ThunderBullet::Render()
 
 int ThunderBullet::GetDamage(BulletDamageModifier modifier)
 {
-	return 0;
+	if (currentTime == 0)
+		return THUNGER_BULLET_DAMAGE;
+	else return 0;
 }

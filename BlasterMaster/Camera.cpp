@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "GameObject.h"
+#include "Player.h"
 
 Camera* Camera::__instance = NULL;
 

@@ -183,7 +183,7 @@ void Sophia::Update()
 		jason->sophia = this;
 		jason->SetManager(manager);
 		jason->v.x = v.x;
-		jason->v.y = -JASON_ENTER_VEHICLE_DISAPPEAR_SPEED;
+		jason->v.y = -JASON_TINY_JUMP_SPEED;
 		manager->AddElement(jason);
 
 		v = Point();
@@ -195,6 +195,18 @@ void Sophia::Update()
 	if (input[INPUT_SHOOT] == KEY_STATE_ON_DOWN) {
 		Shoot();
 		Sound::getInstance()->play("sophia_shoot", false, 1);
+	}
+
+	if (input[INPUT_SHOOT_SPECIAL] == KEY_STATE_ON_DOWN)
+	{
+		switch ((GameGlobal::GetSpecialBulletType()))
+		{
+		case 2:
+			ShootThunder();
+			break;
+		default:
+			break;
+		} 
 	}
 
 	if (HealthPoint <= 0)
@@ -477,6 +489,9 @@ void Sophia::GoHalt()
 
 void Sophia::Shoot()
 {
+	if (bullets.size() >= 3)
+		return;
+
 	Point bulletV;
 	Point bulletOffset;
 	if (state & SOPHIA_STATE_LOOKING_LEFT) {
@@ -489,11 +504,26 @@ void Sophia::Shoot()
 	}
 	if (state & SOPHIA_STATE_LOOKED_UP)
 		bulletV = Point(0, -SOPHIA_BULLET_SPEED);
-	Bullet* bullet = new SophiaBullet(
+	SophiaBullet* bullet = new SophiaBullet(
 		pos + bulletOffset,
 		bulletV, 1);
+
+	Managed<GameObject>::manager->AddElement(bullet);
+	((Managed<GameObject>*)bullet)->SetManager(Managed<GameObject>::manager);
+	((Managed<Bullet>*)bullet)->SetManager(this);
+	AddElement(bullet);
+}
+
+void Sophia::ShootThunder()
+{
+	Point thunderPos = pos + Point(0, 50);
+	int thunderDirX = rand() % 2;
+	if (thunderDirX == 0)	thunderDirX = -1;
+	ThunderBullet* bullet = new ThunderBullet(thunderPos, 0, thunderDirX, D3DCOLOR(0));
 	bullet->SetManager(manager);
 	manager->AddElement(bullet);
+
+	GameGlobal::SetSpecialNumberBullet2(GameGlobal::GetNumberSpecialBullet2() - 1);
 }
 
 bool Sophia::IsPrimaryPlayer()

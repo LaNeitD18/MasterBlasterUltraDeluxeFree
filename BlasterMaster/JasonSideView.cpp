@@ -134,7 +134,8 @@ void JasonSideView::Update()
 	if (!(newState & JASON_STATE_AIRBORNE) &&
 		(input[INPUT_DOWN] == KEY_STATE_ON_DOWN))
 	{
-		if (targetLadder == NULL)
+		if (targetLadder == NULL ||
+			targetLadder->GetBoundingBox().t < GetBoundingBox().b)
 			newState |= JASON_STATE_CRAWLING;
 		else {
 			newState |= JASON_STATE_CLIMB;
@@ -153,7 +154,8 @@ void JasonSideView::Update()
 
 	if (targetLadder != NULL &&
 		!(newState & JASON_STATE_AIRBORNE) &&
-		(input[INPUT_UP] == KEY_STATE_ON_DOWN))
+		(input[INPUT_UP] == KEY_STATE_ON_DOWN) &&
+		targetLadder->GetBoundingBox().b <= GetBoundingBox().b)
 	{
 		newState |= JASON_STATE_CLIMB;
 		// Push it up a little.
@@ -256,12 +258,6 @@ void JasonSideView::Update()
 		newState &= ~JASON_STATE_WALKING;
 	}
 
-	if (v.x < 0)
-		newState |= JASON_STATE_LOOKING_LEFT;
-
-	if (v.x > 0)
-		newState &= ~JASON_STATE_LOOKING_LEFT;
-
 	if (HealthPoint <= 0)
 	{
 		newState |= JASON_STATE_DYING;
@@ -294,6 +290,7 @@ void JasonSideView::Update()
 
 	//sophia = NULL;
 	isTouchingSophia = false;
+	targetLadder = NULL;
 
 	if (newState != state)
 		SetState(newState);
@@ -384,6 +381,9 @@ void JasonSideView::GoHalt()
 
 void JasonSideView::Shoot()
 {
+	if (bullets.size() >= 2)
+		return;
+
 	Point bulletV;
 	Point bulletOffset;
 	if (state & JASON_STATE_LOOKING_LEFT) {
@@ -392,11 +392,14 @@ void JasonSideView::Shoot()
 	else {
 		bulletV = Point(JASON_BULLET_SPEED, 0);
 	}
-	Bullet* bullet = new JasonSideviewBullet(
+	JasonSideviewBullet* bullet = new JasonSideviewBullet(
 		GetBoundingBox().GetCenter(),
 		bulletV);
-	bullet->SetManager(manager);
-	manager->AddElement(bullet);
+
+	Managed<GameObject>::manager->AddElement(bullet);
+	((Managed<GameObject>*)bullet)->SetManager(Managed<GameObject>::manager);
+	((Managed<Bullet>*)bullet)->SetManager(this);
+	AddElement(bullet);
 }
 
 void JasonSideView::GoUp()

@@ -4,6 +4,7 @@
 #include "SceneArea2SideView.h"
 #include "Game.h"
 #include "Sound.h"
+#include "Player.h"
 
 SkullBullet::SkullBullet()
 {

@@ -225,7 +225,7 @@
   <object id="48" x="400" y="2992" width="80" height="48"/>
   <object id="50" x="592" y="2992" width="80" height="48"/>
   <object id="52" x="784" y="2992" width="16" height="48"/>
-  <object id="56" x="944" y="2848" width="80" height="96"/>
+  <object id="56" x="944" y="2848" width="80" height="112"/>
   <object id="60" x="1024" y="1824" width="32" height="1136"/>
   <object id="61" x="1056" y="2976" width="128" height="32"/>
   <object id="62" x="1056" y="3040" width="448" height="16"/>
@@ -607,7 +607,7 @@
   <object id="124" x="1264" y="1840" width="32" height="16"/>
  </objectgroup>
  <objectgroup id="10" name="portal">
-  <object id="375" x="960" y="2944" width="32" height="32"/>
+  <object id="375" x="960" y="2960" width="32" height="16"/>
   <object id="376" x="1056" y="2960" width="32" height="16"/>
   <object id="380" x="1472" y="1936" width="32" height="16"/>
   <object id="381" x="1568" y="1936" width="32" height="16"/>
@@ -639,7 +639,7 @@
   <object id="716" x="1312" y="1424" width="32" height="16"/>
  </objectgroup>
  <objectgroup id="12" name="ladder">
-  <object id="535" x="1584" y="144" width="16" height="208"/>
+  <object id="535" x="1584" y="160" width="16" height="192"/>
  </objectgroup>
  <objectgroup id="11" name="dungeon">
   <object id="398" x="3008" y="1936" width="32" height="16"/>

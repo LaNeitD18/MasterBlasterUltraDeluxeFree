@@ -41,8 +41,8 @@ class Interactable;
 #pragma endregion
 
 // add new item
-#define INTERACTABLE_GROUP Player, Enemy, Env_Wall, Sophia, Env_Spike, Env_Lava, Env_Portal, AnimatedScene, Env_Dungeon, Env_Outdoor, Env_Ladder, ItemPower, ItemHover, Breakable_Tree, \
-							Worm, Floater, Dome, Jumper, Insect, Ship, MiniRedBullet, SkullBullet, CannonBullet, MineBullet, Teleporter, Eyeball, Boss, \
+#define INTERACTABLE_GROUP Player, Enemy, Env_Wall, Sophia, Env_Spike, Env_Lava, Env_Portal, AnimatedScene, Env_Dungeon, Env_Outdoor, Env_Ladder, ItemPower, ItemHover, Breakable_Tree, JasonOverheadBulletNorm, \
+							Worm, Floater, Dome, Jumper, Insect, Ship, MiniRedBullet, SkullBullet, CannonBullet, MineBullet, Teleporter, Eyeball, Boss, BossArm, \
 							JasonSideView, JasonOverhead, Bullet, PlayerBullet, EnemyBullet \
 
 // Interactable
@@ -103,7 +103,7 @@ public:
 	INTERACTABLE_MIRROR_DEF(Player, Env_Outdoor);
 	INTERACTABLE_MIRROR_DEF(JasonSideView, Env_Ladder);
 	INTERACTABLE_MIRROR_DEF(Player, Breakable_Tree);
-	INTERACTABLE_MIRROR_DEF(PlayerBullet, Breakable_Tree);
+	INTERACTABLE_MIRROR_DEF(JasonOverheadBulletNorm, Breakable_Tree);
 	// items
 	INTERACTABLE_MIRROR_DEF(Player, ItemPower);
 	INTERACTABLE_MIRROR_DEF(Player, ItemHover);
@@ -127,6 +127,10 @@ public:
 	
 	// Bullet
 	INTERACTABLE_MIRROR_DEF(PlayerBullet, Env_Wall);
+
+	// Boss (temp, for test)
+	INTERACTABLE_MIRROR_DEF(Boss, Env_Wall);
+	INTERACTABLE_MIRROR_DEF(BossArm, Env_Wall);
 #undef INTERACTABLE_MIRROR_DEF
 };
 

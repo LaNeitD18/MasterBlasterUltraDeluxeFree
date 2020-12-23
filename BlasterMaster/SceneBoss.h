@@ -7,18 +7,16 @@
 #include "HealthBar.h"
 #include "Manager.h"
 #include <unordered_set>
-#include "SceneBullet.h"
-#include "SceneBullet.h"
 
 class Game;
 
-class SceneArea2SideView: public Scene, public Manager<GameObject>
+class SceneBoss : public Scene, public Manager<GameObject>
 {
-protected: 
+protected:
 	//CMario *player;					// A play scene has to have player, right?  // No =)
-	
+
 	unordered_set<GameObject*> objects;
-	unordered_set<GameObject*> toRemove;
+	vector<GameObject*> toRemove;
 
 	//LeSon
 	vector<Environment*> environments;
@@ -27,13 +25,11 @@ protected:
 	GameMap* foreMap;
 
 	HealthBar* healthBar;
-	SceneBullet* bulletscene;
 
 	void LoadContent();
-	void LoadSound();
 
 	// camera
-	Camera *mCamera;
+	Camera* mCamera;
 	//LeSon
 	Player* target;
 
@@ -51,12 +47,10 @@ private:
 
 	//LeSon
 	void JumpCheckpoint();
-	void displayBulletState();
-	void backToGame();
 
-public: 
-	SceneArea2SideView(int id, LPCWSTR filePath, Game* game, Point screenSize);
-	virtual ~SceneArea2SideView();
+public:
+	SceneBoss(int id, LPCWSTR filePath, Game* game, Point screenSize);
+	virtual ~SceneBoss();
 
 	virtual void Init();
 	virtual void Update();
@@ -68,12 +62,12 @@ public:
 	void SetTarget(Player* player);
 	unordered_set<GameObject*> GetObjects();
 
+	bool liveShow;
+
 	// Inherited via Manager
-	virtual void AddElement(GameObject *) override;
-	virtual void RemoveElement(GameObject *) override;
+	virtual void AddElement(GameObject*) override;
+	virtual void RemoveElement(GameObject*) override;
 
-	// just handle change in one scene
-	static BoundingBox cameraLimitAreaOfSection[19];
-	static Point startPointInSection[19];
-
+	static BoundingBox cameraLimitAreaOfSection[9];
+	static Point startPointInSection[5];
 };

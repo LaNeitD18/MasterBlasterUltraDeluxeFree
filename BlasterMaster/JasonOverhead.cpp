@@ -40,19 +40,14 @@ JasonOverhead::~JasonOverhead()
 
 void JasonOverhead::TakeDamage(int damage)
 {
-	Player::TakeDamage(damage);
-	if (damage > 0)
+	if (invulnerableFrame <= 0 && HealthPoint > 0 && damage > 0)
+	{
 		bulletPower -= JASONO_POWER_MIN_STEP;
-}
+		if (bulletPower < 0)
+			bulletPower = 0;
+	}
 
-void JasonOverhead::AddElement(Bullet * bullet)
-{
-	bullets.insert(bullet);
-}
-
-void JasonOverhead::RemoveElement(Bullet * bullet)
-{
-	bullets.erase(bullet);
+	Player::TakeDamage(damage);
 }
 
 BoundingBox JasonOverhead::GetBoundingBox()
@@ -168,7 +163,10 @@ void JasonOverhead::Update()
 		else {
 			v.x = v.y = 0;
 		}
-
+		if (input[INPUT_JUMP] == KEY_STATE_ON_DOWN)
+		{
+			ShootGrenade();
+		} else
 		if (input[INPUT_SHOOT] == KEY_STATE_ON_DOWN)
 		{
 			ShootNorm();
@@ -315,15 +313,15 @@ void JasonOverhead::ShootNorm()
 {
 	Point v;
 	if (state & JASONO_STATE_GOING_UP)
-		v = Point(0, -1);
+		v = Point(0, -JASONO_BULLET_SPEED);
 
 	if (state & JASONO_STATE_GOING_DOWN)
-		v = Point(0, 1);
+		v = Point(0, JASONO_BULLET_SPEED);
 
 	if (state & JASONO_STATE_LOOKING_LEFT) {
 		if (isFlipVertical)
-			v = Point(1, 0);
-		else v = Point(-1, 0);
+			v = Point(JASONO_BULLET_SPEED, 0);
+		else v = Point(-JASONO_BULLET_SPEED, 0);
 	}
 
 	if (bulletPower >= JASONO_SINE_BULLET_POWER_THRESHOLD)
@@ -333,9 +331,12 @@ void JasonOverhead::ShootNorm()
 	else
 	{
 		if (bullets.size() < 2) {
-			JasonOverheadBulletNorm* bullet = new JasonOverheadBulletNorm(GetBoundingBox().GetCenter(), v);
-			((Manager<GameObject>*)manager)->AddElement(bullet);
-			((Managed<GameObject>*)bullet)->SetManager(manager);
+			JasonOverheadBulletNorm* bullet = new JasonOverheadBulletNorm
+				(GetBoundingBox().GetCenter(), v, 
+				(float)bulletPower / JASONO_MAX_BULLET_POWER);
+
+			Managed<GameObject>::manager->AddElement(bullet);
+			((Managed<GameObject>*)bullet)->SetManager(Managed<GameObject>::manager);
 			((Managed<Bullet>*)bullet)->SetManager(this);
 			AddElement(bullet);
 		}
@@ -345,4 +346,27 @@ void JasonOverhead::ShootNorm()
 // Note: button 'x'
 void JasonOverhead::ShootGrenade()
 {
+	Point v;
+	if (state & JASONO_STATE_GOING_UP)
+		v = Point(0, -JASONO_GRENADE_SPEED);
+
+	if (state & JASONO_STATE_GOING_DOWN)
+		v = Point(0, JASONO_GRENADE_SPEED);
+
+	if (state & JASONO_STATE_LOOKING_LEFT) {
+		if (isFlipVertical)
+			v = Point(JASONO_GRENADE_SPEED, 0);
+		else v = Point(-JASONO_GRENADE_SPEED, 0);
+	}
+
+	if (bullets.size() < 2) {
+		JasonOverheadBulletGrenade* bullet = new JasonOverheadBulletGrenade
+			(GetBoundingBox().GetCenter(), v, 
+			(float)bulletPower / JASONO_MAX_BULLET_POWER);
+
+		Managed<GameObject>::manager->AddElement(bullet);
+		((Managed<GameObject>*)bullet)->SetManager(Managed<GameObject>::manager);
+		((Managed<Bullet>*)bullet)->SetManager(this);
+		AddElement(bullet);
+	}
 }

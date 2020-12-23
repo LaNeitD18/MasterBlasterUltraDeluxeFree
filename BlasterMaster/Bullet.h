@@ -15,7 +15,7 @@ enum BulletLevel :int {
 };
 
 enum BulletFlag : int {
-	BULLET_STATE_EXPLODE	= 0x0001
+	BULLET_STATE_EXPLODE	= 0x0001,
 };
 
 enum BulletAni :int {
@@ -32,6 +32,7 @@ enum BulletAni :int {
 enum BulletDamageModifier : int {
 	BULLET_MODIFIER_NONE				= 0,
 	BULLET_MODIFIER_BREAKABLE_WALL		= 1,
+	BULLET_MODIFIER_BREAKABLE_ROCK		= 3,
 	BULLET_MODIFIER_JASON_VULNERABLE	= 2,
 };
 
@@ -85,7 +86,7 @@ public:
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 };
 
-class SophiaBullet : public PlayerBullet
+class SophiaBullet : public PlayerBullet, public Managed<Bullet>
 {
 	int level;
 public:
@@ -109,7 +110,7 @@ public:
 };
 
 #define JASON_SIDEVIEW_BULLET_TIME_TO_LIVE 30
-class JasonSideviewBullet : public TimedPlayerBullet
+class JasonSideviewBullet : public TimedPlayerBullet, public Managed<Bullet>
 {
 public:
 	JasonSideviewBullet(Point pos, Point v);
@@ -119,12 +120,20 @@ public:
 	virtual int GetDamage(BulletDamageModifier modifier) override;
 };
 
-#define JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE 300
+#define JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE_RANGE_MIN 50
+#define JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE_RANGE_MAX 90
+#define JASON_OVERHEAD_BULLET_NORM_DAMAGE_RANGE_MIN 7
+#define JASON_OVERHEAD_BULLET_NORM_DAMAGE_RANGE_MAX 12
 class JasonOverheadBulletNorm : public TimedPlayerBullet, Managed<Bullet>
 {
+	int damage;
 public:
-	JasonOverheadBulletNorm(Point pos, Point v);
+	// float power: value between 0..1 for MIN_POWER to MAX_POWER
+	JasonOverheadBulletNorm(Point pos, Point v, float power);
 	virtual ~JasonOverheadBulletNorm();
+
+	virtual void Interact(Interactable* other);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 
 	// Inherited via TimedPlayerBullet
 	virtual int GetDamage(BulletDamageModifier modifier) override;
@@ -132,38 +141,48 @@ public:
 
 #define JASON_OVERHEAD_GRENADE_TIME_TO_LIVE 10
 
-class JasonOverheadBulletGrenade : public TimedPlayerBullet
+class JasonOverheadBulletGrenade : public TimedPlayerBullet, Managed<Bullet>
 {
+	float power;
 public:
-	JasonOverheadBulletGrenade(Point pos, Point v);
+	JasonOverheadBulletGrenade(Point pos, Point v, float power);
 	virtual ~JasonOverheadBulletGrenade();
 
 	// Inherited via TimedPlayerBullet
 	virtual int GetDamage(BulletDamageModifier modifier) override;
 
-	virtual BoundingBox GetBoundingBox();
-	virtual void Render();
+	virtual BoundingBox GetBoundingBox() override;
+	virtual void Update() override;
 };
 
 #define JASON_OVERHEAD_GRENADE_FRAGMENT_BBOX_LEFT 10
 #define JASON_OVERHEAD_GRENADE_FRAGMENT_BBOX_TOP 10
 #define JASON_OVERHEAD_GRENADE_FRAGMENT_BBOX_RIGHT 10
 #define JASON_OVERHEAD_GRENADE_FRAGMENT_BBOX_BOTTOM 10
-class JasonOverheadBulletGrenadeFragment : public PlayerBullet
+#define JASON_OVERHEAD_GRENADE_FRAGMENT_VARIANCE_RANGE 10
+#define JASON_OVERHEAD_GRENADE_FRAGMENT_TTL_MAX 30
+#define JASON_OVERHEAD_GRENADE_FRAGMENT_TTL_MIN 20
+class JasonOverheadBulletGrenadeFragment : public TimedPlayerBullet
 {
 	int damage;
+	Point initialPos;
 public:
-	JasonOverheadBulletGrenadeFragment(Point pos, int damage);
+	// float power: value between 0..1 for MIN_POWER to MAX_POWER
+	JasonOverheadBulletGrenadeFragment(Point pos, float power);
 	virtual ~JasonOverheadBulletGrenadeFragment();
 
 	// Inherited via TimedPlayerBullet
 	virtual int GetDamage(BulletDamageModifier modifier) override;
+
+	virtual void Update() override;
 };
 
 #define THUNDER_BBOX_OFFSET_LEFT	   -16 + 1
 #define THUNDER_BBOX_OFFSET_RIGHT		16 - 1
 #define THUNDER_BBOX_OFFSET_TOP		   -32 + 1
 #define THUNDER_BBOX_OFFSET_BOTTOM		32 - 1
+
+#define THUNGER_BULLET_DAMAGE			15
 
 class ThunderBullet : public PlayerBullet
 {

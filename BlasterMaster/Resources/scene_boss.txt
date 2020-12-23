@@ -1,0 +1,47 @@
+# id	file_path	transparent_color_r	g	b
+[TEXTURES]
+1	Resources\sprites\Jason_Overhead.png	254	255	255
+17	Resources\sprites\116445.png	0	57	115
+19	Resources\sprites\bosses.png	254	255	255
+101	Resources\bbox1.png	255	255	255
+# next sprite
+
+[SPRITES]
+# id format
+#1 JASON OVERHEAD
+Resources\Enemies\Jason_Overhead_sprites.txt
+
+#400 BOSS
+Resources\Enemies\boss_sprites.txt
+
+#17 BULLET
+Resources\Enemies\bullet_sprites.txt
+
+#101 box1
+Resources\scene_opening_bbox1_sprites.txt
+
+[ANIMATIONS]
+# id format
+#1 ==== JASON OVERHEAD =========
+Resources\Enemies\Jason_Overhead_ani.txt
+
+#400 ==== BOSS =========
+Resources\Enemies\boss_ani.txt
+
+#17 ==== BULLET =========
+Resources\Enemies\bullet_ani.txt
+
+#101 == box1 ==
+Resources\scene_opening_bbox1_ani.txt
+
+[OBJECTS]
+# type	x	y	ani_set_id1	ani_set_id2...
+
+# bbox
+101	120	143	101
+
+# BOSS
+21	50	55	400
+
+# JASONO
+12	50	50	1

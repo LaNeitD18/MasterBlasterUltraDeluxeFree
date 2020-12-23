@@ -7,6 +7,7 @@
 #include "Sprites.h"
 #include "GameObject.h"
 #include "GameGlobal.h"
+#include "SceneBoss.h"
 
 #include "Worm.h"
 
@@ -155,6 +156,15 @@ void SceneOpening::Init()
 void SceneOpening::Update()
 {
 	input->Update();
+
+	// test continue game
+	if ((*input)[VK_BACK] && KEY_STATE_DOWN) {
+		this->Release();
+		Game::GetInstance()->Init(L"Resources/scene.txt", 5);
+		SceneBoss* scene = dynamic_cast<SceneBoss*>(Game::GetInstance()->GetCurrentScene());
+		scene->liveShow = 0;
+		return;
+	}
 
 	if (enterState == 2) {
 		//Game::GetInstance()->SwitchScene(2);
