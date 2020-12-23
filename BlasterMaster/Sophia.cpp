@@ -519,6 +519,9 @@ void Sophia::Shoot()
 
 void Sophia::ShootThunder()
 {
+	if (GameGlobal::GetNumberSpecialBullet2() <= 0)
+		return;
+
 	Point thunderPos = pos + Point(0, 50);
 	int thunderDirX = rand() % 2;
 	if (thunderDirX == 0)	thunderDirX = -1;
@@ -531,6 +534,9 @@ void Sophia::ShootThunder()
 
 void Sophia::ShootHoming()
 {
+	if (GameGlobal::GetNumberSpecialBullet1() <= 0)
+		return;
+
 	Point bulletV;
 	Point bulletOffset;
 	if (state & SOPHIA_STATE_LOOKING_LEFT) {
