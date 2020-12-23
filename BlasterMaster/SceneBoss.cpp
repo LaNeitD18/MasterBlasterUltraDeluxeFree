@@ -103,6 +103,10 @@ SceneBoss::~SceneBoss()
 #define OBJECT_TYPE_JASON_OVERHEAD 12
 #define OBJECT_TYPE_BOSS 21
 
+//LeSon
+#define ENVIRONMENT_TYPE_WALL 1
+
+
 #define MAX_SCENE_LINE 1024
 
 void SceneBoss::_ParseSection_TEXTURES(string line)
@@ -315,7 +319,9 @@ void SceneBoss::_ParseSection_ENVIRONMENT(string line)
 
 	switch (env_type)
 	{
-
+	case ENVIRONMENT_TYPE_WALL:
+		env = new Env_Wall(x, y, width, height);
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid env type: %d\n", env_type);
 		return;
@@ -675,7 +681,12 @@ void SceneBoss::Render()
 		count = DURATION_OF_LIVESHOW + 1;
 		//mMap->Draw();
 		for (auto object : objects) {
-			if (dynamic_cast<JasonOverhead*>(object) == NULL) {
+			if (dynamic_cast<SceneBox1*>(object) != NULL) {
+				object->Render();
+			}
+		}
+		for (auto object : objects) {
+			if (dynamic_cast<JasonOverhead*>(object) == NULL && dynamic_cast<SceneBox1*>(object) == NULL) {
 				object->Render();
 			}
 		}

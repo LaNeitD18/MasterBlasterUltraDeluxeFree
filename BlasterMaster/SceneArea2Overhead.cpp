@@ -647,17 +647,18 @@ void SceneArea2Overhead::Update()
 		}
 		//*/
 
-		for (auto object : onScreenObj)
-		{
-			object->Update();
-		}
-
 		// Long
 		//*
 		for (int i = 0; i < onScreenObj.size(); i++)
 			for (int j = i + 1; j < onScreenObj.size(); j++)
 				onScreenObj[i]->Interact(onScreenObj[j]);
 		//*/
+
+		for (auto object : onScreenObj)
+		{
+			object->Update();
+		}
+
 
 		// temporary global set hp for both sophia jason
 	}

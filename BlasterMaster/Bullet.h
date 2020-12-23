@@ -58,7 +58,6 @@ public:
 	// Inherited via AnimatedGameObject
 	virtual BoundingBox GetBoundingBox();
 	virtual void Update();
-
 	virtual void Render();
 	virtual void SetAnimationSet(AnimationSet* aniSet);
 
