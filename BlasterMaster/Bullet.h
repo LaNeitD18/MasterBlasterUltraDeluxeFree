@@ -203,7 +203,7 @@ public:
 };
 
 #define ROCKET_BULLET_DAMAGE			15
-#define ROCKET_ROTATIOn_SPEED			0.1f
+#define ROCKET_ROTATIOn_SPEED			0.03f
 #define ROCKET_SPEED					1.0f
 class RocketBullet : public PlayerBullet 
 {

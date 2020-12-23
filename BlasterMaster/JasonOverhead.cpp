@@ -20,7 +20,7 @@ JasonOverhead::JasonOverhead(float x, float y)
 {
 	pos = Point(x, y);
 
-	SetState(JASONO_STATE_GOING_UP);
+	SetState(JASONO_STATE_LOOKING_UP);
 	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 	//SetAnimationType(0);
 	// set looking right
@@ -61,17 +61,22 @@ BoundingBox JasonOverhead::GetBoundingBox()
 
 void JasonOverhead::Render()
 {
-	if (state == JASONO_STATE_GOING_UP)
+	if (state & JASONO_STATE_LOOKING_UP)
 		SetAnimationType(JASONO_ANI_GO_UP);
-	else if (state == JASONO_STATE_GOING_DOWN)
+	else if (state & JASONO_STATE_LOOKING_DOWN)
 		SetAnimationType(JASONO_ANI_GO_DOWN);
-	else if (state == JASONO_STATE_DEAD)
+	else if (state & JASONO_STATE_DEAD)
 		SetAnimationType(JASONO_ANI_DEAD);
-	else if (state == JASONO_STATE_DYING) {
+	else if (state & JASONO_STATE_DYING) {
 		SetAnimationType(JASONO_ANI_DYING);
 	}
-	else
+	else {
+		if (state & JASONO_STATE_LOOKING_LEFT)
+			isFlipVertical = false;
+		else
+			isFlipVertical = true;
 		SetAnimationType(JASONO_ANI_WALK);
+	}
 
 	if (currentAnimation == NULL)
 		return;
@@ -139,38 +144,62 @@ void JasonOverhead::Update()
 		v.y = 0;
 
 	if (!dead) {
-		if ((input[VK_LEFT] & KEY_STATE_DOWN) &&
-			(input[VK_RIGHT] & KEY_STATE_DOWN))
-			GoHalt();
-		else if (input[VK_LEFT] & KEY_STATE_DOWN) {
+		if (!(input[INPUT_LEFT] & KEY_STATE_DOWN) ^
+			(input[INPUT_RIGHT] & KEY_STATE_DOWN)) {
+			GoHaltHorizontal();
+		}
+		else if (input[INPUT_LEFT] & KEY_STATE_DOWN) {
 			GoLeft();
-			newState = JASONO_STATE_LOOKING_LEFT;
-			isFlipVertical = false;
+
+			if (!(input[INPUT_UP] & KEY_STATE_DOWN) ^ (input[INPUT_DOWN] & KEY_STATE_DOWN)) {
+				newState |= JASONO_STATE_LOOKING_LEFT;
+				newState &= ~JASONO_STATE_LOOKING_RIGHT;
+				newState &= ~JASONO_STATE_LOOKING_UP;
+				newState &= ~JASONO_STATE_LOOKING_DOWN;
+			}
 		}
-		else if (input[VK_RIGHT] & KEY_STATE_DOWN) {
+		else if (input[INPUT_RIGHT] & KEY_STATE_DOWN) {
 			GoRight();
-			newState = JASONO_STATE_LOOKING_LEFT;
-			isFlipVertical = true;
+
+			if (!(input[INPUT_UP] & KEY_STATE_DOWN) ^ (input[INPUT_DOWN] & KEY_STATE_DOWN)) {
+				newState &= ~JASONO_STATE_LOOKING_LEFT;
+				newState |= JASONO_STATE_LOOKING_RIGHT;
+				newState &= ~JASONO_STATE_LOOKING_UP;
+				newState &= ~JASONO_STATE_LOOKING_DOWN;
+			}
 		}
+
+		if (!(input[INPUT_UP] & KEY_STATE_DOWN) ^
+			(input[INPUT_DOWN] & KEY_STATE_DOWN))
+			GoHaltVertical();
 		else if (input[INPUT_UP] & KEY_STATE_DOWN) {
 			GoUp();
-			newState = JASONO_STATE_GOING_UP;
+
+			if (!(input[INPUT_RIGHT] & KEY_STATE_DOWN) ^ (input[INPUT_LEFT] & KEY_STATE_DOWN)) {
+				newState &= ~JASONO_STATE_LOOKING_LEFT;
+				newState &= ~JASONO_STATE_LOOKING_RIGHT;
+				newState |= JASONO_STATE_LOOKING_UP;
+				newState &= ~JASONO_STATE_LOOKING_DOWN;
+			}
 		}
 		else if (input[INPUT_DOWN] & KEY_STATE_DOWN) {
 			GoDown();
-			newState = JASONO_STATE_GOING_DOWN;
+
+			if (!(input[INPUT_RIGHT] & KEY_STATE_DOWN) ^ (input[INPUT_LEFT] & KEY_STATE_DOWN)) {
+				newState &= ~JASONO_STATE_LOOKING_LEFT;
+				newState &= ~JASONO_STATE_LOOKING_RIGHT;
+				newState &= ~JASONO_STATE_LOOKING_UP;
+				newState |= JASONO_STATE_LOOKING_DOWN;
+			}
 		}
-		else {
-			v.x = v.y = 0;
-		}
-		if (input[INPUT_JUMP] == KEY_STATE_ON_DOWN)
-		{
-			ShootGrenade();
-		} else
-		if (input[INPUT_SHOOT] == KEY_STATE_ON_DOWN)
-		{
-			ShootNorm();
-		}
+	}
+	if (input[INPUT_JUMP] == KEY_STATE_ON_DOWN)
+	{
+		ShootGrenade();
+	}
+	else if (input[INPUT_SHOOT] == KEY_STATE_ON_DOWN)
+	{
+		ShootNorm();
 	}
 
 	/*if (wallBot && v.y == 0 && v.x != 0)
@@ -248,7 +277,6 @@ void JasonOverhead::SetAnimationType(int ANI)
 
 void JasonOverhead::GoLeft()
 {
-	v.y = 0;
 	v.x -= JASONO_ACCELERATION;
 
 	if (v.x < -JASONO_WALKING_SPEED)
@@ -260,7 +288,6 @@ void JasonOverhead::GoLeft()
 
 void JasonOverhead::GoRight()
 {
-	v.y = 0;
 	v.x += JASONO_ACCELERATION;
 
 	if (v.x > JASONO_WALKING_SPEED)
@@ -272,7 +299,6 @@ void JasonOverhead::GoRight()
 
 void JasonOverhead::GoUp()
 {
-	v.x = 0;
 	v.y -= JASONO_ACCELERATION;
 
 	if (v.y < -JASONO_WALKING_SPEED)
@@ -284,7 +310,6 @@ void JasonOverhead::GoUp()
 
 void JasonOverhead::GoDown()
 {
-	v.x = 0;
 	v.y += JASONO_ACCELERATION;
 
 	if (v.y > JASONO_WALKING_SPEED)
@@ -294,7 +319,7 @@ void JasonOverhead::GoDown()
 		v.y = 0;
 }
 
-void JasonOverhead::GoHalt()
+void JasonOverhead::GoHaltHorizontal()
 {
 	bool positive = v.x > 0;
 	v.x = abs(v.x) - JASONO_ACCELERATION;
@@ -309,20 +334,32 @@ void JasonOverhead::GoHalt()
 		v.x = 0;
 }
 
+void JasonOverhead::GoHaltVertical()
+{
+	bool positive = v.y > 0;
+	v.y = abs(v.y) - JASONO_ACCELERATION;
+	if (v.y < 0)
+		v.y = 0;
+	if (!positive)
+		v.y = -v.y;
+
+	if (v.y > 0 && wallRight)
+		v.y = 0;
+	if (v.y < 0 && wallRight)
+		v.y = 0;
+}
+
 void JasonOverhead::ShootNorm()
 {
 	Point v;
-	if (state & JASONO_STATE_GOING_UP)
+	if (state & JASONO_STATE_LOOKING_RIGHT)
+		v = Point(JASONO_BULLET_SPEED, 0);
+	else if (state & JASONO_STATE_LOOKING_LEFT)
+		v = Point(-JASONO_BULLET_SPEED, 0);
+	else if (state & JASONO_STATE_LOOKING_UP)
 		v = Point(0, -JASONO_BULLET_SPEED);
-
-	if (state & JASONO_STATE_GOING_DOWN)
+	else if (state & JASONO_STATE_LOOKING_DOWN)
 		v = Point(0, JASONO_BULLET_SPEED);
-
-	if (state & JASONO_STATE_LOOKING_LEFT) {
-		if (isFlipVertical)
-			v = Point(JASONO_BULLET_SPEED, 0);
-		else v = Point(-JASONO_BULLET_SPEED, 0);
-	}
 
 	if (bulletPower >= JASONO_SINE_BULLET_POWER_THRESHOLD)
 	{
@@ -347,10 +384,10 @@ void JasonOverhead::ShootNorm()
 void JasonOverhead::ShootGrenade()
 {
 	Point v;
-	if (state & JASONO_STATE_GOING_UP)
+	if (state & JASONO_STATE_LOOKING_UP)
 		v = Point(0, -JASONO_GRENADE_SPEED);
 
-	if (state & JASONO_STATE_GOING_DOWN)
+	if (state & JASONO_STATE_LOOKING_DOWN)
 		v = Point(0, JASONO_GRENADE_SPEED);
 
 	if (state & JASONO_STATE_LOOKING_LEFT) {
