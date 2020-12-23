@@ -21,11 +21,11 @@
 enum JasonOverheadState
 {
 	JASONO_STATE_IDLE = 0,	// 
-	JASONO_STATE_WALKING = 1,	// moving and touching ground
 
+	JASONO_STATE_LOOKING_RIGHT = 1,	
 	JASONO_STATE_LOOKING_LEFT = 0x02,
-	JASONO_STATE_GOING_UP = 0x04,
-	JASONO_STATE_GOING_DOWN = 0x08,
+	JASONO_STATE_LOOKING_UP = 0x04,
+	JASONO_STATE_LOOKING_DOWN = 0x08,
 
 	JASONO_STATE_DYING = 0x10,
 	JASONO_STATE_DEAD = 0x20,
@@ -63,7 +63,8 @@ public:
 	void GoRight();
 	void GoUp();
 	void GoDown();
-	void GoHalt();
+	void GoHaltHorizontal();
+	void GoHaltVertical();
 	void ShootNorm();
 	void ShootGrenade();
 

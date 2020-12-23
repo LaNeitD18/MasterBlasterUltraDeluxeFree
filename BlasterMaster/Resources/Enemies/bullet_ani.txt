@@ -20,8 +20,11 @@
 # grenade fragment
 2000	20000	1
 
+# rocket
+3002	30000	10
+
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
 # Bullet
-17	567	568	569	580	581	582	583	2000
+17	567	568	569	580	581	582	3002	583	2000

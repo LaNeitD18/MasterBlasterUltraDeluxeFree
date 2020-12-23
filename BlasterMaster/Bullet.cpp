@@ -98,7 +98,8 @@ void Bullet::Update()
 {
 	pos += dx();
 
-	rotation = atan2(v.y, v.x);
+	if (v.length() != 0)
+		rotation = atan2(v.y, v.x);
 
 	if (state & BULLET_STATE_EXPLODE)
 		v = Point();
@@ -141,7 +142,10 @@ void Bullet::SetAnimationSet(AnimationSet* aniSet)
 	case 5:
 		SetAnimationType(BULLET_ANI_GRENADE);
 		break;
-	case 7:
+	case 6:
+		SetAnimationType(BULLET_ANI_ROCKET);
+		break;
+	case 8:
 		SetAnimationType(BULLET_ANI_GRENADE_FRAG);
 		break;
 	default:
@@ -399,4 +403,64 @@ int ThunderBullet::GetDamage(BulletDamageModifier modifier)
 	if (currentTime == 0)
 		return THUNGER_BULLET_DAMAGE;
 	else return 0;
+}
+
+HomingBullet::HomingBullet(Point pos, Point v) : RocketBullet(pos, v)
+{
+	isTargetAvailable = false;
+	target = proposedTarget = NULL;
+}
+
+HomingBullet::~HomingBullet()
+{
+}
+
+int RocketBullet::GetDamage(BulletDamageModifier modifier)
+{
+	return ROCKET_BULLET_DAMAGE;
+}
+
+void HomingBullet::Update()
+{
+	RocketBullet::Update();
+	Point targetLocation;
+	if (!isTargetAvailable)
+	{
+		if (proposedTarget == NULL)
+		{
+			// There are no targets, proposed or not
+			return;
+		}
+		else
+			target = proposedTarget;
+	}
+	targetLocation = target->GetPosition();
+	isTargetAvailable = false;
+
+	Point targetV = targetLocation - pos;
+	float targetRotation = atan2(targetV.y, targetV.x);
+
+	float leftRotation = targetRotation - rotation;
+	if (leftRotation < 0) leftRotation += M_PI * 2;
+	if (leftRotation < M_PI)
+	{
+		rotation += ROCKET_ROTATIOn_SPEED;
+		if (rotation > M_PI * 2) rotation -= M_PI * 2;
+	}
+	else
+	{
+		rotation -= ROCKET_ROTATIOn_SPEED;
+		if (rotation < 0) rotation += M_PI * 2;
+	}
+
+	v.x = cos(rotation) * ROCKET_SPEED;
+	v.y = sin(rotation) * ROCKET_SPEED;
+}
+
+RocketBullet::RocketBullet(Point pos, Point v) : PlayerBullet(pos, v, BULLET_ANI_ROCKET)
+{
+}
+
+RocketBullet::~RocketBullet()
+{
 }
