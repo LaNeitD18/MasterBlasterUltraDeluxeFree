@@ -91,6 +91,9 @@ Resources\Enemies\item_sprites.txt
 #131 THUNDER
 Resources\Enemies\thunder_bullet_sprites.txt
 
+#132 MULTIWARHEAD MISSILE
+Resources\Enemies\multiwarhead_missile_sprites.txt
+
 #400 BOSS
 Resources\Enemies\boss_sprites.txt
 
@@ -171,6 +174,9 @@ Resources\Enemies\item_ani.txt
 #131 ==== THUNDER =========
 Resources\Enemies\thunder_bullet_ani.txt
 
+#132 ==== MULTIWARHEAD MISSILE =========
+Resources\Enemies\multiwarhead_missile_ani.txt
+
 #400 ==== BOSS =========
 Resources\Enemies\boss_ani.txt
 
@@ -219,7 +225,6 @@ Resources\Enemies\boss_ani.txt
 
 # DOME
 5	285	2970	5
-5	285	2970	131
 5	300	2855	5
 5	1315	2970	5
 5	1420	2970	5

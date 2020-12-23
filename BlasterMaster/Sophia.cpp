@@ -3,6 +3,7 @@
 #include "JasonSideView.h"
 #include "Bullet.h"
 #include "Sound.h"
+#include "Utils.h"
 
 
 BoundingBox Sophia::GetBoundingBox()
@@ -203,6 +204,9 @@ void Sophia::Update()
 		{
 		case 2:
 			ShootThunder();
+			break;
+		case 3:
+			ShootMultiwarheadMissile();
 			break;
 		default:
 			break;
@@ -524,6 +528,29 @@ void Sophia::ShootThunder()
 	manager->AddElement(bullet);
 
 	GameGlobal::SetSpecialNumberBullet2(GameGlobal::GetNumberSpecialBullet2() - 1);
+}
+
+void Sophia::ShootMultiwarheadMissile()
+{
+	int dirX;
+	if (state & SOPHIA_STATE_LOOKING_LEFT) {
+		dirX = -1;
+	}
+	else {
+		dirX = 1;
+	}
+
+	for (int i = 1; i <= 3; i++) {
+		int numberOfMissile = GameGlobal::GetNumberSpecialBullet3();
+		if (numberOfMissile > 0) {
+			Point multiwarheadPos = pos;
+			MultiwarheadMissile* bullet = new MultiwarheadMissile(multiwarheadPos, dirX, i);
+			bullet->SetManager(manager);
+			manager->AddElement(bullet);
+
+			GameGlobal::SetSpecialNumberBullet3(GameGlobal::GetNumberSpecialBullet3() - 1);
+		}
+	}
 }
 
 bool Sophia::IsPrimaryPlayer()
