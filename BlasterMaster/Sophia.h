@@ -107,6 +107,7 @@ public:
 	void Shoot();
 	void ShootThunder();
 	void ShootMultiwarheadMissile();
+	void ShootHoming();
 
 	virtual bool IsPrimaryPlayer() override;
 

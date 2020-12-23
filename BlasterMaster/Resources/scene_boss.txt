@@ -38,10 +38,18 @@ Resources\scene_opening_bbox1_ani.txt
 # type	x	y	ani_set_id1	ani_set_id2...
 
 # bbox
-101	120	143	101
+101	120	141	101
 
 # BOSS
-21	50	55	400
+21	120	55	400
 
 # JASONO
-12	50	50	1
+12	120	190	1
+
+[ENVIRONMENTS]
+# type	x	y	width	height	portaldirid	sectionToEnter
+# section A
+1	-20	0	23	280
+1	0	-20	270	20
+1	0	242	270	20
+1	251	0	20	280

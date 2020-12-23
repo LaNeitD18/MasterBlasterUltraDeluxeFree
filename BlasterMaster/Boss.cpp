@@ -11,7 +11,7 @@ Boss::Boss() {
 	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 	leftArmTargetDirectionEnum = 0;
 	rightArmTargetDirectionEnum = 1;
-	HealthPoint = 100000000;
+	HealthPoint = BOSS_HEALTHPOINT;
 }
 
 Boss::Boss(float x, float y) {
@@ -20,7 +20,7 @@ Boss::Boss(float x, float y) {
 	leftArmTargetDirectionEnum = 0;
 	rightArmTargetDirectionEnum = 1;
 	//SetState();
-	HealthPoint = 100000000;
+	HealthPoint = BOSS_HEALTHPOINT;
 }
 
 Boss::~Boss()
@@ -120,6 +120,12 @@ void Boss::Render()
 	AnimatedGameObject::Render();
 
 	//RenderBoundingBox();
+}
+
+void Boss::TakeDamage(int damage)
+{
+	Enemy::TakeDamage(damage);
+	DebugOut(L"Boss HP: %d \n", HealthPoint);
 }
 
 void Boss::SetState(int state)

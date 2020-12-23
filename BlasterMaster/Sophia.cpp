@@ -202,6 +202,9 @@ void Sophia::Update()
 	{
 		switch ((GameGlobal::GetSpecialBulletType()))
 		{
+		case 1:
+			ShootHoming();
+			break;
 		case 2:
 			ShootThunder();
 			break;
@@ -551,6 +554,29 @@ void Sophia::ShootMultiwarheadMissile()
 			GameGlobal::SetSpecialNumberBullet3(GameGlobal::GetNumberSpecialBullet3() - 1);
 		}
 	}
+}
+void Sophia::ShootHoming()
+{
+	Point bulletV;
+	Point bulletOffset;
+	if (state & SOPHIA_STATE_LOOKING_LEFT) {
+		bulletV = Point(-SOPHIA_BULLET_SPEED, 0);
+		bulletOffset = Point(SOPHIA_BULLET_OFFSET_X, SOPHIA_BULLET_OFFSET_Y);
+	}
+	else {
+		bulletV = Point(SOPHIA_BULLET_SPEED, 0);
+		bulletOffset = Point(-SOPHIA_BULLET_OFFSET_X, SOPHIA_BULLET_OFFSET_Y);
+	}
+	if (state & SOPHIA_STATE_LOOKED_UP)
+		bulletV = Point(0, -SOPHIA_BULLET_SPEED);
+	HomingBullet* bullet = new HomingBullet(
+		pos + bulletOffset,
+		bulletV);
+
+	bullet->SetManager(manager);
+	manager->AddElement(bullet);
+
+	GameGlobal::SetSpecialNumberBullet1(GameGlobal::GetNumberSpecialBullet1() - 1);
 }
 
 bool Sophia::IsPrimaryPlayer()

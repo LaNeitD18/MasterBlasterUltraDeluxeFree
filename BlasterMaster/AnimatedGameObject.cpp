@@ -2,6 +2,7 @@
 #include "Utils.h"
 #include "ItemPower.h"
 #include "ItemHover.h"
+#include "Boss.h"
 
 static D3DCOLOR invulnerableColor[2] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(0,255,255,255) };
 
@@ -49,6 +50,9 @@ void Enemy::TakeDamage(int damage)
 		return;
 	HealthPoint -= damage;
 	damageFrame = DURATION_OF_DAMAGE_FLASH;
+	if(dynamic_cast<Boss*>(this) != NULL){
+		return;
+	}
 	if (HealthPoint <= 0) {
 		// get position of obj
 		Point pos = this->GetPosition();
@@ -62,13 +66,13 @@ void Enemy::TakeDamage(int damage)
 			item_power->SetManager(manager);
 			manager->AddElement(item_power);
 		}
-		else
-		//*/
-		if (random <= RATE_DISPLAY_POWER_ITEM + RATE_DISPLAY_HOVER_ITEM) {
+		/*/
+		else if (random <= RATE_DISPLAY_POWER_ITEM + RATE_DISPLAY_HOVER_ITEM) {
 			ItemHover* item_hover = new ItemHover(pos);
 			item_hover->SetManager(manager);
 			manager->AddElement(item_hover);
 		}
+		//*/
 	}
 }
 

@@ -894,6 +894,9 @@ void Interactable::Interact(PlayerBullet* bullet, Env_Wall * wall)
 	BoundingBox bulletBox = bullet->GetBoundingBox();
 	BoundingBox wallBox = wall->GetBoundingBox();
 
+	HomingBullet* homing = dynamic_cast<HomingBullet*>(bullet);
+	if (homing != NULL)
+		return;
 	if (wallBox.SweptAABB(bulletBox, bullet->dx()) != -INFINITY)
 		bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
 }
@@ -908,6 +911,13 @@ void Interactable::Interact(PlayerBullet* bullet, Enemy* enemy) {
 		if (!isGrenadeBullet) {
 			bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
 		}
+	}
+	HomingBullet* homing = dynamic_cast<HomingBullet*>(bullet);
+	if (homing != NULL) {
+		if (homing->proposedTarget == NULL || (homing->proposedTarget->pos - homing->pos).length() > (homing->pos - enemy->pos).length())
+			homing->proposedTarget = enemy;
+		if (homing->target == (GameObject*)enemy)
+			homing->isTargetAvailable = true;
 	}
 }
 void Interactable::Interact(JasonSideView * player, Env_Ladder * ladder) {

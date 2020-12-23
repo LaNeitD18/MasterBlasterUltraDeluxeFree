@@ -3,10 +3,12 @@
 #include "Manager.h"
 #include <vector>
 
-#define BODY_BBOX_OFFSET_LEFT	   -60 + 1
-#define BODY_BBOX_OFFSET_RIGHT		60 - 1
-#define BODY_BBOX_OFFSET_TOP	   -66 + 1
-#define BODY_BBOX_OFFSET_BOTTOM		66 - 1
+#define BODY_BBOX_OFFSET_LEFT	   -30
+#define BODY_BBOX_OFFSET_RIGHT		30
+#define BODY_BBOX_OFFSET_TOP	   -33
+#define BODY_BBOX_OFFSET_BOTTOM		33
+
+#define BOSS_HEALTHPOINT	100
 
 #define BOSS_ARM_AMOUNT				4
 // BOSS_ARM_AMOUNT doesn't count the claws
@@ -33,6 +35,7 @@ public:
 	virtual BoundingBox GetBoundingBox();
 	virtual void Update();
 	virtual void Render();
+	virtual void TakeDamage(int damage);
 private:
 	std::vector<BossArm*> leftArm;
 	std::vector<BossArm*> rightArm;
