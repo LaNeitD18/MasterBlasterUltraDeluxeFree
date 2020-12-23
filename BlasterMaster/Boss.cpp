@@ -4,7 +4,9 @@
 #include "Sound.h"
 #include "GameGlobal.h"
 
-static Point targetDirectionOffset[4] = { Point(-40, 50),Point(40,50), Point(40,-20), Point(-40,-20) };
+#define NUMBER_ARM_MOVEMENT	12
+
+static Point targetDirectionOffset[NUMBER_ARM_MOVEMENT] = { Point(-40, 50), Point(40,50), Point(-80, 90), Point(80,90), Point(20,-30), Point(40,-20), Point(0,100), Point(0,-100), Point(-40,-20), Point(-20,30), Point(90,-100), Point(-90,100) };
 
 Boss::Boss() {
 	pos = Point();
@@ -83,12 +85,12 @@ void Boss::Update()
 	if (leftArm[BOSS_ARM_AMOUNT]->SetTargetLocation(leftArmShoulder + targetDirectionOffset[leftArmTargetDirectionEnum]))
 	{
 		leftArmTargetDirectionEnum++;
-		leftArmTargetDirectionEnum %= 4;
+		leftArmTargetDirectionEnum %= NUMBER_ARM_MOVEMENT;
 	}
 	if (rightArm[BOSS_ARM_AMOUNT]->SetTargetLocation(rightArmShoulder + targetDirectionOffset[rightArmTargetDirectionEnum]))
 	{
 		rightArmTargetDirectionEnum++;
-		rightArmTargetDirectionEnum %= 4;
+		rightArmTargetDirectionEnum %= NUMBER_ARM_MOVEMENT;
 	}
 
 	// Set TargetLocation for Arms
