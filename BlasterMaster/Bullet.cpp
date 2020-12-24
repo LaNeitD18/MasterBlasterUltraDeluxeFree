@@ -320,6 +320,7 @@ void JasonOverheadBulletGrenadeFragment::Update()
 	}
 }
 
+// Thunder Break
 ThunderBullet::ThunderBullet(Point pos, int numberOfThunder, int dirX, D3DCOLOR color) : PlayerBullet(pos, Point(), 0)
 {
 	this->pos = pos;
@@ -334,7 +335,6 @@ ThunderBullet::ThunderBullet(Point pos, int numberOfThunder, int dirX, D3DCOLOR 
 	else {
 		this->drawArguments.SetColor(color);
 	}
-	
 	
 	int randFlip = rand() % 2;
 	if (randFlip == 0) {
@@ -379,17 +379,16 @@ void ThunderBullet::SetRandomColor()
 
 void ThunderBullet::Update()
 {
-	if (numberOfThunder <= 2 && currentTime == 5 && !isCreateAnotherThunder) {
+	if (numberOfThunder <= 2 && currentTime == TIME_TO_CREATE_ANOTHER_THUNDER && !isCreateAnotherThunder) {
 		SetRandomColor();
 		Point thunderPos = this->pos + Point(4*dirX, 32);
 		ThunderBullet* bullet = new ThunderBullet(thunderPos, numberOfThunder, dirX, drawArguments.GetColor());
 		bullet->SetManager(manager);
 		manager->AddElement(bullet);
 		isCreateAnotherThunder = true;
-		DebugOut(L"num %d, curT %d\n", numberOfThunder, currentTime);
 	}
 		
-	if (this->currentTime == 9) {
+	if (this->currentTime == TIME_TO_REMOVE) {
 		manager->RemoveElement(this);
 	}
 }
@@ -402,7 +401,79 @@ void ThunderBullet::Render()
 int ThunderBullet::GetDamage(BulletDamageModifier modifier)
 {
 	if (currentTime == 0)
-		return THUNGER_BULLET_DAMAGE;
+		return THUNDER_BULLET_DAMAGE;
+	else return 0;
+}
+
+// Multiwarhead Missile
+MultiwarheadMissile::MultiwarheadMissile(Point pos, int dirX, int index) : RocketBullet(pos, Point())
+{
+	this->pos = pos;
+	this->dirX = dirX;
+	this->index = index;
+	
+	switch (index) {
+	case 1:
+		this->v = Point(MULTIWARHEAD_INITIAL_SPEED_X * dirX, MULTIWARHEAD_INITIAL_SPEED_Y * 0);
+		break;
+	case 2:
+		this->v = Point(MULTIWARHEAD_INITIAL_SPEED_X * dirX, -MULTIWARHEAD_INITIAL_SPEED_Y);
+		break;
+	case 3:
+		this->v = Point(MULTIWARHEAD_INITIAL_SPEED_X * dirX, MULTIWARHEAD_INITIAL_SPEED_Y);
+		break;
+	default:
+		break;
+	}
+
+	//SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(MULTIWARHEAD_ANISET_ID));
+}
+
+BoundingBox MultiwarheadMissile::GetBoundingBox()
+{
+	float left = pos.x + MULTIWARHEAD_BBOX_OFFSET_LEFT;
+	float top = pos.y + MULTIWARHEAD_BBOX_OFFSET_TOP;
+	float right = pos.x + MULTIWARHEAD_BBOX_OFFSET_RIGHT;
+	float bottom = pos.y + MULTIWARHEAD_BBOX_OFFSET_BOTTOM;
+
+	return BoundingBox(left, top, right, bottom);
+}
+
+void MultiwarheadMissile::Update()
+{
+	pos += dx();
+
+	switch (index) {
+	case 2:
+		v.y += MULTIWARHEAD_ACCELERATION;
+		break;
+	case 3:
+		v.y -= MULTIWARHEAD_ACCELERATION;
+		break;
+	default:
+		break;
+	}
+
+	if (!Camera::GetInstance()->GetBound().IsInsideBox(pos))
+		manager->RemoveElement(this);
+}
+
+void MultiwarheadMissile::Render()
+{
+	if (v.x > 0) {
+		isFlipVertical = true;
+	}
+	else {
+		isFlipVertical = false;
+	}
+
+	AnimatedGameObject::Render();
+}
+
+int MultiwarheadMissile::GetDamage(BulletDamageModifier modifier)
+{
+	if (currentTime == 0)
+		return MULTIWARHEAD_BULLET_DAMAGE;
 	else return 0;
 }
 

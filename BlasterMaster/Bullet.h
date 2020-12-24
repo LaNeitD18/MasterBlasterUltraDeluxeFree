@@ -182,7 +182,10 @@ public:
 #define THUNDER_BBOX_OFFSET_TOP		   -32 + 1
 #define THUNDER_BBOX_OFFSET_BOTTOM		32 - 1
 
-#define THUNGER_BULLET_DAMAGE			15
+#define TIME_TO_CREATE_ANOTHER_THUNDER	10 / 2
+#define TIME_TO_REMOVE					10 - 1
+
+#define THUNDER_BULLET_DAMAGE			15
 
 class ThunderBullet : public PlayerBullet
 {
@@ -225,6 +228,31 @@ public:
 	virtual void Update();
 };
 
+#define MULTIWARHEAD_BBOX_OFFSET_LEFT	   -8 + 1
+#define MULTIWARHEAD_BBOX_OFFSET_RIGHT		8 - 1
+#define MULTIWARHEAD_BBOX_OFFSET_TOP	   -4 + 1
+#define MULTIWARHEAD_BBOX_OFFSET_BOTTOM		4 - 1
+
+#define MULTIWARHEAD_INITIAL_SPEED_X		2.0f
+#define MULTIWARHEAD_INITIAL_SPEED_Y		1.0f
+#define MULTIWARHEAD_ACCELERATION			0.01f
+
+#define MULTIWARHEAD_BULLET_DAMAGE			15
+#define MULTIWARHEAD_ANISET_ID				132
+
+class MultiwarheadMissile : public RocketBullet
+{
+	int index;
+	int dirX;
+public:
+	MultiwarheadMissile(Point pos, int dirX, int index);
+	//virtual void SetState(int state);
+
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
+};
+
 class BossBullet : public EnemyBullet
 {
 public:
@@ -232,3 +260,4 @@ public:
 
 	virtual int GetDamage(BulletDamageModifier modifier) override;
 };
+	

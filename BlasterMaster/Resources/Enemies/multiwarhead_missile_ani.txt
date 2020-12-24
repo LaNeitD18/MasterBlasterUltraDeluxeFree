@@ -1,0 +1,9 @@
+# ani_id	sprite1_id	frames1	sprite2_id	frames2	...
+# normal
+1307	10307	5	10308	10
+#
+# id	ani1	ani2	ani3
+#
+[ANIMATION_SETS]
+# CANNON
+132	1307

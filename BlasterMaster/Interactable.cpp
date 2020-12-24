@@ -337,6 +337,7 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 	if (playerBox.IsOverlap(dungeonBox) && isJasonPlay) {
 		if (input[VK_DOWN] & KEY_STATE_DOWN) {
 			// set healthpoint sophia to global
+			Sound::getInstance()->play("scene_change", false, 1);
 			SceneArea2SideView* scene_sideview = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
 			for (auto x : scene_sideview->GetObjects()) {
 				Sophia* sophia = dynamic_cast<Sophia*>(x);
