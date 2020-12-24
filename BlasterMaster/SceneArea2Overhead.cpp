@@ -69,6 +69,7 @@ void SceneArea2Overhead::LoadContent()
 	foreMap = new GameMap("Map/General/level2-over-fores.tmx", textureLib, spriteLib);
 
 	healthBar = new HealthBar(textureLib, spriteLib);
+	gunBar = new GunBar(textureLib, spriteLib);
 
 	// camera setup
 	mCamera = new Camera(Point(GameGlobal::GetWidth(), GameGlobal::GetHeight()));
@@ -97,6 +98,8 @@ SceneArea2Overhead::~SceneArea2Overhead()
 	delete foreMap;
 	healthBar->Release();
 	delete healthBar;
+	gunBar->Release();
+	delete gunBar;
 }
 
 /*
@@ -779,6 +782,7 @@ void SceneArea2Overhead::Render()
 		}
 		foreMap->Draw();
 		healthBar->Draw();
+		gunBar->Draw();
 	}
 }
 
@@ -799,6 +803,8 @@ void SceneArea2Overhead::Release()
 	Scene::Release();
 
 	healthBar->Release();
+
+	gunBar->Release();
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

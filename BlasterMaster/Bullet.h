@@ -251,6 +251,7 @@ public:
 	virtual BoundingBox GetBoundingBox();
 	virtual void Update();
 	virtual void Render();
+	int GetDamage(BulletDamageModifier modifier);
 };
 
 class BossBullet : public EnemyBullet

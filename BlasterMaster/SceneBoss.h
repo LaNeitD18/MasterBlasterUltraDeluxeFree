@@ -5,6 +5,7 @@
 #include "GameMap.h"
 #include "Environment.h"
 #include "HealthBar.h"
+#include "GunBar.h"
 #include "Manager.h"
 #include <unordered_set>
 
@@ -25,6 +26,7 @@ protected:
 	GameMap* foreMap;
 
 	HealthBar* healthBar;
+	GunBar* gunBar;
 
 	void LoadContent();
 

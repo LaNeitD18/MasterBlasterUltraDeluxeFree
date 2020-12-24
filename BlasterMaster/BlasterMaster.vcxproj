@@ -26,6 +26,7 @@
     <ClInclude Include="Breakable_Tree.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="CannonBullet.h" />
+    <ClInclude Include="GunBar.h" />
     <ClInclude Include="ItemHover.h" />
     <ClInclude Include="QuadTree.h" />
     <ClInclude Include="SceneBoss.h" />
@@ -111,6 +112,7 @@
     <ClCompile Include="Breakable_Tree.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="CannonBullet.cpp" />
+    <ClCompile Include="GunBar.cpp" />
     <ClCompile Include="ItemHover.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="SceneBoss.cpp" />

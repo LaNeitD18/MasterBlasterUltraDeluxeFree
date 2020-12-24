@@ -308,7 +308,7 @@ Resources\Enemies\boss_ani.txt
 20	1660	525	20
 
 # BOSS
-21	285	2940	400
+#21	285	2940	400
 
 [ENVIRONMENTS]
 # type	x	y	width	height	portaldirid	sectionToEnter

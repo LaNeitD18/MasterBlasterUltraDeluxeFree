@@ -56,6 +56,7 @@ void SceneBoss::LoadContent()
 	foreMap = new GameMap("Map/General/level2-over-fores.tmx", textureLib, spriteLib);
 
 	healthBar = new HealthBar(textureLib, spriteLib);
+	gunBar = new GunBar(textureLib, spriteLib);
 
 	// camera setup
 	mCamera = new Camera(Point(GameGlobal::GetWidth(), GameGlobal::GetHeight()));
@@ -79,6 +80,8 @@ SceneBoss::~SceneBoss()
 	delete foreMap;
 	healthBar->Release();
 	delete healthBar;
+	gunBar->Release();
+	delete gunBar;
 }
 
 /*
@@ -427,7 +430,7 @@ void SceneBoss::Init()
 		}
 	}
 
-	/*target = NULL;
+	target = NULL;
 	for (auto x : objects) {
 		Player* current_player = dynamic_cast<Player*>(x);
 		if (current_player != NULL &&
@@ -435,7 +438,7 @@ void SceneBoss::Init()
 			mCamera->SetTarget(current_player);
 			target = current_player;
 		}
-	}*/
+	}
 
 	f.close();
 
@@ -618,14 +621,6 @@ void SceneBoss::Update()
 		}
 	}
 
-	// enter to switch scene
-	if ((*input)[VK_BACK] & KEY_STATE_DOWN) {
-		//Game::GetInstance()->SwitchScene(3);
-		this->Release();
-		Game::GetInstance()->Init(L"Resources/scene.txt", 2);
-		return;
-	}
-
 	JumpCheckpoint();
 
 	//if ((*input)[VK_LEFT] & KEY_STATE_DOWN)
@@ -697,6 +692,7 @@ void SceneBoss::Render()
 		}
 		//foreMap->Draw();
 		healthBar->Draw();
+		gunBar->Draw();
 	}
 }
 
@@ -717,6 +713,8 @@ void SceneBoss::Release()
 	Scene::Release();
 
 	healthBar->Release();
+
+	gunBar->Release();
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

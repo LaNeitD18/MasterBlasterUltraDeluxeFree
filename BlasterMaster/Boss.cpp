@@ -5,6 +5,7 @@
 #include "GameGlobal.h"
 
 #define NUMBER_ARM_MOVEMENT	12
+#define MAX_ROW_BOSS_REACH 90
 
 static Point targetDirectionOffset[NUMBER_ARM_MOVEMENT] = { Point(-40, 50), Point(40,50), Point(-80, 90), Point(80,90), Point(20,-30), Point(40,-20), Point(0,100), Point(0,-100), Point(-40,-20), Point(-20,30), Point(90,-100), Point(-90,100) };
 
@@ -62,7 +63,7 @@ void Boss::Update()
 	if (wallTop) {
 		v.y = BOSS_MOVING_SPEED;
 	}
-	else if (pos.y > 110) {
+	else if (pos.y > MAX_ROW_BOSS_REACH) {
 		v.y = -BOSS_MOVING_SPEED;
 	}
 
