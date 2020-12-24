@@ -2,6 +2,7 @@
 #include "Utils.h"
 #include "Camera.h"
 #include "GameGlobal.h"
+#include "Sound.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 
@@ -168,6 +169,16 @@ SophiaBullet::~SophiaBullet()
 	Managed<Bullet>::manager->RemoveElement(this);
 }
 
+void SophiaBullet::SetAnimationType(int ani)
+{
+	Animation* trg = animationSet->at(ani);
+	if (currentAnimation != trg && ani == BULLET_ANI_EXPLODE)
+	{
+		Sound::getInstance()->play("sophia_bullet_explosion", false, 1);
+	}
+	PlayerBullet::SetAnimationType(ani);
+}
+
 int SophiaBullet::GetDamage(BulletDamageModifier modifier)
 {
 	switch (modifier)
@@ -194,6 +205,16 @@ JasonSideviewBullet::JasonSideviewBullet(Point pos, Point v)
 JasonSideviewBullet::~JasonSideviewBullet()
 {
 	Managed<Bullet>::manager->RemoveElement(this);
+}
+
+void JasonSideviewBullet::SetAnimationType(int ani)
+{
+	Animation* trg = animationSet->at(ani);
+	if (currentAnimation != trg && ani == BULLET_ANI_EXPLODE)
+	{
+		Sound::getInstance()->play("sophia_bullet_explosion", false, 1);
+	}
+	PlayerBullet::SetAnimationType(ani);
 }
 
 int JasonSideviewBullet::GetDamage(BulletDamageModifier modifier)

@@ -274,6 +274,7 @@ void JasonSideView::Update()
 		v.y = -JASON_TINY_JUMP_SPEED;
 		sophia->SetState(sophia->GetState() | SOPHIA_STATE_ENTERING_VEHICLE);
 		sophia->SetAniByState(sophia->GetState());
+		Sound::getInstance()->play("swap_player", false, 1);
 	}
 
 	if ((state & JASON_STATE_ENTERING_VEHICLE) &&

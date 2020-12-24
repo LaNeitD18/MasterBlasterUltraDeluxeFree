@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "GameGlobal.h"
 #include "SceneBoss.h"
+#include "Sound.h"
 
 #include "Worm.h"
 
@@ -58,6 +59,7 @@ void SceneOpening::Init()
 {
 	//vector<tuple<int, int, int, int, int>> mapNav;
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
+	Sound::getInstance()->play("intro", false, 1);
 
 	// move bbox init
 	textureLib->Add(ID_TEX_BBOX, L"Resources\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
@@ -187,7 +189,7 @@ void SceneOpening::Update()
 	game->SetCamPos(pos);
 }
 
-#define DURATION_OF_TITLE 500
+#define DURATION_OF_TITLE 350
 #define DURATION_OF_TALE 1590
 #define DURATION_OF_ENTER_SOPHIA 300
 
@@ -423,6 +425,8 @@ void SceneOpeningTitle::Update()
 	SceneOpening* scene = dynamic_cast<SceneOpening*>(Game::GetInstance()->GetCurrentScene());
 	// enter to switch scene
 	if ((input[VK_RETURN] & KEY_STATE_DOWN) && scene->enterState == 0) {
+		Sound::getInstance()->stop("intro");
+		Sound::getInstance()->play("enter", false, 1);
 		scene->count = 0;
 		scene->enterState = 1;
 	}

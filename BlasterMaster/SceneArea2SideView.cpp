@@ -129,12 +129,15 @@ SceneArea2SideView::SceneArea2SideView(int id, LPCWSTR filePath, Game *game, Poi
 
 void SceneArea2SideView::LoadSound() 
 {
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/intro.wav", "intro");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/enter.wav", "enter");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/area2.wav", "area2");
-	Sound::getInstance()->play("area2", true, 0);
+	//Sound::getInstance()->play("intro", false, 1);
 
 	// sophia sound
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/sophia_fall_ground.wav", "sophia_fall_ground");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/jump.wav", "sophia_jump");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/sophia_bullet_explosion.wav", "sophia_bullet_explosion");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/sophia_shoot.wav", "sophia_shoot");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/sophia_explosion.wav", "sophia_explosion");
 
@@ -153,10 +156,13 @@ void SceneArea2SideView::LoadSound()
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/dome_jump.wav", "dome_jump");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/teleport.wav", "teleport");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/teleporter_shoot.wav", "teleporter_shoot");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/entering_boss_scene.wav", "entering_boss_scene");
 
 	Sound::getInstance()->setVolume(85, "");
-	Sound::getInstance()->setVolume(90, "area2");
+	//Sound::getInstance()->setVolume(90, "area2");
 	Sound::getInstance()->setVolume(90, "sophia_explosion");
+	Sound::getInstance()->setVolume(90, "sophia_fall_ground");
+	Sound::getInstance()->setVolume(90, "sophia_bullet_explosion");
 }
 
 void SceneArea2SideView::LoadContent()
@@ -1035,6 +1041,7 @@ void SceneArea2SideView::displayBulletState(){
 	Input& input = *GameGlobal::GetInput();
 	if (input[VK_RETURN] & KEY_STATE_DOWN) {
 		bulletState = true;
+		Sound::getInstance()->play("scene_change", false, 1);
 	}
 }
 
@@ -1042,6 +1049,7 @@ void SceneArea2SideView::backToGame() {
 	Input& input = *GameGlobal::GetInput();
 	if (input[VK_BACK] & KEY_STATE_DOWN) {
 		bulletState = false;
+		Sound::getInstance()->play("scene_change", false, 1);
 	}
 }
 
@@ -1057,6 +1065,8 @@ void SceneArea2SideView::Render()
 	}
 	else
 	{
+		Sound::getInstance()->stop("enter");
+		Sound::getInstance()->play("area2", true, 0);
 		if (!bulletState) {
 			displayBulletState();
 		}
