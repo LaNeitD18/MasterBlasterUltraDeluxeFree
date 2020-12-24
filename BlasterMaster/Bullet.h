@@ -224,3 +224,11 @@ public:
 
 	virtual void Update();
 };
+
+class BossBullet : public EnemyBullet
+{
+public:
+	BossBullet(Point pos, Point v);
+
+	virtual int GetDamage(BulletDamageModifier modifier) override;
+};

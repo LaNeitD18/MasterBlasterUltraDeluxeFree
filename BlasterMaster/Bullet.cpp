@@ -265,7 +265,8 @@ void JasonOverheadBulletGrenade::Update()
 		Managed<GameObject>::manager->AddElement(frag);
 		frag->SetManager(Managed<GameObject>::manager);
 
-		frag = new JasonOverheadBulletGrenadeFragment(pos, power);
+		frag = new JasonOverheadBulletGrenadeFragment(pos, 
+			-JASON_OVERHEAD_GRENADE_FRAGMENT_TTL_MIN / float(JASON_OVERHEAD_GRENADE_FRAGMENT_TTL_MAX - JASON_OVERHEAD_GRENADE_FRAGMENT_TTL_MIN));
 		Managed<GameObject>::manager->AddElement(frag);
 		frag->SetManager(Managed<GameObject>::manager);
 
@@ -463,4 +464,13 @@ RocketBullet::RocketBullet(Point pos, Point v) : PlayerBullet(pos, v, BULLET_ANI
 
 RocketBullet::~RocketBullet()
 {
+}
+
+BossBullet::BossBullet(Point pos, Point v) : EnemyBullet(pos, v, BULLET_ANI_ORB_SMALL)
+{
+}
+
+int BossBullet::GetDamage(BulletDamageModifier modifier)
+{
+	return 10;
 }
