@@ -3,6 +3,7 @@
 #include "ItemPower.h"
 #include "ItemHover.h"
 #include "Boss.h"
+#include "Sound.h"
 
 static D3DCOLOR invulnerableColor[2] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(0,255,255,255) };
 static D3DCOLOR damageBossColor[2] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255, 50, 50, 50) };
@@ -55,6 +56,7 @@ void Enemy::TakeDamage(int damage)
 		return;
 	}
 	if (HealthPoint <= 0) {
+		Sound::getInstance()->play("item", false, 1);
 		// get position of obj
 		Point pos = this->GetPosition();
 		manager->RemoveElement(this);

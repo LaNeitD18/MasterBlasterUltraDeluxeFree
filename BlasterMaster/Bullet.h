@@ -93,6 +93,7 @@ class SophiaBullet : public PlayerBullet, public Managed<Bullet>
 public:
 	SophiaBullet(Point pos, Point v, int level = 1);
 	virtual ~SophiaBullet();
+	virtual void SetAnimationType(int ani) override;
 
 	// Inherited via Bullet
 	virtual int GetDamage(BulletDamageModifier modifier) override;
@@ -116,6 +117,7 @@ class JasonSideviewBullet : public TimedPlayerBullet, public Managed<Bullet>
 public:
 	JasonSideviewBullet(Point pos, Point v);
 	virtual ~JasonSideviewBullet();
+	virtual void SetAnimationType(int ani) override;
 
 	// Inherited via TimedPlayerBullet
 	virtual int GetDamage(BulletDamageModifier modifier) override;

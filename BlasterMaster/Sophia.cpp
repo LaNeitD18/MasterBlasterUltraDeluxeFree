@@ -78,8 +78,11 @@ void Sophia::Update()
 		flags |= SOPHIA_STATE_AIRBORNE;
 		newState |= SOPHIA_STATE_AIRBORNE;
 	}
-	else
+	else {
 		newState &= ~SOPHIA_STATE_AIRBORNE;
+		if (state & SOPHIA_STATE_AIRBORNE)
+			Sound::getInstance()->play("sophia_fall_ground", false, 1);
+	}
 
 	// Turning: maintain state
 	// If sophia is looking left but key press right not left
@@ -146,6 +149,7 @@ void Sophia::Update()
 	if (!(newState & SOPHIA_STATE_AIRBORNE) && 
 		(input[INPUT_JUMP] == KEY_STATE_ON_DOWN))
 	{
+		Sound::getInstance()->play("sophia_jump", false, 1);
 		newState |= SOPHIA_STATE_JUMPING;
 		jumpBoostRemaining = SOPHIA_JUMP_BOOST_AMOUNT;
 	}
@@ -188,6 +192,7 @@ void Sophia::Update()
 		jason->v.x = v.x;
 		jason->v.y = -JASON_TINY_JUMP_SPEED;
 		manager->AddElement(jason);
+		Sound::getInstance()->play("swap_player", false, 1);
 
 		v = Point();
 	}

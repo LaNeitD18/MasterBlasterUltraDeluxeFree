@@ -2,6 +2,7 @@
 #include "Utils.h"
 #include "GameGlobal.h"
 #include "Camera.h"
+#include "Sound.h"
 
 SceneBullet::SceneBullet()
 {
@@ -18,12 +19,15 @@ void SceneBullet::SelectType()
 	Input& input = *GameGlobal::GetInput();
 	if ((input[VK_LEFT] & KEY_STATE_DOWN)) {
 		GameGlobal::SetSpecialBulletType(1);
+		Sound::getInstance()->play("scene_change", false, 1);
 	}
 	else if ((input[VK_DOWN] & KEY_STATE_DOWN)) {
 		GameGlobal::SetSpecialBulletType(2);
+		Sound::getInstance()->play("scene_change", false, 1);
 	}
 	else if ((input[VK_RIGHT] & KEY_STATE_DOWN)) {
 		GameGlobal::SetSpecialBulletType(3);
+		Sound::getInstance()->play("scene_change", false, 1);
 	}
 }
 
