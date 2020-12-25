@@ -190,7 +190,7 @@ void SceneOpening::Update()
 }
 
 #define DURATION_OF_TITLE 350
-#define DURATION_OF_TALE 1590
+#define DURATION_OF_TALE 1870
 #define DURATION_OF_ENTER_SOPHIA 300
 
 void SceneOpening::Render()
