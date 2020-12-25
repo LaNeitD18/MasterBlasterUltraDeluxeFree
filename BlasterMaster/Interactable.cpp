@@ -1005,6 +1005,33 @@ void Interactable::Interact(Boss* boss , Env_Wall* wall ) {
 		}
 	}
 }
+
+void Interactable::Interact(Boss* boss, Player* player) {
+	Interact((Enemy*)boss, player);
+	boss->targetPlayer = player->pos;
+}
+
+void Interactable::Interact(BossBullet* boss_bullet, Player* player) {
+	BoundingBox bulletBox = boss_bullet->GetBoundingBox();
+	BoundingBox playerBox = player->GetBoundingBox();
+	if (playerBox.SweptAABB(bulletBox, boss_bullet->dx() + player->dx()) != -INFINITY)
+	{
+		player->TakeDamage(10);
+	}
+}
+
+void Interactable::Interact(BossBullet* boss_bullet, PlayerBullet* player_bullet) {
+	BoundingBox bossbulletBox = boss_bullet->GetBoundingBox();
+	BoundingBox playerbulletBox = player_bullet->GetBoundingBox();
+	if (dynamic_cast<JasonOverheadBulletNorm*>(player_bullet) == NULL) {
+		return;
+	}
+	if (playerbulletBox.SweptAABB(bossbulletBox, boss_bullet->dx() + player_bullet->dx()) != -INFINITY) {
+		player_bullet->Managed<GameObject>::GetManager()->RemoveElement(player_bullet);
+		boss_bullet->Managed<GameObject>::GetManager()->RemoveElement(boss_bullet);
+	}
+}
+
 void Interactable::Interact(BossArm * , Env_Wall * ) {}
 #pragma endregion
 

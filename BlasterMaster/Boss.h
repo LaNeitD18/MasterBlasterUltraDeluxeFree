@@ -1,6 +1,7 @@
 #pragma once
 #include "AnimatedGameObject.h"
 #include "Manager.h"
+#include "Bullet.h"
 #include <vector>
 
 #define BOSS_MOVING_SPEED	0.1f
@@ -19,6 +20,7 @@
 
 #define BOSS_SHOULDER_OFFSET_X	30
 #define BOSS_SHOULDER_OFFSET_Y	-0
+#define BOSS_BULLET_SPEED	1.0f
 
 class BossArm;
 class BossClaw;
@@ -38,6 +40,8 @@ public:
 	virtual void Update();
 	virtual void Render();
 	virtual void TakeDamage(int damage);
+
+	Point targetPlayer;
 private:
 	std::vector<BossArm*> leftArm;
 	std::vector<BossArm*> rightArm;
@@ -46,6 +50,10 @@ private:
 
 	int leftArmTargetDirectionEnum;
 	int rightArmTargetDirectionEnum;
+
+	int timeToShoot;
+	int shootTurn;
+	void Shoot();
 };
 
 #define BOSS_ARM_ANIMATION_SET_NUMBER	300

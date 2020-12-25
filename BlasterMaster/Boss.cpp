@@ -1,4 +1,4 @@
-#include "Boss.h"
+﻿#include "Boss.h"
 #include "Utils.h"
 #include "Game.h"
 #include "Sound.h"
@@ -119,6 +119,22 @@ void Boss::Update()
 		leftArm[i]->SetTargetLocation((leftArm[i - 1]->pos + leftArm[i + 1]->pos) * 0.5);
 		rightArm[i]->SetTargetLocation((rightArm[i - 1]->pos + rightArm[i + 1]->pos) * 0.5);
 	}
+
+	// bullet
+	if (timeToShoot == 0) {
+		// nếu còn lượt thì bắn, trừ lượt và đặt lại time cho viên tiếp theo
+		if (shootTurn != 0) {
+			Shoot();
+			shootTurn--;
+			timeToShoot = 30;
+		}
+		else {
+			shootTurn = rand() % 1 + 4;
+			timeToShoot = 250;
+		}
+	}
+	timeToShoot--;
+
 	
 	for (int i = 0; i < leftArm.size(); i++)
 	{
@@ -144,6 +160,17 @@ void Boss::TakeDamage(int damage)
 {
 	Enemy::TakeDamage(damage);
 	DebugOut(L"Boss HP: %d \n", HealthPoint);
+}
+
+void Boss::Shoot()
+{
+	Point direction = targetPlayer - pos;
+	Point v = direction * (BOSS_BULLET_SPEED / direction.length());
+
+	BossBullet* bullet = new BossBullet(pos, v);
+	
+	bullet->SetManager(manager);
+	manager->AddElement(bullet);
 }
 
 void Boss::SetState(int state)

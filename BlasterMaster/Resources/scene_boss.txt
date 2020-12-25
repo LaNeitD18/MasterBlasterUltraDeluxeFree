@@ -4,6 +4,7 @@
 17	Resources\sprites\116445.png	0	57	115
 19	Resources\sprites\bosses.png	254	255	255
 101	Resources\bbox1.png	255	255	255
+18	Resources\sprites\ItemObjects.png	254	255	255
 # next sprite
 
 [SPRITES]

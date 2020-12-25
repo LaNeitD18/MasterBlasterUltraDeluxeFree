@@ -148,6 +148,9 @@ void Bullet::SetAnimationSet(AnimationSet* aniSet)
 	case 8:
 		SetAnimationType(BULLET_ANI_GRENADE_FRAG);
 		break;
+	case 9:
+		SetAnimationType(BULLET_ANI_BOSS);
+		break;
 	default:
 		//SetAnimationType(BULLET_ANI_NORM1);
 		DEBUG(throw 1);
@@ -193,7 +196,9 @@ JasonSideviewBullet::JasonSideviewBullet(Point pos, Point v)
 
 JasonSideviewBullet::~JasonSideviewBullet()
 {
-	Managed<Bullet>::manager->RemoveElement(this);
+	if (Managed<Bullet>::manager != NULL) {
+		Managed<Bullet>::manager->RemoveElement(this);
+	}
 }
 
 int JasonSideviewBullet::GetDamage(BulletDamageModifier modifier)
@@ -537,7 +542,7 @@ RocketBullet::~RocketBullet()
 {
 }
 
-BossBullet::BossBullet(Point pos, Point v) : EnemyBullet(pos, v, BULLET_ANI_ORB_SMALL)
+BossBullet::BossBullet(Point pos, Point v) : EnemyBullet(pos, v, BULLET_ANI_BOSS)
 {
 }
 

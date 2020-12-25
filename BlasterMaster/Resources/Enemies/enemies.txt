@@ -23,11 +23,11 @@
 # next Tien's sprite: 10193
 # next sprite: 10177			Tien
 # next sprite: 20000			Son
-# next sprite: 30002			Long
+# next sprite: 30003			Long
 
 # Next animation: 1000			Tien
 # Next animation: 2000			Son
-# Next animation: 3003			Long
+# Next animation: 3004			Long
 
 # Next set: 100				Tien
 # Next set: 200				Son

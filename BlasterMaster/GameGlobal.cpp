@@ -20,7 +20,7 @@ int GameGlobal::NumberBullet3 = 50;
 Point GameGlobal::lastPositionSophia = Point(0, 0);
 // temporary hp, set later for sophia jason
 int GameGlobal::HealthPoint = 80;
-int GameGlobal::SophiaHealthPoint = 100;
+int GameGlobal::SophiaHealthPoint = 80;
 int GameGlobal::livesToPlay = 2;
 Point GameGlobal::pointReturn = Point(56, 2955);
 BoundingBox GameGlobal::boundingReturn = BoundingBox(0, 2814, 1038, 3094);

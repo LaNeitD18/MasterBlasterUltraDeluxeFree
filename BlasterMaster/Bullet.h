@@ -27,7 +27,8 @@ enum BulletAni :int {
 	BULLET_ANI_GRENADE			= 5,		// grenade
 	BULLET_ANI_ROCKET			= 6,		// rocket
 	BULLET_ANI_EXPLODE			= 7,
-	BULLET_ANI_GRENADE_FRAG		= 8			// grenade fragment
+	BULLET_ANI_GRENADE_FRAG		= 8,		// grenade fragment
+	BULLET_ANI_BOSS				= 9,		// rocket
 };
 
 enum BulletDamageModifier : int {
@@ -260,5 +261,8 @@ public:
 	BossBullet(Point pos, Point v);
 
 	virtual int GetDamage(BulletDamageModifier modifier) override;
+
+	virtual void Interact(Interactable* other);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 };
 	

@@ -36,6 +36,10 @@ JasonSideView::JasonSideView(float x, float y)
 
 JasonSideView::~JasonSideView()
 {
+	for (Bullet* x : bullets) {
+		if (dynamic_cast<JasonSideviewBullet*>(x) != NULL)
+			dynamic_cast<JasonSideviewBullet*>(x)->Managed<Bullet>::SetManager(NULL);
+	}
 }
 /*
 bool JasonSideView::IsPrimaryPlayer()
