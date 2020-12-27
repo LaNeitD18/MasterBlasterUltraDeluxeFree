@@ -16,6 +16,7 @@
 #include "Teleporter.h"
 #include "Cannon.h"
 #include "Eyeball.h"
+#include "EyeballSpawner.h"
 #include "Breakable_Tree.h"
 
 #include "QuadTree.h"
@@ -131,6 +132,7 @@ SceneArea2Overhead::~SceneArea2Overhead()
 #define OBJECT_TYPE_ORB 10
 #define OBJECT_TYPE_WALKER 11
 #define OBJECT_TYPE_JASON_OVERHEAD 12
+#define OBJECT_TYPE_EYESPAWNER 13
 #define OBJECT_TYPE_BREAKABLE_TREE 298
 
 //LeSon
@@ -310,9 +312,9 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_EYE:
 		obj = new Eyeball(x, y);
 		break;
-	/*case OBJECT_TYPE_WALKER:
-		obj = new Walker(x, y);
-		break;*/
+	case OBJECT_TYPE_EYESPAWNER:
+		obj = new EyeballSpawner(x, y);
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;

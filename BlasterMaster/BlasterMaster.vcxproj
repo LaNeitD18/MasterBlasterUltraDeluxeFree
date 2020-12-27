@@ -100,9 +100,9 @@
     <ClInclude Include="Textures.h" />
     <ClInclude Include="useful_stuff.h" />
     <ClInclude Include="Utils.h" />
-    <ClInclude Include="Walker.h" />
+    <ClInclude Include="LinearEyeball.h" />
     <ClInclude Include="Worm.h" />
-    <ClInclude Include="WormPod.h" />
+    <ClInclude Include="EyeballSpawner.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimatedGameObject.cpp" />
@@ -181,9 +181,9 @@
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="useful_stuff.cpp" />
     <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="Walker.cpp" />
+    <ClCompile Include="LinearEyeball.cpp" />
     <ClCompile Include="Worm.cpp" />
-    <ClCompile Include="WormPod.cpp" />
+    <ClCompile Include="EyeballSpawner.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib.lib" />
