@@ -43,13 +43,14 @@ void GunBar::Draw()
 
 	Player* currentPlay = NULL;
 	Scene* currentScene = Game::GetInstance()->GetCurrentScene();
-	if (dynamic_cast<SceneArea2Overhead*>(currentScene) != NULL) {
+	/*if (dynamic_cast<SceneArea2Overhead*>(currentScene) != NULL) {
 		currentPlay = dynamic_cast<SceneArea2Overhead*>(currentScene)->GetTarget();
 	}
 	else if (dynamic_cast<SceneBoss*>(currentScene) != NULL) {
 		currentPlay = dynamic_cast<SceneBoss*>(currentScene)->GetTarget();
 	}
-	int currentGun = dynamic_cast<JasonOverhead*>(currentPlay)->bulletPower;
+	int currentGun = dynamic_cast<JasonOverhead*>(currentPlay)->bulletPower;*/
+	int currentGun = GameGlobal::GetJasonLevelGun();
 	int barId;
 	if (currentGun >= 80) {
 		currentGun = 80;

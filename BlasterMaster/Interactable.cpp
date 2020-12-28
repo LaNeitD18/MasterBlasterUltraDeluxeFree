@@ -426,7 +426,9 @@ void Interactable::Interact(Player* player, ItemPower* item) {
 	BoundingBox itemBox = item->GetBoundingBox();
 	if (playerBox.IsOverlap(itemBox)) {
 		Sound::getInstance()->play("item", false, 1);
-		player->SetHP(player->GetHP() + POWER_GAIN);
+		if (player->GetHP() < 80) {
+			player->SetHP(player->GetHP() + POWER_GAIN);
+		}
 		item->GetManager()->RemoveElement(item);
 	}
 }
@@ -438,6 +440,24 @@ void Interactable::Interact(Player* player, ItemHover* item) {
 		Sound::getInstance()->play("item", false, 1);
 		//TODO: setup hover for sophia
 		//displayMessage("i want to get this");
+		item->GetManager()->RemoveElement(item);
+	}
+}
+
+void Interactable::Interact(Player* player, ItemGun* item) {
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox itemBox = item->GetBoundingBox();
+	if (playerBox.IsOverlap(itemBox)) {
+		Sound::getInstance()->play("item", false, 1);
+		if (GameGlobal::GetJasonLevelGun() < 80) {
+			JasonOverhead* currentPlay = dynamic_cast<JasonOverhead*>(player);
+			if (currentPlay != NULL) {
+				currentPlay->bulletPower += 10;
+			}
+			else {
+				GameGlobal::SetJasonLevelGun(GameGlobal::GetJasonLevelGun() + 10);
+			}
+		}
 		item->GetManager()->RemoveElement(item);
 	}
 }

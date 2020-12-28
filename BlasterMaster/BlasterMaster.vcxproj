@@ -27,6 +27,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="CannonBullet.h" />
     <ClInclude Include="GunBar.h" />
+    <ClInclude Include="ItemGun.h" />
     <ClInclude Include="ItemHover.h" />
     <ClInclude Include="QuadTree.h" />
     <ClInclude Include="SceneBoss.h" />
@@ -113,6 +114,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="CannonBullet.cpp" />
     <ClCompile Include="GunBar.cpp" />
+    <ClCompile Include="ItemGun.cpp" />
     <ClCompile Include="ItemHover.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="SceneBoss.cpp" />

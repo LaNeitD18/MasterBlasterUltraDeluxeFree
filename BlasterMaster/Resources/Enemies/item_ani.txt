@@ -4,9 +4,13 @@
 
 # hover
 2002	20002	10
+
+# gun level
+2003	20003	10
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
 # ITEMS
 201	2001
 202	2002
+203	2003

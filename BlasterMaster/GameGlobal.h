@@ -61,6 +61,9 @@ public:
 	static int GetNumberSpecialBullet3();
 	static void SetSpecialNumberBullet3(int n);
 
+	static int GetJasonLevelGun();
+	static void SetJasonLevelGun(int n);
+
 	static Point GetReturnPoint();
 	static void SetReturnPoint(Point pos);
 	static BoundingBox GetReturnBoundingBox();
@@ -89,6 +92,8 @@ private:
 	static int NumberBullet1;
 	static int NumberBullet2;
 	static int NumberBullet3;
+
+	static int JasonLvGun;
 
 	static Point pointReturn;
 	static BoundingBox boundingReturn;
