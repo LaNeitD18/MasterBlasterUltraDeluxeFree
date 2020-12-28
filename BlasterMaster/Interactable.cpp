@@ -5,6 +5,7 @@
 #include "SceneArea2Overhead.h"
 #include "Game.h"
 #include "Utils.h"
+#include "SceneBoss.h"
 
 Interactable::Interactable()
 {
@@ -1031,6 +1032,15 @@ void Interactable::Interact(BossBullet* boss_bullet, PlayerBullet* player_bullet
 	if (playerbulletBox.SweptAABB(bossbulletBox, boss_bullet->dx() + player_bullet->dx()) != -INFINITY) {
 		player_bullet->Managed<GameObject>::GetManager()->RemoveElement(player_bullet);
 		boss_bullet->Managed<GameObject>::GetManager()->RemoveElement(boss_bullet);
+	}
+}
+
+void Interactable::Interact(JasonOverhead* player, Env_Enterboss* entering) {
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox enterBox = entering->GetBoundingBox();
+	if (playerBox.IsOverlap(enterBox)) {
+		SceneArea2Overhead* scene = dynamic_cast<SceneArea2Overhead*>(Game::GetInstance()->GetCurrentScene());
+		scene->enterBoss = 1;
 	}
 }
 

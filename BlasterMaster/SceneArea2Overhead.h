@@ -65,10 +65,13 @@ public:
 	unordered_set<GameObject*> GetObjects();
 
 	bool liveShow;
+	bool enterBoss;
 
 	// Inherited via Manager
 	virtual void AddElement(GameObject *) override;
 	virtual void RemoveElement(GameObject *) override;
+
+	int countEnterBoss;
 
 	static BoundingBox cameraLimitAreaOfSection[9];
 	static Point startPointInSection[5];

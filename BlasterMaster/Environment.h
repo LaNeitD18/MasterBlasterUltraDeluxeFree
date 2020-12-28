@@ -94,3 +94,11 @@ public:
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 	Env_Ladder(float x, float y, float width, float height);
 };
+
+class Env_Enterboss : public Environment
+{
+public:
+	virtual void Interact(Interactable* other);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
+	Env_Enterboss(float x, float y, float width, float height);
+};

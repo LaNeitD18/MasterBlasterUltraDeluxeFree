@@ -101,7 +101,7 @@ SceneBoss::~SceneBoss()
 
 //#define OBJECT_TYPE_PORTAL 50
 
-#define OBJECT_TYPE_BBOX 101
+#define OBJECT_TYPE_BBOX 505
 
 #define OBJECT_TYPE_JASON_OVERHEAD 12
 #define OBJECT_TYPE_BOSS 21
@@ -526,6 +526,8 @@ void SceneBoss::Update()
 				return;
 			}
 			//TODO: set again start pos when return play
+			GameGlobal::SetReturnPoint(SceneArea2Overhead::startPointInSection[4]);
+			GameGlobal::SetReturnBoundingBox(SceneArea2Overhead::cameraLimitAreaOfSection[6]);
 			this->Release();
 			Game::GetInstance()->Init(L"Resources/scene.txt", 3);
 			return;
@@ -582,42 +584,6 @@ void SceneBoss::Update()
 				}
 				x->Update();
 			}
-		}
-
-		if (directionEnterPortal == 1) {
-			mCamera->SetPosition(mCamera->GetPosition() + Point(2, 0));
-			target->SetPosition(target->GetPosition() + Point(0.4, 0));
-		}
-		else if (directionEnterPortal == 0) {
-			mCamera->SetPosition(mCamera->GetPosition() + Point(-2, 0));
-			target->SetPosition(target->GetPosition() - Point(0.4, 0));
-		}
-		else if (directionEnterPortal == 2) {
-			mCamera->SetPosition(mCamera->GetPosition() + Point(0, -2));
-			target->SetPosition(target->GetPosition() - Point(0, 0.4));
-		}
-		else if (directionEnterPortal == 3) {
-			mCamera->SetPosition(mCamera->GetPosition() + Point(0, 2));
-			target->SetPosition(target->GetPosition() + Point(0, 0.4));
-		}
-		frameToTransition++;
-		//DebugOut(L"Frame to transition: %d", frameToTransition);
-		if (frameToTransition >= FRAME_PORTAL_TRANSITIONS) {
-			if (directionEnterPortal == 1) {
-				target->SetPosition(target->GetPosition() + Point(DISTANCE_JASON_PORTAL_LEFT_RIGHT, 0));
-			}
-			else if (directionEnterPortal == 0) {
-				target->SetPosition(target->GetPosition() - Point(DISTANCE_JASON_PORTAL_LEFT_RIGHT, 0));
-			}
-			else if (directionEnterPortal == 2) {
-				target->SetPosition(target->GetPosition() - Point(0, DISTANCE_JASON_PORTAL_UP_DOWN));
-			}
-			else if (directionEnterPortal == 3) {
-				target->SetPosition(target->GetPosition() + Point(0, DISTANCE_JASON_PORTAL_UP_DOWN));
-			}
-			isCameraFree = false;
-			directionEnterPortal = -1;
-			frameToTransition = 0;
 		}
 	}
 
