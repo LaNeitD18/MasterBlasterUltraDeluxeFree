@@ -449,13 +449,15 @@ void Interactable::Interact(Player* player, ItemGun* item) {
 	BoundingBox itemBox = item->GetBoundingBox();
 	if (playerBox.IsOverlap(itemBox)) {
 		Sound::getInstance()->play("item", false, 1);
-		if (GameGlobal::GetJasonLevelGun() < 80) {
-			JasonOverhead* currentPlay = dynamic_cast<JasonOverhead*>(player);
-			if (currentPlay != NULL) {
-				currentPlay->bulletPower += 10;
-			}
-			else {
-				GameGlobal::SetJasonLevelGun(GameGlobal::GetJasonLevelGun() + 10);
+		if (item->type == 0) {
+			if (GameGlobal::GetJasonLevelGun() < 80) {
+				JasonOverhead* currentPlay = dynamic_cast<JasonOverhead*>(player);
+				if (currentPlay != NULL) {
+					currentPlay->bulletPower += 10;
+				}
+				else {
+					GameGlobal::SetJasonLevelGun(GameGlobal::GetJasonLevelGun() + 10);
+				}
 			}
 		}
 		item->GetManager()->RemoveElement(item);
