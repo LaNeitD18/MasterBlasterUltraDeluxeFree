@@ -1,6 +1,8 @@
 #pragma once
 #include "AnimatedGameObject.h"
 #include "Manager.h"
+#include <math.h>
+#include <random>
 
 // Note: define for shooting left
 #define BULLET_OFFSET_RIGHT 3
@@ -126,10 +128,18 @@ public:
 #define JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE_RANGE_MIN 50
 #define JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE_RANGE_MAX 90
 #define JASON_OVERHEAD_BULLET_NORM_DAMAGE_RANGE_MIN 7
-#define JASON_OVERHEAD_BULLET_NORM_DAMAGE_RANGE_MAX 12
+#define JASON_OVERHEAD_BULLET_NORM_DAMAGE_RANGE_MAX 13
+
+#define JASON_OVERHEAD_BULLET_NORM_SIN_THRESHOLD 0.75f
+#define JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH 60
+#define JASON_OVERHEAD_BULLET_NORM_SIN_CYCLE 50
+#define JASON_OVERHEAD_BULLET_NORM_SIN_OMEGA (M_PI * 2 / JASON_OVERHEAD_BULLET_NORM_SIN_CYCLE)
 class JasonOverheadBulletNorm : public TimedPlayerBullet, Managed<Bullet>
 {
 	int damage;
+	float power;
+	int phase;
+	int sin_NAK;
 public:
 	// float power: value between 0..1 for MIN_POWER to MAX_POWER
 	JasonOverheadBulletNorm(Point pos, Point v, float power);
@@ -140,6 +150,7 @@ public:
 
 	// Inherited via TimedPlayerBullet
 	virtual int GetDamage(BulletDamageModifier modifier) override;
+	virtual void Update() override;
 };
 
 #define JASON_OVERHEAD_GRENADE_TIME_TO_LIVE 10

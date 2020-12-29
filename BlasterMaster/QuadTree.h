@@ -26,7 +26,7 @@ public:
 
 	void Subdivide();
 	bool InsertAndInteract(Interactable*, BoundingBox& const, bool doInteract = true);
-	void InteractAll(Interactable*);
+	void InteractAll(Interactable*, BoundingBox* bbox = NULL);
 };
 
 class QuadTree final

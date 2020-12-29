@@ -55,16 +55,16 @@ void QuadTree_Node::Subdivide()
 
 bool QuadTree_Node::InsertAndInteract(Interactable * object, BoundingBox & const bbox, bool doInteract)
 {
+	if (!bbox.IsInsideBox(this->bbox))
+	{
+		return false;
+	}
+
 	if (doInteract && bbox.IsOverlap(this->bbox)) {
 		for (auto item : objects)
 		{
 			item->Interact(object);
 		}
-	}
-	//else
-	if (!bbox.IsInsideBox(this->bbox))
-	{
-		return false;
 	}
 
 	if (nw == NULL && objects.size() >= depth)
@@ -96,11 +96,16 @@ bool QuadTree_Node::InsertAndInteract(Interactable * object, BoundingBox & const
 	}
 
 	objects.push_back(object);
+	if (doInteract)
+		InteractAll(object, &bbox);
+
 	return true;
 }
 
-void QuadTree_Node::InteractAll(Interactable * object)
+void QuadTree_Node::InteractAll(Interactable * object, BoundingBox* bbox)
 {
+	if (bbox != NULL && !bbox->IsOverlap(this->bbox))
+		return;
 	for (auto item : objects)
 	{
 		item->Interact(object);

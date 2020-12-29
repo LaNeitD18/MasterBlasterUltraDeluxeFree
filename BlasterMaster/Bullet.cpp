@@ -244,6 +244,41 @@ JasonOverheadBulletNorm::JasonOverheadBulletNorm(Point pos, Point v, float power
 		+ JASON_OVERHEAD_BULLET_NORM_TIME_TO_LIVE_RANGE_MAX * power;
 	damage = JASON_OVERHEAD_BULLET_NORM_DAMAGE_RANGE_MIN * (1 - power)
 		+ JASON_OVERHEAD_BULLET_NORM_DAMAGE_RANGE_MAX * power;
+	this->power = power;
+	sin_NAK = rand() % JASON_OVERHEAD_BULLET_NORM_SIN_CYCLE;
+	phase = 0;
+	switch (damage)
+	{
+	case 5:
+		drawArguments.SetColor(D3DCOLOR_ARGB(255, 255, 255, 255));
+		break;
+	case 6:
+		drawArguments.SetColor(D3DCOLOR_ARGB(255, 255, 255, 192));
+		break;
+	case 7:
+		drawArguments.SetColor(D3DCOLOR_ARGB(255, 255, 192, 255));
+		break;
+	case 8:
+		drawArguments.SetColor(D3DCOLOR_ARGB(255, 255, 192, 127));
+		break;
+	case 9:
+		drawArguments.SetColor(D3DCOLOR_ARGB(255, 255, 127, 255));
+		break;
+	case 10:
+		drawArguments.SetColor(D3DCOLOR_ARGB(255, 255, 255, 127));
+		break;
+	case 11:
+		drawArguments.SetColor(D3DCOLOR_ARGB(255, 255, 192, 127));
+		break;
+	case 12:
+		drawArguments.SetColor(D3DCOLOR_ARGB(255, 255, 127, 192));
+		break;
+	case 13:
+		drawArguments.SetColor(D3DCOLOR_ARGB(255, 255, 127, 127));
+		break;
+	default:
+		break;
+	}
 }
 
 JasonOverheadBulletNorm::~JasonOverheadBulletNorm()
@@ -254,6 +289,45 @@ JasonOverheadBulletNorm::~JasonOverheadBulletNorm()
 int JasonOverheadBulletNorm::GetDamage(BulletDamageModifier modifier)
 {
 	return damage;
+}
+
+void JasonOverheadBulletNorm::Update()
+{
+	phase++;
+	TimedPlayerBullet::Update();
+
+	// Sin bullet
+	if (power >= JASON_OVERHEAD_BULLET_NORM_SIN_THRESHOLD)
+	{
+		double targetAmp = sin(phase * JASON_OVERHEAD_BULLET_NORM_SIN_OMEGA) * JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH;
+		double targetPrevAmp = 0;
+		if (phase != 0)
+			targetPrevAmp = sin((phase - 1) * JASON_OVERHEAD_BULLET_NORM_SIN_OMEGA) * JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH;
+		float delta = targetAmp - targetPrevAmp;
+		if (sin_NAK > 0 && rand() % 3 == 0) {
+			sin_NAK--;
+			phase--;
+			delta = 0;
+		}
+		switch (dir)
+		{
+		case BULLET_DIR_LEFT:
+			v.y = delta;
+			break;
+		case BULLET_DIR_UP:
+			v.x = -delta;
+			break;
+		case BULLET_DIR_RIGHT:
+			v.y = -delta;
+			break;
+		case BULLET_DIR_DOWN:
+			v.x = delta;
+			break;
+		default:
+			DebugOut(L"Unknown Bullet Direction.\n");
+			break;
+		}
+	}
 }
 
 JasonOverheadBulletGrenade::JasonOverheadBulletGrenade

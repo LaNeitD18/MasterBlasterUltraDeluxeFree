@@ -27,7 +27,7 @@ JasonOverhead::JasonOverhead(float x, float y)
 	//drawArguments.FlipVertical(true);
 	HealthPoint = JASONO_MAX_HEALTH;
 
-	/*
+	//*
 	bulletPower = JASONO_MAX_BULLET_POWER;
 	/*/
 	bulletPower = GameGlobal::GetJasonLevelGun();
@@ -362,23 +362,27 @@ void JasonOverhead::ShootNorm()
 	else if (state & JASONO_STATE_LOOKING_DOWN)
 		v = Point(0, JASONO_BULLET_SPEED);
 
-	if (bulletPower >= JASONO_SINE_BULLET_POWER_THRESHOLD)
+	if (bulletPower >= JASONO_THREE_BULLET_POWER_THRESHOLD)
 	{
-		// Sine bullet
+		if (bullets.size() >= 3) {
+			return;
+		}
 	}
 	else
 	{
-		if (bullets.size() < 2) {
-			JasonOverheadBulletNorm* bullet = new JasonOverheadBulletNorm
-				(GetBoundingBox().GetCenter(), v, 
-				(float)bulletPower / JASONO_MAX_BULLET_POWER);
-
-			Managed<GameObject>::manager->AddElement(bullet);
-			((Managed<GameObject>*)bullet)->SetManager(Managed<GameObject>::manager);
-			((Managed<Bullet>*)bullet)->SetManager(this);
-			AddElement(bullet);
+		if (bullets.size() >= 2) {
+			return;
 		}
 	}
+
+	JasonOverheadBulletNorm* bullet = new JasonOverheadBulletNorm
+	(GetBoundingBox().GetCenter(), v,
+		(float)bulletPower / JASONO_MAX_BULLET_POWER);
+
+	Managed<GameObject>::manager->AddElement(bullet);
+	((Managed<GameObject>*)bullet)->SetManager(Managed<GameObject>::manager);
+	((Managed<Bullet>*)bullet)->SetManager(this);
+	AddElement(bullet);
 }
 
 // Note: button 'x'
