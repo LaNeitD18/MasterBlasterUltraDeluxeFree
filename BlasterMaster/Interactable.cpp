@@ -5,6 +5,7 @@
 #include "SceneArea2Overhead.h"
 #include "Game.h"
 #include "Utils.h"
+#include "SceneBoss.h"
 
 Interactable::Interactable()
 {
@@ -425,7 +426,9 @@ void Interactable::Interact(Player* player, ItemPower* item) {
 	BoundingBox itemBox = item->GetBoundingBox();
 	if (playerBox.IsOverlap(itemBox)) {
 		Sound::getInstance()->play("item", false, 1);
-		player->SetHP(player->GetHP() + POWER_GAIN);
+		if (player->GetHP() < 80) {
+			player->SetHP(player->GetHP() + POWER_GAIN);
+		}
 		item->GetManager()->RemoveElement(item);
 	}
 }
@@ -437,6 +440,26 @@ void Interactable::Interact(Player* player, ItemHover* item) {
 		Sound::getInstance()->play("item", false, 1);
 		//TODO: setup hover for sophia
 		//displayMessage("i want to get this");
+		item->GetManager()->RemoveElement(item);
+	}
+}
+
+void Interactable::Interact(Player* player, ItemGun* item) {
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox itemBox = item->GetBoundingBox();
+	if (playerBox.IsOverlap(itemBox)) {
+		Sound::getInstance()->play("item", false, 1);
+		if (item->type == 0) {
+			if (GameGlobal::GetJasonLevelGun() < 80) {
+				JasonOverhead* currentPlay = dynamic_cast<JasonOverhead*>(player);
+				if (currentPlay != NULL) {
+					currentPlay->bulletPower += 10;
+				}
+				else {
+					GameGlobal::SetJasonLevelGun(GameGlobal::GetJasonLevelGun() + 10);
+				}
+			}
+		}
 		item->GetManager()->RemoveElement(item);
 	}
 }
@@ -1031,6 +1054,15 @@ void Interactable::Interact(BossBullet* boss_bullet, PlayerBullet* player_bullet
 	if (playerbulletBox.SweptAABB(bossbulletBox, boss_bullet->dx() + player_bullet->dx()) != -INFINITY) {
 		player_bullet->Managed<GameObject>::GetManager()->RemoveElement(player_bullet);
 		boss_bullet->Managed<GameObject>::GetManager()->RemoveElement(boss_bullet);
+	}
+}
+
+void Interactable::Interact(JasonOverhead* player, Env_Enterboss* entering) {
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox enterBox = entering->GetBoundingBox();
+	if (playerBox.IsOverlap(enterBox)) {
+		SceneArea2Overhead* scene = dynamic_cast<SceneArea2Overhead*>(Game::GetInstance()->GetCurrentScene());
+		scene->enterBoss = 1;
 	}
 }
 

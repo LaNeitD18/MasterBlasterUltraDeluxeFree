@@ -307,6 +307,9 @@ Resources\Enemies\boss_ani.txt
 20	1910	655	20
 20	1660	525	20
 
+# item
+206	2948	470	206
+
 # BOSS
 #21	285	2940	400
 
@@ -763,3 +766,4 @@ Resources\Enemies\boss_ani.txt
 1	1312	1408	32	16
 1	1504	1328	32	160
 3	1312	1424	32	16	0	17
+

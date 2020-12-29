@@ -13,7 +13,7 @@ JasonOverhead::JasonOverhead()
 	/*
 	bulletPower = JASONO_MAX_BULLET_POWER;
 	/*/
-	bulletPower = 0;
+	bulletPower = GameGlobal::GetJasonLevelGun();
 	//*/
 }
 JasonOverhead::JasonOverhead(float x, float y)
@@ -30,7 +30,7 @@ JasonOverhead::JasonOverhead(float x, float y)
 	/*
 	bulletPower = JASONO_MAX_BULLET_POWER;
 	/*/
-	bulletPower = 0;
+	bulletPower = GameGlobal::GetJasonLevelGun();
 	//*/
 }
 
@@ -131,6 +131,7 @@ void JasonOverhead::Render()
 
 void JasonOverhead::Update()
 {
+	GameGlobal::SetJasonLevelGun(bulletPower);
 	pos += dx();
 	Player::Update();
 	Input& input = *GameGlobal::GetInput();
@@ -237,8 +238,8 @@ void JasonOverhead::Update()
 	if (HealthPoint <= 0 && state != JASONO_STATE_DEAD) {
 		SetState(JASONO_STATE_DYING);
 	}
-	
-	
+
+
 }
 
 void JasonOverhead::SetState(int newState)

@@ -153,3 +153,13 @@ Env_Ladder::Env_Ladder(float x, float y, float width, float height)
 	box.r = x + width;
 	box.b = y + height;
 }
+
+Env_Enterboss::Env_Enterboss(float x, float y, float width, float height)
+{
+	this->width = width;
+	this->height = height;
+	box.l = x;
+	box.t = y;
+	box.r = x + width;
+	box.b = y + height;
+}

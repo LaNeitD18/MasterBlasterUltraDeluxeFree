@@ -20,8 +20,12 @@
 #include "Breakable_Tree.h"
 
 #include "QuadTree.h"
+#include "SceneOpening.h"
+#include "SceneBoss.h"
 
 using namespace std;
+
+static D3DCOLOR enterColor[8] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(210,255,255,255),D3DCOLOR_ARGB(180,255,255,255),D3DCOLOR_ARGB(135,255,255,255),D3DCOLOR_ARGB(90,255,255,255), D3DCOLOR_ARGB(50,255,255,255), D3DCOLOR_ARGB(0,255,255,255),D3DCOLOR_ARGB(10,255,255,255) };
 
 BoundingBox SceneArea2Overhead::cameraLimitAreaOfSection[9] = {
 	// section 1
@@ -35,7 +39,9 @@ BoundingBox SceneArea2Overhead::cameraLimitAreaOfSection[9] = {
 	// section 1 for 2
 	BoundingBox(512,0,1040,528),
 	// section 2 for 2
-	BoundingBox(512,496,782,776)
+	BoundingBox(512,496,782,776),
+	// section 5 boss
+	BoundingBox(768, 768, 1038, 1048)
 };
 
 Point SceneArea2Overhead::startPointInSection[5] = {
@@ -46,8 +52,9 @@ Point SceneArea2Overhead::startPointInSection[5] = {
 	//section C
 	Point(1402, 1136),
 	// section D
-	Point(120, 1908)
-	// section E
+	Point(120, 1908),
+	// section E boss
+	Point(896,804)
 };
 
 SceneArea2Overhead::SceneArea2Overhead(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath, game)
@@ -61,6 +68,8 @@ SceneArea2Overhead::SceneArea2Overhead(int id, LPCWSTR filePath, Game *game, Poi
 	this->frameToTransition = 0;
 	LoadLivesLeftDisplay(textureLib, spriteLib);
 	this->liveShow = 1;
+	this->enterBoss = 0;
+	this->countEnterBoss = 0;
 	this->count = 0;
 }
 
@@ -119,6 +128,7 @@ SceneArea2Overhead::~SceneArea2Overhead()
 #define SCENE_SECTION_ENVIRONMENT 8
 
 //#define OBJECT_TYPE_PORTAL 50
+#define OBJECT_TYPE_BBOX 505
 
 #define OBJECT_TYPE_WORM 1
 #define OBJECT_TYPE_JUMPER 2
@@ -142,6 +152,7 @@ SceneArea2Overhead::~SceneArea2Overhead()
 #define ENVIRONMENT_TYPE_LADDER 4
 #define ENVIRONMENT_TYPE_LAVA 5
 #define ENVIRONMENT_TYPE_OUTDOOR 6
+#define ENVIRONMENT_TYPE_ENTERBOSS 10
 #define ENVIRONMENT_TYPE_UNKNOWN -1
 
 #define MAX_SCENE_LINE 1024
@@ -314,6 +325,12 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_EYESPAWNER:
 		obj = new EyeballSpawner(x, y);
+        break;
+	/*case OBJECT_TYPE_WALKER:
+		obj = new Walker(x, y);
+		break;*/
+	case OBJECT_TYPE_BBOX:
+		obj = new SceneBox1(x, y);
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
@@ -404,6 +421,9 @@ void SceneArea2Overhead::_ParseSection_ENVIRONMENT(string line)
 			gateDir = BOTTOM;
 		}
 		env = new Env_Outdoor(x, y, width, height, gateDir, sectionToEnter);
+		break;
+	case ENVIRONMENT_TYPE_ENTERBOSS:
+		env = new Env_Enterboss(x, y, width, height);
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid env type: %d\n", env_type);
@@ -562,12 +582,17 @@ void SceneArea2Overhead::JumpCheckpoint()
 			target->SetPosition(startPointInSection[3]);
 			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[3]);
 		}
+		else if (input[0x34]) {
+			target->SetPosition(startPointInSection[4]);
+			mCamera->SetCameraLimitarea(cameraLimitAreaOfSection[6]);
+		}
 	}
 }
 
 #define FRAME_PORTAL_TRANSITIONS 130
 #define DISTANCE_JASON_PORTAL_LEFT_RIGHT 35
 #define DISTANCE_JASON_PORTAL_UP_DOWN 50
+#define DURATION_ENTER 300
 
 void SceneArea2Overhead::Update()
 {
@@ -596,7 +621,7 @@ void SceneArea2Overhead::Update()
 	}
 
 	Camera::setCameraInstance(mCamera);
-	if (!isCameraFree) {
+	if (!isCameraFree && enterBoss == 0) {
 		target = NULL;
 		for (auto x : objects) {
 			Player* current_player = dynamic_cast<Player*>(x);
@@ -710,6 +735,18 @@ void SceneArea2Overhead::Update()
 		}
 	}
 
+	if (enterBoss == 1) {
+		countEnterBoss++;
+	}
+
+	if (countEnterBoss > DURATION_ENTER) {
+		this->Release();
+		Game::GetInstance()->Init(L"Resources/scene.txt", 5);
+		SceneBoss* scene = dynamic_cast<SceneBoss*>(Game::GetInstance()->GetCurrentScene());
+		scene->liveShow = 0;
+		return;
+	}
+
 	// enter to switch scene
 	if ((*input)[VK_BACK] & KEY_STATE_DOWN) {
 		//Game::GetInstance()->SwitchScene(3);
@@ -773,18 +810,28 @@ void SceneArea2Overhead::Render()
 		count = DURATION_OF_LIVESHOW + 1;
 		mMap->Draw();
 		for (auto object : objects) {
-			if (dynamic_cast<Breakable_Tree*>(object) != NULL) {
+			if (dynamic_cast<Breakable_Tree*>(object) != NULL && dynamic_cast<SceneBox1*>(object) == NULL) {
 				object->Render();
 			}
 		}
 		for (auto object : objects) {
-			if (dynamic_cast<Breakable_Tree*>(object) == NULL) {
+			if (dynamic_cast<Breakable_Tree*>(object) == NULL && dynamic_cast<SceneBox1*>(object) == NULL) {
 				object->Render();
 			}
 		}
 		foreMap->Draw();
-		healthBar->Draw();
-		gunBar->Draw();
+		if (enterBoss == 1) {
+			for (auto object : objects) {
+				if (dynamic_cast<SceneBox1*>(object) != NULL) {
+					object->drawArguments.SetColor(enterColor[rand() % 8]);
+					object->Render();
+				}
+			}
+		}
+		else {
+			healthBar->Draw();
+			gunBar->Draw();
+		}
 	}
 }
 

@@ -22,6 +22,7 @@
 #include "MineBullet.h"
 #include "ItemPower.h"
 #include "ItemHover.h"
+#include "ItemGun.h"
 #include "Cannon.h"
 #include "CannonBullet.h"
 #include "Breakable_Tree.h"

@@ -23,6 +23,7 @@
 #include "Teleporter.h"
 #include "Boss.h"
 #include "Bullet.h"
+#include "ItemGun.h"
 
 #include "Sound.h"
 #include "QuadTree.h"
@@ -238,6 +239,9 @@ SceneArea2SideView::~SceneArea2SideView()
 #define OBJECT_TYPE_SHIP 18
 #define OBJECT_TYPE_SKULL 20
 #define OBJECT_TYPE_SKULL_BULLET 100
+#define OBJECT_TYPE_HOMING_BULLET 204
+#define OBJECT_TYPE_MULTI_BULLET 205
+#define OBJECT_TYPE_THUNDER 206
 #define OBJECT_TYPE_BOSS 21
 
 //LeSon
@@ -476,6 +480,15 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(GameGlobal::GetReturnPoint());
 		break;
 	case OBJECT_TYPE_JASON_SIDE_VIEW:
+		break;
+	case OBJECT_TYPE_HOMING_BULLET:
+		obj = new ItemGun(Point(x, y), 1);
+		break;
+	case OBJECT_TYPE_MULTI_BULLET:
+		obj = new ItemGun(Point(x, y), 3);
+		break;
+	case OBJECT_TYPE_THUNDER:
+		obj = new ItemGun(Point(x, y), 2);
 		break;
 	case OBJECT_TYPE_BOSS:
 		obj = new Boss(x, y);

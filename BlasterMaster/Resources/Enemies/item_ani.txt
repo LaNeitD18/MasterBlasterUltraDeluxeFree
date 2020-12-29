@@ -4,9 +4,25 @@
 
 # hover
 2002	20002	10
+
+# gun level
+2003	20003	10
+
+# homing mis
+2004	20004	10
+
+# multi
+2005	20005	10
+
+#thunder
+2006	20006	10
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
 # ITEMS
 201	2001
 202	2002
+203	2003
+204	2004
+205	2005
+206	2006

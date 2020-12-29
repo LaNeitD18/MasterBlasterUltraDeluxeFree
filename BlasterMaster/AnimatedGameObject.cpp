@@ -3,10 +3,11 @@
 #include "ItemPower.h"
 #include "ItemHover.h"
 #include "Boss.h"
+#include "ItemGun.h"
 #include "Sound.h"
 
 static D3DCOLOR invulnerableColor[2] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(0,255,255,255) };
-static D3DCOLOR damageBossColor[2] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255, 50, 50, 50) };
+static D3DCOLOR damageBossColor[8] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,0,255,255),D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,255,0,255),D3DCOLOR_ARGB(255,255,255,255), D3DCOLOR_ARGB(0,255,255,255), D3DCOLOR_ARGB(255,255,255,0),D3DCOLOR_ARGB(255,255,255,255) };
 
 void AnimatedGameObject::Render()
 {
@@ -65,7 +66,7 @@ void Enemy::TakeDamage(int damage)
 		//*
 		if (random <= RATE_DISPLAY_POWER_ITEM) {
 			//displayMessage("power");
-			ItemPower* item_power = new ItemPower(pos);
+			ItemGun* item_power = new ItemGun(pos);
 			item_power->SetManager(manager);
 			manager->AddElement(item_power);
 		}
@@ -86,6 +87,11 @@ void Enemy::Update()
 	{
 		damageFrame--;
 	}
-	drawArguments.SetColor(invulnerableColor[(damageFrame / ENEMY_SPRITE_DURATION_OF_DAMAGE_FLASH) % 2]);
+	if (dynamic_cast<Boss*>(this) != NULL) {
+		drawArguments.SetColor(damageBossColor[(damageFrame / ENEMY_SPRITE_DURATION_OF_DAMAGE_FLASH) % 8]);
+	}
+	else {
+		drawArguments.SetColor(invulnerableColor[(damageFrame / ENEMY_SPRITE_DURATION_OF_DAMAGE_FLASH) % 2]);
+	}
 }
 
