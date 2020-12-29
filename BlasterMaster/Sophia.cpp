@@ -29,7 +29,7 @@ void Sophia::Update()
 		(state & SOPHIA_STATE_DYING))
 		return;
 	pos += dx();
-	
+
 	//*
 	int prevState = state;
 	int newState = state;
@@ -39,6 +39,16 @@ void Sophia::Update()
 	Input& input = *GameGlobal::GetInput();
 
 	int flags = SOPHIA_STATE_LOOKING_LEFT & state;
+
+
+	if ((state & SOPHIA_STATE_AIRBORNE) && v.y < 0)
+	{
+		newState |= SOPHIA_STATE_HANGING_WHEEL;
+	}
+	else
+	{
+		newState &= ~SOPHIA_STATE_HANGING_WHEEL;
+	}
 
 	// psuedo gravity
 	if (!wallBot || v.y < 0) // If not touching ground or going up
@@ -205,6 +215,7 @@ void Sophia::Update()
 		Sound::getInstance()->play("sophia_shoot", false, 1);
 	}
 
+
 	if (input[INPUT_SHOOT_SPECIAL] == KEY_STATE_ON_DOWN)
 	{
 		switch ((GameGlobal::GetSpecialBulletType()))
@@ -236,8 +247,10 @@ void Sophia::Update()
 		SetAniByState(newState);
 	}
 	else
-		SetAniByState(newState &
-		(SOPHIA_STATE_LOOKED_UP | SOPHIA_STATE_WALKING));
+		if (newState & (SOPHIA_STATE_LOOKED_UP | SOPHIA_STATE_WALKING | SOPHIA_STATE_HANGING_WHEEL))
+		{
+			SetAniByState(newState);
+		}
 
 	// reset wall collision
 	wallBot = wallLeft = wallRight = wallTop = false;
@@ -674,7 +687,7 @@ void Sophia::SetAniByState(int state)
 			StartAnimationType(SOPHIA_ANI_LOOKED_UP_WALKING);
 		if (state & SOPHIA_STATE_JUMPING)
 			StartAnimationType(SOPHIA_ANI_LOOKED_UP_JUMPING);
-		if (state & SOPHIA_STATE_JUMP_BOOST)
+		if ((state & SOPHIA_STATE_JUMP_BOOST) || (state & SOPHIA_STATE_HANGING_WHEEL))
 			StartAnimationType(SOPHIA_ANI_LOOKED_UP_JUMP_BOOST);
 		if (state & SOPHIA_STATE_LANDING)
 			StartAnimationType(SOPHIA_ANI_LOOKED_UP_LANDING);
@@ -687,7 +700,7 @@ void Sophia::SetAniByState(int state)
 			StartAnimationType(SOPHIA_ANI_WALKING);
 		if (state & SOPHIA_STATE_JUMPING)
 			StartAnimationType(SOPHIA_ANI_JUMPING);
-		if (state & SOPHIA_STATE_JUMP_BOOST)
+		if ((state & SOPHIA_STATE_JUMP_BOOST) || (state & SOPHIA_STATE_HANGING_WHEEL))
 			StartAnimationType(SOPHIA_ANI_JUMP_BOOST);
 		if (state & SOPHIA_STATE_LANDING)
 			StartAnimationType(SOPHIA_ANI_LANDING);

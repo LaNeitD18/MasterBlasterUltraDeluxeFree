@@ -54,14 +54,15 @@ enum SophiaState
 	SOPHIA_STATE_AIRBORNE				= 0x0800,
 
 	SOPHIA_STATE_DYING					= 0x0080,
-	
+	SOPHIA_STATE_HANGING_WHEEL			= 0x0040,
 	//SOPHIA_STATE_TAKING_DAMAGE			= 0x0010,
+	//0x0020 left
 };
 
 enum SophiaAni {
 	SOPHIA_ANI_LEAVING_VEHICLE		= 0,
 	SOPHIA_ANI_IDLE					= 1,
-	SOPHIA_ANI_LEFT_VEHICLE			= 1,
+	SOPHIA_ANI_LEFT_VEHICLE			= 1, // Intentionally the same
 	SOPHIA_ANI_WALKING				= 2,
 	SOPHIA_ANI_JUMPING				= 3,
 	SOPHIA_ANI_JUMP_BOOST			= 4, //Note turning override airborne
