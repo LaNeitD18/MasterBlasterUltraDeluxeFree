@@ -66,7 +66,7 @@ void Enemy::TakeDamage(int damage)
 		//*
 		if (random <= RATE_DISPLAY_POWER_ITEM) {
 			//displayMessage("power");
-			ItemGun* item_power = new ItemGun(pos);
+			ItemPower* item_power = new ItemPower(pos);
 			item_power->SetManager(manager);
 			manager->AddElement(item_power);
 		}
