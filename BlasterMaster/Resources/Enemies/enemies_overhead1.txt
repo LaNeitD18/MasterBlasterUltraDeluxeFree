@@ -6,6 +6,7 @@
 17	Resources\sprites\116445.png	0	57	115
 298	Resources\sprites\tileset.png	255	255	255
 18	Resources\sprites\ItemObjects.png	254	255	255
+101	Resources\bbox1.png	255	255	255
 # next sprite: 10155
 
 [SPRITES]
@@ -26,6 +27,9 @@ Resources\Enemies\eye_sprites.txt
 Resources\Enemies\cannon_bullet_sprites.txt
 #17 BULLET
 Resources\Enemies\bullet_sprites.txt
+
+#101 box1
+Resources\scene_opening_bbox1_sprites.txt
 
 #298 Tile after break
 Resources\Enemies\tileset_sprites.txt
@@ -51,6 +55,9 @@ Resources\Enemies\eye_ani.txt
 Resources\Enemies\cannon_bullet_ani.txt
 #17 ==== BULLET =========
 Resources\Enemies\bullet_ani.txt
+
+#101 == box1 ==
+Resources\scene_opening_bbox1_ani.txt
 
 #298 ==== TILE after break wall or tree =========
 Resources\Enemies\tileset_ani.txt
@@ -145,13 +152,6 @@ Resources\Enemies\item_ani.txt
 298	296	392	298
 298	360	392	298
 298	424	392	298
-298	88	408	298
-298	152	408	298
-298	216	408	298
-298	280	408	298
-298	344	408	298
-298	408	408	298
-298	472	408	298
 298	88	408	298
 298	152	408	298
 298	216	408	298
@@ -370,6 +370,9 @@ Resources\Enemies\item_ani.txt
 6	610	925	6
 6	680	850	6
 
+#box1
+505	902	628	505
+
 
 [ENVIRONMENTS]
 # type	x	y	width	height	portaldirid	sectionToEnter
@@ -519,6 +522,7 @@ Resources\Enemies\item_ani.txt
 3	1144	952	16	16	3	-1	3
 # boss
 3	886	696	16	16	3	-1	3
+10	880	672	32	16
 # section A
 1	112	96	32	112
 1	176	16	32	96

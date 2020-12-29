@@ -17,10 +17,11 @@ int GameGlobal::SpecialBulletType = 1;
 int GameGlobal::NumberBullet1 = 50;
 int GameGlobal::NumberBullet2 = 50;
 int GameGlobal::NumberBullet3 = 50;
+int GameGlobal::JasonLvGun = 0;
 Point GameGlobal::lastPositionSophia = Point(0, 0);
 // temporary hp, set later for sophia jason
 int GameGlobal::HealthPoint = 80;
-int GameGlobal::SophiaHealthPoint = 100;
+int GameGlobal::SophiaHealthPoint = 80;
 int GameGlobal::livesToPlay = 2;
 Point GameGlobal::pointReturn = Point(56, 2955);
 BoundingBox GameGlobal::boundingReturn = BoundingBox(0, 2814, 1038, 3094);
@@ -170,6 +171,16 @@ int GameGlobal::GetNumberSpecialBullet3()
 void GameGlobal::SetSpecialNumberBullet3(int n)
 {
 	NumberBullet3 = n;
+}
+
+int GameGlobal::GetJasonLevelGun()
+{
+	return JasonLvGun;
+}
+
+void GameGlobal::SetJasonLevelGun(int n)
+{
+	JasonLvGun = n;
 }
 
 Point GameGlobal::GetReturnPoint()

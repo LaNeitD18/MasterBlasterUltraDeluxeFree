@@ -1,20 +1,26 @@
 #pragma once
 #include "AnimatedGameObject.h"
 #include "Manager.h"
+#include "Bullet.h"
 #include <vector>
 
-#define BODY_BBOX_OFFSET_LEFT	   -60 + 1
-#define BODY_BBOX_OFFSET_RIGHT		60 - 1
-#define BODY_BBOX_OFFSET_TOP	   -66 + 1
-#define BODY_BBOX_OFFSET_BOTTOM		66 - 1
+#define BOSS_MOVING_SPEED	0.1f
 
-#define BOSS_ARM_AMOUNT				4
+#define BODY_BBOX_OFFSET_LEFT	   -30
+#define BODY_BBOX_OFFSET_RIGHT		30
+#define BODY_BBOX_OFFSET_TOP	   -33
+#define BODY_BBOX_OFFSET_BOTTOM		33
+
+#define BOSS_HEALTHPOINT	100
+
+#define BOSS_ARM_AMOUNT			4
 // BOSS_ARM_AMOUNT doesn't count the claws
 #define BOSS_CLAW_REACH_TARGET_DELAY_LEFT	40
 #define BOSS_CLAW_REACH_TARGET_DELAY_RIGHT	33
 
 #define BOSS_SHOULDER_OFFSET_X	30
 #define BOSS_SHOULDER_OFFSET_Y	-0
+#define BOSS_BULLET_SPEED	1.0f
 
 class BossArm;
 class BossClaw;
@@ -33,6 +39,9 @@ public:
 	virtual BoundingBox GetBoundingBox();
 	virtual void Update();
 	virtual void Render();
+	virtual void TakeDamage(int damage);
+
+	Point targetPlayer;
 private:
 	std::vector<BossArm*> leftArm;
 	std::vector<BossArm*> rightArm;
@@ -41,6 +50,10 @@ private:
 
 	int leftArmTargetDirectionEnum;
 	int rightArmTargetDirectionEnum;
+
+	int timeToShoot;
+	int shootTurn;
+	void Shoot();
 };
 
 #define BOSS_ARM_ANIMATION_SET_NUMBER	300

@@ -26,8 +26,11 @@
     <ClInclude Include="Breakable_Tree.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="CannonBullet.h" />
+    <ClInclude Include="GunBar.h" />
+    <ClInclude Include="ItemGun.h" />
     <ClInclude Include="ItemHover.h" />
     <ClInclude Include="QuadTree.h" />
+    <ClInclude Include="SceneBoss.h" />
     <ClInclude Include="SceneBullet.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneOver.h" />
@@ -110,8 +113,11 @@
     <ClCompile Include="Breakable_Tree.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="CannonBullet.cpp" />
+    <ClCompile Include="GunBar.cpp" />
+    <ClCompile Include="ItemGun.cpp" />
     <ClCompile Include="ItemHover.cpp" />
     <ClCompile Include="QuadTree.cpp" />
+    <ClCompile Include="SceneBoss.cpp" />
     <ClCompile Include="SceneBullet.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneOver.cpp" />
@@ -193,21 +199,21 @@
     <ProjectGuid>{533D688C-6537-4709-86AC-209DCF90001C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>BlasterMaster</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>

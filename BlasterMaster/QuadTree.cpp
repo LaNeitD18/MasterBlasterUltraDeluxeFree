@@ -55,12 +55,13 @@ void QuadTree_Node::Subdivide()
 
 bool QuadTree_Node::InsertAndInteract(Interactable * object, BoundingBox & const bbox, bool doInteract)
 {
-	if (doInteract && bbox.IsOverlap(this->bbox))
+	if (doInteract && bbox.IsOverlap(this->bbox)) {
 		for (auto item : objects)
 		{
 			item->Interact(object);
 		}
-
+	}
+	//else
 	if (!bbox.IsInsideBox(this->bbox))
 	{
 		return false;

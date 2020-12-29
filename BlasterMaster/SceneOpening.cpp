@@ -7,6 +7,8 @@
 #include "Sprites.h"
 #include "GameObject.h"
 #include "GameGlobal.h"
+#include "SceneBoss.h"
+#include "Sound.h"
 
 #include "Worm.h"
 
@@ -48,7 +50,7 @@ SceneOpening::~SceneOpening()
 #define OBJECT_TYPE_TITLE 1
 #define OBJECT_TYPE_TALE 2
 #define OBJECT_TYPE_ENTER_SOPHIA 3
-#define OBJECT_TYPE_BOX1 101
+#define OBJECT_TYPE_BOX1 505
 #define MAX_SCENE_LINE 1024
 
 static D3DCOLOR titleColor[4] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,0,255,255),D3DCOLOR_ARGB(255,255,0,255),D3DCOLOR_ARGB(255,255,255,0) };
@@ -57,6 +59,7 @@ void SceneOpening::Init()
 {
 	//vector<tuple<int, int, int, int, int>> mapNav;
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
+	Sound::getInstance()->play("intro", false, 1);
 
 	// move bbox init
 	textureLib->Add(ID_TEX_BBOX, L"Resources\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
@@ -156,6 +159,15 @@ void SceneOpening::Update()
 {
 	input->Update();
 
+	// test continue game
+	if ((*input)[VK_BACK] && KEY_STATE_DOWN) {
+		this->Release();
+		Game::GetInstance()->Init(L"Resources/scene.txt", 5);
+		SceneBoss* scene = dynamic_cast<SceneBoss*>(Game::GetInstance()->GetCurrentScene());
+		scene->liveShow = 0;
+		return;
+	}
+
 	if (enterState == 2) {
 		//Game::GetInstance()->SwitchScene(2);
 		this->Release();
@@ -177,8 +189,8 @@ void SceneOpening::Update()
 	game->SetCamPos(pos);
 }
 
-#define DURATION_OF_TITLE 500
-#define DURATION_OF_TALE 1590
+#define DURATION_OF_TITLE 350
+#define DURATION_OF_TALE 2120
 #define DURATION_OF_ENTER_SOPHIA 300
 
 void SceneOpening::Render()
@@ -413,6 +425,8 @@ void SceneOpeningTitle::Update()
 	SceneOpening* scene = dynamic_cast<SceneOpening*>(Game::GetInstance()->GetCurrentScene());
 	// enter to switch scene
 	if ((input[VK_RETURN] & KEY_STATE_DOWN) && scene->enterState == 0) {
+		Sound::getInstance()->stop("intro");
+		Sound::getInstance()->play("enter", false, 1);
 		scene->count = 0;
 		scene->enterState = 1;
 	}

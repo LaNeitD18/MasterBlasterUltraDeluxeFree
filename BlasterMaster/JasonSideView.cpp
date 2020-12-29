@@ -36,6 +36,10 @@ JasonSideView::JasonSideView(float x, float y)
 
 JasonSideView::~JasonSideView()
 {
+	for (Bullet* x : bullets) {
+		if (dynamic_cast<JasonSideviewBullet*>(x) != NULL)
+			dynamic_cast<JasonSideviewBullet*>(x)->Managed<Bullet>::SetManager(NULL);
+	}
 }
 /*
 bool JasonSideView::IsPrimaryPlayer()
@@ -274,6 +278,7 @@ void JasonSideView::Update()
 		v.y = -JASON_TINY_JUMP_SPEED;
 		sophia->SetState(sophia->GetState() | SOPHIA_STATE_ENTERING_VEHICLE);
 		sophia->SetAniByState(sophia->GetState());
+		Sound::getInstance()->play("swap_player", false, 1);
 	}
 
 	if ((state & JASON_STATE_ENTERING_VEHICLE) &&

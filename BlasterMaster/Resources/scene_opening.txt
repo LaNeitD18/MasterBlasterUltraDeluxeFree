@@ -57,4 +57,4 @@ Resources\scene_opening_bbox1_ani.txt
 3	-8	-20	3
 
 #box1
-101	0	0	101
+505	0	0	505

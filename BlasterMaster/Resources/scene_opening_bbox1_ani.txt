@@ -6,4 +6,4 @@
 #
 [ANIMATION_SETS]
 # bbox
-101	20998
+505	20998

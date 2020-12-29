@@ -5,6 +5,7 @@
 #include "SceneArea2Overhead.h"
 #include "Game.h"
 #include "Utils.h"
+#include "SceneBoss.h"
 
 Interactable::Interactable()
 {
@@ -337,6 +338,7 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 	if (playerBox.IsOverlap(dungeonBox) && isJasonPlay) {
 		if (input[VK_DOWN] & KEY_STATE_DOWN) {
 			// set healthpoint sophia to global
+			Sound::getInstance()->play("scene_change", false, 1);
 			SceneArea2SideView* scene_sideview = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
 			for (auto x : scene_sideview->GetObjects()) {
 				Sophia* sophia = dynamic_cast<Sophia*>(x);
@@ -423,7 +425,10 @@ void Interactable::Interact(Player* player, ItemPower* item) {
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox itemBox = item->GetBoundingBox();
 	if (playerBox.IsOverlap(itemBox)) {
-		player->SetHP(player->GetHP() + POWER_GAIN);
+		Sound::getInstance()->play("item", false, 1);
+		if (player->GetHP() < 80) {
+			player->SetHP(player->GetHP() + POWER_GAIN);
+		}
 		item->GetManager()->RemoveElement(item);
 	}
 }
@@ -432,8 +437,29 @@ void Interactable::Interact(Player* player, ItemHover* item) {
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox itemBox = item->GetBoundingBox();
 	if (playerBox.IsOverlap(itemBox)) {
+		Sound::getInstance()->play("item", false, 1);
 		//TODO: setup hover for sophia
 		//displayMessage("i want to get this");
+		item->GetManager()->RemoveElement(item);
+	}
+}
+
+void Interactable::Interact(Player* player, ItemGun* item) {
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox itemBox = item->GetBoundingBox();
+	if (playerBox.IsOverlap(itemBox)) {
+		Sound::getInstance()->play("item", false, 1);
+		if (item->type == 0) {
+			if (GameGlobal::GetJasonLevelGun() < 80) {
+				JasonOverhead* currentPlay = dynamic_cast<JasonOverhead*>(player);
+				if (currentPlay != NULL) {
+					currentPlay->bulletPower += 10;
+				}
+				else {
+					GameGlobal::SetJasonLevelGun(GameGlobal::GetJasonLevelGun() + 10);
+				}
+			}
+		}
 		item->GetManager()->RemoveElement(item);
 	}
 }
@@ -566,8 +592,10 @@ void Interactable::Interact(Player* player, Enemy* enemy) {
 		if (isJasonPlay) {
 			enemyDamage *= 2;
 		}
+		else if (dynamic_cast<Boss*>(enemy) != NULL || dynamic_cast<BossArm*>(enemy) != NULL || dynamic_cast<BossClaw*>(enemy) != NULL) {
+			enemyDamage *= 2;
+		}
 		player->TakeDamage(enemyDamage);
-		player->TakeDamage(DAMAGE_OF_ENEMY);
 		enemy->isCollided = true;
 	}
 }
@@ -958,7 +986,86 @@ void Interactable::Interact(JasonSideView * player, Env_Ladder * ladder) {
 		}
 	}
 }
-void Interactable::Interact(Boss * , Env_Wall * ) {}
+void Interactable::Interact(Boss* boss , Env_Wall* wall ) {
+	BoundingBox playerBox = boss->GetBoundingBox();
+	BoundingBox wallBox = wall->GetBoundingBox();
+	if (playerBox.IsOverlap(wallBox)) {
+		float overlapAreaX = min(playerBox.r, wallBox.r) - max(playerBox.l, wallBox.l);
+		float overlapAreaY = min(playerBox.b, wallBox.b) - max(playerBox.t, wallBox.t);
+		if (overlapAreaX > overlapAreaY)
+		{
+			if (playerBox.GetCenter().y > wallBox.GetCenter().y) {
+				boss->wallTop = true;
+				// Snap top (player pushed down)
+				Point pos = boss->GetPosition();
+				pos.y -= playerBox.t - wallBox.b;
+				boss->SetPosition(pos);
+			}
+			else
+			{
+				boss->wallBot = true;
+				// Snap bottom (player pushed up)
+				Point pos = boss->GetPosition();
+				pos.y += wallBox.t - playerBox.b;
+				boss->SetPosition(pos);
+			}
+		}
+		else
+		{
+			if (playerBox.GetCenter().x < wallBox.GetCenter().x) {
+				boss->wallRight = true;
+				// Snap right (player to left)
+				Point pos = boss->GetPosition();
+				pos.x -= playerBox.r - wallBox.l;
+				boss->SetPosition(pos);
+			}
+			else
+			{
+				boss->wallLeft = true;
+				// Snap left (player to right)
+				Point pos = boss->GetPosition();
+				pos.x += wallBox.r - playerBox.l;
+				boss->SetPosition(pos);
+			}
+		}
+	}
+}
+
+void Interactable::Interact(Boss* boss, Player* player) {
+	Interact((Enemy*)boss, player);
+	boss->targetPlayer = player->pos;
+}
+
+void Interactable::Interact(BossBullet* boss_bullet, Player* player) {
+	BoundingBox bulletBox = boss_bullet->GetBoundingBox();
+	BoundingBox playerBox = player->GetBoundingBox();
+	if (playerBox.SweptAABB(bulletBox, boss_bullet->dx() + player->dx()) != -INFINITY)
+	{
+		player->TakeDamage(10);
+	}
+}
+
+void Interactable::Interact(BossBullet* boss_bullet, PlayerBullet* player_bullet) {
+	BoundingBox bossbulletBox = boss_bullet->GetBoundingBox();
+	BoundingBox playerbulletBox = player_bullet->GetBoundingBox();
+	if (dynamic_cast<JasonOverheadBulletNorm*>(player_bullet) == NULL) {
+		return;
+	}
+	if (playerbulletBox.SweptAABB(bossbulletBox, boss_bullet->dx() + player_bullet->dx()) != -INFINITY) {
+		player_bullet->Managed<GameObject>::GetManager()->RemoveElement(player_bullet);
+		boss_bullet->Managed<GameObject>::GetManager()->RemoveElement(boss_bullet);
+	}
+}
+
+void Interactable::Interact(JasonOverhead* player, Env_Enterboss* entering) {
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox enterBox = entering->GetBoundingBox();
+	if (playerBox.IsOverlap(enterBox)) {
+		SceneArea2Overhead* scene = dynamic_cast<SceneArea2Overhead*>(Game::GetInstance()->GetCurrentScene());
+		scene->enterBoss = 1;
+	}
+}
+
 void Interactable::Interact(BossArm * , Env_Wall * ) {}
 #pragma endregion
 

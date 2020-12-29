@@ -1,17 +1,21 @@
-#include "Boss.h"
+﻿#include "Boss.h"
 #include "Utils.h"
 #include "Game.h"
 #include "Sound.h"
 #include "GameGlobal.h"
 
-static Point targetDirectionOffset[4] = { Point(-40, 50),Point(40,50), Point(40,-20), Point(-40,-20) };
+#define NUMBER_ARM_MOVEMENT	12
+#define MAX_ROW_BOSS_REACH 90
+
+static Point targetDirectionOffset[NUMBER_ARM_MOVEMENT] = { Point(-40, 50), Point(40,50), Point(-80, 90), Point(80,90), Point(20,-30), Point(40,-20), Point(0,100), Point(0,-100), Point(-40,-20), Point(-20,30), Point(90,-100), Point(-90,100) };
 
 Boss::Boss() {
 	pos = Point();
 	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 	leftArmTargetDirectionEnum = 0;
 	rightArmTargetDirectionEnum = 1;
-	HealthPoint = 100000000;
+	HealthPoint = BOSS_HEALTHPOINT;
+	v = Point(0.1, 0.06);
 }
 
 Boss::Boss(float x, float y) {
@@ -20,7 +24,8 @@ Boss::Boss(float x, float y) {
 	leftArmTargetDirectionEnum = 0;
 	rightArmTargetDirectionEnum = 1;
 	//SetState();
-	HealthPoint = 100000000;
+	HealthPoint = BOSS_HEALTHPOINT;
+	v = Point(0.1, 0.06);
 }
 
 Boss::~Boss()
@@ -44,8 +49,23 @@ BoundingBox Boss::GetBoundingBox()
 
 void Boss::Update()
 {
-	//pos += dx();
+	pos += dx();
 	Enemy::Update();
+
+	// when interact wall
+	if (wallLeft) {
+		v.x = BOSS_MOVING_SPEED;
+	}
+	else if (wallRight) {
+		v.x = -BOSS_MOVING_SPEED;
+	}
+	
+	if (wallTop) {
+		v.y = BOSS_MOVING_SPEED;
+	}
+	else if (pos.y > MAX_ROW_BOSS_REACH) {
+		v.y = -BOSS_MOVING_SPEED;
+	}
 
 	leftArmShoulder = Point(pos.x - BOSS_SHOULDER_OFFSET_X, pos.y + BOSS_SHOULDER_OFFSET_Y);
 	rightArmShoulder = Point(pos.x + BOSS_SHOULDER_OFFSET_X, pos.y + BOSS_SHOULDER_OFFSET_Y);
@@ -83,12 +103,12 @@ void Boss::Update()
 	if (leftArm[BOSS_ARM_AMOUNT]->SetTargetLocation(leftArmShoulder + targetDirectionOffset[leftArmTargetDirectionEnum]))
 	{
 		leftArmTargetDirectionEnum++;
-		leftArmTargetDirectionEnum %= 4;
+		leftArmTargetDirectionEnum %= NUMBER_ARM_MOVEMENT;
 	}
 	if (rightArm[BOSS_ARM_AMOUNT]->SetTargetLocation(rightArmShoulder + targetDirectionOffset[rightArmTargetDirectionEnum]))
 	{
 		rightArmTargetDirectionEnum++;
-		rightArmTargetDirectionEnum %= 4;
+		rightArmTargetDirectionEnum %= NUMBER_ARM_MOVEMENT;
 	}
 
 	// Set TargetLocation for Arms
@@ -99,6 +119,22 @@ void Boss::Update()
 		leftArm[i]->SetTargetLocation((leftArm[i - 1]->pos + leftArm[i + 1]->pos) * 0.5);
 		rightArm[i]->SetTargetLocation((rightArm[i - 1]->pos + rightArm[i + 1]->pos) * 0.5);
 	}
+
+	// bullet
+	if (timeToShoot == 0) {
+		// nếu còn lượt thì bắn, trừ lượt và đặt lại time cho viên tiếp theo
+		if (shootTurn != 0) {
+			Shoot();
+			shootTurn--;
+			timeToShoot = 30;
+		}
+		else {
+			shootTurn = rand() % 1 + 4;
+			timeToShoot = 250;
+		}
+	}
+	timeToShoot--;
+
 	
 	for (int i = 0; i < leftArm.size(); i++)
 	{
@@ -106,8 +142,6 @@ void Boss::Update()
 		rightArm[i]->UpdateOverloaded();
 	}
 
-
-	v = Point();
 	// reset wall collision
 	wallBot = wallLeft = wallRight = wallTop = false;
 }
@@ -120,6 +154,23 @@ void Boss::Render()
 	AnimatedGameObject::Render();
 
 	//RenderBoundingBox();
+}
+
+void Boss::TakeDamage(int damage)
+{
+	Enemy::TakeDamage(damage);
+	DebugOut(L"Boss HP: %d \n", HealthPoint);
+}
+
+void Boss::Shoot()
+{
+	Point direction = targetPlayer - pos;
+	Point v = direction * (BOSS_BULLET_SPEED / direction.length());
+
+	BossBullet* bullet = new BossBullet(pos, v);
+	
+	bullet->SetManager(manager);
+	manager->AddElement(bullet);
 }
 
 void Boss::SetState(int state)

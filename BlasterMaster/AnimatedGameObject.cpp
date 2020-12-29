@@ -2,8 +2,12 @@
 #include "Utils.h"
 #include "ItemPower.h"
 #include "ItemHover.h"
+#include "Boss.h"
+#include "ItemGun.h"
+#include "Sound.h"
 
 static D3DCOLOR invulnerableColor[2] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(0,255,255,255) };
+static D3DCOLOR damageBossColor[8] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,0,255,255),D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,255,0,255),D3DCOLOR_ARGB(255,255,255,255), D3DCOLOR_ARGB(0,255,255,255), D3DCOLOR_ARGB(255,255,255,0),D3DCOLOR_ARGB(255,255,255,255) };
 
 void AnimatedGameObject::Render()
 {
@@ -41,7 +45,7 @@ void AnimatedGameObject::SetAnimationType(int ANI)
 }
 
 #define RATE_DISPLAY_POWER_ITEM 75
-#define RATE_DISPLAY_HOVER_ITEM 10
+#define RATE_DISPLAY_HOVER_ITEM 5
 
 void Enemy::TakeDamage(int damage)
 {
@@ -49,7 +53,11 @@ void Enemy::TakeDamage(int damage)
 		return;
 	HealthPoint -= damage;
 	damageFrame = DURATION_OF_DAMAGE_FLASH;
+	if(dynamic_cast<Boss*>(this) != NULL){
+		return;
+	}
 	if (HealthPoint <= 0) {
+		Sound::getInstance()->play("item", false, 1);
 		// get position of obj
 		Point pos = this->GetPosition();
 		manager->RemoveElement(this);
@@ -62,13 +70,13 @@ void Enemy::TakeDamage(int damage)
 			item_power->SetManager(manager);
 			manager->AddElement(item_power);
 		}
-		else
 		//*/
-		if (random <= RATE_DISPLAY_POWER_ITEM + RATE_DISPLAY_HOVER_ITEM) {
+		else if (random <= RATE_DISPLAY_POWER_ITEM + RATE_DISPLAY_HOVER_ITEM) {
 			ItemHover* item_hover = new ItemHover(pos);
 			item_hover->SetManager(manager);
 			manager->AddElement(item_hover);
 		}
+		//*/
 	}
 }
 
@@ -79,6 +87,11 @@ void Enemy::Update()
 	{
 		damageFrame--;
 	}
-	drawArguments.SetColor(invulnerableColor[(damageFrame / ENEMY_SPRITE_DURATION_OF_DAMAGE_FLASH) % 2]);
+	if (dynamic_cast<Boss*>(this) != NULL) {
+		drawArguments.SetColor(damageBossColor[(damageFrame / ENEMY_SPRITE_DURATION_OF_DAMAGE_FLASH) % 8]);
+	}
+	else {
+		drawArguments.SetColor(invulnerableColor[(damageFrame / ENEMY_SPRITE_DURATION_OF_DAMAGE_FLASH) % 2]);
+	}
 }
 

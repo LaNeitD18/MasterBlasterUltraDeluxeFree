@@ -3,6 +3,9 @@
 #include "JasonSideView.h"
 #include "Bullet.h"
 #include "Sound.h"
+#include "Utils.h"
+#include "SceneArea2SideView.h"
+#include "Game.h"
 
 
 BoundingBox Sophia::GetBoundingBox()
@@ -75,8 +78,11 @@ void Sophia::Update()
 		flags |= SOPHIA_STATE_AIRBORNE;
 		newState |= SOPHIA_STATE_AIRBORNE;
 	}
-	else
+	else {
 		newState &= ~SOPHIA_STATE_AIRBORNE;
+		if (state & SOPHIA_STATE_AIRBORNE)
+			Sound::getInstance()->play("sophia_fall_ground", false, 1);
+	}
 
 	// Turning: maintain state
 	// If sophia is looking left but key press right not left
@@ -143,6 +149,7 @@ void Sophia::Update()
 	if (!(newState & SOPHIA_STATE_AIRBORNE) && 
 		(input[INPUT_JUMP] == KEY_STATE_ON_DOWN))
 	{
+		Sound::getInstance()->play("sophia_jump", false, 1);
 		newState |= SOPHIA_STATE_JUMPING;
 		jumpBoostRemaining = SOPHIA_JUMP_BOOST_AMOUNT;
 	}
@@ -185,6 +192,7 @@ void Sophia::Update()
 		jason->v.x = v.x;
 		jason->v.y = -JASON_TINY_JUMP_SPEED;
 		manager->AddElement(jason);
+		Sound::getInstance()->play("swap_player", false, 1);
 
 		v = Point();
 	}
@@ -206,6 +214,9 @@ void Sophia::Update()
 			break;
 		case 2:
 			ShootThunder();
+			break;
+		case 3:
+			ShootMultiwarheadMissile();
 			break;
 		default:
 			break;
@@ -519,9 +530,9 @@ void Sophia::Shoot()
 
 void Sophia::ShootThunder()
 {
-	if (GameGlobal::GetNumberSpecialBullet2() <= 0)
+	if (GameGlobal::GetNumberSpecialBullet2() <= 0) {
 		return;
-
+	}
 	Point thunderPos = pos + Point(0, 50);
 	int thunderDirX = rand() % 2;
 	if (thunderDirX == 0)	thunderDirX = -1;
@@ -532,11 +543,52 @@ void Sophia::ShootThunder()
 	GameGlobal::SetSpecialNumberBullet2(GameGlobal::GetNumberSpecialBullet2() - 1);
 }
 
+bool Sophia::IsShootingMultiwarhead()
+{
+	unordered_set<GameObject*> objects;
+	SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
+	if (scene != nullptr) {
+		objects = scene->GetObjects();
+		for (auto x : objects) {
+			if (dynamic_cast<MultiwarheadMissile*>(x) != NULL)
+				return true;
+		}
+		return false;
+	}
+}
+
+void Sophia::ShootMultiwarheadMissile()
+{
+	if (GameGlobal::GetNumberSpecialBullet3() <= 0) {
+		return;
+	}
+	if(!IsShootingMultiwarhead()) {
+		int dirX;
+		if (state & SOPHIA_STATE_LOOKING_LEFT) {
+			dirX = -1;
+		}
+		else {
+			dirX = 1;
+		}
+
+		for (int i = 1; i <= 3; i++) {
+			int numberOfMissile = GameGlobal::GetNumberSpecialBullet3();
+			if (numberOfMissile > 0) {
+				Point multiwarheadPos = pos;
+				MultiwarheadMissile* bullet = new MultiwarheadMissile(multiwarheadPos, dirX, i);
+				bullet->SetManager(manager);
+				manager->AddElement(bullet);
+
+				GameGlobal::SetSpecialNumberBullet3(GameGlobal::GetNumberSpecialBullet3() - 1);
+			}
+		}
+	}
+}
 void Sophia::ShootHoming()
 {
-	if (GameGlobal::GetNumberSpecialBullet1() <= 0)
+	if (GameGlobal::GetNumberSpecialBullet1() <= 0) {
 		return;
-
+	}
 	Point bulletV;
 	Point bulletOffset;
 	if (state & SOPHIA_STATE_LOOKING_LEFT) {

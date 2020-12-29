@@ -23,11 +23,11 @@
 # next Tien's sprite: 10193
 # next sprite: 10177			Tien
 # next sprite: 20000			Son
-# next sprite: 30001			Long
+# next sprite: 30003			Long
 
 # Next animation: 1000			Tien
 # Next animation: 2000			Son
-# Next animation: 3003			Long
+# Next animation: 3004			Long
 
 # Next set: 100				Tien
 # Next set: 200				Son
@@ -90,6 +90,9 @@ Resources\Enemies\item_sprites.txt
 
 #131 THUNDER
 Resources\Enemies\thunder_bullet_sprites.txt
+
+#132 MULTIWARHEAD MISSILE
+Resources\Enemies\multiwarhead_missile_sprites.txt
 
 #400 BOSS
 Resources\Enemies\boss_sprites.txt
@@ -171,6 +174,9 @@ Resources\Enemies\item_ani.txt
 #131 ==== THUNDER =========
 Resources\Enemies\thunder_bullet_ani.txt
 
+#132 ==== MULTIWARHEAD MISSILE =========
+Resources\Enemies\multiwarhead_missile_ani.txt
+
 #400 ==== BOSS =========
 Resources\Enemies\boss_ani.txt
 
@@ -218,8 +224,7 @@ Resources\Enemies\boss_ani.txt
 #4	210	2900	4
 
 # DOME
-#5	285	2970	5
-5	285	2970	131
+5	285	2970	5
 5	300	2855	5
 5	1315	2970	5
 5	1420	2970	5
@@ -302,8 +307,11 @@ Resources\Enemies\boss_ani.txt
 20	1910	655	20
 20	1660	525	20
 
+# item
+206	2948	470	206
+
 # BOSS
-21	285	2940	400
+#21	285	2940	400
 
 [ENVIRONMENTS]
 # type	x	y	width	height	portaldirid	sectionToEnter
@@ -333,11 +341,11 @@ Resources\Enemies\boss_ani.txt
 1	400	2992	80	48
 1	592	2992	80	48
 1	784	2992	16	48
-1	944	2848	80	96
+1	944	2848	80	112
 2	288	3024	112	16
 2	480	3024	112	16
 2	672	3024	112	16
-3	960	2944	32	32	1	1
+3	960	2960	32	16	1	1
 # section B
 1	1056	3040	448	16
 1	1056	2976	128	32
@@ -758,3 +766,4 @@ Resources\Enemies\boss_ani.txt
 1	1312	1408	32	16
 1	1504	1328	32	160
 3	1312	1424	32	16	0	17
+

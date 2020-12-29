@@ -2,6 +2,8 @@
 #include "Utils.h"
 #include "GameGlobal.h"
 #include "Camera.h"
+#include "Game.h"
+#include "SceneArea2SideView.h"
 
 HealthBar::HealthBar()
 {
@@ -22,7 +24,13 @@ void HealthBar::Load(TextureLibrary * texLib, SpriteLibrary * spriteLib)
 		std::wstring texturePathWstr = std::wstring(texturePathStr.begin(), texturePathStr.end());
 
 		// health bar
-		BoundingBox r = BoundingBox(i * 20+1, 0, i * 20 + 18, 120);
+		BoundingBox r;
+		if (dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene()) != NULL) {
+			r = BoundingBox(i * 20 + 1, 0, i * 20 + 18, 178);
+		}
+		else {
+			r = BoundingBox(i * 20 + 1, 54, i * 20 + 18, 178);
+		}
 		texLib->Add(HP_TEXTURE_ID+i, texturePathWstr.c_str(), NULL);
 		spriteLib->Add(HP_TEXTURE_ID+i, r, texLib->Get(HP_TEXTURE_ID+i));
 
@@ -43,7 +51,7 @@ void HealthBar::Draw()
 		currentHP = 80;
 	}
 	if (currentHP < 0) {
-		return;
+		currentHP = 0;
 	}
 	BoundingBox sourceRECT;
 	Sprite* sprite = mBar[currentHP / 10];

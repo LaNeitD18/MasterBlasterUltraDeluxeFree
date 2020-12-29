@@ -13,7 +13,7 @@ JasonOverhead::JasonOverhead()
 	/*
 	bulletPower = JASONO_MAX_BULLET_POWER;
 	/*/
-	bulletPower = 0;
+	bulletPower = GameGlobal::GetJasonLevelGun();
 	//*/
 }
 JasonOverhead::JasonOverhead(float x, float y)
@@ -30,7 +30,7 @@ JasonOverhead::JasonOverhead(float x, float y)
 	/*
 	bulletPower = JASONO_MAX_BULLET_POWER;
 	/*/
-	bulletPower = 0;
+	bulletPower = GameGlobal::GetJasonLevelGun();
 	//*/
 }
 
@@ -131,6 +131,7 @@ void JasonOverhead::Render()
 
 void JasonOverhead::Update()
 {
+	GameGlobal::SetJasonLevelGun(bulletPower);
 	pos += dx();
 	Player::Update();
 	Input& input = *GameGlobal::GetInput();
@@ -237,8 +238,8 @@ void JasonOverhead::Update()
 	if (HealthPoint <= 0 && state != JASONO_STATE_DEAD) {
 		SetState(JASONO_STATE_DYING);
 	}
-	
-	
+
+
 }
 
 void JasonOverhead::SetState(int newState)
@@ -384,17 +385,14 @@ void JasonOverhead::ShootNorm()
 void JasonOverhead::ShootGrenade()
 {
 	Point v;
-	if (state & JASONO_STATE_LOOKING_UP)
+	if (state & JASONO_STATE_LOOKING_RIGHT)
+		v = Point(JASONO_GRENADE_SPEED, 0);
+	else if (state & JASONO_STATE_LOOKING_LEFT)
+		v = Point(-JASONO_GRENADE_SPEED, 0);
+	else if (state & JASONO_STATE_LOOKING_UP)
 		v = Point(0, -JASONO_GRENADE_SPEED);
-
-	if (state & JASONO_STATE_LOOKING_DOWN)
+	else if (state & JASONO_STATE_LOOKING_DOWN)
 		v = Point(0, JASONO_GRENADE_SPEED);
-
-	if (state & JASONO_STATE_LOOKING_LEFT) {
-		if (isFlipVertical)
-			v = Point(JASONO_GRENADE_SPEED, 0);
-		else v = Point(-JASONO_GRENADE_SPEED, 0);
-	}
 
 	if (bullets.size() < 2) {
 		JasonOverheadBulletGrenade* bullet = new JasonOverheadBulletGrenade

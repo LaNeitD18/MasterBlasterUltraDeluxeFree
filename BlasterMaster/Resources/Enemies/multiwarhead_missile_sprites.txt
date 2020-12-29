@@ -1,0 +1,4 @@
+# id	left	top	right	bottom	texture_id
+# multiwarhead missile
+10307	73	29	81	37	17
+10308	100	29	115	37	17
