@@ -328,6 +328,9 @@ void JasonOverheadBulletNorm::Update()
 			break;
 		}
 	}
+
+	if (state & BULLET_STATE_EXPLODE)
+		drawArguments.SetColor(D3DCOLOR_ARGB(255, 255, 255, 255));
 }
 
 JasonOverheadBulletGrenade::JasonOverheadBulletGrenade

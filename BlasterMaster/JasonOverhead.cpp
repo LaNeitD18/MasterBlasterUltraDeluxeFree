@@ -27,7 +27,7 @@ JasonOverhead::JasonOverhead(float x, float y)
 	//drawArguments.FlipVertical(true);
 	HealthPoint = JASONO_MAX_HEALTH;
 
-	//*
+	/*
 	bulletPower = JASONO_MAX_BULLET_POWER;
 	/*/
 	bulletPower = GameGlobal::GetJasonLevelGun();
