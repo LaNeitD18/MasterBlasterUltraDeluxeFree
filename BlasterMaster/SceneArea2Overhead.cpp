@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 
+#include "Sound.h"
 #include "SceneArea2Overhead.h"
 #include "GameGlobal.h"
 #include "Utils.h"
@@ -592,7 +593,7 @@ void SceneArea2Overhead::JumpCheckpoint()
 #define FRAME_PORTAL_TRANSITIONS 130
 #define DISTANCE_JASON_PORTAL_LEFT_RIGHT 35
 #define DISTANCE_JASON_PORTAL_UP_DOWN 50
-#define DURATION_ENTER 300
+#define DURATION_ENTER 600
 
 void SceneArea2Overhead::Update()
 {
@@ -741,6 +742,8 @@ void SceneArea2Overhead::Update()
 
 	if (countEnterBoss > DURATION_ENTER) {
 		this->Release();
+		Sound::getInstance()->stop("entering_boss_scene");
+		Sound::getInstance()->play("area2", false, 1);
 		Game::GetInstance()->Init(L"Resources/scene.txt", 5);
 		SceneBoss* scene = dynamic_cast<SceneBoss*>(Game::GetInstance()->GetCurrentScene());
 		scene->liveShow = 0;

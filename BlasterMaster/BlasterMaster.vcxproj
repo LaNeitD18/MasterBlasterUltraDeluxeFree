@@ -33,6 +33,7 @@
     <ClInclude Include="SceneBoss.h" />
     <ClInclude Include="SceneBullet.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="SceneEnd.h" />
     <ClInclude Include="SceneOver.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Camera.h" />
@@ -120,6 +121,7 @@
     <ClCompile Include="SceneBoss.cpp" />
     <ClCompile Include="SceneBullet.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SceneEnd.cpp" />
     <ClCompile Include="SceneOver.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="Camera.cpp" />

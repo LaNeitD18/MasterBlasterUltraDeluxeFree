@@ -81,6 +81,7 @@
     <ClCompile Include="LinearEyeball.cpp" />
     <ClCompile Include="EyeballSpawner.cpp" />
     <ClCompile Include="ItemGun.cpp" />
+    <ClCompile Include="SceneEnd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedGameObject.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="LinearEyeball.h" />
     <ClInclude Include="EyeballSpawner.h" />
     <ClInclude Include="ItemGun.h" />
+    <ClInclude Include="SceneEnd.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib.lib" />
