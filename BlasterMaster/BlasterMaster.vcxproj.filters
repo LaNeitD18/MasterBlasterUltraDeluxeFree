@@ -57,9 +57,7 @@
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="useful_stuff.cpp" />
     <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="Walker.cpp" />
     <ClCompile Include="Worm.cpp" />
-    <ClCompile Include="WormPod.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="MiniRedBullet.cpp" />
@@ -80,7 +78,10 @@
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="SceneBoss.cpp" />
     <ClCompile Include="GunBar.cpp" />
+    <ClCompile Include="LinearEyeball.cpp" />
+    <ClCompile Include="EyeballSpawner.cpp" />
     <ClCompile Include="ItemGun.cpp" />
+    <ClCompile Include="SceneEnd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedGameObject.h" />
@@ -145,9 +146,7 @@
     <ClInclude Include="Textures.h" />
     <ClInclude Include="useful_stuff.h" />
     <ClInclude Include="Utils.h" />
-    <ClInclude Include="Walker.h" />
     <ClInclude Include="Worm.h" />
-    <ClInclude Include="WormPod.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="MiniRedBullet.h" />
@@ -167,7 +166,10 @@
     <ClInclude Include="QuadTree.h" />
     <ClInclude Include="SceneBoss.h" />
     <ClInclude Include="GunBar.h" />
+    <ClInclude Include="LinearEyeball.h" />
+    <ClInclude Include="EyeballSpawner.h" />
     <ClInclude Include="ItemGun.h" />
+    <ClInclude Include="SceneEnd.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib.lib" />

@@ -12,6 +12,7 @@
 #include "SceneArea2Overhead.h"
 #include "SceneOver.h"
 #include "SceneBoss.h"
+#include "SceneEnd.h"
 #include "GameGlobal.h"
 
 Game * Game::__instance = NULL;
@@ -278,6 +279,9 @@ void Game::_ParseSection_SCENES(string line)
 	}
 	else if (id == 5) {
 		scene = new SceneBoss(id, path, this, Point(screen_width, screen_height));
+	}
+	else if (id == 6) {
+		scene = new SceneEnd(id, path, this, Point(screen_width, screen_height));
 	}
 	scenes[id] = scene;
 }

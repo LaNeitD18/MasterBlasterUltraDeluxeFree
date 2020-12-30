@@ -370,6 +370,8 @@ Resources\Enemies\item_ani.txt
 6	610	925	6
 6	680	850	6
 
+# EYESPAWNER
+13	250	500	6
 #box1
 505	902	628	505
 

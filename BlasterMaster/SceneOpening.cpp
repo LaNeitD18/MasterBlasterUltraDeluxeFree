@@ -168,6 +168,14 @@ void SceneOpening::Update()
 		return;
 	}
 
+	if ((*input)[VK_END] && KEY_STATE_DOWN) {
+		this->Release();
+		Game::GetInstance()->Init(L"Resources/scene.txt", 6);
+		SceneBoss* scene = dynamic_cast<SceneBoss*>(Game::GetInstance()->GetCurrentScene());
+		scene->liveShow = 0;
+		return;
+	}
+
 	if (enterState == 2) {
 		//Game::GetInstance()->SwitchScene(2);
 		this->Release();
