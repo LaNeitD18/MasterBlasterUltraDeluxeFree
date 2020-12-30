@@ -283,7 +283,8 @@ JasonOverheadBulletNorm::JasonOverheadBulletNorm(Point pos, Point v, float power
 
 JasonOverheadBulletNorm::~JasonOverheadBulletNorm()
 {
-	Managed<Bullet>::manager->RemoveElement(this);
+	if (Managed<Bullet>::manager != NULL)
+		Managed<Bullet>::manager->RemoveElement(this);
 }
 
 int JasonOverheadBulletNorm::GetDamage(BulletDamageModifier modifier)
@@ -343,6 +344,8 @@ JasonOverheadBulletGrenade::JasonOverheadBulletGrenade
 
 JasonOverheadBulletGrenade::~JasonOverheadBulletGrenade()
 {
+	if (Managed<Bullet>::manager != NULL)
+		Managed<Bullet>::manager->RemoveElement(this);
 }
 
 int JasonOverheadBulletGrenade::GetDamage(BulletDamageModifier modifier)
@@ -360,7 +363,6 @@ void JasonOverheadBulletGrenade::Update()
 {
 	TimedPlayerBullet::Update();
 	if (state & BULLET_STATE_EXPLODE) {
-		Managed<Bullet>::manager->RemoveElement(this);
 		Managed<GameObject>::manager->RemoveElement(this);
 
 		JasonOverheadBulletGrenadeFragment* frag =

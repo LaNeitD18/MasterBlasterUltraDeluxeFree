@@ -36,6 +36,13 @@ JasonOverhead::JasonOverhead(float x, float y)
 
 JasonOverhead::~JasonOverhead()
 {
+	for (Bullet* bullet : bullets) {
+		if (dynamic_cast<JasonOverheadBulletNorm*>(bullet) != NULL)
+			dynamic_cast<JasonOverheadBulletNorm*>(bullet)->Managed<Bullet>::SetManager(this);
+
+		if (dynamic_cast<JasonOverheadBulletGrenade*>(bullet) != NULL)
+			dynamic_cast<JasonOverheadBulletGrenade*>(bullet)->Managed<Bullet>::SetManager(this);
+	}
 }
 
 void JasonOverhead::TakeDamage(int damage)
@@ -194,13 +201,16 @@ void JasonOverhead::Update()
 			}
 		}
 	}
-	if (input[INPUT_JUMP] == KEY_STATE_ON_DOWN)
+	if (!dead) 
 	{
-		ShootGrenade();
-	}
-	else if (input[INPUT_SHOOT] == KEY_STATE_ON_DOWN)
-	{
-		ShootNorm();
+		if (input[INPUT_JUMP] == KEY_STATE_ON_DOWN)
+		{
+			ShootGrenade();
+		}
+		else if (input[INPUT_SHOOT] == KEY_STATE_ON_DOWN)
+		{
+			ShootNorm();
+		}
 	}
 
 	/*if (wallBot && v.y == 0 && v.x != 0)

@@ -134,7 +134,7 @@ public:
 #define JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH 40
 #define JASON_OVERHEAD_BULLET_NORM_SIN_CYCLE 50
 #define JASON_OVERHEAD_BULLET_NORM_SIN_OMEGA (M_PI * 2 / JASON_OVERHEAD_BULLET_NORM_SIN_CYCLE)
-class JasonOverheadBulletNorm : public TimedPlayerBullet, Managed<Bullet>
+class JasonOverheadBulletNorm : public TimedPlayerBullet, public Managed<Bullet>
 {
 	int damage;
 	float power;
@@ -155,7 +155,7 @@ public:
 
 #define JASON_OVERHEAD_GRENADE_TIME_TO_LIVE 10
 
-class JasonOverheadBulletGrenade : public TimedPlayerBullet, Managed<Bullet>
+class JasonOverheadBulletGrenade : public TimedPlayerBullet, public Managed<Bullet>
 {
 	float power;
 public:
