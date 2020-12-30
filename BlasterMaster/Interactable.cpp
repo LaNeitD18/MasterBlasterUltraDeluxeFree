@@ -1063,6 +1063,8 @@ void Interactable::Interact(JasonOverhead* player, Env_Enterboss* entering) {
 	if (playerBox.IsOverlap(enterBox)) {
 		SceneArea2Overhead* scene = dynamic_cast<SceneArea2Overhead*>(Game::GetInstance()->GetCurrentScene());
 		scene->enterBoss = 1;
+		Sound::getInstance()->stop("area2");
+		Sound::getInstance()->play("entering_boss_scene", false, 1);
 	}
 }
 

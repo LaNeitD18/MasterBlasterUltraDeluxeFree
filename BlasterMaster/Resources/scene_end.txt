@@ -1,0 +1,75 @@
+# id	file_path	transparent_color_r	g	b
+[TEXTURES]
+3001	Resources\sprites\EndingScene\1.png	255	255	255
+3002	Resources\sprites\EndingScene\2.png	255	255	255
+3003	Resources\sprites\EndingScene\3.png	255	255	255
+3004	Resources\sprites\EndingScene\Mountain.png	255	255	255
+3005	Resources\sprites\EndingScene\Red.png	255	255	255
+3006	Resources\sprites\EndingScene\Dragon.png	255	255	255
+
+3010	Resources\sprites\EndingScene\Letters\!.png	255	255	255
+3011	Resources\sprites\EndingScene\Letters\0.png	255	255	255	
+3012	Resources\sprites\EndingScene\Letters\1.png	255	255	255
+3013	Resources\sprites\EndingScene\Letters\2.png	255	255	255
+3014	Resources\sprites\EndingScene\Letters\3.png	255	255	255
+3015	Resources\sprites\EndingScene\Letters\4.png	255	255	255
+3016	Resources\sprites\EndingScene\Letters\5.png	255	255	255
+3017	Resources\sprites\EndingScene\Letters\6.png	255	255	255
+3018	Resources\sprites\EndingScene\Letters\7.png	255	255	255
+3019	Resources\sprites\EndingScene\Letters\8.png	255	255	255
+3020	Resources\sprites\EndingScene\Letters\9.png	255	255	255
+3021	Resources\sprites\EndingScene\Letters\a.png	255	255	255
+3022	Resources\sprites\EndingScene\Letters\b.png	255	255	255
+3023	Resources\sprites\EndingScene\Letters\c.png	255	255	255
+3024	Resources\sprites\EndingScene\Letters\d.png	255	255	255
+3025	Resources\sprites\EndingScene\Letters\e.png	255	255	255
+3026	Resources\sprites\EndingScene\Letters\f.png	255	255	255
+3027	Resources\sprites\EndingScene\Letters\g.png	255	255	255
+3028	Resources\sprites\EndingScene\Letters\h.png	255	255	255
+3029	Resources\sprites\EndingScene\Letters\i.png	255	255	255
+3030	Resources\sprites\EndingScene\Letters\j.png	255	255	255
+3031	Resources\sprites\EndingScene\Letters\k.png	255	255	255
+3032	Resources\sprites\EndingScene\Letters\l.png	255	255	255
+3033	Resources\sprites\EndingScene\Letters\m.png	255	255	255
+3034	Resources\sprites\EndingScene\Letters\n.png	255	255	255
+3035	Resources\sprites\EndingScene\Letters\o.png	255	255	255
+3036	Resources\sprites\EndingScene\Letters\p.png	255	255	255
+3037	Resources\sprites\EndingScene\Letters\q.png	255	255	255
+3038	Resources\sprites\EndingScene\Letters\r.png	255	255	255
+3039	Resources\sprites\EndingScene\Letters\s.png	255	255	255
+3040	Resources\sprites\EndingScene\Letters\t.png	255	255	255
+3041	Resources\sprites\EndingScene\Letters\u.png	255	255	255
+3042	Resources\sprites\EndingScene\Letters\v.png	255	255	255
+3043	Resources\sprites\EndingScene\Letters\w.png	255	255	255
+3044	Resources\sprites\EndingScene\Letters\x.png	255	255	255
+3045	Resources\sprites\EndingScene\Letters\y.png	255	255	255
+3046	Resources\sprites\EndingScene\Letters\z.png	255	255	255
+# next sprite
+
+[SPRITES]
+# id format: 200xx
+# letters
+Resources\scene_end_letter_sprites.txt
+
+[ANIMATIONS]
+# id format: 201xx
+#1 ==== letters =========
+Resources\scene_end_letter_ani.txt
+
+[OBJECTS]
+# type	x	y	ani_set_id1	ani_set_id2...
+
+#box
+100	0	0	100
+
+# title
+1	0	0	1
+
+# tale
+2	-8	-20	2
+
+# sophia
+3	-8	-20	3
+
+#box1
+505	0	0	505

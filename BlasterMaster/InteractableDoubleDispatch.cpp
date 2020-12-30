@@ -111,6 +111,21 @@ void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS
 
+#define CURRENT_CLASS Eyeball
+void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
+#undef CURRENT_CLASS
+
+#define CURRENT_CLASS LinearEyeball
+void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
+#undef CURRENT_CLASS
+
+#define CURRENT_CLASS EyeballSpawner
+void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
+#undef CURRENT_CLASS
+
 #define CURRENT_CLASS ItemHover
 void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)

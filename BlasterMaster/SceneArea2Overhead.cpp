@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 
+#include "Sound.h"
 #include "SceneArea2Overhead.h"
 #include "GameGlobal.h"
 #include "Utils.h"
@@ -16,6 +17,7 @@
 #include "Teleporter.h"
 #include "Cannon.h"
 #include "Eyeball.h"
+#include "EyeballSpawner.h"
 #include "Breakable_Tree.h"
 
 #include "QuadTree.h"
@@ -141,6 +143,7 @@ SceneArea2Overhead::~SceneArea2Overhead()
 #define OBJECT_TYPE_ORB 10
 #define OBJECT_TYPE_WALKER 11
 #define OBJECT_TYPE_JASON_OVERHEAD 12
+#define OBJECT_TYPE_EYESPAWNER 13
 #define OBJECT_TYPE_BREAKABLE_TREE 298
 
 //LeSon
@@ -321,6 +324,9 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_EYE:
 		obj = new Eyeball(x, y);
 		break;
+	case OBJECT_TYPE_EYESPAWNER:
+		obj = new EyeballSpawner(x, y);
+        break;
 	/*case OBJECT_TYPE_WALKER:
 		obj = new Walker(x, y);
 		break;*/
@@ -587,7 +593,7 @@ void SceneArea2Overhead::JumpCheckpoint()
 #define FRAME_PORTAL_TRANSITIONS 130
 #define DISTANCE_JASON_PORTAL_LEFT_RIGHT 35
 #define DISTANCE_JASON_PORTAL_UP_DOWN 50
-#define DURATION_ENTER 300
+#define DURATION_ENTER 600
 
 void SceneArea2Overhead::Update()
 {
@@ -736,6 +742,8 @@ void SceneArea2Overhead::Update()
 
 	if (countEnterBoss > DURATION_ENTER) {
 		this->Release();
+		Sound::getInstance()->stop("entering_boss_scene");
+		Sound::getInstance()->play("area2", false, 1);
 		Game::GetInstance()->Init(L"Resources/scene.txt", 5);
 		SceneBoss* scene = dynamic_cast<SceneBoss*>(Game::GetInstance()->GetCurrentScene());
 		scene->liveShow = 0;

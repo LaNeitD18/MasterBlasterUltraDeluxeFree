@@ -13,7 +13,6 @@
 #include "Orb.h"
 #include "Worm.h"
 #include "Teleporter.h"
-#include "Walker.h"
 #include "JasonOverhead.h"
 #include "Bullet.h"
 #include "Ship.h"
@@ -28,3 +27,5 @@
 #include "CannonBullet.h"
 #include "Breakable_Tree.h"
 #include "Boss.h"
+#include "LinearEyeball.h"
+#include "EyeballSpawner.h"
