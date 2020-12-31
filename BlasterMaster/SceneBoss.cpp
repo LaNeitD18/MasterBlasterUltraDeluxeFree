@@ -528,7 +528,7 @@ void SceneBoss::Update()
 			//TODO: set again start pos when return play
 			GameGlobal::SetReturnPoint(SceneArea2Overhead::startPointInSection[4]);
 			GameGlobal::SetReturnBoundingBox(SceneArea2Overhead::cameraLimitAreaOfSection[6]);
-			this->Release();
+			//this->Release();
 			Game::GetInstance()->Init(L"Resources/scene.txt", 3);
 			return;
 		}
@@ -563,6 +563,16 @@ void SceneBoss::Update()
 		for (auto object : onScreenObj)
 		{
 			object->Update();
+			// boss next
+			Boss* boss = dynamic_cast<Boss*>(object);
+			if (boss != NULL && boss->HealthPoint <= 0) {
+				/*GameGlobal::SetWinBoss(true);
+				GameGlobal::SetReturnPoint(SceneArea2Overhead::startPointInSection[4]);
+				GameGlobal::SetReturnBoundingBox(SceneArea2Overhead::cameraLimitAreaOfSection[6]);
+				this->Release();
+				Game::GetInstance()->Init(L"Resources/scene.txt", 3);
+				return;*/
+			}
 		}
 
 		// Long

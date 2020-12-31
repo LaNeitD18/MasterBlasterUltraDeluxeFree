@@ -22,6 +22,7 @@ Point GameGlobal::lastPositionSophia = Point(0, 0);
 // temporary hp, set later for sophia jason
 int GameGlobal::HealthPoint = 80;
 int GameGlobal::SophiaHealthPoint = 80;
+bool GameGlobal::winBoss = false;
 int GameGlobal::livesToPlay = 2;
 Point GameGlobal::pointReturn = Point(56, 2955);
 BoundingBox GameGlobal::boundingReturn = BoundingBox(0, 2814, 1038, 3094);
@@ -181,6 +182,16 @@ int GameGlobal::GetJasonLevelGun()
 void GameGlobal::SetJasonLevelGun(int n)
 {
 	JasonLvGun = n;
+}
+
+bool GameGlobal::GetWinBoss()
+{
+	return winBoss;
+}
+
+void GameGlobal::SetWinBoss(bool isWin)
+{
+	winBoss = isWin;
 }
 
 Point GameGlobal::GetReturnPoint()

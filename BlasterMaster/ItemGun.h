@@ -23,7 +23,7 @@ public:
 	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
 
-	int type; // 1 - homing 2 - thunder 3 - multi 4 - special 0 - gun_norm
+	int type; // 1 - homing 2 - thunder 3 - multi 4 - special 5 - beam 0 - gun_norm
 
 	// Inherited via AnimatedGameObject
 	virtual BoundingBox GetBoundingBox();

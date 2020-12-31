@@ -148,6 +148,7 @@ SceneArea2Overhead::~SceneArea2Overhead()
 #define OBJECT_TYPE_EYESPAWNER 13
 #define OBJECT_TYPE_HOMING_BULLET 204
 #define OBJECT_TYPE_MULTI_BULLET 205
+#define OBJECT_TYPE_CRUSHER_BEAM 207
 #define OBJECT_TYPE_GUN 203
 #define OBJECT_TYPE_THUNDER 206
 #define OBJECT_TYPE_POWER 201
@@ -349,6 +350,9 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_GUN:
 		obj = new ItemGun(Point(x, y), 4);
+		break;
+	case OBJECT_TYPE_CRUSHER_BEAM:
+		obj = new ItemGun(Point(x, y), 5);
 		break;
 	/*case OBJECT_TYPE_WALKER:
 		obj = new Walker(x, y);
@@ -836,17 +840,21 @@ void SceneArea2Overhead::Render()
 		count = DURATION_OF_LIVESHOW + 1;
 		mMap->Draw();
 		for (auto object : objects) {
-			if (dynamic_cast<Breakable_Tree*>(object) != NULL && dynamic_cast<SceneBox1*>(object) == NULL) {
+			if (dynamic_cast<Breakable_Tree*>(object) != NULL) {
 				object->Render();
 			}
 		}
+
 		for (auto object : objects) {
 			if (dynamic_cast<Breakable_Tree*>(object) == NULL && dynamic_cast<SceneBox1*>(object) == NULL) {
-				object->Render();
+				ItemGun* item = dynamic_cast<ItemGun*>(object);
+				if(item == NULL || (item != NULL && item->type != 5) || (GameGlobal::GetWinBoss() == 1 && item != NULL && item->type == 5))
+					object->Render();
 			}
 		}
+
 		foreMap->Draw();
-		if (enterBoss == 1) {
+		if (enterBoss == 1 && GameGlobal::GetWinBoss() == 0) {
 			for (auto object : objects) {
 				if (dynamic_cast<SceneBox1*>(object) != NULL) {
 					object->drawArguments.SetColor(enterColor[rand() % 8]);

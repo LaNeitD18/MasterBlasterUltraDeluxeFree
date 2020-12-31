@@ -73,7 +73,7 @@ void ItemGun::Render()
 	else if (state == MINE_BULLET_STATE_EXPLODE) {
 		SetAnimationType(MINE_BULLET_ANI_EXPLODE);
 	}*/
-	if (type != 0) {
+	if (type != 0 && type != 5) {
 		drawArguments.SetColor(specialRender[rand() % 6]);
 	}
 	SetAnimationType(0);

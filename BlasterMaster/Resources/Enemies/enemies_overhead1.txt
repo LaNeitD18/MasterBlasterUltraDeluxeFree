@@ -385,6 +385,8 @@ Resources\Enemies\item_ani.txt
 203	888	394	203
 205	906	394	203
 
+207	928	592	207
+
 [ENVIRONMENTS]
 # type	x	y	width	height	portaldirid	sectionToEnter
 1	32	2000	1488	16
