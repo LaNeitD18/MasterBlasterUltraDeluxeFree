@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "GameGlobal.h"
 #include "SceneBoss.h"
+#include "SceneOpening.h"
 #include "Sound.h"
 #include "Worm.h"
 #include <algorithm>
@@ -47,13 +48,15 @@ SceneEnd::~SceneEnd()
 #define SCENE_SECTION_OBJECTS 6
 #define SCENE_SECTION_MAP 7
 
+#define OBJECT_TYPE_BBOX 505
+
 #define OBJECT_TYPE_BOX 100
 
-#define OBJECT_TYPE_TITLE 1
-#define OBJECT_TYPE_TALE 2
-#define OBJECT_TYPE_ENTER_SOPHIA 3
-#define OBJECT_TYPE_BOX1 505
-#define MAX_SCENE_LINE 1024
+#define OBJECT_TYPE_CREDIT	3404
+#define OBJECT_TYPE_DRAGON	3406
+
+#define MAX_SCENE_LINE		1024
+
 
 static D3DCOLOR titleColor[4] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,0,255,255),D3DCOLOR_ARGB(255,255,0,255),D3DCOLOR_ARGB(255,255,255,0) };
 
@@ -65,6 +68,9 @@ void SceneEnd::Init()
 
 	// move bbox init
 	textureLib->Add(ID_TEX_BBOX, L"Resources\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+
+	init_MapLetter();
+	init_LetterCredit();
 
 	ifstream f;
 	f.open(sceneFilePath);
@@ -131,35 +137,19 @@ void SceneEnd::Init()
 		case SCENE_SECTION_OBJECTS:
 			_ParseSection_OBJECTS(line);
 			break;
-			/*
-			case SCENE_SECTION_MAP:
-				_ParseSection_MAP(line, mapNav);
-				break;*/
 		}
 	}
 
 	f.close();
 
-	//// NAK son
-	//// NAK tien
-	//for (auto item : mapNav)
-	//{
-	//	int id = item._Myfirst._Val;
-	//	int top = item._Get_rest()._Myfirst._Val;
-	//	int left = item._Get_rest()._Get_rest()._Myfirst._Val;
-	//	int bottom = item._Get_rest()._Get_rest()._Get_rest()._Myfirst._Val;
-	//	int right = item._Get_rest()._Get_rest()._Get_rest()._Get_rest()._Myfirst._Val;
-
-	//	map[id]->PartialInit(map[top], map[left], map[bottom], map[right]);
-	//}
-
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
-	//displayMessage("yeah");
 }
 
 void SceneEnd::Update()
 {
 	input->Update();
+	Point camPos = Camera::GetInstance()->GetPosition();
+	//DebugOut(L"x%f, y%f", camPos.x, camPos.y);
 
 	//// test continue game
 	//if ((*input)[VK_BACK] && KEY_STATE_DOWN) {
@@ -197,31 +187,10 @@ void SceneEnd::Update()
 
 void SceneEnd::Render()
 {
-	//// LeSon
-	//objects[4]->Render(); // original
-	//if (enterState == 0) {
-	//	objects[0]->Render(); // bbox color flash
-	//	if (count < DURATION_OF_TITLE) {
-	//		objects[1]->Render(); // title drawing
-	//		count++;
-	//	}
-	//	else {
-	//		objects[2]->Render(); // tale next
-	//		count++;
-	//		if (count > DURATION_OF_TALE) {
-	//			count = 0;
-	//		}
-	//	}
-	//}
-	//else if (enterState == 1) {
-	//	if (count < DURATION_OF_ENTER_SOPHIA) {
-	//		objects[3]->Render();
-	//		count++;
-	//	}
-	//	else {
-	//		enterState = 2;
-	//	}
-	//}
+	move_Camera();
+	render_BBoxFollowCamera();
+	render_DragonFollowCamera();
+	render_LetterCredit();
 }
 
 void SceneEnd::_ParseSection_TEXTURES(string line)
@@ -356,50 +325,44 @@ void SceneEnd::_ParseSection_ANIMATION_SETS(string line)
 
 void SceneEnd::_ParseSection_OBJECTS(string line)
 {
-	//vector<string> tokens = split(line);
+	vector<string> tokens = split(line);
 
-	////DebugOut(L"--> %s\n",ToWSTR(line).c_str());
+	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
 
-	//if (tokens.size() < 3)
-	//	return; // skip invalid lines - an object set must have at least id, x, y
+	if (tokens.size() < 3)
+		return; // skip invalid lines - an object set must have at least id, x, y
 
-	//int object_type = atoi(tokens[0].c_str());
-	//float x = atof(tokens[1].c_str());
-	//float y = atof(tokens[2].c_str());
+	int object_type = atoi(tokens[0].c_str());
+	float x = atof(tokens[1].c_str());
+	float y = atof(tokens[2].c_str());
 
 
-	//AnimatedScene* obj = NULL;
+	AnimatedScene* obj = NULL;
 
-	//switch (object_type)
-	//{
-	///*case OBJECT_TYPE_TITLE:
-	//	obj = new SceneEndTitle(x, y);
-	//	break;
-	//case OBJECT_TYPE_TALE:
-	//	obj = new SceneTale(x, y);
-	//	break;
-	//case OBJECT_TYPE_BOX:
-	//	obj = new SceneBox(x, y);
-	//	break;
-	//case OBJECT_TYPE_ENTER_SOPHIA:
-	//	obj = new SceneEnter(x, y);
-	//	break;
-	//case OBJECT_TYPE_BOX1:
-	//	obj = new SceneBox1(x, y);
-	//	break;*/
-	//default:
-	//	DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
-	//	return;
-	//}
+	switch (object_type)
+	{
+	case OBJECT_TYPE_CREDIT:
+		obj = new Credit(x, y);
+		break;
+	case OBJECT_TYPE_DRAGON:
+		obj = new Dragon(x, y);
+		break;
+	case OBJECT_TYPE_BBOX:
+		obj = new SceneBox1(x, y);
+		break;
+	default:
+		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
+		return;
+	}
 
-	//for (int i = 3; i < tokens.size(); i++)
-	//{
-	//	int ani_set_id = atoi(tokens[i].c_str());
-	//	AnimationSet* ani_set = animationSetLib->Get(ani_set_id);
+	for (int i = 3; i < tokens.size(); i++)
+	{
+		int ani_set_id = atoi(tokens[i].c_str());
+		AnimationSet* ani_set = animationSetLib->Get(ani_set_id);
 
-	//	obj->SetAnimationSet(ani_set);
-	//}
-	//objects.push_back(obj);
+		obj->SetAnimationSet(ani_set);
+	}
+	objects.push_back(obj);
 }
 
 void SceneEnd::Release()
@@ -412,290 +375,54 @@ void SceneEnd::Release()
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
 
-//BoundingBox SceneEndTitle::GetBoundingBox()
-//{
-//	float left = pos.x;
-//	float top = pos.y;
-//	float right = pos.x + TITLE_BBOX_WIDTH;
-//	float bottom = pos.y + TITLE_BBOX_HEIGHT;
-//	return BoundingBox(left, top, right, bottom);
-//}
-//
-//void SceneEndTitle::Update()
-//{
-//	Input& input = *GameGlobal::GetInput();
-//	SceneEnd* scene = dynamic_cast<SceneEnd*>(Game::GetInstance()->GetCurrentScene());
-//	// enter to switch scene
-//	if ((input[VK_RETURN] & KEY_STATE_DOWN) && scene->enterState == 0) {
-//		Sound::getInstance()->stop("intro");
-//		Sound::getInstance()->play("enter", false, 1);
-//		scene->count = 0;
-//		scene->enterState = 1;
-//	}
-//}
-//
-//void SceneEndTitle::Render()
-//{
-//	SetAnimationType(TITLE_NORMAL);
-//	/*if (state == TELEPORTER_STATE_DIE) {
-//		ani = TELEPORTER_ANI_DIE;
-//	}*/
-//
-//	AnimatedGameObject::Render();
-//
-//	//RenderBoundingBox();
-//}
-//
-//SceneEndTitle::SceneEndTitle()
-//{
-//	SetState(TITLE_NORMAL);
-//}
-//
-//SceneEndTitle::SceneEndTitle(float x, float y)
-//{
-//	SetState(TITLE_NORMAL);
-//	pos = Point(x, y);
-//	drawArguments.SetScale(D3DXVECTOR2(1, 1));
-//}
-//
-//void SceneEndTitle::SetState(int state)
-//{
-//	GameObject::SetState(state);
-//	switch (state)
-//	{
-//	case TITLE_NORMAL:
-//		v.x = TITLE_SPEED;
-//	}
-//}
-//
-//BoundingBox SceneTale::GetBoundingBox()
-//{
-//	return BoundingBox();
-//}
-//
-//void SceneTale::Update()
-//{
-//	Input& input = *GameGlobal::GetInput();
-//	SceneEnd* scene = dynamic_cast<SceneEnd*>(Game::GetInstance()->GetCurrentScene());
-//	// enter to switch scene
-//}
-//
-//void SceneTale::Render()
-//{
-//	SetAnimationType(TALE_NORMAL);
-//	/*if (state == TELEPORTER_STATE_DIE) {
-//		ani = TELEPORTER_ANI_DIE;
-//	}*/
-//
-//	AnimatedGameObject::Render();
-//
-//	//RenderBoundingBox();
-//}
-//
-//SceneTale::SceneTale()
-//{
-//	SetState(TALE_NORMAL);
-//}
-//
-//SceneTale::SceneTale(float x, float y)
-//{
-//	SetState(TALE_NORMAL);
-//	pos = Point(x, y);
-//	drawArguments.SetScale(D3DXVECTOR2(1, 1));
-//}
-//
-//void SceneTale::SetState(int state)
-//{
-//	GameObject::SetState(state);
-//	switch (state)
-//	{
-//	case TALE_NORMAL:
-//		v.x = TALE_SPEED;
-//	}
-//}
-//
-//BoundingBox SceneBox::GetBoundingBox()
-//{
-//	return BoundingBox();
-//}
-//
-//void SceneBox::Update()
-//{
-//	drawArguments.SetColor(titleColor[(rand() % 4)]);
-//}
-//
-//void SceneBox::Render()
-//{
-//	SetAnimationType(BOX_NORMAL);
-//	/*if (state == TELEPORTER_STATE_DIE) {
-//		ani = TELEPORTER_ANI_DIE;
-//	}*/
-//
-//	AnimatedGameObject::Render();
-//
-//	//RenderBoundingBox();
-//}
-//
-//SceneBox::SceneBox()
-//{
-//	SetState(BOX_NORMAL);
-//}
-//
-//SceneBox::SceneBox(float x, float y)
-//{
-//	SetState(BOX_NORMAL);
-//	pos = Point(x, y);
-//	drawArguments.SetScale(D3DXVECTOR2(1, 1));
-//}
-//
-//void SceneBox::SetState(int state)
-//{
-//	GameObject::SetState(state);
-//	switch (state)
-//	{
-//	case BOX_NORMAL:
-//		v.x = BOX_SPEED;
-//	}
-//}
-//
-//BoundingBox SceneEnter::GetBoundingBox()
-//{
-//	return BoundingBox();
-//}
-//
-//void SceneEnter::Update()
-//{
-//	Input& input = *GameGlobal::GetInput();
-//	SceneEnd* scene = dynamic_cast<SceneEnd*>(Game::GetInstance()->GetCurrentScene());
-//	// enter to switch scene
-//}
-//
-//void SceneEnter::Render()
-//{
-//	SetAnimationType(ENTER_NORMAL);
-//	/*if (state == TELEPORTER_STATE_DIE) {
-//		ani = TELEPORTER_ANI_DIE;
-//	}*/
-//
-//	AnimatedGameObject::Render();
-//
-//	//RenderBoundingBox();
-//}
-//
-//SceneEnter::SceneEnter()
-//{
-//	SetState(ENTER_NORMAL);
-//}
-//
-//SceneEnter::SceneEnter(float x, float y)
-//{
-//	SetState(ENTER_NORMAL);
-//	pos = Point(x, y);
-//	drawArguments.SetScale(D3DXVECTOR2(1, 1));
-//}
-//
-//void SceneEnter::SetState(int state)
-//{
-//	GameObject::SetState(state);
-//	switch (state)
-//	{
-//	case ENTER_NORMAL:
-//		v.x = ENTER_SPEED;
-//	}
-//}
-//
-//BoundingBox SceneBox1::GetBoundingBox()
-//{
-//	return BoundingBox();
-//}
-//
-//void SceneBox1::Update()
-//{
-//	drawArguments.SetColor(titleColor[(rand() % 4)]);
-//}
-//
-//void SceneBox1::Render()
-//{
-//	SetAnimationType(BOX_NORMAL);
-//	/*if (state == TELEPORTER_STATE_DIE) {
-//		ani = TELEPORTER_ANI_DIE;
-//	}*/
-//
-//	AnimatedGameObject::Render();
-//
-//	//RenderBoundingBox();
-//}
-//
-//SceneBox1::SceneBox1()
-//{
-//	SetState(BOX_NORMAL);
-//}
-//
-//SceneBox1::SceneBox1(float x, float y)
-//{
-//	SetState(BOX_NORMAL);
-//	pos = Point(x, y);
-//	drawArguments.SetScale(D3DXVECTOR2(1, 1));
-//}
-//
-//void SceneBox1::SetState(int state)
-//{
-//	GameObject::SetState(state);
-//	switch (state)
-//	{
-//	case BOX_NORMAL:
-//		v.x = BOX_SPEED;
-//	}
-//}
-
 //Tool Credit
 void SceneEnd::init_MapLetter()
 {
-	mapLetter['!'] = 3210;
-	mapLetter['0'] = 3211;
-	mapLetter['1'] = 3212;
-	mapLetter['2'] = 3213;
-	mapLetter['3'] = 3214;
-	mapLetter['4'] = 3215;
-	mapLetter['5'] = 3216;
-	mapLetter['6'] = 3217;
-	mapLetter['7'] = 3218;
-	mapLetter['8'] = 3219;
-	mapLetter['9'] = 3220;
-	mapLetter['a'] = 3221;
-	mapLetter['b'] = 3222;
-	mapLetter['c'] = 3223;
-	mapLetter['d'] = 3224;
-	mapLetter['e'] = 3225;
-	mapLetter['f'] = 3226;
-	mapLetter['g'] = 3227;
-	mapLetter['h'] = 3228;
-	mapLetter['i'] = 3229;
-	mapLetter['j'] = 3230;
-	mapLetter['k'] = 3231;
-	mapLetter['l'] = 3232;
-	mapLetter['m'] = 3233;
-	mapLetter['n'] = 3234;
-	mapLetter['o'] = 3235;
-	mapLetter['p'] = 3236;
-	mapLetter['q'] = 3237;
-	mapLetter['r'] = 3238;
-	mapLetter['s'] = 3239;
-	mapLetter['t'] = 3240;
-	mapLetter['u'] = 3241;
-	mapLetter['v'] = 3242;
-	mapLetter['w'] = 3243;
-	mapLetter['x'] = 3244;
-	mapLetter['y'] = 3245;
-	mapLetter['z'] = 3246;
+	mapLetter['!'] = 3310;
+	mapLetter['0'] = 3311;
+	mapLetter['1'] = 3312;
+	mapLetter['2'] = 3313;
+	mapLetter['3'] = 3314;
+	mapLetter['4'] = 3315;
+	mapLetter['5'] = 3316;
+	mapLetter['6'] = 3317;
+	mapLetter['7'] = 3318;
+	mapLetter['8'] = 3319;
+	mapLetter['9'] = 3320;
+	mapLetter['a'] = 3321;
+	mapLetter['b'] = 3322;
+	mapLetter['c'] = 3323;
+	mapLetter['d'] = 3324;
+	mapLetter['e'] = 3325;
+	mapLetter['f'] = 3326;
+	mapLetter['g'] = 3327;
+	mapLetter['h'] = 3328;
+	mapLetter['i'] = 3329;
+	mapLetter['j'] = 3330;
+	mapLetter['k'] = 3331;
+	mapLetter['l'] = 3332;
+	mapLetter['m'] = 3333;
+	mapLetter['n'] = 3334;
+	mapLetter['o'] = 3335;
+	mapLetter['p'] = 3336;
+	mapLetter['q'] = 3337;
+	mapLetter['r'] = 3338;
+	mapLetter['s'] = 3339;
+	mapLetter['t'] = 3340;
+	mapLetter['u'] = 3341;
+	mapLetter['v'] = 3342;
+	mapLetter['w'] = 3343;
+	mapLetter['x'] = 3344;
+	mapLetter['y'] = 3345;
+	mapLetter['z'] = 3346;
 }
 
 void SceneEnd::init_LetterCredit()
 {
 	Camera::GetInstance()->SetPosition(Point(0, 0));
-	posLetter = Point(90, 300);
+	posLetter = Point(-40, 100);
 	ifstream f;
-	f.open(L"scene_end_credit.txt");
+	f.open(L"Resources/credit.txt");
 
 	// current resource section flag
 	int section = SCENE_SECTION_UNKNOWN;
@@ -714,7 +441,7 @@ void SceneEnd::init_LetterCredit()
 
 void SceneEnd::add_LineCredit(string line)
 {
-	posLetter.x = 90;
+	posLetter.x = -40;
 	std::transform(line.begin(), line.end(), line.begin(), ::tolower);
 	for (int i = 0; i < line.length(); i++)
 	{
@@ -729,16 +456,66 @@ void SceneEnd::add_LineCredit(string line)
 				posLetter.x += 10;
 				DebugOut(L"\n lx %f ly %f", posLetter.x, posLetter.y);
 				Letter item(posLetter, ch);
-				//Paragraph.push_back(item);
+				Paragraph.push_back(item);
 			}
 	}
 	posLetter.y += 10;
 }
 
+void SceneEnd::render_LetterCredit()
+{
+	for (int i = 0; i < Paragraph.size(); i++)
+	{
+		Letter item = Paragraph[i];
+		int id = mapLetter[item.letter];
+		//Credit[id]->Render(item.x, item.y);
+
+		for (auto x : objects) {
+			bool isCredit = dynamic_cast<Credit*>(x) != NULL;
+			if (isCredit) {
+				AnimationSet* ani_set = animationSetLib->Get(id);
+				x->SetAnimationSet(ani_set);
+				x->SetPosition(item.pos);
+				x->Render();
+			}
+		}
+	}
+}
+
+void SceneEnd::render_BBoxFollowCamera()
+{
+	Point cameraPos = Camera::GetInstance()->GetPosition();
+
+	for (auto x : objects) {
+		bool isBBox = dynamic_cast<SceneBox1*>(x) != NULL;
+		if (isBBox) {
+			x->SetPosition(cameraPos);
+			x->Render();
+		}
+	}
+}
+
 void SceneEnd::render_DragonFollowCamera()
 {
 	Point cameraPos = Camera::GetInstance()->GetPosition();
-	//Credit[ID_STATE_DRAGON]->Render(cx, cy);
+	cameraPos.x -= 20;
+	cameraPos.y -= 10;
+	for (auto x : objects) {
+		bool isDragon = dynamic_cast<Dragon*>(x) != NULL;
+		if (isDragon) {
+			x->SetPosition(cameraPos);
+			x->Render();
+		}
+	}
+}
+
+void SceneEnd::move_Camera()
+{
+	Point camPos = Camera::GetInstance()->GetPosition();
+	if (camPos.y >= 1000)
+		return;
+	camPos.y += 0.5;
+	Camera::GetInstance()->SetPosition(camPos);
 }
 
 bool SceneEnd::checkValidLetter(char& ch)
@@ -748,4 +525,111 @@ bool SceneEnd::checkValidLetter(char& ch)
 	if (ch >= '0' && ch <= '9')
 		return true;
 	return false;
+}
+
+// Dragon
+BoundingBox Dragon::GetBoundingBox()
+{
+	float left = pos.x;
+	float top = pos.y;
+	float right = pos.x + DRAGON_BBOX_WIDTH;
+	float bottom = pos.y + DRAGON_BBOX_HEIGHT;
+	return BoundingBox(left, top, right, bottom);
+}
+
+void Dragon::Update()
+{
+	DebugOut(L"pos x%f y%f", pos.x, pos.y);
+	Input& input = *GameGlobal::GetInput();
+	SceneEnd* scene = dynamic_cast<SceneEnd*>(Game::GetInstance()->GetCurrentScene());
+	//// enter to switch scene
+	//if ((input[VK_RETURN] & KEY_STATE_DOWN) && scene->enterState == 0) {
+	//	Sound::getInstance()->stop("intro");
+	//	Sound::getInstance()->play("enter", false, 1);
+	//	scene->count = 0;
+	//	scene->enterState = 1;
+	//}
+}
+
+void Dragon::Render()
+{
+	SetAnimationType(DRAGON_NORMAL);
+	/*if (state == TELEPORTER_STATE_DIE) {
+		ani = TELEPORTER_ANI_DIE;
+	}*/
+
+	AnimatedGameObject::Render();
+
+	//RenderBoundingBox();
+}
+
+Dragon::Dragon()
+{
+	SetState(DRAGON_NORMAL);
+}
+
+Dragon::Dragon(float x, float y)
+{
+	SetState(DRAGON_NORMAL);
+	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
+}
+
+void Dragon::SetState(int state)
+{
+	GameObject::SetState(state);
+}
+
+
+// Credit
+BoundingBox Credit::GetBoundingBox()
+{
+	float left = pos.x;
+	float top = pos.y;
+	float right = pos.x + DRAGON_BBOX_WIDTH;
+	float bottom = pos.y + DRAGON_BBOX_HEIGHT;
+	return BoundingBox(left, top, right, bottom);
+}
+
+void Credit::Update()
+{
+	DebugOut(L"pos x%f y%f", pos.x, pos.y);
+	Input& input = *GameGlobal::GetInput();
+	SceneEnd* scene = dynamic_cast<SceneEnd*>(Game::GetInstance()->GetCurrentScene());
+	//// enter to switch scene
+	//if ((input[VK_RETURN] & KEY_STATE_DOWN) && scene->enterState == 0) {
+	//	Sound::getInstance()->stop("intro");
+	//	Sound::getInstance()->play("enter", false, 1);
+	//	scene->count = 0;
+	//	scene->enterState = 1;
+	//}
+}
+
+void Credit::Render()
+{
+	SetAnimationType(DRAGON_NORMAL);
+	/*if (state == TELEPORTER_STATE_DIE) {
+		ani = TELEPORTER_ANI_DIE;
+	}*/
+
+	AnimatedGameObject::Render();
+
+	//RenderBoundingBox();
+}
+
+Credit::Credit()
+{
+	SetState(DRAGON_NORMAL);
+}
+
+Credit::Credit(float x, float y)
+{
+	SetState(DRAGON_NORMAL);
+	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
+}
+
+void Credit::SetState(int state)
+{
+	GameObject::SetState(state);
 }

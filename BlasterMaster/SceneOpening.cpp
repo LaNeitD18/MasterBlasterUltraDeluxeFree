@@ -170,9 +170,9 @@ void SceneOpening::Update()
 
 	if ((*input)[VK_END] && KEY_STATE_DOWN) {
 		this->Release();
-		Game::GetInstance()->Init(L"Resources/scene.txt", 6);
-		SceneBoss* scene = dynamic_cast<SceneBoss*>(Game::GetInstance()->GetCurrentScene());
-		scene->liveShow = 0;
+		Game::GetInstance()->Init(L"Resources/scene_end.txt", 6);
+		/*SceneBoss* scene = dynamic_cast<SceneBoss*>(Game::GetInstance()->GetCurrentScene());
+		scene->liveShow = 0;*/
 		return;
 	}
 
