@@ -427,7 +427,17 @@ void Interactable::Interact(Player* player, ItemPower* item) {
 	if (playerBox.IsOverlap(itemBox)) {
 		Sound::getInstance()->play("item", false, 1);
 		if (player->GetHP() < 80) {
-			player->SetHP(player->GetHP() + POWER_GAIN);
+			if (item->special == 0) {
+				player->SetHP(player->GetHP() + POWER_GAIN);
+			}
+			else {
+				if (player->GetHP() + 30 < 80) {
+					player->SetHP(player->GetHP() + 4 * POWER_GAIN);
+				}
+				else {
+					player->SetHP(80);
+				}
+			}
 		}
 		item->GetManager()->RemoveElement(item);
 	}
@@ -457,6 +467,41 @@ void Interactable::Interact(Player* player, ItemGun* item) {
 				}
 				else {
 					GameGlobal::SetJasonLevelGun(GameGlobal::GetJasonLevelGun() + 10);
+				}
+			}
+		}
+		else if(item->type == 1) {
+			if (GameGlobal::GetNumberSpecialBullet1() < 80) {
+				GameGlobal::SetSpecialNumberBullet1(GameGlobal::GetNumberSpecialBullet1() + 20);
+			}
+		}
+		else if (item->type == 2) {
+			if (GameGlobal::GetNumberSpecialBullet2() < 80) {
+				GameGlobal::SetSpecialNumberBullet2(GameGlobal::GetNumberSpecialBullet2() + 20);
+			}
+		}
+		else if (item->type == 3) {
+			if (GameGlobal::GetNumberSpecialBullet3() < 80) {
+				GameGlobal::SetSpecialNumberBullet3(GameGlobal::GetNumberSpecialBullet3() + 20);
+			}
+		}
+		else if(item->type == 4) {
+			if (GameGlobal::GetJasonLevelGun() + 30 < 80) {
+				JasonOverhead* currentPlay = dynamic_cast<JasonOverhead*>(player);
+				if (currentPlay != NULL) {
+					currentPlay->bulletPower += 40;
+				}
+				else {
+					GameGlobal::SetJasonLevelGun(GameGlobal::GetJasonLevelGun() + 40);
+				}
+			}
+			else {
+				JasonOverhead* currentPlay = dynamic_cast<JasonOverhead*>(player);
+				if (currentPlay != NULL) {
+					currentPlay->bulletPower = 80;
+				}
+				else {
+					GameGlobal::SetJasonLevelGun(80);
 				}
 			}
 		}
@@ -583,6 +628,10 @@ void Interactable::Interact(Enemy* enemy, Env_Wall* wall) {
 
 void Interactable::Interact(Player* player, Enemy* enemy) {
 	// implement interact between player and enemy (take damage)
+	if (dynamic_cast<EyeballSpawner*>(enemy) != NULL)
+	{
+		return;
+	}
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox enemyBox = enemy->GetBoundingBox();
 	if (playerBox.IsOverlap(enemyBox)) {
@@ -928,6 +977,10 @@ void Interactable::Interact(PlayerBullet* bullet, Env_Wall * wall)
 		bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
 }
 void Interactable::Interact(PlayerBullet* bullet, Enemy* enemy) {
+	if (dynamic_cast<EyeballSpawner*>(enemy) != NULL)
+	{
+		return;
+	}
 	BoundingBox bulletBox = bullet->GetBoundingBox();
 	BoundingBox enemyBox = enemy->GetBoundingBox();
 	if (enemyBox.SweptAABB(bulletBox, bullet->dx() + enemy->dx()) != -INFINITY)

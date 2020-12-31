@@ -19,12 +19,13 @@
 #include "Orb.h"
 #include "Skull.h"
 #include "SkullBullet.h"
+#include "ItemPower.h"
 #include "Mine.h"
+#include "ItemPower.h"
 #include "Teleporter.h"
 #include "Boss.h"
 #include "Bullet.h"
 #include "ItemGun.h"
-
 #include "Sound.h"
 #include "QuadTree.h"
 #include "Player.h"
@@ -68,7 +69,7 @@ BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[19] = {
 	// section M
 	BoundingBox(512,1024,782,1814),
 	//section N
-	BoundingBox(768,1024,1294,1548),
+	BoundingBox(768,1024,1294,1550),
 	//section O
 	BoundingBox(1280,1270,1550,1550)
 };
@@ -241,7 +242,9 @@ SceneArea2SideView::~SceneArea2SideView()
 #define OBJECT_TYPE_SKULL_BULLET 100
 #define OBJECT_TYPE_HOMING_BULLET 204
 #define OBJECT_TYPE_MULTI_BULLET 205
+#define OBJECT_TYPE_GUN 203
 #define OBJECT_TYPE_THUNDER 206
+#define OBJECT_TYPE_POWER 201
 #define OBJECT_TYPE_BOSS 21
 
 //LeSon
@@ -481,6 +484,9 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_JASON_SIDE_VIEW:
 		break;
+	case OBJECT_TYPE_POWER:
+		obj = new ItemPower(Point(x, y), 1);
+		break;
 	case OBJECT_TYPE_HOMING_BULLET:
 		obj = new ItemGun(Point(x, y), 1);
 		break;
@@ -490,6 +496,10 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_THUNDER:
 		obj = new ItemGun(Point(x, y), 2);
 		break;
+	case OBJECT_TYPE_GUN:
+		obj = new ItemGun(Point(x, y), 4);
+		break;
+
 	case OBJECT_TYPE_BOSS:
 		obj = new Boss(x, y);
 		break;

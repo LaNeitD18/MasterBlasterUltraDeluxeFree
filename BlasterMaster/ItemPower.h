@@ -13,7 +13,9 @@ class ItemPower : public AnimatedGameObject
 	int time;
 public:
 	ItemPower();
-	ItemPower(Point pos);
+	ItemPower(Point pos, int special);
+
+	int special;
 
 	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);

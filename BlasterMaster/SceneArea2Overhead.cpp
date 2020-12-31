@@ -14,8 +14,10 @@
 #include "Jumper.h"
 #include "Dome.h"
 #include "Floater.h"
+#include "ItemPower.h"
 #include "Teleporter.h"
 #include "Cannon.h"
+#include "ItemGun.h"
 #include "Eyeball.h"
 #include "EyeballSpawner.h"
 #include "Breakable_Tree.h"
@@ -144,6 +146,12 @@ SceneArea2Overhead::~SceneArea2Overhead()
 #define OBJECT_TYPE_WALKER 11
 #define OBJECT_TYPE_JASON_OVERHEAD 12
 #define OBJECT_TYPE_EYESPAWNER 13
+#define OBJECT_TYPE_HOMING_BULLET 204
+#define OBJECT_TYPE_MULTI_BULLET 205
+#define OBJECT_TYPE_GUN 203
+#define OBJECT_TYPE_THUNDER 206
+#define OBJECT_TYPE_POWER 201
+
 #define OBJECT_TYPE_BREAKABLE_TREE 298
 
 //LeSon
@@ -327,6 +335,21 @@ void SceneArea2Overhead::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_EYESPAWNER:
 		obj = new EyeballSpawner(x, y);
         break;
+	case OBJECT_TYPE_POWER:
+		obj = new ItemPower(Point(x, y), 1);
+		break;
+	case OBJECT_TYPE_HOMING_BULLET:
+		obj = new ItemGun(Point(x, y), 1);
+		break;
+	case OBJECT_TYPE_MULTI_BULLET:
+		obj = new ItemGun(Point(x, y), 3);
+		break;
+	case OBJECT_TYPE_THUNDER:
+		obj = new ItemGun(Point(x, y), 2);
+		break;
+	case OBJECT_TYPE_GUN:
+		obj = new ItemGun(Point(x, y), 4);
+		break;
 	/*case OBJECT_TYPE_WALKER:
 		obj = new Walker(x, y);
 		break;*/

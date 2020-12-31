@@ -375,6 +375,15 @@ Resources\Enemies\item_ani.txt
 #box1
 505	902	628	505
 
+#item
+201	1368	806	201
+203	1384	822	203
+205	1384	806	205
+206	1368	822	206
+204	888	376	204
+201	906	376	201
+203	888	394	203
+205	906	394	203
 
 [ENVIRONMENTS]
 # type	x	y	width	height	portaldirid	sectionToEnter

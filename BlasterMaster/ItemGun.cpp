@@ -5,6 +5,7 @@
 #include "Camera.h"
 
 static D3DCOLOR flashColor[2] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(0,255,255,255) };
+static D3DCOLOR specialRender[6] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,0,255,255),D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,255,0,255),D3DCOLOR_ARGB(255,255,255,255), D3DCOLOR_ARGB(0,255,255,255) };
 
 ItemGun::ItemGun()
 {
@@ -72,6 +73,9 @@ void ItemGun::Render()
 	else if (state == MINE_BULLET_STATE_EXPLODE) {
 		SetAnimationType(MINE_BULLET_ANI_EXPLODE);
 	}*/
+	if (type != 0) {
+		drawArguments.SetColor(specialRender[rand() % 6]);
+	}
 	SetAnimationType(0);
 	AnimatedGameObject::Render();
 }
