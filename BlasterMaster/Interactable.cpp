@@ -509,14 +509,20 @@ void Interactable::Interact(Player* player, ItemGun* item) {
 	}
 }
 
-void Interactable::Interact(Player* player, Breakable_Tree* tree) {
+void Interactable::Interact(Player* player, Breakable_Obstacle* obs) {
 	BoundingBox playerBox = player->GetBoundingBox();
-	BoundingBox treeBox = tree->GetBoundingBoxJason();
-	//if (playerBox.IsOverlap(treeBox)) {
+	BoundingBox obstacleBox = BoundingBox();
+	if (obs->type == 0) {
+		obstacleBox = obs->GetBoundingBoxJason();
+	}
+	else {
+		obstacleBox = obs->GetBoundingBox();
+	}
+	//if (playerBox.IsOverlap(obstacleBox)) {
 		bool top, left, right, bottom;
 		Point move = player->dx();
 		top = left = right = bottom = false;
-		double offsetTime = treeBox.SweptAABB(playerBox, move, top, left, bottom, right);
+		double offsetTime = obstacleBox.SweptAABB(playerBox, move, top, left, bottom, right);
 
 		player->wallTop |= top;
 		player->wallRight |= right;
@@ -541,14 +547,72 @@ void Interactable::Interact(Player* player, Breakable_Tree* tree) {
 	//}
 }
 
-void Interactable::Interact(JasonOverheadBulletNorm* bullet, Breakable_Tree* tree) {
+void Interactable::Interact(JasonOverheadBulletNorm* bullet, Breakable_Obstacle* obs) {
 	BoundingBox bulletBox = bullet->GetBoundingBox();
-	BoundingBox treeBox = tree->GetBoundingBox();
+	BoundingBox obstacleBox = obs->GetBoundingBox();
 	
-	if (treeBox.SweptAABB(bulletBox, bullet->dx()) != -INFINITY) {
+	if (obstacleBox.SweptAABB(bulletBox, bullet->dx()) != -INFINITY) {
 		bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
-		tree->SetIsOut(true);
+		obs->SetIsOut(true);
 	}
+}
+
+void Interactable::Interact(SophiaBullet* bullet, Breakable_Obstacle* obs) {
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox obstacleBox = obs->GetBoundingBox();
+
+	if (obstacleBox.SweptAABB(bulletBox, bullet->dx()) != -INFINITY) {
+		bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
+		obs->SetIsOut(true);
+	}
+}
+
+void Interactable::Interact(Enemy* enemy, Breakable_Obstacle* obs) {
+	BoundingBox enemyBox = enemy->GetBoundingBox();
+	BoundingBox obsBox = obs->GetBoundingBox();
+	if (obs->type == 1) {
+		if (enemyBox.IsOverlap(obsBox)) {
+			float overlapAreaX = min(enemyBox.r, obsBox.r) - max(enemyBox.l, obsBox.l);
+			float overlapAreaY = min(enemyBox.b, obsBox.b) - max(enemyBox.t, obsBox.t);
+			if (overlapAreaX > overlapAreaY)
+			{
+				if (enemyBox.GetCenter().y > obsBox.GetCenter().y) {
+					enemy->wallTop = true;
+					// Snap top (player pushed down)
+					Point pos = enemy->GetPosition();
+					pos.y -= enemyBox.t - obsBox.b;
+					enemy->SetPosition(pos);
+				}
+				else
+				{
+					enemy->wallBot = true;
+					// Snap bottom (player pushed up)
+					Point pos = enemy->GetPosition();
+					pos.y += obsBox.t - enemyBox.b;
+					enemy->SetPosition(pos);
+				}
+			}
+			else
+			{
+				if (enemyBox.GetCenter().x < obsBox.GetCenter().x) {
+					enemy->wallRight = true;
+					// Snap right (player to left)
+					Point pos = enemy->GetPosition();
+					pos.x -= enemyBox.r - obsBox.l;
+					enemy->SetPosition(pos);
+				}
+				else
+				{
+					enemy->wallLeft = true;
+					// Snap left (player to right)
+					Point pos = enemy->GetPosition();
+					pos.x += obsBox.r - enemyBox.l;
+					enemy->SetPosition(pos);
+				}
+			}
+		}
+	}
+	
 }
 
 

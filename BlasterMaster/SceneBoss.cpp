@@ -17,7 +17,7 @@
 #include "Teleporter.h"
 #include "Cannon.h"
 #include "Eyeball.h"
-#include "Breakable_Tree.h"
+#include "Breakable_Obstacle.h"
 #include "Boss.h"
 #include "SceneOpening.h"
 
@@ -550,8 +550,8 @@ void SceneBoss::Update()
 			quadTree.InsertToTree(y, y->GetBoundingBox());
 		}
 		for (auto x : onScreenObj) {
-			if (dynamic_cast<Breakable_Tree*>(x) != NULL) {
-				quadTree.InsertAndInteract(x, dynamic_cast<Breakable_Tree*>(x)->GetBoundingBoxJason());
+			if (dynamic_cast<Breakable_Obstacle*>(x) != NULL) {
+				quadTree.InsertAndInteract(x, dynamic_cast<Breakable_Obstacle*>(x)->GetBoundingBoxJason());
 			}
 			else {
 				// If there are any non-proximity-based interaction, detect & handle here

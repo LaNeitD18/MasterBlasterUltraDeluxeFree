@@ -26,6 +26,7 @@
 #include "Boss.h"
 #include "Bullet.h"
 #include "ItemGun.h"
+#include "Breakable_Obstacle.h"
 #include "Sound.h"
 #include "QuadTree.h"
 #include "Player.h"
@@ -245,6 +246,7 @@ SceneArea2SideView::~SceneArea2SideView()
 #define OBJECT_TYPE_GUN 203
 #define OBJECT_TYPE_THUNDER 206
 #define OBJECT_TYPE_POWER 201
+#define OBJECT_TYPE_Breakable_Obstacle 298
 #define OBJECT_TYPE_BOSS 21
 
 //LeSon
@@ -499,7 +501,9 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GUN:
 		obj = new ItemGun(Point(x, y), 4);
 		break;
-
+	case OBJECT_TYPE_Breakable_Obstacle:
+		obj = new Breakable_Obstacle(x, y, 1);
+		break;
 	case OBJECT_TYPE_BOSS:
 		obj = new Boss(x, y);
 		break;
@@ -1098,8 +1102,17 @@ void SceneArea2SideView::Render()
 		}
 		count = DURATION_OF_LIVESHOW + 1;
 		mMap->Draw();
-		for (auto object : objects)
-			object->Render();
+		for (auto object : objects) {
+			if (dynamic_cast<Breakable_Obstacle*>(object) != NULL) {
+				object->Render();
+			}
+		}
+
+		for (auto object : objects) {
+			if (dynamic_cast<Breakable_Obstacle*>(object) == NULL) {
+				object->Render();
+			}
+		}
 		foreMap->Draw();
 		healthBar->Draw();
 		if (bulletState) {

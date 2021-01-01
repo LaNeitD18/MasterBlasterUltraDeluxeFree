@@ -25,7 +25,7 @@
 #include "ItemGun.h"
 #include "Cannon.h"
 #include "CannonBullet.h"
-#include "Breakable_Tree.h"
+#include "Breakable_Obstacle.h"
 #include "Boss.h"
 #include "LinearEyeball.h"
 #include "EyeballSpawner.h"

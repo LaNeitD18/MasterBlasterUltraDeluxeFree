@@ -97,6 +97,9 @@ public:
 	virtual ~SophiaBullet();
 	virtual void SetAnimationType(int ani) override;
 
+	virtual void Interact(Interactable* other);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
+
 	// Inherited via Bullet
 	virtual int GetDamage(BulletDamageModifier modifier) override;
 };

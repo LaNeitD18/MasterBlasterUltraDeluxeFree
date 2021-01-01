@@ -1,4 +1,4 @@
-#include "Breakable_Tree.h"
+#include "Breakable_Obstacle.h"
 #include "GameGlobal.h"
 #include "Utils.h"
 #include "Game.h"
@@ -6,43 +6,44 @@
 
 static D3DCOLOR appearColor[2] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(0,255,255,255) };
 
-Breakable_Tree::Breakable_Tree()
+Breakable_Obstacle::Breakable_Obstacle()
 {
 	
 }
 
-Breakable_Tree::Breakable_Tree(float x, float y)
+Breakable_Obstacle::Breakable_Obstacle(float x, float y, int type)
 {
 	pos = Point(x, y);
 	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 
 	SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(BREAKABLETREE_ANIMATION_SET_ID));
 	this->isOut = false;
+	this->type = type;
 	//SetState(ITEM_POWER_STATE_NORMAL);
 
 	//time = 0;
 }
 
-BoundingBox Breakable_Tree::GetBoundingBox()
+BoundingBox Breakable_Obstacle::GetBoundingBox()
 {
 	if (!isOut) {
-		float left = pos.x + BREAKABLETREE_BBOX_OFFSET_LEFT;
-		float top = pos.y + BREAKABLETREE_BBOX_OFFSET_TOP;
-		float right = pos.x + BREAKABLETREE_BBOX_OFFSET_RIGHT;
-		float bottom = pos.y + BREAKABLETREE_BBOX_OFFSET_BOTTOM;
+		float left = pos.x + OBS_BBOX_OFFSET_LEFT;
+		float top = pos.y + OBS_BBOX_OFFSET_TOP;
+		float right = pos.x + OBS_BBOX_OFFSET_RIGHT;
+		float bottom = pos.y + OBS_BBOX_OFFSET_BOTTOM;
 		return BoundingBox(left, top, right, bottom);
 	}
 	return BoundingBox(0, 0, 0, 0);
 	
 }
 
-BoundingBox Breakable_Tree::GetBoundingBoxJason()
+BoundingBox Breakable_Obstacle::GetBoundingBoxJason()
 {
 	if (!isOut) {
-		float left = pos.x + BREAKABLETREE_BBOX_OFFSET_LEFT;
-		float top = pos.y + BREAKABLETREE_BBOX_OFFSET_TOP;
-		float right = pos.x + BREAKABLETREE_BBOX_OFFSET_RIGHT;
-		float bottom = pos.y - BREAKABLETREE_BBOX_OFFSET_BOTTOM + 8;
+		float left = pos.x + OBS_BBOX_OFFSET_LEFT;
+		float top = pos.y + OBS_BBOX_OFFSET_TOP;
+		float right = pos.x + OBS_BBOX_OFFSET_RIGHT;
+		float bottom = pos.y - OBS_BBOX_OFFSET_BOTTOM + 8;
 		return BoundingBox(left, top, right, bottom);
 	}
 	return BoundingBox(0, 0, 0, 0);
@@ -52,7 +53,7 @@ BoundingBox Breakable_Tree::GetBoundingBoxJason()
 #define POINT_START_FLASH 500
 #define POINT_FINISH_FLASH 800
 
-void Breakable_Tree::Update()
+void Breakable_Obstacle::Update()
 {
 	//time++;
 	//if (time >= POINT_START_FLASH) {
@@ -62,7 +63,7 @@ void Breakable_Tree::Update()
 	//}
 }
 
-void Breakable_Tree::Render()
+void Breakable_Obstacle::Render()
 {
 	/*if (state == MINE_BULLET_STATE_NORMAL) {
 		SetAnimationType(MINE_BULLET_ANI_NORMAL);
@@ -80,12 +81,12 @@ void Breakable_Tree::Render()
 	AnimatedGameObject::Render();
 }
 
-bool Breakable_Tree::GetIsOut()
+bool Breakable_Obstacle::GetIsOut()
 {
 	return isOut;
 }
 
-void Breakable_Tree::SetIsOut(bool out)
+void Breakable_Obstacle::SetIsOut(bool out)
 {
 	this->isOut = out;
 }

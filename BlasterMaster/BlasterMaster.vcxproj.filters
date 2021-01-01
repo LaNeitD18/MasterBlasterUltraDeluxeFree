@@ -70,7 +70,6 @@
     <ClCompile Include="SceneOver.cpp" />
     <ClCompile Include="ItemHover.cpp" />
     <ClCompile Include="InteractableDoubleDispatch.cpp" />
-    <ClCompile Include="Breakable_Tree.cpp" />
     <ClCompile Include="SceneBullet.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Boss.cpp" />
@@ -82,6 +81,8 @@
     <ClCompile Include="EyeballSpawner.cpp" />
     <ClCompile Include="ItemGun.cpp" />
     <ClCompile Include="SceneEnd.cpp" />
+    <ClCompile Include="Wall_Obstacle.cpp" />
+    <ClCompile Include="Breakable_Obstacle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedGameObject.h" />
@@ -158,7 +159,6 @@
     <ClInclude Include="ItemPower.h" />
     <ClInclude Include="SceneOver.h" />
     <ClInclude Include="ItemHover.h" />
-    <ClInclude Include="Breakable_Tree.h" />
     <ClInclude Include="SceneBullet.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Boss.h" />
@@ -170,6 +170,8 @@
     <ClInclude Include="EyeballSpawner.h" />
     <ClInclude Include="ItemGun.h" />
     <ClInclude Include="SceneEnd.h" />
+    <ClInclude Include="Wall_Obstacle.h" />
+    <ClInclude Include="Breakable_Obstacle.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib.lib" />
