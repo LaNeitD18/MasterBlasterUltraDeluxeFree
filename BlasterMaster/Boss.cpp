@@ -36,6 +36,9 @@ Boss::~Boss()
 
 BoundingBox Boss::GetBoundingBox()
 {
+	if (state & BOSS_STATE_DYING)
+		return BoundingBox(pos.x, pos.y, pos.x, pos.y);
+
 	float left = pos.x + BOSS_BODY_BBOX_OFFSET_LEFT;
 	float top = pos.y + BOSS_BODY_BBOX_OFFSET_TOP;
 	float right = pos.x + BOSS_BODY_BBOX_OFFSET_RIGHT;
