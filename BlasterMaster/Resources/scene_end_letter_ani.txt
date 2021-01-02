@@ -1,7 +1,11 @@
 # ani_id	sprite1_id	frames1	sprite2_id	frames2	...
-3201	3101	100	3102	100	3103	100
+#background
+3201	3101	20	3102	20	3103	20
+#mountain
 3202	3104	4000 	3104	100
+#begin
 3303	3105	10000	3105 	100
+# letters
 3206	3106	1000
 3210	3110	10000
 3211	3111	10000
@@ -44,9 +48,14 @@
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
+# background
 3301	3201
+#mountain
 3302	3202
+#begin
 3303	3303
+
+#letters
 3306	3206
 3310	3210
 3311	3211

@@ -5,6 +5,7 @@
 #include "SceneArea2Overhead.h"
 #include "Game.h"
 #include "Utils.h"
+#include "SceneEnd.h"
 #include "SceneBoss.h"
 
 Interactable::Interactable()
@@ -1197,6 +1198,15 @@ void Interactable::Interact(JasonOverhead* player, Env_Enterboss* entering) {
 		scene->enterBoss = 1;
 		Sound::getInstance()->stop("area2");
 		Sound::getInstance()->play("entering_boss_scene", false, 1);
+	}
+}
+
+void Interactable::Interact(Sophia* player, Env_FinishPoint* finish) {
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox pointBox = finish->GetBoundingBox();
+	if (playerBox.IsOverlap(pointBox)) {
+		Game::GetInstance()->Init(L"Resources/scene.txt", 6);
+
 	}
 }
 

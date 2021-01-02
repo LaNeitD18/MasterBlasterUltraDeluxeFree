@@ -48,10 +48,14 @@ SceneEnd::~SceneEnd()
 #define SCENE_SECTION_OBJECTS 6
 #define SCENE_SECTION_MAP 7
 
-#define OBJECT_TYPE_BBOX 505
+#define OBJECT_TYPE_BBOX1 505
+#define OBJECT_TYPE_BBOX2 506
 
 #define OBJECT_TYPE_BOX 100
 
+#define OBJECT_TYPE_BACKGROUND 3401
+#define OBJECT_TYPE_MOUNTAIN 3402
+#define OBJECT_TYPE_BEGIN 3403
 #define OBJECT_TYPE_CREDIT	3404
 #define OBJECT_TYPE_DRAGON	3406
 
@@ -148,6 +152,10 @@ void SceneEnd::Init()
 void SceneEnd::Update()
 {
 	input->Update();
+	if (count > 150000) {
+		count = 0;
+	}
+	count++;
 	Point camPos = Camera::GetInstance()->GetPosition();
 	//DebugOut(L"x%f, y%f", camPos.x, camPos.y);
 
@@ -167,10 +175,10 @@ void SceneEnd::Update()
 	//	return;
 	//}
 
-	//for (size_t i = 0; i < objects.size(); i++)
-	//{
-	//	objects[i]->Update();
-	//}
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		objects[i]->Update();
+	}
 
 	//// Update camera to follow mario
 	//Point pos;
@@ -181,16 +189,42 @@ void SceneEnd::Update()
 	//game->SetCamPos(pos);
 }
 
-#define DURATION_OF_TITLE 350
-#define DURATION_OF_TALE 2120
-#define DURATION_OF_ENTER_SOPHIA 300
+#define DURATION_OF_BEGIN 1500
+#define START_POINT_SHAKE 500
+#define FINISH_POINT_SHAKE 1200
+#define DURATION_OF_BACKGROUND 3000
+#define START_POINT_MOVERIGHT 1800
 
 void SceneEnd::Render()
 {
-	move_Camera();
-	render_BBoxFollowCamera();
-	render_DragonFollowCamera();
-	render_LetterCredit();
+	render_BBox2();
+	if (count < DURATION_OF_BEGIN) {
+		render_MountItem();
+		render_Begin();
+		if (count >= START_POINT_SHAKE && count < FINISH_POINT_SHAKE) {
+			shakeState = 1;
+		}
+		else {
+			shakeState = 0;
+		}
+	}
+	else if (count < DURATION_OF_BACKGROUND) {
+		render_BBox1();
+		render_Background();
+		if (count > START_POINT_MOVERIGHT) {
+			move_Camera_Right();
+		}
+	}
+	else if (count < 3010) {
+		render_BBox1();
+		Camera::GetInstance()->SetPosition(Point(0, 0));
+	}
+	else {
+		render_BBox1();
+		move_Camera_Up();
+		render_DragonFollowCamera();
+		render_LetterCredit();
+	}
 }
 
 void SceneEnd::_ParseSection_TEXTURES(string line)
@@ -341,14 +375,26 @@ void SceneEnd::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
+	case OBJECT_TYPE_BEGIN:
+		obj = new Begin(x, y);
+		break;
+	case OBJECT_TYPE_BACKGROUND:
+		obj = new Background(x, y);
+		break;
+	case OBJECT_TYPE_MOUNTAIN:
+		obj = new MountainItem(x, y);
+		break;
 	case OBJECT_TYPE_CREDIT:
 		obj = new Credit(x, y);
 		break;
 	case OBJECT_TYPE_DRAGON:
 		obj = new Dragon(x, y);
 		break;
-	case OBJECT_TYPE_BBOX:
+	case OBJECT_TYPE_BBOX1:
 		obj = new SceneBox1(x, y);
+		break;
+	case OBJECT_TYPE_BBOX2:
+		obj = new SceneBox2(x, y);
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
@@ -454,7 +500,7 @@ void SceneEnd::add_LineCredit(string line)
 			else
 			{
 				posLetter.x += 10;
-				DebugOut(L"\n lx %f ly %f", posLetter.x, posLetter.y);
+				//DebugOut(L"\n lx %f ly %f", posLetter.x, posLetter.y);
 				Letter item(posLetter, ch);
 				Paragraph.push_back(item);
 			}
@@ -482,7 +528,20 @@ void SceneEnd::render_LetterCredit()
 	}
 }
 
-void SceneEnd::render_BBoxFollowCamera()
+void SceneEnd::render_BBox2()
+{
+	Point cameraPos = Camera::GetInstance()->GetPosition();
+
+	for (auto x : objects) {
+		bool isBBox = dynamic_cast<SceneBox2*>(x) != NULL;
+		if (isBBox) {
+			x->SetPosition(cameraPos);
+			x->Render();
+		}
+	}
+}
+
+void SceneEnd::render_BBox1()
 {
 	Point cameraPos = Camera::GetInstance()->GetPosition();
 
@@ -509,12 +568,21 @@ void SceneEnd::render_DragonFollowCamera()
 	}
 }
 
-void SceneEnd::move_Camera()
+void SceneEnd::move_Camera_Up()
 {
 	Point camPos = Camera::GetInstance()->GetPosition();
-	if (camPos.y >= 1000)
+	if (camPos.y >= 210)
 		return;
 	camPos.y += 0.5;
+	Camera::GetInstance()->SetPosition(camPos);
+}
+
+void SceneEnd::move_Camera_Right()
+{
+	Point camPos = Camera::GetInstance()->GetPosition();
+	if (camPos.x > 254)
+		return;
+	camPos.x += 0.5;
 	Camera::GetInstance()->SetPosition(camPos);
 }
 
@@ -525,6 +593,53 @@ bool SceneEnd::checkValidLetter(char& ch)
 	if (ch >= '0' && ch <= '9')
 		return true;
 	return false;
+}
+
+void SceneEnd::render_Begin()
+{
+	for (auto x : objects) {
+		bool isBegin = dynamic_cast<Begin*>(x) != NULL;
+		if (isBegin) {
+			Point pos = x->GetPosition();
+			if (shakeState == 1) {
+				if (count % 5 == 0) {
+					x->SetPosition(Point(-8, -18));
+				}
+				else {
+					x->SetPosition(Point(-8, -14));
+				}
+			}
+			x->Render();
+		}
+	}
+}
+
+void SceneEnd::render_MountItem()
+{
+	for (auto x : objects) {
+		bool isMT = dynamic_cast<MountainItem*>(x) != NULL;
+		if (isMT) {
+			Point pos = x->GetPosition();
+			if (shakeState == 1) {
+				if (count % 5 == 0) {
+					x->SetPosition(pos + Point(0, 0.3));
+				}
+			}
+			x->Render();
+		}
+	}
+}
+
+void SceneEnd::render_Background()
+{
+	Point cameraPos = Camera::GetInstance()->GetPosition();
+	for (auto x : objects) {
+		bool isBackground = dynamic_cast<Background*>(x) != NULL;
+		if (isBackground) {
+			//x->SetPosition(cameraPos);
+			x->Render();
+		}
+	}
 }
 
 // Dragon
@@ -539,16 +654,8 @@ BoundingBox Dragon::GetBoundingBox()
 
 void Dragon::Update()
 {
-	DebugOut(L"pos x%f y%f", pos.x, pos.y);
+	//DebugOut(L"pos x%f y%f", pos.x, pos.y);
 	Input& input = *GameGlobal::GetInput();
-	SceneEnd* scene = dynamic_cast<SceneEnd*>(Game::GetInstance()->GetCurrentScene());
-	//// enter to switch scene
-	//if ((input[VK_RETURN] & KEY_STATE_DOWN) && scene->enterState == 0) {
-	//	Sound::getInstance()->stop("intro");
-	//	Sound::getInstance()->play("enter", false, 1);
-	//	scene->count = 0;
-	//	scene->enterState = 1;
-	//}
 }
 
 void Dragon::Render()
@@ -593,7 +700,7 @@ BoundingBox Credit::GetBoundingBox()
 
 void Credit::Update()
 {
-	DebugOut(L"pos x%f y%f", pos.x, pos.y);
+	//DebugOut(L"pos x%f y%f", pos.x, pos.y);
 	Input& input = *GameGlobal::GetInput();
 	SceneEnd* scene = dynamic_cast<SceneEnd*>(Game::GetInstance()->GetCurrentScene());
 	//// enter to switch scene
@@ -632,4 +739,180 @@ Credit::Credit(float x, float y)
 void Credit::SetState(int state)
 {
 	GameObject::SetState(state);
+}
+
+// begin
+BoundingBox Begin::GetBoundingBox()
+{
+	return BoundingBox();
+}
+
+void Begin::Update()
+{
+	//DebugOut(L"pos x%f y%f", pos.x, pos.y);
+	Input& input = *GameGlobal::GetInput();
+
+}
+
+void Begin::Render()
+{
+	SetAnimationType(DRAGON_NORMAL);
+	/*if (state == TELEPORTER_STATE_DIE) {
+		ani = TELEPORTER_ANI_DIE;
+	}*/
+
+	AnimatedGameObject::Render();
+
+	//RenderBoundingBox();
+}
+
+Begin::Begin()
+{
+	SetState(BEGIN_NORMAL);
+}
+
+Begin::Begin(float x, float y)
+{
+	SetState(BEGIN_NORMAL);
+	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
+}
+
+void Begin::SetState(int state)
+{
+	GameObject::SetState(state);
+}
+
+// mountain item
+BoundingBox MountainItem::GetBoundingBox()
+{
+	return BoundingBox();
+}
+
+void MountainItem::Update()
+{
+
+}
+
+void MountainItem::Render()
+{
+	SetAnimationType(MT_NORMAL);
+	/*if (state == TELEPORTER_STATE_DIE) {
+		ani = TELEPORTER_ANI_DIE;
+	}*/
+
+	AnimatedGameObject::Render();
+
+	//RenderBoundingBox();
+}
+
+MountainItem::MountainItem()
+{
+	SetState(MT_NORMAL);
+}
+
+MountainItem::MountainItem(float x, float y)
+{
+	SetState(MT_NORMAL);
+	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
+}
+
+void MountainItem::SetState(int state)
+{
+	GameObject::SetState(state);
+	switch (state)
+	{
+	case MT_NORMAL:
+		v.x = MT_SPEED;
+	}
+}
+
+BoundingBox Background::GetBoundingBox()
+{
+	return BoundingBox();
+}
+
+void Background::Update()
+{
+	
+}
+
+void Background::Render()
+{
+	SetAnimationType(BACKGROUND_NORMAL);
+	/*if (state == TELEPORTER_STATE_DIE) {
+		ani = TELEPORTER_ANI_DIE;
+	}*/
+
+	AnimatedGameObject::Render();
+
+	//RenderBoundingBox();
+}
+
+Background::Background()
+{
+	SetState(BACKGROUND_NORMAL);
+}
+
+Background::Background(float x, float y)
+{
+	SetState(BACKGROUND_NORMAL);
+	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
+}
+
+void Background::SetState(int state)
+{
+	GameObject::SetState(state);
+	switch (state)
+	{
+	case BACKGROUND_NORMAL:
+		v.x = BACKGROUND_SPEED;
+	}
+}
+
+// bbox2
+BoundingBox SceneBox2::GetBoundingBox()
+{
+	return BoundingBox();
+}
+
+void SceneBox2::Update()
+{
+	//drawArguments.SetColor(titleColor[(rand() % 4)]);
+}
+
+void SceneBox2::Render()
+{
+	SetAnimationType(BOX_NORMAL);
+	/*if (state == TELEPORTER_STATE_DIE) {
+		ani = TELEPORTER_ANI_DIE;
+	}*/
+
+	AnimatedGameObject::Render();
+
+	//RenderBoundingBox();
+}
+
+SceneBox2::SceneBox2()
+{
+	SetState(BOX_NORMAL);
+}
+
+SceneBox2::SceneBox2(float x, float y)
+{
+	SetState(BOX_NORMAL);
+	pos = Point(x, y);
+	drawArguments.SetScale(D3DXVECTOR2(1, 1));
+}
+
+void SceneBox2::SetState(int state)
+{
+	GameObject::SetState(state);
+	switch (state)
+	{
+	case BOX_NORMAL:
+		v.x = BOX_SPEED;
+	}
 }

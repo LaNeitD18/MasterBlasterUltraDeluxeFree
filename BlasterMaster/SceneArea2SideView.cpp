@@ -256,6 +256,7 @@ SceneArea2SideView::~SceneArea2SideView()
 #define ENVIRONMENT_TYPE_LADDER 4
 #define ENVIRONMENT_TYPE_LAVA 5
 #define ENVIRONMENT_TYPE_DUNGEON 6
+#define ENVIRONMENT_TYPE_FINISHPOINT 8
 #define ENVIRONMENT_TYPE_UNKNOWN -1
 
 #define MAX_SCENE_LINE 1024
@@ -593,6 +594,9 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 		break;
 	case ENVIRONMENT_TYPE_LADDER:
 		env = new Env_Ladder(x, y, width, height);
+		break;
+	case ENVIRONMENT_TYPE_FINISHPOINT:
+		env = new Env_FinishPoint(x, y, width, height);
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid env type: %d\n", env_type);
