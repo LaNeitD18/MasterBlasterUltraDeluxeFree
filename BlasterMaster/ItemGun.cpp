@@ -28,8 +28,11 @@ ItemGun::ItemGun(Point pos, int n)
 	this->pos = pos;
 	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 
-	/*int ani_id = 0;
+	int ani_id = 0;
 	switch (n) {
+	case 0:
+		ani_id = ITEM_GUN_ANIMATION_SET_ID;
+		break;
 	case 1:
 		ani_id = ITEM_HOMING_ANIMATION_SET_ID;
 		break;
@@ -42,7 +45,7 @@ ItemGun::ItemGun(Point pos, int n)
 	default:
 		break;
 	}
-	SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(ani_id));*/
+	SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(ani_id));
 	//SetState(ITEM_GUN_STATE_NORMAL);
 	type = n;
 	time = 0;

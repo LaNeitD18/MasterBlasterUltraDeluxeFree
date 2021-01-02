@@ -547,6 +547,9 @@ void Interactable::Interact(Player* player, Breakable_Obstacle* obs) {
 	//}
 }
 
+#define RATE_DISPLAY_GUN_ITEM 25
+#define RATE_DISPLAY_POWER_ITEM 10
+
 void Interactable::Interact(JasonOverheadBulletNorm* bullet, Breakable_Obstacle* obs) {
 	BoundingBox bulletBox = bullet->GetBoundingBox();
 	BoundingBox obstacleBox = obs->GetBoundingBox();
@@ -554,6 +557,18 @@ void Interactable::Interact(JasonOverheadBulletNorm* bullet, Breakable_Obstacle*
 	if (obstacleBox.SweptAABB(bulletBox, bullet->dx()) != -INFINITY) {
 		bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
 		obs->SetIsOut(true);
+		// item gun
+		int random = rand() % 100 + 1;
+		if (random <= RATE_DISPLAY_GUN_ITEM) {
+			ItemGun* item_gun = new ItemGun(obs->GetPosition(), 0);
+			item_gun->SetManager(obs->GetManager());
+			obs->GetManager()->AddElement(item_gun);
+		}
+		else if (random <= RATE_DISPLAY_GUN_ITEM + RATE_DISPLAY_POWER_ITEM) {
+			ItemPower* item_power = new ItemPower(obs->GetPosition(), 1);
+			item_power->SetManager(obs->GetManager());
+			obs->GetManager()->AddElement(item_power);
+		}
 	}
 }
 
