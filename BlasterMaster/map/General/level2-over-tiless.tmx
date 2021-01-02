@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="438">
- <tileset firstgid="1" name="level2-over-tiless" tilewidth="16" tileheight="16" tilecount="0" columns="59">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="445">
+ <tileset firstgid="1" name="level2-over-tiless" tilewidth="16" tileheight="16" tilecount="59" columns="59">
   <image source="Map/General/level2-over-tiless.png" width="944" height="16"/>
  </tileset>
  <layer id="1" name="background" width="128" height="128">
@@ -182,6 +182,18 @@
  <objectgroup id="11" name="enterboss">
   <object id="436" x="880" y="672" width="32" height="16"/>
   <object id="437" x="896" y="832">
+   <point/>
+  </object>
+  <object id="441" x="624" y="1104">
+   <point/>
+  </object>
+  <object id="442" x="640" y="1104">
+   <point/>
+  </object>
+  <object id="443" x="624" y="1120">
+   <point/>
+  </object>
+  <object id="444" x="640" y="1120">
    <point/>
   </object>
  </objectgroup>
