@@ -648,5 +648,6 @@ BossBullet::BossBullet(Point pos, Point v) : EnemyBullet(pos, v, BULLET_ANI_BOSS
 
 int BossBullet::GetDamage(BulletDamageModifier modifier)
 {
-	return 10;
+	if (!(state & BULLET_STATE_EXPLODE))
+		return 10;
 }

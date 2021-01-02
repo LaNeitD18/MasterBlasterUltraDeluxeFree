@@ -16,6 +16,7 @@ Boss::Boss() {
 	rightArmTargetDirectionEnum = 1;
 	HealthPoint = BOSS_HEALTHPOINT;
 	v = Point(0.1, 0.06);
+	TTL = -1;
 }
 
 Boss::Boss(float x, float y) {
@@ -24,25 +25,21 @@ Boss::Boss(float x, float y) {
 	leftArmTargetDirectionEnum = 0;
 	rightArmTargetDirectionEnum = 1;
 	//SetState();
-	HealthPoint = BOSS_HEALTHPOINT;
+	HealthPoint = BOSS_HEALTHPOINT / 10;
 	v = Point(0.1, 0.06);
+	TTL = -1;
 }
 
 Boss::~Boss()
 {
-	for (int i = 0; i < leftArm.size(); i++)
-	{
-		manager->RemoveElement(leftArm[i]);
-		manager->RemoveElement(rightArm[i]);
-	}
 }
 
 BoundingBox Boss::GetBoundingBox()
 {
-	float left = pos.x + BODY_BBOX_OFFSET_LEFT;
-	float top = pos.y + BODY_BBOX_OFFSET_TOP;
-	float right = pos.x + BODY_BBOX_OFFSET_RIGHT;
-	float bottom = pos.y + BODY_BBOX_OFFSET_BOTTOM;
+	float left = pos.x + BOSS_BODY_BBOX_OFFSET_LEFT;
+	float top = pos.y + BOSS_BODY_BBOX_OFFSET_TOP;
+	float right = pos.x + BOSS_BODY_BBOX_OFFSET_RIGHT;
+	float bottom = pos.y + BOSS_BODY_BBOX_OFFSET_BOTTOM;
 
 	return BoundingBox(left, top, right, bottom);
 }
@@ -52,6 +49,45 @@ void Boss::Update()
 	pos += dx();
 	Enemy::Update();
 
+	// Boss Update area
+	if (HealthPoint <= 0)
+	{
+		if (!(state & BOSS_STATE_DYING))
+		{
+			SetState(BOSS_STATE_DYING);
+			TTL = BOSS_DYING_TIME_TO_LIVE;
+		}
+		if (rand() % 10 == 0)
+		{
+			int deltaX = rand() % (BOSS_BODY_BBOX_OFFSET_RIGHT - BOSS_BODY_BBOX_OFFSET_LEFT + 1) - BOSS_BODY_BBOX_OFFSET_RIGHT;
+			int deltaY = rand() % (BOSS_BODY_BBOX_OFFSET_BOTTOM - BOSS_BODY_BBOX_OFFSET_TOP + 1) - BOSS_BODY_BBOX_OFFSET_BOTTOM;
+			Point initialPos = pos + Point(deltaX, deltaY);
+
+			BossBullet* explosion = new BossBullet(initialPos, Point());
+			explosion->SetState(BULLET_STATE_EXPLODE);
+
+			manager->AddElement(explosion);
+			explosion->SetManager(manager);
+		}
+		if (damageFrame <= 0)
+			damageFrame = DURATION_OF_DAMAGE_FLASH;
+		if (TTL <= 0) {
+			manager->RemoveElement(this);
+			for (int i = 0; i < leftArm.size(); i++)
+			{
+				manager->RemoveElement(leftArm[i]);
+				manager->RemoveElement(rightArm[i]);
+			}
+			leftArm.clear();
+			rightArm.clear();
+			// DETECT SCENE END HERE
+			// To Son
+		}
+		else
+			TTL--;
+	}
+	// Boss Update area
+
 	// when interact wall
 	if (wallLeft) {
 		v.x = BOSS_MOVING_SPEED;
@@ -59,7 +95,7 @@ void Boss::Update()
 	else if (wallRight) {
 		v.x = -BOSS_MOVING_SPEED;
 	}
-	
+
 	if (wallTop) {
 		v.y = BOSS_MOVING_SPEED;
 	}
@@ -67,79 +103,88 @@ void Boss::Update()
 		v.y = -BOSS_MOVING_SPEED;
 	}
 
-	leftArmShoulder = Point(pos.x - BOSS_SHOULDER_OFFSET_X, pos.y + BOSS_SHOULDER_OFFSET_Y);
-	rightArmShoulder = Point(pos.x + BOSS_SHOULDER_OFFSET_X, pos.y + BOSS_SHOULDER_OFFSET_Y);
-
-	// If Arms are not initialized, make them
-	if (leftArm.size() <= 0)
+	// Update Arm
+	if (!(state & BOSS_STATE_DYING))
 	{
-		BossArm* temp;
-		for (int i = 0; i < BOSS_ARM_AMOUNT; i++)
+		leftArmShoulder = Point(pos.x - BOSS_SHOULDER_OFFSET_X, pos.y + BOSS_SHOULDER_OFFSET_Y);
+		rightArmShoulder = Point(pos.x + BOSS_SHOULDER_OFFSET_X, pos.y + BOSS_SHOULDER_OFFSET_Y);
+
+		// If Arms are not initialized, make them
+		if (leftArm.size() <= 0 && !(state & BOSS_STATE_DYING))
 		{
-			temp = new BossArm(leftArmShoulder.x, leftArmShoulder.y);
-			leftArm.push_back(temp);
-			manager->AddElement(temp);
-			temp->SetManager(manager);
+			BossArm* temp;
+			for (int i = 0; i < BOSS_ARM_AMOUNT; i++)
+			{
+				temp = new BossArm(leftArmShoulder.x, leftArmShoulder.y);
+				leftArm.push_back(temp);
+				manager->AddElement(temp);
+				temp->SetManager(manager);
 
-			temp = new BossArm(rightArmShoulder.x, rightArmShoulder.y);
-			rightArm.push_back(temp);
-			manager->AddElement(temp);
-			temp->SetManager(manager);
+				temp = new BossArm(rightArmShoulder.x, rightArmShoulder.y);
+				rightArm.push_back(temp);
+				manager->AddElement(temp);
+				temp->SetManager(manager);
+			}
+			BossClaw* temp2 = new BossClaw(leftArmShoulder.x, leftArmShoulder.y);
+			temp2->SetDelayBetweenTargets(BOSS_CLAW_REACH_TARGET_DELAY_LEFT);
+			leftArm.push_back(temp2);
+			manager->AddElement(temp2);
+			temp2->SetManager(manager);
+
+			temp2 = new BossClaw(rightArmShoulder.x, rightArmShoulder.y);
+			temp2->SetDelayBetweenTargets(BOSS_CLAW_REACH_TARGET_DELAY_RIGHT);
+			rightArm.push_back(temp2);
+			manager->AddElement(temp2);
+			temp2->SetManager(manager);
 		}
-		BossClaw* temp2 = new BossClaw(leftArmShoulder.x, leftArmShoulder.y);
-		temp2->SetDelayBetweenTargets(BOSS_CLAW_REACH_TARGET_DELAY_LEFT);
-		leftArm.push_back(temp2);
-		manager->AddElement(temp2);
-		temp2->SetManager(manager);
 
-		temp2 = new BossClaw(rightArmShoulder.x, rightArmShoulder.y);
-		temp2->SetDelayBetweenTargets(BOSS_CLAW_REACH_TARGET_DELAY_RIGHT);
-		rightArm.push_back(temp2);
-		manager->AddElement(temp2);
-		temp2->SetManager(manager);
-	}
-
-	// Move the claw at the end of left & right arm
-	if (leftArm[BOSS_ARM_AMOUNT]->SetTargetLocation(leftArmShoulder + targetDirectionOffset[leftArmTargetDirectionEnum]))
-	{
-		leftArmTargetDirectionEnum++;
-		leftArmTargetDirectionEnum %= NUMBER_ARM_MOVEMENT;
-	}
-	if (rightArm[BOSS_ARM_AMOUNT]->SetTargetLocation(rightArmShoulder + targetDirectionOffset[rightArmTargetDirectionEnum]))
-	{
-		rightArmTargetDirectionEnum++;
-		rightArmTargetDirectionEnum %= NUMBER_ARM_MOVEMENT;
-	}
-
-	// Set TargetLocation for Arms
-	leftArm[0]->SetTargetLocation((leftArm[1]->pos + leftArmShoulder) * 0.5);
-	rightArm[0]->SetTargetLocation((rightArm[1]->pos + rightArmShoulder) * 0.5);
-	for (int i = 1; i < BOSS_ARM_AMOUNT; i++)
-	{
-		leftArm[i]->SetTargetLocation((leftArm[i - 1]->pos + leftArm[i + 1]->pos) * 0.5);
-		rightArm[i]->SetTargetLocation((rightArm[i - 1]->pos + rightArm[i + 1]->pos) * 0.5);
-	}
-
-	// bullet
-	if (timeToShoot == 0) {
-		// nếu còn lượt thì bắn, trừ lượt và đặt lại time cho viên tiếp theo
-		if (shootTurn != 0) {
-			Shoot();
-			shootTurn--;
-			timeToShoot = 30;
+		// Move the claw at the end of left & right arm
+		if (leftArm[BOSS_ARM_AMOUNT]->SetTargetLocation(leftArmShoulder + targetDirectionOffset[leftArmTargetDirectionEnum]))
+		{
+			leftArmTargetDirectionEnum++;
+			leftArmTargetDirectionEnum %= NUMBER_ARM_MOVEMENT;
 		}
-		else {
-			shootTurn = rand() % 1 + 4;
-			timeToShoot = 250;
+		if (rightArm[BOSS_ARM_AMOUNT]->SetTargetLocation(rightArmShoulder + targetDirectionOffset[rightArmTargetDirectionEnum]))
+		{
+			rightArmTargetDirectionEnum++;
+			rightArmTargetDirectionEnum %= NUMBER_ARM_MOVEMENT;
+		}
+
+		// Set TargetLocation for Arms
+		leftArm[0]->SetTargetLocation((leftArm[1]->pos + leftArmShoulder) * 0.5);
+		rightArm[0]->SetTargetLocation((rightArm[1]->pos + rightArmShoulder) * 0.5);
+		for (int i = 1; i < BOSS_ARM_AMOUNT; i++)
+		{
+			leftArm[i]->SetTargetLocation((leftArm[i - 1]->pos + leftArm[i + 1]->pos) * 0.5);
+			rightArm[i]->SetTargetLocation((rightArm[i - 1]->pos + rightArm[i + 1]->pos) * 0.5);
+		}
+
+		// bullet
+		if (timeToShoot == 0 && !(state & BOSS_STATE_DYING)) {
+			// nếu còn lượt thì bắn, trừ lượt và đặt lại time cho viên tiếp theo
+			if (shootTurn != 0) {
+				Shoot();
+				shootTurn--;
+				timeToShoot = BOSS_DELAY_BETWEEN_SHOT;
+			}
+			else {
+				shootTurn = rand() % 1 + 4;
+				timeToShoot = BOsS_DELAY_BETWEEN_VOLLEY;
+			}
+		}
+		timeToShoot--;
+
+		// Update Arm
+		for (int i = 0; i < leftArm.size(); i++)
+		{
+			leftArm[i]->UpdateOverloaded();
+			rightArm[i]->UpdateOverloaded();
 		}
 	}
-	timeToShoot--;
-
 	
-	for (int i = 0; i < leftArm.size(); i++)
+	if (state & BOSS_STATE_DYING)
 	{
-		leftArm[i]->UpdateOverloaded();
-		rightArm[i]->UpdateOverloaded();
+		v = Point();
 	}
 
 	// reset wall collision
