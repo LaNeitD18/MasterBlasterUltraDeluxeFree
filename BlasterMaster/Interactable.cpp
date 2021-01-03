@@ -1075,7 +1075,13 @@ void Interactable::Interact(PlayerBullet* bullet, Enemy* enemy) {
 	BoundingBox enemyBox = enemy->GetBoundingBox();
 	if (enemyBox.SweptAABB(bulletBox, bullet->dx() + enemy->dx()) != -INFINITY)
 	{
-		enemy->TakeDamage(bullet->GetDamage());
+		if ((GameGlobal::GetCrusherBeam() && dynamic_cast<SophiaBullet*>(bullet) != NULL)
+			|| (dynamic_cast<HomingBullet*>(bullet) != NULL) || dynamic_cast<MultiwarheadMissile*>(bullet)) {
+			enemy->TakeDamage(4 * bullet->GetDamage());
+		}
+		else {
+			enemy->TakeDamage(bullet->GetDamage());
+		}
 		//DebugOut(L"Damage %d,",bullet->GetDamage());
 		bool isGrenadeBullet = dynamic_cast<JasonOverheadBulletGrenadeFragment*>(bullet) != NULL || dynamic_cast<JasonOverheadBulletGrenade*>(bullet) != NULL;
 		if (!isGrenadeBullet) {
