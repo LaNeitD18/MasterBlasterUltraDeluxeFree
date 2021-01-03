@@ -275,6 +275,7 @@ class BossBullet : public EnemyBullet
 {
 public:
 	BossBullet(Point pos, Point v);
+	virtual ~BossBullet();
 
 	virtual int GetDamage(BulletDamageModifier modifier) override;
 

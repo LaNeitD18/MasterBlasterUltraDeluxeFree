@@ -27,9 +27,19 @@ bool BoundingBox::IsOverlap(BoundingBox other)
 	return !(left > 0 || right < 0 || top < 0 || bottom > 0);
 }
 
+bool BoundingBox::IsValid()
+{
+	return l != r || t != b;
+}
+
 double BoundingBox::SweptAABB(BoundingBox movingBox, Point v,
 	bool& top, bool& left, bool& bottom, bool& right)
 {
+	if (!IsValid())
+		return -INFINITY;
+	if (!movingBox.IsValid())
+		return -INFINITY;
+
 	double xInvEntry, yInvEntry;
 	double xInvExit, yInvExit;
 

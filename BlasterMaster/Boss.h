@@ -6,10 +6,10 @@
 
 #define BOSS_MOVING_SPEED	0.1f
 
-#define BODY_BBOX_OFFSET_LEFT	   -30
-#define BODY_BBOX_OFFSET_RIGHT		30
-#define BODY_BBOX_OFFSET_TOP	   -33
-#define BODY_BBOX_OFFSET_BOTTOM		33
+#define BOSS_BODY_BBOX_OFFSET_LEFT	   -30
+#define BOSS_BODY_BBOX_OFFSET_RIGHT		30
+#define BOSS_BODY_BBOX_OFFSET_TOP	   -33
+#define BOSS_BODY_BBOX_OFFSET_BOTTOM		33
 
 #define BOSS_HEALTHPOINT	100
 
@@ -22,8 +22,16 @@
 #define BOSS_SHOULDER_OFFSET_Y	-0
 #define BOSS_BULLET_SPEED	1.0f
 
+#define BOSS_DELAY_BETWEEN_SHOT		30
+#define BOsS_DELAY_BETWEEN_VOLLEY	250
+
+#define BOSS_DYING_TIME_TO_LIVE 500
 class BossArm;
 class BossClaw;
+
+enum BossState {
+	BOSS_STATE_DYING = 0x01
+};
 
 class Boss : public Enemy
 {
@@ -53,6 +61,7 @@ private:
 
 	int timeToShoot;
 	int shootTurn;
+	int TTL;
 	void Shoot();
 };
 
