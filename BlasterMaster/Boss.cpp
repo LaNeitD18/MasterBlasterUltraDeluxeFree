@@ -3,6 +3,8 @@
 #include "Game.h"
 #include "Sound.h"
 #include "GameGlobal.h"
+#include "SceneArea2Overhead.h"
+#include "SceneBoss.h"
 
 #define NUMBER_ARM_MOVEMENT	12
 #define MAX_ROW_BOSS_REACH 90
@@ -84,7 +86,14 @@ void Boss::Update()
 			leftArm.clear();
 			rightArm.clear();
 			// DETECT SCENE END HERE
-			// To Son
+			// LeSon
+			GameGlobal::SetWinBoss(true);
+			GameGlobal::SetReturnPoint(SceneArea2Overhead::startPointInSection[5]);
+			GameGlobal::SetReturnBoundingBox(SceneArea2Overhead::cameraLimitAreaOfSection[7]);
+			Game::GetInstance()->Init(L"Resources/scene.txt", 3);
+			SceneArea2Overhead* scene = dynamic_cast<SceneArea2Overhead*>(Game::GetInstance()->GetCurrentScene());
+			scene->liveShow = 0;
+			return;
 		}
 		else
 			TTL--;

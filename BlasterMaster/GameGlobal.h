@@ -64,6 +64,9 @@ public:
 	static int GetJasonLevelGun();
 	static void SetJasonLevelGun(int n);
 
+	static bool GetCrusherBeam();
+	static void SetCrusherBeam(bool s);
+
 	static bool GetWinBoss();
 	static void SetWinBoss(bool x);
 
@@ -97,6 +100,8 @@ private:
 	static int NumberBullet3;
 
 	static int JasonLvGun;
+
+	static bool isCrushBeam;
 
 	static bool winBoss;
 

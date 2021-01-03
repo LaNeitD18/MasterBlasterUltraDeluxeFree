@@ -22,6 +22,7 @@ Point GameGlobal::lastPositionSophia = Point(0, 0);
 // temporary hp, set later for sophia jason
 int GameGlobal::HealthPoint = 80;
 int GameGlobal::SophiaHealthPoint = 80;
+bool GameGlobal::isCrushBeam = false;
 bool GameGlobal::winBoss = false;
 int GameGlobal::livesToPlay = 2;
 Point GameGlobal::pointReturn = Point(56, 2955);
@@ -182,6 +183,16 @@ int GameGlobal::GetJasonLevelGun()
 void GameGlobal::SetJasonLevelGun(int n)
 {
 	JasonLvGun = n;
+}
+
+bool GameGlobal::GetCrusherBeam()
+{
+	return isCrushBeam;
+}
+
+void GameGlobal::SetCrusherBeam(bool crushBeam)
+{
+	isCrushBeam = crushBeam;
 }
 
 bool GameGlobal::GetWinBoss()

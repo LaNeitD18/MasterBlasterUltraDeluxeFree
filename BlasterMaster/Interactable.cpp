@@ -460,7 +460,7 @@ void Interactable::Interact(Player* player, ItemGun* item) {
 	BoundingBox itemBox = item->GetBoundingBox();
 	if (playerBox.IsOverlap(itemBox)) {
 		Sound::getInstance()->play("item", false, 1);
-		if (item->type == 0) {
+		if (item->type == 0) { // normal gun
 			if (GameGlobal::GetJasonLevelGun() < 80) {
 				JasonOverhead* currentPlay = dynamic_cast<JasonOverhead*>(player);
 				if (currentPlay != NULL) {
@@ -471,22 +471,22 @@ void Interactable::Interact(Player* player, ItemGun* item) {
 				}
 			}
 		}
-		else if(item->type == 1) {
+		else if(item->type == 1) { // homing bullet
 			if (GameGlobal::GetNumberSpecialBullet1() < 80) {
 				GameGlobal::SetSpecialNumberBullet1(GameGlobal::GetNumberSpecialBullet1() + 20);
 			}
 		}
-		else if (item->type == 2) {
+		else if (item->type == 2) { // thunder bullet
 			if (GameGlobal::GetNumberSpecialBullet2() < 80) {
 				GameGlobal::SetSpecialNumberBullet2(GameGlobal::GetNumberSpecialBullet2() + 20);
 			}
 		}
-		else if (item->type == 3) {
+		else if (item->type == 3) { // multiwar bullet
 			if (GameGlobal::GetNumberSpecialBullet3() < 80) {
 				GameGlobal::SetSpecialNumberBullet3(GameGlobal::GetNumberSpecialBullet3() + 20);
 			}
 		}
-		else if(item->type == 4) {
+		else if(item->type == 4) { // special item
 			if (GameGlobal::GetJasonLevelGun() + 30 < 80) {
 				JasonOverhead* currentPlay = dynamic_cast<JasonOverhead*>(player);
 				if (currentPlay != NULL) {
@@ -505,6 +505,14 @@ void Interactable::Interact(Player* player, ItemGun* item) {
 					GameGlobal::SetJasonLevelGun(80);
 				}
 			}
+		}
+		else if (item->type == 5) { // crushbeam
+			for (int i = 0; i < 1000; i++) {
+				DebugOut(L"number: %d ", i);
+			}
+			Camera::GetInstance()->SetCameraLimitarea(SceneArea2Overhead::cameraLimitAreaOfSection[3]);
+			player->SetPosition(SceneArea2Overhead::startPointInSection[3]);
+			GameGlobal::SetCrusherBeam(true);
 		}
 		item->GetManager()->RemoveElement(item);
 	}
@@ -579,7 +587,9 @@ void Interactable::Interact(SophiaBullet* bullet, Breakable_Obstacle* obs) {
 
 	if (obstacleBox.SweptAABB(bulletBox, bullet->dx()) != -INFINITY) {
 		bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
-		obs->SetIsOut(true);
+		if (GameGlobal::GetCrusherBeam()) {
+			obs->SetIsOut(true);
+		}
 	}
 }
 
@@ -1191,6 +1201,9 @@ void Interactable::Interact(BossBullet* boss_bullet, PlayerBullet* player_bullet
 }
 
 void Interactable::Interact(JasonOverhead* player, Env_Enterboss* entering) {
+	if (GameGlobal::GetWinBoss() == 1) {
+		return;
+	}
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox enterBox = entering->GetBoundingBox();
 	if (playerBox.IsOverlap(enterBox)) {

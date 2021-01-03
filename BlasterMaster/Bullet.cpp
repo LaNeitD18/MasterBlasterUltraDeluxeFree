@@ -8,6 +8,8 @@
 
 #define JASONO_BULLET_GRENADE_DAMAGE 1
 
+static D3DCOLOR crushBeamColor[6] = { /*D3DCOLOR_ARGB(255,255,255,255),*/D3DCOLOR_ARGB(255,0,255,255),/*D3DCOLOR_ARGB(255,255,255,255),*/D3DCOLOR_ARGB(255,255,0,255),/*D3DCOLOR_ARGB(255,255,255,255),*/ D3DCOLOR_ARGB(255,0,255,255) };
+
 Bullet::Bullet()
 {
 }
@@ -198,6 +200,14 @@ int SophiaBullet::GetDamage(BulletDamageModifier modifier)
 		DebugOut(L"Unkwown bullet modifier: %d", (int)modifier);
 		DEBUG(throw 1);
 		return 0;
+	}
+}
+
+void SophiaBullet::Render()
+{
+	PlayerBullet::Render();
+	if (GameGlobal::GetCrusherBeam() == true) {
+		drawArguments.SetColor(crushBeamColor[rand() % 3]);
 	}
 }
 

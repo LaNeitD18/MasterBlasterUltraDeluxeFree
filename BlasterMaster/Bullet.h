@@ -102,6 +102,7 @@ public:
 
 	// Inherited via Bullet
 	virtual int GetDamage(BulletDamageModifier modifier) override;
+	virtual void Render();
 };
 
 class TimedPlayerBullet :public PlayerBullet

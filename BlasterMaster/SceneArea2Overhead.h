@@ -78,5 +78,5 @@ public:
 	int countEnterBoss;
 
 	static BoundingBox cameraLimitAreaOfSection[9];
-	static Point startPointInSection[5];
+	static Point startPointInSection[6];
 };
