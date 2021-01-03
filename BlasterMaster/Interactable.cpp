@@ -511,7 +511,7 @@ void Interactable::Interact(Player* player, ItemGun* item) {
 				DebugOut(L"number: %d ", i);
 			}
 			Camera::GetInstance()->SetCameraLimitarea(SceneArea2Overhead::cameraLimitAreaOfSection[3]);
-			player->SetPosition(SceneArea2Overhead::startPointInSection[3]);
+			player->SetPosition(SceneArea2Overhead::startPointInSection[3] + Point(10,-56));
 			GameGlobal::SetCrusherBeam(true);
 		}
 		item->GetManager()->RemoveElement(item);

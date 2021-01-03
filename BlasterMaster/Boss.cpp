@@ -27,7 +27,7 @@ Boss::Boss(float x, float y) {
 	leftArmTargetDirectionEnum = 0;
 	rightArmTargetDirectionEnum = 1;
 	//SetState();
-	HealthPoint = BOSS_HEALTHPOINT / 10;
+	HealthPoint = BOSS_HEALTHPOINT;
 	v = Point(0.1, 0.06);
 	TTL = -1;
 }

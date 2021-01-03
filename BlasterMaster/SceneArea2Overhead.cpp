@@ -865,11 +865,13 @@ void SceneArea2Overhead::Render()
 	{
 		//Sound::getInstance()->stop("enter");
 		//Sound::getInstance()->play("area2", true, 0);
-		if (!bulletState) {
-			displayBulletState();
-		}
-		else {
-			backToGame();
+		if (countEnterBoss == 0) {
+			if (!bulletState) {
+				displayBulletState();
+			}
+			else {
+				backToGame();
+			}
 		}
 		count = DURATION_OF_LIVESHOW + 1;
 		mMap->Draw();
