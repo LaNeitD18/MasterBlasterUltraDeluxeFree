@@ -207,7 +207,7 @@ void SceneEnd::Render()
 		render_Begin();
 		DebugOut(L"count %d", count);
 		if (count == START_POINT_SHAKE + 1) {
-			Sound::getInstance()->play("fire", false, 1);
+			Sound::getInstance()->play("earthquake", false, 1);
 		}
 		if (count == (FINISH_POINT_SHAKE - 1)) {
 			Sound::getInstance()->stop();
@@ -224,7 +224,7 @@ void SceneEnd::Render()
 		render_BBox1();
 		render_Background();
 		if (count == START_POINT_MOVERIGHT + 1) {
-			Sound::getInstance()->play("fire", false, 1);
+			Sound::getInstance()->play("peace", false, 1);
 		}
 		if (count > START_POINT_MOVERIGHT) {
 			move_Camera_Right();
@@ -237,7 +237,7 @@ void SceneEnd::Render()
 	else {
 		if (count == DURATION_OF_BACKGROUND + 21) {
 			Sound::getInstance()->stop();
-			Sound::getInstance()->play("enter", false, 1);
+			Sound::getInstance()->play("credit", false, 1);
 		}
 		render_BBox1();
 		move_Camera_Up();
