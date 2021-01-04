@@ -135,8 +135,11 @@ public:
 #define JASON_OVERHEAD_BULLET_NORM_DAMAGE_RANGE_MAX 13
 
 #define JASON_OVERHEAD_BULLET_NORM_SIN_THRESHOLD 0.75f
-#define JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH 40
+#define JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH_MIN 14
+#define JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH_MAX 40
 #define JASON_OVERHEAD_BULLET_NORM_SIN_CYCLE 50
+#define JASON_OVERHEAD_BULLET_NORM_SPEED_MULTIPLIER_MIN 1.0f
+#define JASON_OVERHEAD_BULLET_NORM_SPEED_MULTIPLIER_MAX 2.0f
 #define JASON_OVERHEAD_BULLET_NORM_SIN_OMEGA (M_PI * 2 / JASON_OVERHEAD_BULLET_NORM_SIN_CYCLE)
 class JasonOverheadBulletNorm : public TimedPlayerBullet, public Managed<Bullet>
 {
@@ -144,6 +147,7 @@ class JasonOverheadBulletNorm : public TimedPlayerBullet, public Managed<Bullet>
 	float power;
 	int phase;
 	int sin_NAK;
+	float sin_width;
 public:
 	// float power: value between 0..1 for MIN_POWER to MAX_POWER
 	JasonOverheadBulletNorm(Point pos, Point v, float power);
@@ -156,6 +160,8 @@ public:
 	// Inherited via TimedPlayerBullet
 	virtual int GetDamage(BulletDamageModifier modifier) override;
 	virtual void Update() override;
+
+	//virtual BoundingBox GetBoundingBox() override;
 };
 
 #define JASON_OVERHEAD_GRENADE_TIME_TO_LIVE 10

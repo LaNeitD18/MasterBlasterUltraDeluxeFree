@@ -293,6 +293,15 @@ JasonOverheadBulletNorm::JasonOverheadBulletNorm(Point pos, Point v, float power
 	default:
 		break;
 	}
+
+	if (power > JASON_OVERHEAD_BULLET_NORM_SIN_THRESHOLD) {
+		int range = (power - JASON_OVERHEAD_BULLET_NORM_SIN_THRESHOLD) / (1 - JASON_OVERHEAD_BULLET_NORM_SIN_THRESHOLD);
+		sin_width = JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH_MAX * (1 - range)
+				  + JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH_MIN * range;
+		int speed_mult = JASON_OVERHEAD_BULLET_NORM_SPEED_MULTIPLIER_MIN * (1 - range)
+					   + JASON_OVERHEAD_BULLET_NORM_SPEED_MULTIPLIER_MAX * range;
+		v *= speed_mult;
+	}
 }
 
 JasonOverheadBulletNorm::~JasonOverheadBulletNorm()
@@ -326,10 +335,10 @@ void JasonOverheadBulletNorm::Update()
 	// Sin bullet
 	if (power >= JASON_OVERHEAD_BULLET_NORM_SIN_THRESHOLD)
 	{
-		double targetAmp = sin(phase * JASON_OVERHEAD_BULLET_NORM_SIN_OMEGA) * JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH;
+		double targetAmp = sin(phase * JASON_OVERHEAD_BULLET_NORM_SIN_OMEGA) * sin_width;
 		double targetPrevAmp = 0;
 		if (phase != 0)
-			targetPrevAmp = sin((phase - 1) * JASON_OVERHEAD_BULLET_NORM_SIN_OMEGA) * JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH;
+			targetPrevAmp = sin((phase - 1) * JASON_OVERHEAD_BULLET_NORM_SIN_OMEGA) * sin_width;
 		float delta = targetAmp - targetPrevAmp;
 		if (sin_NAK > 0 && rand() % 3 == 0) {
 			sin_NAK--;
@@ -338,6 +347,7 @@ void JasonOverheadBulletNorm::Update()
 		}
 		switch (dir)
 		{
+
 		case BULLET_DIR_LEFT:
 			v.y = delta;
 			break;
@@ -694,3 +704,44 @@ int BossBullet::GetDamage(BulletDamageModifier modifier)
 		return 0;
 	return 10;
 }
+/*
+BoundingBox JasonOverheadBulletNorm::GetBoundingBox()
+{
+	if (state & BULLET_STATE_EXPLODE)
+		return BoundingBox(pos.x, pos.y, pos.x, pos.y);
+	switch (dir)
+	{
+	case BULLET_DIR_LEFT:
+		return BoundingBox(
+			pos.x + BULLET_OFFSET_LEFT,
+			pos.y + BULLET_OFFSET_UP,
+			pos.x + BULLET_OFFSET_RIGHT,
+			pos.y + BULLET_OFFSET_DOWN);
+		break;
+	case BULLET_DIR_UP:
+		return BoundingBox(
+			pos.x + BULLET_OFFSET_UP,
+			pos.y + BULLET_OFFSET_LEFT,
+			pos.x + BULLET_OFFSET_DOWN,
+			pos.y + BULLET_OFFSET_RIGHT);
+		break;
+	case BULLET_DIR_RIGHT:
+		return BoundingBox(
+			pos.x - BULLET_OFFSET_RIGHT,
+			pos.y + BULLET_OFFSET_UP,
+			pos.x - BULLET_OFFSET_LEFT,
+			pos.y + BULLET_OFFSET_DOWN);
+		break;
+	case BULLET_DIR_DOWN:
+		return BoundingBox(
+			pos.x - BULLET_OFFSET_DOWN,
+			pos.y + BULLET_OFFSET_LEFT,
+			pos.x - BULLET_OFFSET_UP,
+			pos.y + BULLET_OFFSET_RIGHT);
+		break;
+	default:
+		return BoundingBox();
+		break;
+	}
+}
+//*/
