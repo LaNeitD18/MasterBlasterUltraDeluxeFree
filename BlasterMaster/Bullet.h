@@ -97,8 +97,12 @@ public:
 	virtual ~SophiaBullet();
 	virtual void SetAnimationType(int ani) override;
 
+	virtual void Interact(Interactable* other);
+	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
+
 	// Inherited via Bullet
 	virtual int GetDamage(BulletDamageModifier modifier) override;
+	virtual void Render();
 };
 
 class TimedPlayerBullet :public PlayerBullet
@@ -131,7 +135,8 @@ public:
 #define JASON_OVERHEAD_BULLET_NORM_DAMAGE_RANGE_MAX 13
 
 #define JASON_OVERHEAD_BULLET_NORM_SIN_THRESHOLD 0.75f
-#define JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH 40
+#define JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH_MIN 10
+#define JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH_MAX 40
 #define JASON_OVERHEAD_BULLET_NORM_SIN_CYCLE 50
 #define JASON_OVERHEAD_BULLET_NORM_SIN_OMEGA (M_PI * 2 / JASON_OVERHEAD_BULLET_NORM_SIN_CYCLE)
 class JasonOverheadBulletNorm : public TimedPlayerBullet, public Managed<Bullet>
@@ -140,10 +145,12 @@ class JasonOverheadBulletNorm : public TimedPlayerBullet, public Managed<Bullet>
 	float power;
 	int phase;
 	int sin_NAK;
+	float sin_width;
 public:
 	// float power: value between 0..1 for MIN_POWER to MAX_POWER
 	JasonOverheadBulletNorm(Point pos, Point v, float power);
 	virtual ~JasonOverheadBulletNorm();
+	virtual void SetAnimationType(int ani) override;
 
 	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
@@ -151,6 +158,8 @@ public:
 	// Inherited via TimedPlayerBullet
 	virtual int GetDamage(BulletDamageModifier modifier) override;
 	virtual void Update() override;
+
+	//virtual BoundingBox GetBoundingBox() override;
 };
 
 #define JASON_OVERHEAD_GRENADE_TIME_TO_LIVE 10

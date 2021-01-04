@@ -5,6 +5,7 @@
 #include "SceneArea2Overhead.h"
 #include "Game.h"
 #include "Utils.h"
+#include "SceneEnd.h"
 #include "SceneBoss.h"
 
 Interactable::Interactable()
@@ -110,6 +111,7 @@ void Interactable::Interact(Player* player, Env_Lava* lava) {
 	BoundingBox lavaBox = lava->GetBoundingBox();
 	if (playerBox.IsOverlap(lavaBox)) {
 		player->TakeDamage(DAMAGE_OF_LAVA);
+		//Sound::getInstance()->play("lava", false, 1);
 	}
 }
 
@@ -365,6 +367,7 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 			}
 			scene->GetTarget()->SetPosition(startPoint);
 			scene->GetCamera()->SetCameraLimitarea(limitArea);
+			GameGlobal::SetReturnPoint(startPoint);
 			GameGlobal::SetReturnBoundingBox(limitArea);
 			scene->liveShow = 0;
 			//Camera::GetInstance()->SetCameraLimitarea(limitArea);
@@ -413,6 +416,7 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 			jason->SetHP(player->GetHP());
 			//scene->GetTarget()->SetPosition(startPoint);
 			scene->GetCamera()->SetCameraLimitarea(limitArea);
+			GameGlobal::SetReturnPoint(startPoint);
 			GameGlobal::SetReturnBoundingBox(limitArea);
 			//Camera::GetInstance()->SetCameraLimitarea(limitArea);
 		}
@@ -427,7 +431,17 @@ void Interactable::Interact(Player* player, ItemPower* item) {
 	if (playerBox.IsOverlap(itemBox)) {
 		Sound::getInstance()->play("item", false, 1);
 		if (player->GetHP() < 80) {
-			player->SetHP(player->GetHP() + POWER_GAIN);
+			if (item->special == 0) {
+				player->SetHP(player->GetHP() + POWER_GAIN);
+			}
+			else {
+				if (player->GetHP() + 30 < 80) {
+					player->SetHP(player->GetHP() + 4 * POWER_GAIN);
+				}
+				else {
+					player->SetHP(80);
+				}
+			}
 		}
 		item->GetManager()->RemoveElement(item);
 	}
@@ -449,7 +463,7 @@ void Interactable::Interact(Player* player, ItemGun* item) {
 	BoundingBox itemBox = item->GetBoundingBox();
 	if (playerBox.IsOverlap(itemBox)) {
 		Sound::getInstance()->play("item", false, 1);
-		if (item->type == 0) {
+		if (item->type == 0) { // normal gun
 			if (GameGlobal::GetJasonLevelGun() < 80) {
 				JasonOverhead* currentPlay = dynamic_cast<JasonOverhead*>(player);
 				if (currentPlay != NULL) {
@@ -460,18 +474,67 @@ void Interactable::Interact(Player* player, ItemGun* item) {
 				}
 			}
 		}
+		else if(item->type == 1) { // homing bullet
+			if (GameGlobal::GetNumberSpecialBullet1() < 80) {
+				GameGlobal::SetSpecialNumberBullet1(GameGlobal::GetNumberSpecialBullet1() + 20);
+			}
+		}
+		else if (item->type == 2) { // thunder bullet
+			if (GameGlobal::GetNumberSpecialBullet2() < 80) {
+				GameGlobal::SetSpecialNumberBullet2(GameGlobal::GetNumberSpecialBullet2() + 20);
+			}
+		}
+		else if (item->type == 3) { // multiwar bullet
+			if (GameGlobal::GetNumberSpecialBullet3() < 80) {
+				GameGlobal::SetSpecialNumberBullet3(GameGlobal::GetNumberSpecialBullet3() + 20);
+			}
+		}
+		else if(item->type == 4) { // special item
+			if (GameGlobal::GetJasonLevelGun() + 30 < 80) {
+				JasonOverhead* currentPlay = dynamic_cast<JasonOverhead*>(player);
+				if (currentPlay != NULL) {
+					currentPlay->bulletPower += 40;
+				}
+				else {
+					GameGlobal::SetJasonLevelGun(GameGlobal::GetJasonLevelGun() + 40);
+				}
+			}
+			else {
+				JasonOverhead* currentPlay = dynamic_cast<JasonOverhead*>(player);
+				if (currentPlay != NULL) {
+					currentPlay->bulletPower = 80;
+				}
+				else {
+					GameGlobal::SetJasonLevelGun(80);
+				}
+			}
+		}
+		else if (item->type == 5) { // crushbeam
+			for (int i = 0; i < 1000; i++) {
+				DebugOut(L"number: %d ", i);
+			}
+			Camera::GetInstance()->SetCameraLimitarea(SceneArea2Overhead::cameraLimitAreaOfSection[3]);
+			player->SetPosition(SceneArea2Overhead::startPointInSection[3] + Point(10,-56));
+			GameGlobal::SetCrusherBeam(true);
+		}
 		item->GetManager()->RemoveElement(item);
 	}
 }
 
-void Interactable::Interact(Player* player, Breakable_Tree* tree) {
+void Interactable::Interact(Player* player, Breakable_Obstacle* obs) {
 	BoundingBox playerBox = player->GetBoundingBox();
-	BoundingBox treeBox = tree->GetBoundingBoxJason();
-	//if (playerBox.IsOverlap(treeBox)) {
+	BoundingBox obstacleBox = BoundingBox();
+	if (obs->type == 0) {
+		obstacleBox = obs->GetBoundingBoxJason();
+	}
+	else {
+		obstacleBox = obs->GetBoundingBox();
+	}
+	//if (playerBox.IsOverlap(obstacleBox)) {
 		bool top, left, right, bottom;
 		Point move = player->dx();
 		top = left = right = bottom = false;
-		double offsetTime = treeBox.SweptAABB(playerBox, move, top, left, bottom, right);
+		double offsetTime = obstacleBox.SweptAABB(playerBox, move, top, left, bottom, right);
 
 		player->wallTop |= top;
 		player->wallRight |= right;
@@ -496,14 +559,89 @@ void Interactable::Interact(Player* player, Breakable_Tree* tree) {
 	//}
 }
 
-void Interactable::Interact(JasonOverheadBulletNorm* bullet, Breakable_Tree* tree) {
+#define RATE_DISPLAY_GUN_ITEM 25
+#define RATE_DISPLAY_POWER_ITEM 10
+
+void Interactable::Interact(JasonOverheadBulletNorm* bullet, Breakable_Obstacle* obs) {
 	BoundingBox bulletBox = bullet->GetBoundingBox();
-	BoundingBox treeBox = tree->GetBoundingBox();
+	BoundingBox obstacleBox = obs->GetBoundingBox();
 	
-	if (treeBox.SweptAABB(bulletBox, bullet->dx()) != -INFINITY) {
+	if (obstacleBox.SweptAABB(bulletBox, bullet->dx()) != -INFINITY) {
 		bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
-		tree->SetIsOut(true);
+		obs->SetIsOut(true);
+		// item gun
+		int random = rand() % 100 + 1;
+		if (random <= RATE_DISPLAY_GUN_ITEM) {
+			ItemGun* item_gun = new ItemGun(obs->GetPosition(), 0);
+			item_gun->SetManager(obs->GetManager());
+			obs->GetManager()->AddElement(item_gun);
+		}
+		else if (random <= RATE_DISPLAY_GUN_ITEM + RATE_DISPLAY_POWER_ITEM) {
+			ItemPower* item_power = new ItemPower(obs->GetPosition(), 1);
+			item_power->SetManager(obs->GetManager());
+			obs->GetManager()->AddElement(item_power);
+		}
 	}
+}
+
+void Interactable::Interact(SophiaBullet* bullet, Breakable_Obstacle* obs) {
+	BoundingBox bulletBox = bullet->GetBoundingBox();
+	BoundingBox obstacleBox = obs->GetBoundingBox();
+
+	if (obstacleBox.SweptAABB(bulletBox, bullet->dx()) != -INFINITY) {
+		bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
+		if (GameGlobal::GetCrusherBeam()) {
+			obs->SetIsOut(true);
+		}
+	}
+}
+
+void Interactable::Interact(Enemy* enemy, Breakable_Obstacle* obs) {
+	BoundingBox enemyBox = enemy->GetBoundingBox();
+	BoundingBox obsBox = obs->GetBoundingBox();
+	if (obs->type == 1) {
+		if (enemyBox.IsOverlap(obsBox)) {
+			float overlapAreaX = min(enemyBox.r, obsBox.r) - max(enemyBox.l, obsBox.l);
+			float overlapAreaY = min(enemyBox.b, obsBox.b) - max(enemyBox.t, obsBox.t);
+			if (overlapAreaX > overlapAreaY)
+			{
+				if (enemyBox.GetCenter().y > obsBox.GetCenter().y) {
+					enemy->wallTop = true;
+					// Snap top (player pushed down)
+					Point pos = enemy->GetPosition();
+					pos.y -= enemyBox.t - obsBox.b;
+					enemy->SetPosition(pos);
+				}
+				else
+				{
+					enemy->wallBot = true;
+					// Snap bottom (player pushed up)
+					Point pos = enemy->GetPosition();
+					pos.y += obsBox.t - enemyBox.b;
+					enemy->SetPosition(pos);
+				}
+			}
+			else
+			{
+				if (enemyBox.GetCenter().x < obsBox.GetCenter().x) {
+					enemy->wallRight = true;
+					// Snap right (player to left)
+					Point pos = enemy->GetPosition();
+					pos.x -= enemyBox.r - obsBox.l;
+					enemy->SetPosition(pos);
+				}
+				else
+				{
+					enemy->wallLeft = true;
+					// Snap left (player to right)
+					Point pos = enemy->GetPosition();
+					pos.x += obsBox.r - enemyBox.l;
+					enemy->SetPosition(pos);
+				}
+			}
+		}
+	}
+	
 }
 
 
@@ -583,6 +721,10 @@ void Interactable::Interact(Enemy* enemy, Env_Wall* wall) {
 
 void Interactable::Interact(Player* player, Enemy* enemy) {
 	// implement interact between player and enemy (take damage)
+	if (dynamic_cast<EyeballSpawner*>(enemy) != NULL)
+	{
+		return;
+	}
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox enemyBox = enemy->GetBoundingBox();
 	if (playerBox.IsOverlap(enemyBox)) {
@@ -596,6 +738,7 @@ void Interactable::Interact(Player* player, Enemy* enemy) {
 			enemyDamage *= 2;
 		}
 		player->TakeDamage(enemyDamage);
+		//Sound::getInstance()->play("lava", false, 1);
 		enemy->isCollided = true;
 	}
 }
@@ -928,11 +1071,21 @@ void Interactable::Interact(PlayerBullet* bullet, Env_Wall * wall)
 		bullet->SetState(bullet->state | BULLET_STATE_EXPLODE);
 }
 void Interactable::Interact(PlayerBullet* bullet, Enemy* enemy) {
+	if (dynamic_cast<EyeballSpawner*>(enemy) != NULL)
+	{
+		return;
+	}
 	BoundingBox bulletBox = bullet->GetBoundingBox();
 	BoundingBox enemyBox = enemy->GetBoundingBox();
 	if (enemyBox.SweptAABB(bulletBox, bullet->dx() + enemy->dx()) != -INFINITY)
 	{
-		enemy->TakeDamage(bullet->GetDamage());
+		if ((GameGlobal::GetCrusherBeam() && dynamic_cast<SophiaBullet*>(bullet) != NULL)
+			|| (dynamic_cast<HomingBullet*>(bullet) != NULL) || dynamic_cast<MultiwarheadMissile*>(bullet)) {
+			enemy->TakeDamage(4 * bullet->GetDamage());
+		}
+		else {
+			enemy->TakeDamage(bullet->GetDamage());
+		}
 		//DebugOut(L"Damage %d,",bullet->GetDamage());
 		bool isGrenadeBullet = dynamic_cast<JasonOverheadBulletGrenadeFragment*>(bullet) != NULL || dynamic_cast<JasonOverheadBulletGrenade*>(bullet) != NULL;
 		if (!isGrenadeBullet) {
@@ -1058,6 +1211,9 @@ void Interactable::Interact(BossBullet* boss_bullet, PlayerBullet* player_bullet
 }
 
 void Interactable::Interact(JasonOverhead* player, Env_Enterboss* entering) {
+	if (GameGlobal::GetWinBoss() == 1) {
+		return;
+	}
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox enterBox = entering->GetBoundingBox();
 	if (playerBox.IsOverlap(enterBox)) {
@@ -1065,6 +1221,15 @@ void Interactable::Interact(JasonOverhead* player, Env_Enterboss* entering) {
 		scene->enterBoss = 1;
 		Sound::getInstance()->stop("area2");
 		Sound::getInstance()->play("entering_boss_scene", false, 1);
+	}
+}
+
+void Interactable::Interact(Sophia* player, Env_FinishPoint* finish) {
+	BoundingBox playerBox = player->GetBoundingBox();
+	BoundingBox pointBox = finish->GetBoundingBox();
+	if (playerBox.IsOverlap(pointBox)) {
+		Game::GetInstance()->Init(L"Resources/scene.txt", 6);
+
 	}
 }
 

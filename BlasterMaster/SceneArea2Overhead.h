@@ -5,6 +5,7 @@
 #include "GameMap.h"
 #include "Environment.h"
 #include "HealthBar.h"
+#include "SceneBullet.h"
 #include "Manager.h"
 #include "GunBar.h"
 #include <unordered_set>
@@ -27,6 +28,7 @@ protected:
 
 	HealthBar* healthBar;
 	GunBar* gunBar;
+	SceneBullet* bulletscene;
 
 	void LoadContent();
 
@@ -49,6 +51,8 @@ private:
 
 	//LeSon
 	void JumpCheckpoint();
+	void displayBulletState();
+	void backToGame();
 
 public:
 	SceneArea2Overhead(int id, LPCWSTR filePath, Game* game, Point screenSize);
@@ -74,5 +78,5 @@ public:
 	int countEnterBoss;
 
 	static BoundingBox cameraLimitAreaOfSection[9];
-	static Point startPointInSection[5];
+	static Point startPointInSection[6];
 };

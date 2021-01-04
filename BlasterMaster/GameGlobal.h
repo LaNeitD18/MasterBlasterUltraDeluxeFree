@@ -64,6 +64,12 @@ public:
 	static int GetJasonLevelGun();
 	static void SetJasonLevelGun(int n);
 
+	static bool GetCrusherBeam();
+	static void SetCrusherBeam(bool s);
+
+	static bool GetWinBoss();
+	static void SetWinBoss(bool x);
+
 	static Point GetReturnPoint();
 	static void SetReturnPoint(Point pos);
 	static BoundingBox GetReturnBoundingBox();
@@ -94,6 +100,10 @@ private:
 	static int NumberBullet3;
 
 	static int JasonLvGun;
+
+	static bool isCrushBeam;
+
+	static bool winBoss;
 
 	static Point pointReturn;
 	static BoundingBox boundingReturn;

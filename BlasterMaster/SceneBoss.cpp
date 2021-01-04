@@ -17,7 +17,7 @@
 #include "Teleporter.h"
 #include "Cannon.h"
 #include "Eyeball.h"
-#include "Breakable_Tree.h"
+#include "Breakable_Obstacle.h"
 #include "Boss.h"
 #include "SceneOpening.h"
 
@@ -501,6 +501,14 @@ void SceneBoss::Update()
 		}
 	}
 
+	for (auto object : onScreenObj)
+	{
+		Boss* boss = dynamic_cast<Boss*>(object);
+		if (boss != NULL && boss->HealthPoint <= 0) {
+			SetFreeCamera(true);
+		}
+	}
+
 	Camera::setCameraInstance(mCamera);
 	if (!isCameraFree) {
 		target = NULL;
@@ -528,7 +536,7 @@ void SceneBoss::Update()
 			//TODO: set again start pos when return play
 			GameGlobal::SetReturnPoint(SceneArea2Overhead::startPointInSection[4]);
 			GameGlobal::SetReturnBoundingBox(SceneArea2Overhead::cameraLimitAreaOfSection[6]);
-			this->Release();
+			//this->Release();
 			Game::GetInstance()->Init(L"Resources/scene.txt", 3);
 			return;
 		}
@@ -550,8 +558,8 @@ void SceneBoss::Update()
 			quadTree.InsertToTree(y, y->GetBoundingBox());
 		}
 		for (auto x : onScreenObj) {
-			if (dynamic_cast<Breakable_Tree*>(x) != NULL) {
-				quadTree.InsertAndInteract(x, dynamic_cast<Breakable_Tree*>(x)->GetBoundingBoxJason());
+			if (dynamic_cast<Breakable_Obstacle*>(x) != NULL) {
+				quadTree.InsertAndInteract(x, dynamic_cast<Breakable_Obstacle*>(x)->GetBoundingBoxJason());
 			}
 			else {
 				// If there are any non-proximity-based interaction, detect & handle here

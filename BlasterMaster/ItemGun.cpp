@@ -5,6 +5,7 @@
 #include "Camera.h"
 
 static D3DCOLOR flashColor[2] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(0,255,255,255) };
+static D3DCOLOR specialRender[6] = { D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,0,255,255),D3DCOLOR_ARGB(255,255,255,255),D3DCOLOR_ARGB(255,255,0,255),D3DCOLOR_ARGB(255,255,255,255), D3DCOLOR_ARGB(0,255,255,255) };
 
 ItemGun::ItemGun()
 {
@@ -27,8 +28,11 @@ ItemGun::ItemGun(Point pos, int n)
 	this->pos = pos;
 	drawArguments.SetScale(D3DXVECTOR2(1, 1));
 
-	/*int ani_id = 0;
+	int ani_id = 0;
 	switch (n) {
+	case 0:
+		ani_id = ITEM_GUN_ANIMATION_SET_ID;
+		break;
 	case 1:
 		ani_id = ITEM_HOMING_ANIMATION_SET_ID;
 		break;
@@ -41,7 +45,7 @@ ItemGun::ItemGun(Point pos, int n)
 	default:
 		break;
 	}
-	SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(ani_id));*/
+	SetAnimationSet(GameGlobal::GetAnimationSetLibrary()->Get(ani_id));
 	//SetState(ITEM_GUN_STATE_NORMAL);
 	type = n;
 	time = 0;
@@ -72,6 +76,9 @@ void ItemGun::Render()
 	else if (state == MINE_BULLET_STATE_EXPLODE) {
 		SetAnimationType(MINE_BULLET_ANI_EXPLODE);
 	}*/
+	if (type != 0 && type != 5) {
+		drawArguments.SetColor(specialRender[rand() % 6]);
+	}
 	SetAnimationType(0);
 	AnimatedGameObject::Render();
 }

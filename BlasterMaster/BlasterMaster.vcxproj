@@ -23,7 +23,7 @@
     <ClInclude Include="Animations.h" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="BoundingBox.h" />
-    <ClInclude Include="Breakable_Tree.h" />
+    <ClInclude Include="Breakable_Obstacle.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="CannonBullet.h" />
     <ClInclude Include="GunBar.h" />
@@ -103,6 +103,7 @@
     <ClInclude Include="useful_stuff.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="LinearEyeball.h" />
+    <ClInclude Include="Wall_Obstacle.h" />
     <ClInclude Include="Worm.h" />
     <ClInclude Include="EyeballSpawner.h" />
   </ItemGroup>
@@ -111,7 +112,7 @@
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
-    <ClCompile Include="Breakable_Tree.cpp" />
+    <ClCompile Include="Breakable_Obstacle.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="CannonBullet.cpp" />
     <ClCompile Include="GunBar.cpp" />
@@ -186,6 +187,7 @@
     <ClCompile Include="useful_stuff.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="LinearEyeball.cpp" />
+    <ClCompile Include="Wall_Obstacle.cpp" />
     <ClCompile Include="Worm.cpp" />
     <ClCompile Include="EyeballSpawner.cpp" />
   </ItemGroup>
@@ -201,7 +203,7 @@
     <ProjectGuid>{533D688C-6537-4709-86AC-209DCF90001C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>BlasterMaster</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -215,7 +217,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>

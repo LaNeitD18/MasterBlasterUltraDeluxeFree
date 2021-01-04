@@ -16,6 +16,9 @@
 
 #thunder
 2006	20006	10
+
+#crusher beam
+2007	20007	10
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
@@ -26,3 +29,4 @@
 204	2004
 205	2005
 206	2006
+207	2007

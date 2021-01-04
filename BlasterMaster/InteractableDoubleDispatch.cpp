@@ -136,7 +136,12 @@ void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS
 
-#define CURRENT_CLASS Breakable_Tree
+#define CURRENT_CLASS SophiaBullet
+void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
+#undef CURRENT_CLASS
+
+#define CURRENT_CLASS Breakable_Obstacle
 void CURRENT_CLASS::Interact(Interactable* other) { other->Interact(this); }
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS
@@ -170,6 +175,8 @@ void Env_Outdoor::Interact(Interactable * other) { other->Interact(this); }
 
 void Env_Ladder::Interact(Interactable* other) { other->Interact(this); }
 
+void Env_FinishPoint::Interact(Interactable* other) { other->Interact(this); }
+
 void Env_Enterboss::Interact(Interactable* other) { other->Interact(this); }
 
 #define CURRENT_CLASS Env_Wall
@@ -194,6 +201,9 @@ APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS
 #define CURRENT_CLASS Env_Enterboss
+APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
+#undef CURRENT_CLASS
+#define CURRENT_CLASS Env_FinishPoint
 APPLY_MACRO(INTERACTABLE_DEF_CPP, INTERACTABLE_GROUP)
 #undef CURRENT_CLASS
 

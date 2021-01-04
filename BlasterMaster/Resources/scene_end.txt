@@ -5,8 +5,7 @@
 3003	Resources\sprites\EndingScene\3.png	255	255	255
 3004	Resources\sprites\EndingScene\Mountain.png	255	255	255
 3005	Resources\sprites\EndingScene\Red.png	255	255	255
-3006	Resources\sprites\EndingScene\Dragon.png	255	255	255
-
+3006	Resources\sprites\EndingScene\Dragon.png	254	255	255
 3010	Resources\sprites\EndingScene\Letters\!.png	255	255	255
 3011	Resources\sprites\EndingScene\Letters\0.png	255	255	255	
 3012	Resources\sprites\EndingScene\Letters\1.png	255	255	255
@@ -44,6 +43,8 @@
 3044	Resources\sprites\EndingScene\Letters\x.png	255	255	255
 3045	Resources\sprites\EndingScene\Letters\y.png	255	255	255
 3046	Resources\sprites\EndingScene\Letters\z.png	255	255	255
+101	Resources\bbox1.png	255	255	255
+102	Resources\bbox2.png	255	255	255
 # next sprite
 
 [SPRITES]
@@ -51,25 +52,32 @@
 # letters
 Resources\scene_end_letter_sprites.txt
 
+#101 box1
+Resources\scene_opening_bbox1_sprites.txt
+
+#102 box2
+Resources\scene_end_bbox2_sprites.txt
+
 [ANIMATIONS]
 # id format: 201xx
 #1 ==== letters =========
 Resources\scene_end_letter_ani.txt
 
+#101 == box1 ==
+Resources\scene_opening_bbox1_ani.txt
+
+#102 == box2 ==
+Resources\scene_end_bbox2_ani.txt
+
 [OBJECTS]
 # type	x	y	ani_set_id1	ani_set_id2...
 
-#box
-100	0	0	100
-
-# title
-1	0	0	1
-
-# tale
-2	-8	-20	2
-
-# sophia
-3	-8	-20	3
-
-#box1
+# bbox
 505	0	0	505
+506	0	0	506
+
+3401	120	-14	3301
+3402	-4	0	3302
+3403	-8	-14	3303
+3406	0	0	3306
+3404	0	0	3310	3311	3312	3313	3314	3315	3316	3317	3318	3319	3320	3321	3322	3323	3324	3325	3326	3327	3328	3329	3330	3331	3332	3333	3334	3335	3336	3337	3338	3339	3340	3341	3342	3343	3344	3345	3346

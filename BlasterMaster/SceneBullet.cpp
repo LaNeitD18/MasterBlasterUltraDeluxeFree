@@ -45,11 +45,11 @@ void SceneBullet::Load(TextureLibrary* texLib, SpriteLibrary* spriteLib)
 	base = spriteLib->Get(BULLET_SCENE_TEXTURE_ID);
 
 	// convert str to wstr of tileset path
-	texturePathStr = "Resources/sprites/tileset.png";
+	texturePathStr = "Resources/sprites/roundselection.png";
 	texturePathWstr = std::wstring(texturePathStr.begin(), texturePathStr.end());
 
 	// button select
-	r = BoundingBox(0, 0, 16, 16);
+	r = BoundingBox(0, 0, 30, 30);
 	texLib->Add(BUTTON_TEXTURE_ID, texturePathWstr.c_str(), NULL);
 	spriteLib->Add(BUTTON_TEXTURE_ID, r, texLib->Get(BUTTON_TEXTURE_ID));
 

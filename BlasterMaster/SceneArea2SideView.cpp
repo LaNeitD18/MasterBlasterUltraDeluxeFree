@@ -19,12 +19,14 @@
 #include "Orb.h"
 #include "Skull.h"
 #include "SkullBullet.h"
+#include "ItemPower.h"
 #include "Mine.h"
+#include "ItemPower.h"
 #include "Teleporter.h"
 #include "Boss.h"
 #include "Bullet.h"
 #include "ItemGun.h"
-
+#include "Breakable_Obstacle.h"
 #include "Sound.h"
 #include "QuadTree.h"
 #include "Player.h"
@@ -60,7 +62,7 @@ BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[19] = {
 	// dungeon 2
 	BoundingBox(2048, 512, 2574, 792),
 	// dungeon 3
-	BoundingBox(1536, 32, 2062, 1814),
+	BoundingBox(1536, 0, 2062, 1814),
 	//dungeon 4
 	BoundingBox(2048, 256, 2574, 536),
 	// section L
@@ -68,7 +70,7 @@ BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[19] = {
 	// section M
 	BoundingBox(512,1024,782,1814),
 	//section N
-	BoundingBox(768,1024,1294,1548),
+	BoundingBox(768,1024,1294,1550),
 	//section O
 	BoundingBox(1280,1270,1550,1550)
 };
@@ -133,6 +135,9 @@ void SceneArea2SideView::LoadSound()
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/intro.wav", "intro");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/enter.wav", "enter");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/area2.wav", "area2");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/credit.wav", "credit");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/earthquake.wav", "earthquake");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/peace.wav", "peace");
 	//Sound::getInstance()->play("intro", false, 1);
 
 	// sophia sound
@@ -147,6 +152,7 @@ void SceneArea2SideView::LoadSound()
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/swap_player.wav", "swap_player");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/item.wav", "item");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/scene_change.wav", "scene_change");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/lava.wav", "lava");
 
 	// enemies
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/worm_moving.wav", "worm_moving");
@@ -164,6 +170,7 @@ void SceneArea2SideView::LoadSound()
 	Sound::getInstance()->setVolume(90, "sophia_explosion");
 	Sound::getInstance()->setVolume(90, "sophia_fall_ground");
 	Sound::getInstance()->setVolume(90, "sophia_bullet_explosion");
+	Sound::getInstance()->setVolume(90, "lava");
 }
 
 void SceneArea2SideView::LoadContent()
@@ -241,7 +248,10 @@ SceneArea2SideView::~SceneArea2SideView()
 #define OBJECT_TYPE_SKULL_BULLET 100
 #define OBJECT_TYPE_HOMING_BULLET 204
 #define OBJECT_TYPE_MULTI_BULLET 205
+#define OBJECT_TYPE_GUN 203
 #define OBJECT_TYPE_THUNDER 206
+#define OBJECT_TYPE_POWER 201
+#define OBJECT_TYPE_Breakable_Obstacle 298
 #define OBJECT_TYPE_BOSS 21
 
 //LeSon
@@ -251,6 +261,7 @@ SceneArea2SideView::~SceneArea2SideView()
 #define ENVIRONMENT_TYPE_LADDER 4
 #define ENVIRONMENT_TYPE_LAVA 5
 #define ENVIRONMENT_TYPE_DUNGEON 6
+#define ENVIRONMENT_TYPE_FINISHPOINT 8
 #define ENVIRONMENT_TYPE_UNKNOWN -1
 
 #define MAX_SCENE_LINE 1024
@@ -481,6 +492,9 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_JASON_SIDE_VIEW:
 		break;
+	case OBJECT_TYPE_POWER:
+		obj = new ItemPower(Point(x, y), 1);
+		break;
 	case OBJECT_TYPE_HOMING_BULLET:
 		obj = new ItemGun(Point(x, y), 1);
 		break;
@@ -489,6 +503,12 @@ void SceneArea2SideView::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_THUNDER:
 		obj = new ItemGun(Point(x, y), 2);
+		break;
+	case OBJECT_TYPE_GUN:
+		obj = new ItemGun(Point(x, y), 4);
+		break;
+	case OBJECT_TYPE_Breakable_Obstacle:
+		obj = new Breakable_Obstacle(x, y, 1);
 		break;
 	case OBJECT_TYPE_BOSS:
 		obj = new Boss(x, y);
@@ -579,6 +599,9 @@ void SceneArea2SideView::_ParseSection_ENVIRONMENT(string line)
 		break;
 	case ENVIRONMENT_TYPE_LADDER:
 		env = new Env_Ladder(x, y, width, height);
+		break;
+	case ENVIRONMENT_TYPE_FINISHPOINT:
+		env = new Env_FinishPoint(x, y, width, height);
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid env type: %d\n", env_type);
@@ -1002,12 +1025,12 @@ void SceneArea2SideView::Update()
 		}
 
 		// enter to switch scene
-		if ((*input)[VK_TAB] & KEY_STATE_DOWN) {
-			//Game::GetInstance()->SwitchScene(3);
-			this->Release();
-			Game::GetInstance()->Init(L"Resources/scene.txt", 3);
-			return;
-		}
+		//if ((*input)[VK_TAB] & KEY_STATE_DOWN) {
+		//	//Game::GetInstance()->SwitchScene(3);
+		//	this->Release();
+		//	Game::GetInstance()->Init(L"Resources/scene.txt", 3);
+		//	return;
+		//}
 
 		JumpCheckpoint();
 
@@ -1088,8 +1111,17 @@ void SceneArea2SideView::Render()
 		}
 		count = DURATION_OF_LIVESHOW + 1;
 		mMap->Draw();
-		for (auto object : objects)
-			object->Render();
+		for (auto object : objects) {
+			if (dynamic_cast<Breakable_Obstacle*>(object) != NULL) {
+				object->Render();
+			}
+		}
+
+		for (auto object : objects) {
+			if (dynamic_cast<Breakable_Obstacle*>(object) == NULL) {
+				object->Render();
+			}
+		}
 		foreMap->Draw();
 		healthBar->Draw();
 		if (bulletState) {

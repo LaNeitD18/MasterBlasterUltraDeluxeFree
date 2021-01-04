@@ -6,6 +6,46 @@
 #include "GameMap.h"
 #include "AnimatedGameObject.h"
 
+class Letter {
+public:
+	Point pos;
+	char letter;
+	Letter(Point pos, char ch)
+	{
+		this->pos = pos;
+		this->letter = ch;
+	}
+};
+
+#define DRAGON_BBOX_WIDTH 800
+#define DRAGON_BBOX_HEIGHT 600
+
+#define DRAGON_NORMAL 0
+
+class Dragon : public AnimatedScene
+{
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
+
+public:
+	Dragon();
+	Dragon(float x, float y);
+	virtual void SetState(int state);
+};
+
+class Credit : public AnimatedScene
+{
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
+
+public:
+	Credit();
+	Credit(float x, float y);
+	virtual void SetState(int state);
+};
+
 class SceneEnd : public Scene
 {
 protected:
@@ -22,7 +62,7 @@ private:
 
 	Point screenSize;
 	map<char, int> mapLetter;
-	//vector <Letter> Paragraph;
+	vector <Letter> Paragraph;
 	Camera* mCamera;
 	Point posLetter;
 
@@ -39,110 +79,89 @@ public:
 	//int enterState; // title with tale = 0, entering sophia = 1, enter = 2
 
 	// time before render tale
-	//int count = 50;
+	int count = 50;
 
 	// tool credit
 	void init_MapLetter();
 	void add_LineCredit(string line);
 	void init_LetterCredit();
+	void render_BBox1();
 	void render_DragonFollowCamera();
 	void render_LetterCredit();
-	void move_Camera();
+	void move_Camera_Up();
 	bool checkValidLetter(char& ch);
+
+	int shakeState;
+
+	void render_BBox2();
+	void render_Begin();
+	void render_MountItem();
+	void render_Background();
+	void move_Camera_Right();
 };
 
-class Letter {
+#define BEGIN_BBOX_WIDTH 800
+#define BEGIN_BBOX_HEIGHT 600
+
+#define BEGIN_NORMAL 0
+
+class Begin : public AnimatedScene
+{
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
+
 public:
-	Point pos;
-	char letter;
-	Letter(Point pos, char ch)
-	{
-		this->pos = pos;
-		this->letter = ch;
-	}
+	Begin();
+	Begin(float x, float y);
+	virtual void SetState(int state);
 };
 
-//#define TITLE_SPEED 0.00f;
-//
-//#define TITLE_BBOX_WIDTH 800
-//#define TITLE_BBOX_HEIGHT 600
-//
-//#define TITLE_NORMAL 0
+#define MT_SPEED 0.00f;
 
-//class SceneEndTitle : public AnimatedScene
-//{
-//	virtual BoundingBox GetBoundingBox();
-//	virtual void Update();
-//	virtual void Render();
-//
-//public:
-//	SceneEndTitle();
-//	SceneEndTitle(float x, float y);
-//	virtual void SetState(int state);
-//};
-//
-//#define TALE_SPEED 0.01f;
-//
-//#define TALE_BBOX_WIDTH 800
-//#define TALE_BBOX_HEIGHT 600
-//
-//#define TALE_NORMAL 0
-//
-//class SceneTale : public AnimatedScene
-//{
-//	virtual BoundingBox GetBoundingBox();
-//	virtual void Update();
-//	virtual void Render();
-//public:
-//	SceneTale();
-//	SceneTale(float x, float y);
-//	virtual void SetState(int state);
-//};
-//
-//#define BOX_SPEED 0.01f;
-//
-//#define BOX_BBOX_WIDTH 800
-//#define BOX_BBOX_HEIGHT 600
-//
-//#define BOX_NORMAL 0
-//
-//class SceneBox : public AnimatedScene
-//{
-//	virtual BoundingBox GetBoundingBox();
-//	virtual void Update();
-//	virtual void Render();
-//public:
-//	SceneBox();
-//	SceneBox(float x, float y);
-//	virtual void SetState(int state);
-//};
-//
-//class SceneBox1 : public AnimatedScene
-//{
-//	virtual BoundingBox GetBoundingBox();
-//	virtual void Update();
-//	virtual void Render();
-//public:
-//	SceneBox1();
-//	SceneBox1(float x, float y);
-//	virtual void SetState(int state);
-//};
-//
-//#define ENTER_SPEED 0.01f;
-//
-//#define ENTER_BBOX_WIDTH 800
-//#define ENTER_BBOX_HEIGHT 600
-//
-//#define ENTER_NORMAL 0
-//
-//class SceneEnter : public AnimatedScene
-//{
-//	virtual BoundingBox GetBoundingBox();
-//	virtual void Update();
-//	virtual void Render();
-//public:
-//	SceneEnter();
-//	SceneEnter(float x, float y);
-//	virtual void SetState(int state);
-//};
-//
+#define MT_BBOX_WIDTH 30
+#define MT_BBOX_HEIGHT 30
+
+#define MT_NORMAL 0
+
+class MountainItem : public AnimatedScene
+{
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
+
+public:
+	MountainItem();
+	MountainItem(float x, float y);
+	virtual void SetState(int state);
+};
+
+#define BACKGROUND_SPEED 0.00f;
+
+#define BACKGROUND_BBOX_WIDTH 30
+#define BACKGROUND_BBOX_HEIGHT 30
+
+#define BACKGROUND_NORMAL 0
+
+class Background : public AnimatedScene
+{
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
+
+public:
+	Background();
+	Background(float x, float y);
+	virtual void SetState(int state);
+};
+
+class SceneBox2 : public AnimatedScene
+{
+	virtual BoundingBox GetBoundingBox();
+	virtual void Update();
+	virtual void Render();
+public:
+	SceneBox2();
+	SceneBox2(float x, float y);
+	virtual void SetState(int state);
+};

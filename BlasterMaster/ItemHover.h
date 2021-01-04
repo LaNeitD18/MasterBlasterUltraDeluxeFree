@@ -13,7 +13,9 @@ class ItemHover : public AnimatedGameObject
 	int time;
 public:
 	ItemHover();
-	ItemHover(Point pos);
+	ItemHover(Point pos, int special);
+
+	int special;
 
 	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);

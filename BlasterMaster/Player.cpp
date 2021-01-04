@@ -1,3 +1,4 @@
+#include "Sound.h"
 #include "Player.h"
 #include "Utils.h"
 
@@ -8,6 +9,7 @@ void Player::TakeDamage(int damage)
 	if (invulnerableFrame <= 0 && HealthPoint > 0 && damage > 0) {
 		GameObject::TakeDamage(damage);
 		invulnerableFrame = DURATION_OF_INVULNERABILITY;
+		Sound::getInstance()->play("lava", false, 1);
 		DebugOut(L"Current HP : %d", HealthPoint);
 	}
 }

@@ -20,6 +20,7 @@
 18	Resources\sprites\ItemObjects.png	254	255	255
 19	Resources\sprites\bosses.png	255	255	255
 20	Resources\sprites\thunder.png	255	255	255
+298	Resources\sprites\tileset.png	255	255	255
 # next Tien's sprite: 10193
 # next sprite: 10177			Tien
 # next sprite: 20000			Son
@@ -96,6 +97,9 @@ Resources\Enemies\multiwarhead_missile_sprites.txt
 
 #400 BOSS
 Resources\Enemies\boss_sprites.txt
+
+#298 Tile after break
+Resources\Enemies\tileset_sprites.txt
 
 #100 HP1
 Resources\Enemies\HP1.txt
@@ -177,11 +181,36 @@ Resources\Enemies\thunder_bullet_ani.txt
 #132 ==== MULTIWARHEAD MISSILE =========
 Resources\Enemies\multiwarhead_missile_ani.txt
 
+#298 ==== TILE after break wall or tree =========
+Resources\Enemies\tileset_ani.txt
+
 #400 ==== BOSS =========
 Resources\Enemies\boss_ani.txt
 
 [OBJECTS]
 # type	x	y	ani_set_id1	ani_set_id2...
+
+# WALL OBS
+# section 1
+298	1352	2968	298
+298	1368	2968	298
+298	1288	2840	298
+298	1304	2840	298
+298	1352	2712	298
+298	1368	2712	298
+298	1288	2584	298
+298	1304	2584	298
+298	1288	2008	298
+298	1304	2008	298
+# section 5
+298	1704	1624	298
+298	1720	1624	298
+298	1640	1176	298
+298	1656	1176	298
+298	1704	1112	298
+298	1720	1112	298
+298	1704	984	298
+298	1720	984	298
 
 # WORM
 1	150	2850	1
@@ -233,8 +262,8 @@ Resources\Enemies\boss_ani.txt
 5	1330	1886	5
 5	1415	2885	5
 5	1475	2910	5
-5	1830	1665	5
-5	1770	1665	5
+#5	1830	1665	5
+#5	1770	1665	5
 5	1570	1585	5
 
 # EYE
@@ -308,7 +337,11 @@ Resources\Enemies\boss_ani.txt
 20	1660	525	20
 
 # item
-206	2948	470	206
+201	2928	472	201
+201	996	1496	201
+204	1014	1496	204
+205	1032	1496	205
+206	2948	472	206
 
 # BOSS
 #21	285	2940	400
@@ -690,6 +723,7 @@ Resources\Enemies\boss_ani.txt
 1	1440	1184	64	64
 1	1472	1152	32	16
 3	1472	1168	32	16	1	5
+8	1344	1200	0	16
 # section L
 1	1504	1584	32	160
 1	800	1728	704	16	
