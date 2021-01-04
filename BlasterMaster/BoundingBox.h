@@ -11,6 +11,7 @@ public:
 	bool IsInsideBox(Point pos);
 	bool IsInsideBox(BoundingBox other);
 	bool IsOverlap(BoundingBox other);
+	bool IsValid();
 
 	// Returns the time it takes till collision
 	// Returns -INFINITY if it is not colliding

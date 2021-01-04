@@ -8,6 +8,8 @@
 
 #define JASONO_BULLET_GRENADE_DAMAGE 1
 
+static D3DCOLOR crushBeamColor[6] = { /*D3DCOLOR_ARGB(255,255,255,255),*/D3DCOLOR_ARGB(255,0,255,255),/*D3DCOLOR_ARGB(255,255,255,255),*/D3DCOLOR_ARGB(255,255,0,255),/*D3DCOLOR_ARGB(255,255,255,255),*/ D3DCOLOR_ARGB(255,0,255,255) };
+
 Bullet::Bullet()
 {
 }
@@ -58,7 +60,7 @@ Bullet::~Bullet()
 BoundingBox Bullet::GetBoundingBox()
 {
 	if (state & BULLET_STATE_EXPLODE)
-		return BoundingBox();
+		return BoundingBox(pos.x, pos.y, pos.x, pos.y);
 	switch (dir)
 	{
 	case BULLET_DIR_LEFT:
@@ -184,6 +186,8 @@ void SophiaBullet::SetAnimationType(int ani)
 
 int SophiaBullet::GetDamage(BulletDamageModifier modifier)
 {
+	if (state & BULLET_STATE_EXPLODE)
+		return 0;
 	switch (modifier)
 	{
 	case BULLET_MODIFIER_BREAKABLE_WALL:
@@ -196,6 +200,14 @@ int SophiaBullet::GetDamage(BulletDamageModifier modifier)
 		DebugOut(L"Unkwown bullet modifier: %d", (int)modifier);
 		DEBUG(throw 1);
 		return 0;
+	}
+}
+
+void SophiaBullet::Render()
+{
+	PlayerBullet::Render();
+	if (GameGlobal::GetCrusherBeam() == true) {
+		drawArguments.SetColor(crushBeamColor[rand() % 3]);
 	}
 }
 
@@ -224,6 +236,8 @@ void JasonSideviewBullet::SetAnimationType(int ani)
 
 int JasonSideviewBullet::GetDamage(BulletDamageModifier modifier)
 {
+	if (state & BULLET_STATE_EXPLODE)
+		return 0;
 	switch (modifier)
 	{
 	case BULLET_MODIFIER_BREAKABLE_WALL:
@@ -289,6 +303,8 @@ JasonOverheadBulletNorm::~JasonOverheadBulletNorm()
 
 int JasonOverheadBulletNorm::GetDamage(BulletDamageModifier modifier)
 {
+	if (state & BULLET_STATE_EXPLODE)
+		return 0;
 	return damage;
 }
 
@@ -410,6 +426,8 @@ JasonOverheadBulletGrenadeFragment::~JasonOverheadBulletGrenadeFragment()
 
 int JasonOverheadBulletGrenadeFragment::GetDamage(BulletDamageModifier modifier)
 {
+	if (state & BULLET_STATE_EXPLODE)
+		return 0;
 	return damage;
 }
 
@@ -505,6 +523,10 @@ void ThunderBullet::Render()
 
 int ThunderBullet::GetDamage(BulletDamageModifier modifier)
 {
+	/*
+	if (state & BULLET_STATE_EXPLODE)
+		return 0;
+	//*/
 	if (currentTime == 0)
 		return THUNDER_BULLET_DAMAGE;
 	else return 0;
@@ -577,6 +599,10 @@ void MultiwarheadMissile::Render()
 
 int MultiwarheadMissile::GetDamage(BulletDamageModifier modifier)
 {
+	/*
+	if (state & BULLET_STATE_EXPLODE)
+		return 0;
+	//*/
 	if (currentTime == 0)
 		return MULTIWARHEAD_BULLET_DAMAGE;
 	else return 0;
@@ -594,6 +620,8 @@ HomingBullet::~HomingBullet()
 
 int RocketBullet::GetDamage(BulletDamageModifier modifier)
 {
+	if (state & BULLET_STATE_EXPLODE)
+		return 0;
 	return ROCKET_BULLET_DAMAGE;
 }
 
@@ -646,7 +674,13 @@ BossBullet::BossBullet(Point pos, Point v) : EnemyBullet(pos, v, BULLET_ANI_BOSS
 {
 }
 
+BossBullet::~BossBullet()
+{
+}
+
 int BossBullet::GetDamage(BulletDamageModifier modifier)
 {
+	if (state & BULLET_STATE_EXPLODE)
+		return 0;
 	return 10;
 }

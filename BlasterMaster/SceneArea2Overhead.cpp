@@ -44,10 +44,12 @@ BoundingBox SceneArea2Overhead::cameraLimitAreaOfSection[9] = {
 	// section 2 for 2
 	BoundingBox(512,496,782,776),
 	// section 5 boss
-	BoundingBox(768, 768, 1038, 1048)
+	BoundingBox(768, 768, 1038, 1048),
+	// section win it
+	BoundingBox(768, 512, 1038, 792)
 };
 
-Point SceneArea2Overhead::startPointInSection[5] = {
+Point SceneArea2Overhead::startPointInSection[6] = {
 	// section A
 	Point(75, 116),
 	// section B
@@ -57,7 +59,9 @@ Point SceneArea2Overhead::startPointInSection[5] = {
 	// section D
 	Point(120, 1908),
 	// section E boss
-	Point(896,804)
+	Point(896,804),
+	// win boss
+	Point(896,692)
 };
 
 SceneArea2Overhead::SceneArea2Overhead(int id, LPCWSTR filePath, Game *game, Point screenSize) : Scene(id, filePath, game)
@@ -861,11 +865,13 @@ void SceneArea2Overhead::Render()
 	{
 		//Sound::getInstance()->stop("enter");
 		//Sound::getInstance()->play("area2", true, 0);
-		if (!bulletState) {
-			displayBulletState();
-		}
-		else {
-			backToGame();
+		if (countEnterBoss == 0) {
+			if (!bulletState) {
+				displayBulletState();
+			}
+			else {
+				backToGame();
+			}
 		}
 		count = DURATION_OF_LIVESHOW + 1;
 		mMap->Draw();
