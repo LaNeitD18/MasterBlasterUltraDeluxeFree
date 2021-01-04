@@ -366,6 +366,7 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 			}
 			scene->GetTarget()->SetPosition(startPoint);
 			scene->GetCamera()->SetCameraLimitarea(limitArea);
+			GameGlobal::SetReturnPoint(startPoint);
 			GameGlobal::SetReturnBoundingBox(limitArea);
 			scene->liveShow = 0;
 			//Camera::GetInstance()->SetCameraLimitarea(limitArea);
@@ -414,6 +415,7 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 			jason->SetHP(player->GetHP());
 			//scene->GetTarget()->SetPosition(startPoint);
 			scene->GetCamera()->SetCameraLimitarea(limitArea);
+			GameGlobal::SetReturnPoint(startPoint);
 			GameGlobal::SetReturnBoundingBox(limitArea);
 			//Camera::GetInstance()->SetCameraLimitarea(limitArea);
 		}
