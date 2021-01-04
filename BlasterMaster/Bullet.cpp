@@ -306,7 +306,7 @@ void JasonOverheadBulletNorm::SetAnimationType(int ani)
 	Animation* trg = animationSet->at(ani);
 	if (currentAnimation != trg && ani == BULLET_ANI_EXPLODE)
 	{
-		Sound::getInstance()->play("sophia_bullet_explosio", false, 1);
+		Sound::getInstance()->play("sophia_bullet_explosion", false, 1);
 	}
 	PlayerBullet::SetAnimationType(ani);
 }

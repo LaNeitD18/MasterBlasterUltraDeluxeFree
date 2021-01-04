@@ -1021,12 +1021,12 @@ void SceneArea2SideView::Update()
 		}
 
 		// enter to switch scene
-		if ((*input)[VK_TAB] & KEY_STATE_DOWN) {
-			//Game::GetInstance()->SwitchScene(3);
-			this->Release();
-			Game::GetInstance()->Init(L"Resources/scene.txt", 3);
-			return;
-		}
+		//if ((*input)[VK_TAB] & KEY_STATE_DOWN) {
+		//	//Game::GetInstance()->SwitchScene(3);
+		//	this->Release();
+		//	Game::GetInstance()->Init(L"Resources/scene.txt", 3);
+		//	return;
+		//}
 
 		JumpCheckpoint();
 
