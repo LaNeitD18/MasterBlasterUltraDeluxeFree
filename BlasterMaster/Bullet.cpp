@@ -296,8 +296,11 @@ JasonOverheadBulletNorm::JasonOverheadBulletNorm(Point pos, Point v, float power
 
 	if (power > JASON_OVERHEAD_BULLET_NORM_SIN_THRESHOLD) {
 		int range = (power - JASON_OVERHEAD_BULLET_NORM_SIN_THRESHOLD) / (1 - JASON_OVERHEAD_BULLET_NORM_SIN_THRESHOLD);
-		sin_width = JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH_MIN * (1 - range)
-				  + JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH_MAX * range;
+		sin_width = JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH_MAX * (1 - range)
+				  + JASON_OVERHEAD_BULLET_NORM_SIN_WIDTH_MIN * range;
+		int speed_mult = JASON_OVERHEAD_BULLET_NORM_SPEED_MULTIPLIER_MIN * (1 - range)
+					   + JASON_OVERHEAD_BULLET_NORM_SPEED_MULTIPLIER_MAX * range;
+		v *= speed_mult;
 	}
 }
 
