@@ -951,10 +951,10 @@ void SceneArea2SideView::Update()
 				for (auto x : onScreenObj) {
 					if (dynamic_cast<HomingBullet*>(x) != NULL)
 						// non-proximity-based interaction
-						quadTree.InsertAndInteract(x, x->GetBoundingBox(), false);
+						quadTree.InsertAndInteract(x, x->GetBoundingBox().Drag(x->dx()), false);
 					else
 						// proximity-based interaction
-						quadTree.InsertAndInteract(x, x->GetBoundingBox());
+						quadTree.InsertAndInteract(x, x->GetBoundingBox().Drag(x->dx()));
 				}
 				//*/
 

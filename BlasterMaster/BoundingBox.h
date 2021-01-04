@@ -13,8 +13,12 @@ public:
 	bool IsOverlap(BoundingBox other);
 	bool IsValid();
 
+	// Expand the BBox in the direction
+	BoundingBox& Drag(Point dir);
+
 	// Returns the time it takes till collision
 	// Returns -INFINITY if it is not colliding
+	// Returns -10000 if it is overlapping
 	double SweptAABB(BoundingBox movingBox, Point v, 
 		bool& top, bool& left, bool& bottom, bool& right);
 	double SweptAABB(BoundingBox movingBox, Point v);

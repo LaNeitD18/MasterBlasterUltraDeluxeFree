@@ -200,7 +200,7 @@ void Sophia::Update()
 		jason->sophia = this;
 		jason->SetManager(manager);
 		jason->v.x = v.x;
-		jason->v.y = -JASON_TINY_JUMP_SPEED;
+		jason->v.y = -10000;
 		manager->AddElement(jason);
 		Sound::getInstance()->play("swap_player", false, 1);
 

@@ -704,7 +704,7 @@ void SceneArea2Overhead::Update()
 				quadTree.InsertToTree(y, y->GetBoundingBox());
 			}
 			for (auto x : onScreenObj) {
-				quadTree.InsertAndInteract(x, x->GetBoundingBox());
+				quadTree.InsertAndInteract(x, x->GetBoundingBox().Drag(x->dx()));
 			}
 			//*/
 
