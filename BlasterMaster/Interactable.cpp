@@ -111,6 +111,7 @@ void Interactable::Interact(Player* player, Env_Lava* lava) {
 	BoundingBox lavaBox = lava->GetBoundingBox();
 	if (playerBox.IsOverlap(lavaBox)) {
 		player->TakeDamage(DAMAGE_OF_LAVA);
+		//Sound::getInstance()->play("lava", false, 1);
 	}
 }
 
@@ -737,6 +738,7 @@ void Interactable::Interact(Player* player, Enemy* enemy) {
 			enemyDamage *= 2;
 		}
 		player->TakeDamage(enemyDamage);
+		//Sound::getInstance()->play("lava", false, 1);
 		enemy->isCollided = true;
 	}
 }
