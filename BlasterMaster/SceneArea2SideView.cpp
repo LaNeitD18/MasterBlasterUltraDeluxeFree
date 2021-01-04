@@ -135,6 +135,7 @@ void SceneArea2SideView::LoadSound()
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/intro.wav", "intro");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/enter.wav", "enter");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/area2.wav", "area2");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/fire.wav", "fire");
 	//Sound::getInstance()->play("intro", false, 1);
 
 	// sophia sound

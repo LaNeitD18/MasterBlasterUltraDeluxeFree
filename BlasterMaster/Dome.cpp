@@ -223,7 +223,7 @@ void Dome::JumpHorizontally()
 void Dome::SetState(int state)
 {
 	GameObject::SetState(state);
-	timeToSetState = 5;
+	timeToSetState = 3;
 	float speedX = DOME_WALKING_SPEED_X;
 	float speedY = DOME_WALKING_SPEED_Y;
 
