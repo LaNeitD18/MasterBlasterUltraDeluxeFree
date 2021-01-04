@@ -301,6 +301,16 @@ JasonOverheadBulletNorm::~JasonOverheadBulletNorm()
 		Managed<Bullet>::manager->RemoveElement(this);
 }
 
+void JasonOverheadBulletNorm::SetAnimationType(int ani)
+{
+	Animation* trg = animationSet->at(ani);
+	if (currentAnimation != trg && ani == BULLET_ANI_EXPLODE)
+	{
+		Sound::getInstance()->play("sophia_bullet_explosio", false, 1);
+	}
+	PlayerBullet::SetAnimationType(ani);
+}
+
 int JasonOverheadBulletNorm::GetDamage(BulletDamageModifier modifier)
 {
 	if (state & BULLET_STATE_EXPLODE)

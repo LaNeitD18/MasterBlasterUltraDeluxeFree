@@ -197,20 +197,35 @@ void SceneEnd::Update()
 
 void SceneEnd::Render()
 {
+	if (count == 1) {
+		Sound::getInstance()->stop();
+	}
 	render_BBox2();
 	if (count < DURATION_OF_BEGIN) {
+		
 		render_MountItem();
 		render_Begin();
+		DebugOut(L"count %d", count);
+		if (count == START_POINT_SHAKE + 1) {
+			Sound::getInstance()->play("fire", false, 1);
+		}
+		if (count == (FINISH_POINT_SHAKE - 1)) {
+			Sound::getInstance()->stop();
+		}
 		if (count >= START_POINT_SHAKE && count < FINISH_POINT_SHAKE) {
 			shakeState = 1;
 		}
 		else {
 			shakeState = 0;
 		}
+		
 	}
 	else if (count < DURATION_OF_BACKGROUND) {
 		render_BBox1();
 		render_Background();
+		if (count == START_POINT_MOVERIGHT + 1) {
+			Sound::getInstance()->play("fire", false, 1);
+		}
 		if (count > START_POINT_MOVERIGHT) {
 			move_Camera_Right();
 		}
@@ -220,6 +235,10 @@ void SceneEnd::Render()
 		Camera::GetInstance()->SetPosition(Point(0, 0));
 	}
 	else {
+		if (count == DURATION_OF_BACKGROUND + 21) {
+			Sound::getInstance()->stop();
+			Sound::getInstance()->play("enter", false, 1);
+		}
 		render_BBox1();
 		move_Camera_Up();
 		render_DragonFollowCamera();

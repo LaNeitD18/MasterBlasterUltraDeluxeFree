@@ -148,6 +148,7 @@ public:
 	// float power: value between 0..1 for MIN_POWER to MAX_POWER
 	JasonOverheadBulletNorm(Point pos, Point v, float power);
 	virtual ~JasonOverheadBulletNorm();
+	virtual void SetAnimationType(int ani) override;
 
 	virtual void Interact(Interactable* other);
 	APPLY_MACRO(INTERACTABLE_DEF_H, INTERACTABLE_GROUP);
