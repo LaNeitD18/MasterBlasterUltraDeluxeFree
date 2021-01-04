@@ -1,4 +1,5 @@
 #include "QuadTree.h"
+#include "JasonSideView.h"
 
 QuadTree_Node::QuadTree_Node(BoundingBox bbox, int depth) :
 	nw{ NULL },
@@ -133,11 +134,12 @@ void QuadTree::InsertAndInteract(Interactable * object, BoundingBox bbox, bool I
 	{
 		object->Interact(item);
 	}
+	bool shouldUseInteractAll = IsProximityBased;
 	if (IsProximityBased)
 	{
-		tree->InsertAndInteract(object, bbox);
+		shouldUseInteractAll |= tree->InsertAndInteract(object, bbox);
 	}
-	else
+	if (shouldUseInteractAll)
 	{
 		tree->InteractAll(object);
 		nonProximityBasedObjects.push_back(object);

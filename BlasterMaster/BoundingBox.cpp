@@ -32,6 +32,28 @@ bool BoundingBox::IsValid()
 	return l != r || t != b;
 }
 
+BoundingBox& BoundingBox::Drag(Point dir)
+{
+	if (dir.x < 0)
+	{
+		l += dir.x;
+	}
+	else
+	{
+		r += dir.x;
+	}
+
+	if (dir.y < 0)
+	{
+		t += dir.y;
+	}
+	else
+	{
+		b += dir.y;
+	}
+	return *this;
+}
+
 double BoundingBox::SweptAABB(BoundingBox movingBox, Point v,
 	bool& top, bool& left, bool& bottom, bool& right)
 {
