@@ -46,6 +46,7 @@ void AnimatedGameObject::SetAnimationType(int ANI)
 
 #define RATE_DISPLAY_POWER_ITEM 75
 #define RATE_DISPLAY_HOVER_ITEM 5
+#define RATE_DISPLAY_GUN_ITEM 5
 
 void Enemy::TakeDamage(int damage)
 {
@@ -66,17 +67,22 @@ void Enemy::TakeDamage(int damage)
 		//*
 		if (random <= RATE_DISPLAY_POWER_ITEM) {
 			//displayMessage("power");
-			ItemPower* item_power = new ItemPower(pos);
+			ItemPower* item_power = new ItemPower(pos, 0);
 			item_power->SetManager(manager);
 			manager->AddElement(item_power);
 		}
 		//*/
 		else if (random <= RATE_DISPLAY_POWER_ITEM + RATE_DISPLAY_HOVER_ITEM) {
-			ItemHover* item_hover = new ItemHover(pos);
+			ItemHover* item_hover = new ItemHover(pos, 0);
 			item_hover->SetManager(manager);
 			manager->AddElement(item_hover);
 		}
 		//*/
+		else if (random <= RATE_DISPLAY_POWER_ITEM + RATE_DISPLAY_GUN_ITEM) {
+			ItemGun* item_gun = new ItemGun(pos, 0);
+			item_gun->SetManager(manager);
+			manager->AddElement(item_gun);
+		}
 	}
 }
 
