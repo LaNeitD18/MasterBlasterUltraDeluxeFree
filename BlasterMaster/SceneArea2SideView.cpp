@@ -62,7 +62,7 @@ BoundingBox SceneArea2SideView::cameraLimitAreaOfSection[19] = {
 	// dungeon 2
 	BoundingBox(2048, 512, 2574, 792),
 	// dungeon 3
-	BoundingBox(1536, 32, 2062, 1814),
+	BoundingBox(1536, 0, 2062, 1814),
 	//dungeon 4
 	BoundingBox(2048, 256, 2574, 536),
 	// section L
