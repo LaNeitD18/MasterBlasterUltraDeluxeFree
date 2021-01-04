@@ -32,6 +32,20 @@ void Dome::Update()
 	pos += dx();
 	Enemy::Update();
 
+	// set rotation tùy theo vị trí hiện tại
+	if (wallBot && v.y == 0 && state != DOME_STATE_JUMPING_HORIZONTAL) {
+		rotation = ROTATE_90DEGREE_TO_RADIAN * 0;
+	}
+	else if (wallLeft && v.x == 0 && state != DOME_STATE_JUMPING_VERTICAL) {
+		rotation = ROTATE_90DEGREE_TO_RADIAN;
+	}
+	else if (wallTop && v.y == 0 && state != DOME_STATE_JUMPING_HORIZONTAL) {
+		rotation = ROTATE_90DEGREE_TO_RADIAN * 2;
+	}
+	else if (wallRight && v.x == 0 && state != DOME_STATE_JUMPING_VERTICAL) {
+		rotation = ROTATE_90DEGREE_TO_RADIAN * 3;
+	}
+
 	// lay vi tri player
 	SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
 	Point playerPos = Point();
@@ -39,34 +53,35 @@ void Dome::Update()
 		playerPos = scene->GetTarget()->GetPosition();
 	}
 
-	// xet neu player va dome gan nhau theo x
-	if (abs(pos.x - playerPos.x) <= 2) {
-		// dome dang di tren wallBot va player phia tren dome
-		if (wallBot && playerPos.y < pos.y - 20) {
-			direction.y = -1;
-			wallBot = false;
-			SetState(DOME_STATE_JUMPING_VERTICAL);
+	if (timeToSetState <= 0) {
+		// xet neu player va dome gan nhau theo x
+		if (abs(pos.x - playerPos.x) <= 2) {
+			// dome dang di tren wallBot va player phia tren dome
+			if (wallBot && playerPos.y < pos.y - 20 && rotation == 0) {
+				direction.y = -1;
+				wallBot = false;
+				SetState(DOME_STATE_JUMPING_VERTICAL);
+			}
+			// dome tren wall top va player phia duoi dome
+			if (wallTop && playerPos.y > pos.y && (int)rotation == 3) {
+				direction.y = 1;
+				wallTop = false;
+				SetState(DOME_STATE_JUMPING_VERTICAL);
+			}
 		}
-		// dome tren wall top va player phia duoi dome
-		if (wallTop && playerPos.y > pos.y) {
-			direction.y = 1;
-			wallTop = false;
-			SetState(DOME_STATE_JUMPING_VERTICAL);
+		// TH phong theo chieu ngang
+		else if (abs(pos.y - playerPos.y) <= 2) {
+			if (wallLeft && playerPos.x - 10 > pos.x && (int)rotation == 1) {
+				direction.x = 1;
+				wallLeft = false;
+				SetState(DOME_STATE_JUMPING_HORIZONTAL);
+			}
+			if (wallRight && playerPos.x + 10 < pos.x && (int)rotation == 4) {
+				direction.x = -1;
+				wallRight = false;
+				SetState(DOME_STATE_JUMPING_HORIZONTAL);
+			}
 		}
-	}
-	// TH phong theo chieu ngang
-	else if (abs(pos.y - playerPos.y) <= 2) {
-		if (wallLeft && playerPos.x - 10 > pos.x) {
-			direction.x = 1;
-			wallLeft = false;
-			SetState(DOME_STATE_JUMPING_HORIZONTAL);
-		}
-		if (wallRight && playerPos.x + 10 < pos.x) {
-			direction.x = -1;
-			wallRight = false;
-			SetState(DOME_STATE_JUMPING_HORIZONTAL);
-		}
-		
 	}
 
 	if (state == DOME_STATE_WALKING_LEFT) {
@@ -88,20 +103,7 @@ void Dome::Update()
 		JumpHorizontally();
 	}
 
-	// set rotation tùy theo vị trí hiện tại
-	if (wallBot) {
-		rotation = ROTATE_90DEGREE_TO_RADIAN * 0;
-	}
-	else if (wallLeft) {
-		rotation = ROTATE_90DEGREE_TO_RADIAN;
-	}
-	else if (wallTop) {
-		rotation = ROTATE_90DEGREE_TO_RADIAN * 2;
-	}
-	else if (wallRight) {
-		rotation = ROTATE_90DEGREE_TO_RADIAN * 3;
-	}
-
+	timeToSetState--;
 	// reset wall collision
 	wallBot = wallLeft = wallRight = wallTop = false;
 }
@@ -116,26 +118,28 @@ void Dome::Render()
 }
 
 void Dome::SetStateByDirection() {
-	// đang đi ngang, xét TH theo x là state hiện tại, y là state trước đó
-	if (v.x != 0) {
-		if (direction == Point(-1, 1) || direction == Point(1, 1)) {
-			pos.y -= 2;
-			SetState(DOME_STATE_WALKING_UP);
+	if (timeToSetState <= 0) {
+		// đang đi ngang, xét TH theo x là state hiện tại, y là state trước đó
+		if (v.x != 0) {
+			if (direction == Point(-1, 1) || direction == Point(1, 1)) {
+				pos.y -= 2;
+				SetState(DOME_STATE_WALKING_UP);
+			}
+			else if (direction == Point(-1, -1) || direction == Point(1, -1)) {
+				pos.y += 2;
+				SetState(DOME_STATE_WALKING_DOWN);
+			}
 		}
-		else if (direction == Point(-1, -1) || direction == Point(1, -1)) {
-			pos.y += 2;
-			SetState(DOME_STATE_WALKING_DOWN);
-		}
-	}
-	// đang đi dọc, xét TH theo y là state hiện tại, x là state trước đó
-	else if (v.y != 0) {
-		if (direction == Point(-1, 1) || direction == Point(-1, -1)) {
-			pos.x += 2;
-			SetState(DOME_STATE_WALKING_RIGHT);
-		}
-		else if (direction == Point(1, 1) || direction == Point(1, -1)) {
-			pos.x -= 2;
-			SetState(DOME_STATE_WALKING_LEFT);
+		// đang đi dọc, xét TH theo y là state hiện tại, x là state trước đó
+		else if (v.y != 0) {
+			if (direction == Point(-1, 1) || direction == Point(-1, -1)) {
+				pos.x += 2;
+				SetState(DOME_STATE_WALKING_RIGHT);
+			}
+			else if (direction == Point(1, 1) || direction == Point(1, -1)) {
+				pos.x -= 2;
+				SetState(DOME_STATE_WALKING_LEFT);
+			}
 		}
 	}
 }
@@ -219,6 +223,7 @@ void Dome::JumpHorizontally()
 void Dome::SetState(int state)
 {
 	GameObject::SetState(state);
+	timeToSetState = 5;
 	float speedX = DOME_WALKING_SPEED_X;
 	float speedY = DOME_WALKING_SPEED_Y;
 
@@ -233,35 +238,37 @@ void Dome::SetState(int state)
 		direction.x = -1;
 		v.x = speedX * direction.x;
 		v.y = 0;
-		//DebugOut(L"left\n");
+		DebugOut(L"left\n");
 		break;
 	case DOME_STATE_WALKING_RIGHT:
 		direction.x = 1;
 		v.x = speedX * direction.x;
 		v.y = 0;
-		//DebugOut(L"right\n");
+		DebugOut(L"right\n");
 		break;
 	case DOME_STATE_WALKING_UP:
 		direction.y = -1;
 		v.x = 0;
 		v.y = speedY * direction.y;
-		//DebugOut(L"up\n");
+		DebugOut(L"up\n");
 		break;
 	case DOME_STATE_WALKING_DOWN:
 		direction.y = 1;
 		v.x = 0;
 		v.y = speedY * direction.y;
-		//DebugOut(L"down\n");
+		DebugOut(L"down\n");
 		break;
 	case DOME_STATE_JUMPING_VERTICAL:
 		Sound::getInstance()->play("dome_jump", false, 1);
 		v.x = 0;
 		v.y = speedY * 5 * direction.y;
+		DebugOut(L"jumpY\n");
 		break;
 	case DOME_STATE_JUMPING_HORIZONTAL:
 		Sound::getInstance()->play("dome_jump", false, 1);
 		v.x = speedX * 5 * direction.x;
 		v.y = 0;
+		DebugOut(L"jumpX\n");
 		break;
 	}
 }

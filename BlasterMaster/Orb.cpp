@@ -145,5 +145,10 @@ void Orb::SetState(int state)
 		v.x = 0;
 		v.y = direction.y * ORB_FLY_SPEED_Y;
 		break;
+	case ORB_STATE_EXPLODE:
+		v.x = v.y = 0;
+		break;
+	default:
+		break;
 	}
 }

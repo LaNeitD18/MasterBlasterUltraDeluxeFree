@@ -24,10 +24,12 @@
 #define DOME_ANI_WALKING 0
 #define DOME_ANI_DIE 2
 
-#define ROTATE_90DEGREE_TO_RADIAN	atan(1) * 2
+#define ROTATE_90DEGREE_TO_RADIAN	1.570796
 
 class Dome : public Enemy
 {
+	int timeToSetState;
+
 	void WalkRight();
 	void WalkLeft();
 	void WalkUp();
