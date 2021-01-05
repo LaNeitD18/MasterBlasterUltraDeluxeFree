@@ -202,6 +202,7 @@ void Sophia::Update()
 		jason->v.x = v.x;
 		// Set really big velocity
 		jason->v.y = -JASON_TINY_JUMP_SPEED;
+		//jason->v.y = -10000000;
 		manager->AddElement(jason);
 		Sound::getInstance()->play("swap_player", false, 1);
 
