@@ -152,6 +152,10 @@ void JasonOverhead::Update()
 	if (wallTop && (v.y < 0))
 		v.y = 0;
 
+	if (bulletPower > JASONO_MAX_BULLET_POWER) {
+		bulletPower = JASONO_MAX_BULLET_POWER;
+	}
+
 	if (!dead) {
 		if (!(input[INPUT_LEFT] & KEY_STATE_DOWN) ^
 			(input[INPUT_RIGHT] & KEY_STATE_DOWN)) {
