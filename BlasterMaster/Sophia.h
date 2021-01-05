@@ -115,6 +115,7 @@ public:
 
 	Sophia();
 	Sophia(float x, float y);
+	virtual ~Sophia();
 	virtual void SetState(int state) override;
 	void SetAniByState(int state);
 	virtual void SetAnimationSet(AnimationSet* set) override;
