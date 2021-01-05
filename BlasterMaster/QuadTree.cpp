@@ -134,10 +134,12 @@ void QuadTree::InsertAndInteract(Interactable * object, BoundingBox bbox, bool I
 	{
 		object->Interact(item);
 	}
-	bool shouldUseInteractAll = IsProximityBased;
+	// Should interact all if non-porximity based object
+	bool shouldUseInteractAll = !IsProximityBased;
 	if (IsProximityBased)
 	{
-		shouldUseInteractAll |= tree->InsertAndInteract(object, bbox);
+		// should interact all if bbox don't fit in QuadTree
+		shouldUseInteractAll |= !tree->InsertAndInteract(object, bbox);
 	}
 	if (shouldUseInteractAll)
 	{
