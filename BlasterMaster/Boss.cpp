@@ -150,6 +150,7 @@ void Boss::Update()
 			rightArm.push_back(temp2);
 			manager->AddElement(temp2);
 			temp2->SetManager(manager);
+			temp2->isFlipVertical = true;
 		}
 
 		// Move the claw at the end of left & right arm

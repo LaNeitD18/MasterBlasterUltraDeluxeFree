@@ -9,10 +9,10 @@ protected:
 	int currentTime;
 	Animation* currentAnimation;
 	bool moving = true;
-	bool isFlipVertical = false;
-	bool isFlipHorizontal = false;
 	float rotation = 0;
 public:
+	bool isFlipVertical = false;
+	bool isFlipHorizontal = false;
 	virtual void Render() override;
 	virtual void SetAnimationType(int ANI);
 
