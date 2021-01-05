@@ -667,6 +667,15 @@ Sophia::Sophia(float x, float y)
 	HealthPoint = SOPHIA_MAX_HEALTH;
 }
 
+Sophia::~Sophia()
+{
+	for (auto i : bullets)
+	{
+		if (dynamic_cast<SophiaBullet*>(i) != NULL)
+			dynamic_cast<SophiaBullet*>(i)->Managed<Bullet>::SetManager(NULL);
+	}
+}
+
 void Sophia::SetState(int state)
 {
 	GameObject::SetState(state);

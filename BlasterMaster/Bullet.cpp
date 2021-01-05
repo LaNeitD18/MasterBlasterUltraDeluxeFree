@@ -171,7 +171,8 @@ SophiaBullet::SophiaBullet(Point pos, Point v, int level) : PlayerBullet(pos, v,
 
 SophiaBullet::~SophiaBullet()
 {
-	Managed<Bullet>::manager->RemoveElement(this);
+	if (Managed<Bullet>::manager != NULL)
+		Managed<Bullet>::manager->RemoveElement(this);
 }
 
 void SophiaBullet::SetAnimationType(int ani)

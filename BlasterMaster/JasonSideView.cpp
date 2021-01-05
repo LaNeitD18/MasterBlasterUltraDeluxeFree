@@ -39,6 +39,8 @@ JasonSideView::~JasonSideView()
 	for (Bullet* x : bullets) {
 		if (dynamic_cast<JasonSideviewBullet*>(x) != NULL)
 			dynamic_cast<JasonSideviewBullet*>(x)->Managed<Bullet>::SetManager(NULL);
+		if (dynamic_cast<JasonOverheadBulletGrenade*>(x) != NULL)
+			dynamic_cast<JasonOverheadBulletGrenade*>(x)->Managed<Bullet>::SetManager(NULL);
 	}
 }
 /*
