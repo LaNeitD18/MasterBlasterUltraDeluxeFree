@@ -160,13 +160,15 @@ void SceneOpening::Update()
 	input->Update();
 
 	// test continue game
-	if ((*input)[VK_BACK] && KEY_STATE_DOWN) {
+	/*if ((*input)[VK_BACK] && KEY_STATE_DOWN) {
 		this->Release();
 		Game::GetInstance()->Init(L"Resources/scene.txt", 5);
 		SceneBoss* scene = dynamic_cast<SceneBoss*>(Game::GetInstance()->GetCurrentScene());
-		scene->liveShow = 0;
+		if (scene != NULL) {
+			scene->liveShow = 0;
+		}
 		return;
-	}
+	}*/
 
 	if ((*input)[VK_END] && KEY_STATE_DOWN) {
 		this->Release();
@@ -431,12 +433,14 @@ void SceneOpeningTitle::Update()
 {
 	Input& input = *GameGlobal::GetInput();
 	SceneOpening* scene = dynamic_cast<SceneOpening*>(Game::GetInstance()->GetCurrentScene());
-	// enter to switch scene
-	if ((input[VK_RETURN] & KEY_STATE_DOWN) && scene->enterState == 0) {
-		Sound::getInstance()->stop("intro");
-		Sound::getInstance()->play("enter", false, 1);
-		scene->count = 0;
-		scene->enterState = 1;
+	if (scene != NULL) {
+		// enter to switch scene
+		if ((input[VK_RETURN] & KEY_STATE_DOWN) && scene->enterState == 0) {
+			Sound::getInstance()->stop("intro");
+			Sound::getInstance()->play("enter", false, 1);
+			scene->count = 0;
+			scene->enterState = 1;
+		}
 	}
 }
 
