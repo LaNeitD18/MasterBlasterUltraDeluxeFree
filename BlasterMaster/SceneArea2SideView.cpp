@@ -153,6 +153,8 @@ void SceneArea2SideView::LoadSound()
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/item.wav", "item");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/scene_change.wav", "scene_change");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/lava.wav", "lava");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/thunder.wav", "thunder");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/multiwarhead.wav", "multiwarhead");
 
 	// enemies
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/worm_moving.wav", "worm_moving");

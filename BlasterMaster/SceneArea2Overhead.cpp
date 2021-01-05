@@ -782,12 +782,14 @@ void SceneArea2Overhead::Update()
 			Sound::getInstance()->play("area2", false, 1);
 			Game::GetInstance()->Init(L"Resources/scene.txt", 5);
 			SceneBoss* scene = dynamic_cast<SceneBoss*>(Game::GetInstance()->GetCurrentScene());
-			scene->liveShow = 0;
-			for (auto x : scene->GetObjects()) {
-				JasonOverhead* jason = dynamic_cast<JasonOverhead*>(x);
-				if (jason != NULL) {
-					jason->SetHP(GameGlobal::GetCurrentHealthPoint());
-					break;
+			if (scene != NULL) {
+				scene->liveShow = 0;
+				for (auto x : scene->GetObjects()) {
+					JasonOverhead* jason = dynamic_cast<JasonOverhead*>(x);
+					if (jason != NULL) {
+						jason->SetHP(GameGlobal::GetCurrentHealthPoint());
+						break;
+					}
 				}
 			}
 			return;

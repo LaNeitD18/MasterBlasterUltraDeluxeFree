@@ -186,45 +186,47 @@ void Interactable::Interact(Sophia* player, Env_Portal* portal) {
 	BoundingBox portalBox = portal->GetBoundingBox();
 	// fix bug case when jason be current player while sophia interaction with portal
 	SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
-	Sophia* sophia = dynamic_cast<Sophia*>(scene->GetTarget());
-	bool isSophiaPlaying = sophia != NULL;
-	if (isSophiaPlaying /*&& playerBox.IsOverlap(portalBox)*/ && portalBox.IsInsideBox(playerBox.GetCenter())) {
-		GateDirection portalDirection = portal->GetPortalDir();
-		if ((/*(input[VK_RIGHT] & KEY_STATE_DOWN)*/ player->GetSpeed().x>0 && portalDirection == RIGHT) ||
-			(/*(input[VK_LEFT] & KEY_STATE_DOWN)*/ player->GetSpeed().x<0 && portalDirection == LEFT)) {
-			//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
-			Game::GetInstance()->GetCurrentScene()->SetFreeCamera(true);
-			if (portalDirection == RIGHT) {
-				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(1);
-			}
-			else if (portalDirection == LEFT) {
-				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(0);
-			}
-			int sectionToEnter = portal->GetSectionToEnter();
-			
-			BoundingBox limitArea = NULL;
-			limitArea = SceneArea2SideView::cameraLimitAreaOfSection[sectionToEnter];
-			// section BF transition
-			if (portal->GetBoundingBox().l == 1472 && portal->GetBoundingBox().t == 2960) {
-				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(50);
-			}
-			if (portal->GetBoundingBox().l == 1568 && portal->GetBoundingBox().t == 912) {
-				Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(55);
-			}
-			Camera::GetInstance()->SetCameraLimitarea(limitArea);
+	if (scene != NULL) {
+		Sophia* sophia = dynamic_cast<Sophia*>(scene->GetTarget());
+		bool isSophiaPlaying = sophia != NULL;
+		if (isSophiaPlaying /*&& playerBox.IsOverlap(portalBox)*/ && portalBox.IsInsideBox(playerBox.GetCenter())) {
+			GateDirection portalDirection = portal->GetPortalDir();
+			if ((/*(input[VK_RIGHT] & KEY_STATE_DOWN)*/ player->GetSpeed().x > 0 && portalDirection == RIGHT) ||
+				(/*(input[VK_LEFT] & KEY_STATE_DOWN)*/ player->GetSpeed().x < 0 && portalDirection == LEFT)) {
+				//Point startPoint = SceneArea2SideView::startPointInSection[portal->GetSectionToEnter()];
+				Game::GetInstance()->GetCurrentScene()->SetFreeCamera(true);
+				if (portalDirection == RIGHT) {
+					Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(1);
+				}
+				else if (portalDirection == LEFT) {
+					Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(0);
+				}
+				int sectionToEnter = portal->GetSectionToEnter();
 
-			DebugOut(L"%d\n", portalDirection);
-		}
-		// implement interact with portal to set return point
-		else if((player->GetSpeed().x <= 0 && portalDirection == RIGHT) ||
-			(player->GetSpeed().x >= 0 && portalDirection == LEFT)) {
-			if (portal->GetPortalDir() == LEFT) {
-				GameGlobal::SetReturnPoint(Point(portal->GetBoundingBox().r, portal->GetBoundingBox().t - 4));
+				BoundingBox limitArea = NULL;
+				limitArea = SceneArea2SideView::cameraLimitAreaOfSection[sectionToEnter];
+				// section BF transition
+				if (portal->GetBoundingBox().l == 1472 && portal->GetBoundingBox().t == 2960) {
+					Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(50);
+				}
+				if (portal->GetBoundingBox().l == 1568 && portal->GetBoundingBox().t == 912) {
+					Game::GetInstance()->GetCurrentScene()->SetDirectionEnter(55);
+				}
+				Camera::GetInstance()->SetCameraLimitarea(limitArea);
+
+				DebugOut(L"%d\n", portalDirection);
 			}
-			else if (portal->GetPortalDir() == RIGHT) {
-				GameGlobal::SetReturnPoint(Point(portal->GetBoundingBox().l, portal->GetBoundingBox().t - 4));
+			// implement interact with portal to set return point
+			else if ((player->GetSpeed().x <= 0 && portalDirection == RIGHT) ||
+				(player->GetSpeed().x >= 0 && portalDirection == LEFT)) {
+				if (portal->GetPortalDir() == LEFT) {
+					GameGlobal::SetReturnPoint(Point(portal->GetBoundingBox().r, portal->GetBoundingBox().t - 4));
+				}
+				else if (portal->GetPortalDir() == RIGHT) {
+					GameGlobal::SetReturnPoint(Point(portal->GetBoundingBox().l, portal->GetBoundingBox().t - 4));
+				}
+				GameGlobal::SetReturnBoundingBox(Camera::GetInstance()->GetCameraLimitarea());
 			}
-			GameGlobal::SetReturnBoundingBox(Camera::GetInstance()->GetCameraLimitarea());
 		}
 	}
 }
@@ -342,11 +344,14 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 			// set healthpoint sophia to global
 			Sound::getInstance()->play("scene_change", false, 1);
 			SceneArea2SideView* scene_sideview = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
-			for (auto x : scene_sideview->GetObjects()) {
-				Sophia* sophia = dynamic_cast<Sophia*>(x);
-				if (sophia != NULL) {
-					GameGlobal::SetCurrentHealthPointSophia(sophia->GetHP());
-					break;
+			// check scene null for Son
+			if (scene_sideview != NULL) {
+				for (auto x : scene_sideview->GetObjects()) {
+					Sophia* sophia = dynamic_cast<Sophia*>(x);
+					if (sophia != NULL) {
+						GameGlobal::SetCurrentHealthPointSophia(sophia->GetHP());
+						break;
+					}
 				}
 			}
 			// jason setup
@@ -355,24 +360,26 @@ void Interactable::Interact(Player* player, Env_Dungeon* dungeon) {
 			//Game::GetInstance()->GetCurrentScene()->Release();
 			Game::GetInstance()->Init(L"Resources/scene.txt", 3);
 			SceneArea2Overhead* scene = dynamic_cast<SceneArea2Overhead*>(Game::GetInstance()->GetCurrentScene());
-			for (auto x : scene->GetObjects()) {
-				JasonOverhead* current_player = dynamic_cast<JasonOverhead*>(x);
-				if (current_player != NULL &&
-					current_player->IsPrimaryPlayer()) {
-					scene->SetTarget(current_player);
-					// set hp based on jason sideview
-					current_player->SetHP(player->GetHP());
-					break;
+			if (scene != NULL) {
+				for (auto x : scene->GetObjects()) {
+					JasonOverhead* current_player = dynamic_cast<JasonOverhead*>(x);
+					if (current_player != NULL &&
+						current_player->IsPrimaryPlayer()) {
+						scene->SetTarget(current_player);
+						// set hp based on jason sideview
+						current_player->SetHP(player->GetHP());
+						break;
+					}
 				}
-			}
-			scene->GetTarget()->SetPosition(startPoint);
-			scene->GetCamera()->SetCameraLimitarea(limitArea);
-			GameGlobal::SetReturnPoint(startPoint);
-			GameGlobal::SetReturnBoundingBox(limitArea);
-			scene->liveShow = 0;
-			//Camera::GetInstance()->SetCameraLimitarea(limitArea);
-			Sophia* sophia = dynamic_cast<Sophia*>(jasonPlay->sophia); // sophia null
-			GameGlobal::SetLastPositionSophia(sophia->GetPosition());
+				scene->GetTarget()->SetPosition(startPoint);
+				scene->GetCamera()->SetCameraLimitarea(limitArea);
+				GameGlobal::SetReturnPoint(startPoint);
+				GameGlobal::SetReturnBoundingBox(limitArea);
+				scene->liveShow = 0;
+				//Camera::GetInstance()->SetCameraLimitarea(limitArea);
+				Sophia* sophia = dynamic_cast<Sophia*>(jasonPlay->sophia); // sophia null
+				GameGlobal::SetLastPositionSophia(sophia->GetPosition());
+			}	
 		}
 	}
 }
@@ -390,35 +397,37 @@ void Interactable::Interact(Player* player, Env_Outdoor* outdoor) {
 			//Game::GetInstance()->GetCurrentScene()->Release();
 			Game::GetInstance()->Init(L"Resources/scene.txt", 2);
 			SceneArea2SideView* scene = dynamic_cast<SceneArea2SideView*>(Game::GetInstance()->GetCurrentScene());
-			Sophia* current_player = NULL;
-			for (auto x : scene->GetObjects()) {
-				current_player = dynamic_cast<Sophia*>(x);
-				if (current_player != NULL &&
-					current_player->IsPrimaryPlayer()) {
-					scene->SetTarget(current_player);
-					//current_player->SetPosition(startPoint);
-					current_player->SetPosition(GameGlobal::GetLastPositionSophia());
-					// set hp based on sophia current hp
-					current_player->SetHP(GameGlobal::GetCurrentHealthPointSophia());
-					break;
+			if (scene != NULL) {
+				Sophia* current_player = NULL;
+				for (auto x : scene->GetObjects()) {
+					current_player = dynamic_cast<Sophia*>(x);
+					if (current_player != NULL &&
+						current_player->IsPrimaryPlayer()) {
+						scene->SetTarget(current_player);
+						//current_player->SetPosition(startPoint);
+						current_player->SetPosition(GameGlobal::GetLastPositionSophia());
+						// set hp based on sophia current hp
+						current_player->SetHP(GameGlobal::GetCurrentHealthPointSophia());
+						break;
+					}
 				}
+				JasonSideView* jason = new JasonSideView(startPoint.x, startPoint.y);
+				current_player->jason = jason;
+				jason->sophia = current_player;
+				jason->SetManager(current_player->GetManager());
+				jason->v.x = 0;
+				jason->v.y = -JASON_ENTER_VEHICLE_DISAPPEAR_SPEED;
+				current_player->GetManager()->AddElement(jason);
+				current_player->SetState(SOPHIA_STATE_LEFT_VEHICLE);
+				scene->SetTarget(jason);
+				// set hp based on jason SceneOverhead
+				jason->SetHP(player->GetHP());
+				//scene->GetTarget()->SetPosition(startPoint);
+				scene->GetCamera()->SetCameraLimitarea(limitArea);
+				GameGlobal::SetReturnPoint(startPoint);
+				GameGlobal::SetReturnBoundingBox(limitArea);
+				//Camera::GetInstance()->SetCameraLimitarea(limitArea);
 			}
-			JasonSideView* jason = new JasonSideView(startPoint.x, startPoint.y);
-			current_player->jason = jason;
-			jason->sophia = current_player;
-			jason->SetManager(current_player->GetManager());
-			jason->v.x = 0;
-			jason->v.y = -JASON_ENTER_VEHICLE_DISAPPEAR_SPEED;
-			current_player->GetManager()->AddElement(jason);
-			current_player->SetState(SOPHIA_STATE_LEFT_VEHICLE);
-			scene->SetTarget(jason);
-			// set hp based on jason SceneOverhead
-			jason->SetHP(player->GetHP());
-			//scene->GetTarget()->SetPosition(startPoint);
-			scene->GetCamera()->SetCameraLimitarea(limitArea);
-			GameGlobal::SetReturnPoint(startPoint);
-			GameGlobal::SetReturnBoundingBox(limitArea);
-			//Camera::GetInstance()->SetCameraLimitarea(limitArea);
 		}
 	}
 }
@@ -1218,9 +1227,11 @@ void Interactable::Interact(JasonOverhead* player, Env_Enterboss* entering) {
 	BoundingBox enterBox = entering->GetBoundingBox();
 	if (playerBox.IsOverlap(enterBox)) {
 		SceneArea2Overhead* scene = dynamic_cast<SceneArea2Overhead*>(Game::GetInstance()->GetCurrentScene());
-		scene->enterBoss = 1;
-		Sound::getInstance()->stop("area2");
-		Sound::getInstance()->play("entering_boss_scene", false, 1);
+		if (scene != NULL) {
+			scene->enterBoss = 1;
+			Sound::getInstance()->stop("area2");
+			Sound::getInstance()->play("entering_boss_scene", false, 1);
+		}
 	}
 }
 
