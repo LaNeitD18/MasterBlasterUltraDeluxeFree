@@ -680,6 +680,8 @@ void HomingBullet::Update()
 
 	v.x = cos(rotation) * ROCKET_SPEED;
 	v.y = sin(rotation) * ROCKET_SPEED;
+
+	proposedTarget = NULL;
 }
 
 RocketBullet::RocketBullet(Point pos, Point v) : PlayerBullet(pos, v, BULLET_ANI_ROCKET)

@@ -21,7 +21,6 @@
 #include "SkullBullet.h"
 #include "ItemPower.h"
 #include "Mine.h"
-#include "ItemPower.h"
 #include "Teleporter.h"
 #include "Boss.h"
 #include "Bullet.h"
