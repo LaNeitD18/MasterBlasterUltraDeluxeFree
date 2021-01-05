@@ -607,15 +607,15 @@ void Sophia::ShootHoming()
 	Point bulletV;
 	Point bulletOffset;
 	if (state & SOPHIA_STATE_LOOKING_LEFT) {
-		bulletV = Point(-SOPHIA_BULLET_SPEED, 0);
+		bulletV = Point(-1, 0);
 		bulletOffset = Point(SOPHIA_BULLET_OFFSET_X, SOPHIA_BULLET_OFFSET_Y);
 	}
 	else {
-		bulletV = Point(SOPHIA_BULLET_SPEED, 0);
+		bulletV = Point(1, 0);
 		bulletOffset = Point(-SOPHIA_BULLET_OFFSET_X, SOPHIA_BULLET_OFFSET_Y);
 	}
 	if (state & SOPHIA_STATE_LOOKED_UP)
-		bulletV = Point(0, -SOPHIA_BULLET_SPEED);
+		bulletV = Point(0, -1);
 	HomingBullet* bullet = new HomingBullet(
 		pos + bulletOffset,
 		bulletV);

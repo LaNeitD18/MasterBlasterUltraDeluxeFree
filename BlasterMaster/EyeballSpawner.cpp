@@ -64,7 +64,7 @@ void EyeballSpawner::Update()
 		coolDown--;
 	}
 	else {
-		coolDown = rand() % 2000 + 1000;
+		coolDown = rand() % 1500 + 500;
 	}
 
 	DebugOut(L"time %d \n", coolDown);
