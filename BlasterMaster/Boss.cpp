@@ -93,6 +93,8 @@ void Boss::Update()
 			Game::GetInstance()->Init(L"Resources/scene.txt", 3);
 			SceneArea2Overhead* scene = dynamic_cast<SceneArea2Overhead*>(Game::GetInstance()->GetCurrentScene());
 			if (scene != NULL) {
+				Sound::getInstance()->stop();
+				Sound::getInstance()->play("area2", true, 1);
 				scene->liveShow = 0;
 			}
 			return;

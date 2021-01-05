@@ -1,3 +1,4 @@
+#include "Sound.h"
 #include "SceneBoss.h"
 #include <iostream>
 #include <fstream>
@@ -336,6 +337,8 @@ void SceneBoss::_ParseSection_ENVIRONMENT(string line)
 
 void SceneBoss::Init()
 {
+	Sound::getInstance()->stop();
+	Sound::getInstance()->play("boss", true, 1);
 	//vector<tuple<int, int, int, int, int>> mapNav;
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
 
