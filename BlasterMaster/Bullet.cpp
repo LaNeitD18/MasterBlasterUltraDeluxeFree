@@ -471,6 +471,7 @@ ThunderBullet::ThunderBullet(Point pos, int numberOfThunder, int dirX, D3DCOLOR 
 	this->numberOfThunder = numberOfThunder + 1;
 	isCreateAnotherThunder = false;
 	this->dirX = dirX;
+	Sound::getInstance()->play("thunder", false, 1);
 	
 	if (this->numberOfThunder == 1) {
 		SetRandomColor();
@@ -558,6 +559,7 @@ MultiwarheadMissile::MultiwarheadMissile(Point pos, int dirX, int index) : Rocke
 	this->pos = pos;
 	this->dirX = dirX;
 	this->index = index;
+	Sound::getInstance()->play("multiwarhead", false, 1);
 	
 	switch (index) {
 	case 1:
@@ -632,6 +634,7 @@ HomingBullet::HomingBullet(Point pos, Point v) : RocketBullet(pos, v)
 {
 	isTargetAvailable = false;
 	target = proposedTarget = NULL;
+	Sound::getInstance()->play("insect_fly_down", false, 1);
 }
 
 HomingBullet::~HomingBullet()

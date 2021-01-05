@@ -137,6 +137,7 @@ void SceneArea2SideView::LoadSound()
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/credit.wav", "credit");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/earthquake.wav", "earthquake");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/peace.wav", "peace");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/fire.wav", "fire");
 	//Sound::getInstance()->play("intro", false, 1);
 
 	// sophia sound
@@ -152,6 +153,8 @@ void SceneArea2SideView::LoadSound()
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/item.wav", "item");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/scene_change.wav", "scene_change");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/lava.wav", "lava");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/thunder.wav", "thunder");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/multiwarhead.wav", "multiwarhead");
 
 	// enemies
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/worm_moving.wav", "worm_moving");

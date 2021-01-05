@@ -92,7 +92,9 @@ void Boss::Update()
 			GameGlobal::SetReturnBoundingBox(SceneArea2Overhead::cameraLimitAreaOfSection[7]);
 			Game::GetInstance()->Init(L"Resources/scene.txt", 3);
 			SceneArea2Overhead* scene = dynamic_cast<SceneArea2Overhead*>(Game::GetInstance()->GetCurrentScene());
-			scene->liveShow = 0;
+			if (scene != NULL) {
+				scene->liveShow = 0;
+			}
 			return;
 		}
 		else

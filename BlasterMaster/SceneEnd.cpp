@@ -207,7 +207,7 @@ void SceneEnd::Render()
 		render_Begin();
 		DebugOut(L"count %d", count);
 		if (count == START_POINT_SHAKE + 1) {
-			Sound::getInstance()->play("earthquake", false, 1);
+			Sound::getInstance()->play("fire", false, 1);
 		}
 		if (count == (FINISH_POINT_SHAKE - 1)) {
 			Sound::getInstance()->stop();
