@@ -1239,8 +1239,8 @@ void Interactable::Interact(Sophia* player, Env_FinishPoint* finish) {
 	BoundingBox playerBox = player->GetBoundingBox();
 	BoundingBox pointBox = finish->GetBoundingBox();
 	if (playerBox.IsOverlap(pointBox)) {
+		Sound::getInstance()->stop();
 		Game::GetInstance()->Init(L"Resources/scene.txt", 6);
-
 	}
 }
 

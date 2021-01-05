@@ -79,7 +79,7 @@ public:
 	//int enterState; // title with tale = 0, entering sophia = 1, enter = 2
 
 	// time before render tale
-	int count = 50;
+	int countTime = 50;
 
 	// tool credit
 	void init_MapLetter();

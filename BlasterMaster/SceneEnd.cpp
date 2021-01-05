@@ -20,7 +20,7 @@ SceneEnd::SceneEnd(int id, LPCWSTR filePath, Game* game, Point screenSize) : Sce
 	this->input = game->GetInput();
 	LoadContent();
 	this->screenSize = screenSize;
-	this->count = 0;
+	this->countTime = 0;
 	//this->enterState = 0;
 
 	GameGlobal::SetAnimationSetLibrary(animationSetLib);
@@ -68,7 +68,7 @@ void SceneEnd::Init()
 {
 	//vector<tuple<int, int, int, int, int>> mapNav;
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
-	Sound::getInstance()->play("intro", false, 1);
+	//Sound::getInstance()->play("fire", true, 0);
 
 	// move bbox init
 	textureLib->Add(ID_TEX_BBOX, L"Resources\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
@@ -152,10 +152,10 @@ void SceneEnd::Init()
 void SceneEnd::Update()
 {
 	input->Update();
-	if (count > 150000) {
-		count = 0;
+	if (countTime > 150000) {
+		countTime = 0;
 	}
-	count++;
+	countTime++;
 	Point camPos = Camera::GetInstance()->GetPosition();
 	//DebugOut(L"x%f, y%f", camPos.x, camPos.y);
 
@@ -197,22 +197,22 @@ void SceneEnd::Update()
 
 void SceneEnd::Render()
 {
-	if (count == 1) {
+	if (countTime == 2) {
 		Sound::getInstance()->stop();
 	}
 	render_BBox2();
-	if (count < DURATION_OF_BEGIN) {
+	if (countTime < DURATION_OF_BEGIN) {
 		
 		render_MountItem();
 		render_Begin();
-		DebugOut(L"count %d", count);
-		if (count == START_POINT_SHAKE + 1) {
+		DebugOut(L"count %d", countTime);
+		if (countTime == START_POINT_SHAKE) {
 			Sound::getInstance()->play("fire", false, 1);
 		}
-		if (count == (FINISH_POINT_SHAKE - 1)) {
+		if (countTime == (FINISH_POINT_SHAKE-2)) {
 			Sound::getInstance()->stop();
 		}
-		if (count >= START_POINT_SHAKE && count < FINISH_POINT_SHAKE) {
+		if (countTime >= START_POINT_SHAKE && countTime < FINISH_POINT_SHAKE) {
 			shakeState = 1;
 		}
 		else {
@@ -220,22 +220,22 @@ void SceneEnd::Render()
 		}
 		
 	}
-	else if (count < DURATION_OF_BACKGROUND) {
+	else if (countTime < DURATION_OF_BACKGROUND) {
 		render_BBox1();
 		render_Background();
-		if (count == START_POINT_MOVERIGHT + 1) {
+		if (countTime == START_POINT_MOVERIGHT) {
 			Sound::getInstance()->play("peace", false, 1);
 		}
-		if (count > START_POINT_MOVERIGHT) {
+		if (countTime > START_POINT_MOVERIGHT) {
 			move_Camera_Right();
 		}
 	}
-	else if (count < 3010) {
+	else if (countTime < 3010) {
 		render_BBox1();
 		Camera::GetInstance()->SetPosition(Point(0, 0));
 	}
 	else {
-		if (count == DURATION_OF_BACKGROUND + 21) {
+		if (countTime == DURATION_OF_BACKGROUND + 22) {
 			Sound::getInstance()->stop();
 			Sound::getInstance()->play("credit", false, 1);
 		}
@@ -621,7 +621,7 @@ void SceneEnd::render_Begin()
 		if (isBegin) {
 			Point pos = x->GetPosition();
 			if (shakeState == 1) {
-				if (count % 5 == 0) {
+				if (countTime % 5 == 0) {
 					x->SetPosition(Point(-8, -18));
 				}
 				else {
@@ -640,7 +640,7 @@ void SceneEnd::render_MountItem()
 		if (isMT) {
 			Point pos = x->GetPosition();
 			if (shakeState == 1) {
-				if (count % 5 == 0) {
+				if (countTime % 5 == 0) {
 					x->SetPosition(pos + Point(0, 0.3));
 				}
 			}
