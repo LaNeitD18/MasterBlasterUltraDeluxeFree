@@ -137,6 +137,7 @@ void SceneArea2SideView::LoadSound()
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/credit.wav", "credit");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/earthquake.wav", "earthquake");
 	Sound::getInstance()->loadSound((char*)"Resources/sounds/peace.wav", "peace");
+	Sound::getInstance()->loadSound((char*)"Resources/sounds/fire.wav", "fire");
 	//Sound::getInstance()->play("intro", false, 1);
 
 	// sophia sound
